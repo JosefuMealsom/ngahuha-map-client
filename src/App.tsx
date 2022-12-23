@@ -1,11 +1,9 @@
-import { useState } from "react";
-import "./App.css";
-
 function App() {
   return (
-    <div className="App">
-      <div></div>
-      <h1>Ngahuha client</h1>
+    <div className="flex justify-center">
+      <h1 className="text-6xl font-bold underline text-center">
+        Ngahuha client
+      </h1>
     </div>
   );
 }
