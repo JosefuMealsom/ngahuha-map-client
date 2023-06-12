@@ -6,3 +6,5 @@ services:
     command: yarn vite --host
     ports:
       - '9090:5173'
+    volumes:
+      - ./:/app

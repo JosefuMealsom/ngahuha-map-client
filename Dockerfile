@@ -1,7 +1,6 @@
 FROM node:18 AS build
+
+USER node
+ENV NODE_ENV=development
+
 WORKDIR /app
-
-COPY ["package.json", "yarn.lock", "./"]
-RUN yarn
-
-COPY . .
