@@ -1,4 +1,3 @@
-import { Collection } from 'dexie';
 import { PlantSitePhotoDatabase } from './database/plant-site-photo.database';
 
 class PlantSitePhotoDatabaseService {
@@ -8,8 +7,8 @@ class PlantSitePhotoDatabaseService {
     this.photoDatabase = new PlantSitePhotoDatabase();
   }
 
-  all(): Collection<PlantSitePhoto> {
-    return this.photoDatabase.plantSitePhotos.toCollection();
+  all() {
+    return this.photoDatabase.plantSitePhotos.toArray();
   }
 
   async add(photoFile: File) {
@@ -19,7 +18,7 @@ class PlantSitePhotoDatabaseService {
     // return value of the reader.
     if (photoData && typeof photoData === 'string') {
       const result = await this.photoDatabase.plantSitePhotos.add({
-        filename: 'photo name',
+        filename: File.name,
         plantSiteId: 'test_123',
         dataURL: photoData,
       });

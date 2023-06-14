@@ -9,5 +9,12 @@ export default defineConfig({
       cert: process.env.PRIVATE_DEV_CERT,
     },
   },
-  plugins: [react(), VitePWA({})],
+  plugins: [
+    react(),
+    VitePWA({
+      devOptions: {
+        enabled: true,
+      },
+    }),
+  ],
 });
