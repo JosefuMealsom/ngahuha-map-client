@@ -1,9 +1,13 @@
+import { ConnectionStatus } from './components/ConnectionStatus';
+import { PhotoViewer } from './components/PhotoViewer';
+import { PlantPhotoForm } from './components/PlantPhotoForm';
+
 function App() {
   return (
-    <div className="flex justify-center">
-      <h1 className="text-6xl font-bold underline text-center">
-        Ngahuha client
-      </h1>
+    <div>
+      <ConnectionStatus></ConnectionStatus>
+      <PhotoViewer></PhotoViewer>
+      <PlantPhotoForm></PlantPhotoForm>
     </div>
   );
 }

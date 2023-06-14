@@ -3,8 +3,10 @@ services:
   app:
     build:
       context: .
-    command: yarn vite --host
     ports:
       - '9090:5173'
+      - '8090:4173'
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    env_file: .env
     volumes:
       - ./:/app
