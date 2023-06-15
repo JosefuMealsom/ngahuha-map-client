@@ -11,7 +11,7 @@ class PlantSitePhotoDatabaseService {
     return this.photoDatabase.plantSitePhotos.toArray();
   }
 
-  async add(photoFile: File) {
+  async add(photoFile: File, location: GeolocationCoordinates) {
     const photoData = await this.convertPhotoFileToDataUrl(photoFile);
 
     // Promise object could possibly be an array buffer due to the
@@ -21,6 +21,9 @@ class PlantSitePhotoDatabaseService {
         filename: File.name,
         plantSiteId: 'test_123',
         dataURL: photoData,
+        lat: location.latitude,
+        long: location.longitude,
+        accuracy: location.accuracy,
       });
     }
   }
