@@ -6,7 +6,7 @@ import { PlantPhotoForm } from './components/PlantPhotoForm';
 
 function App() {
   return (
-    <div>
+    <div className="touch-pan-y">
       <ConnectionStatus></ConnectionStatus>
       <GeolocationStatus></GeolocationStatus>
       <MapCanvas></MapCanvas>
