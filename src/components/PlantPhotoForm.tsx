@@ -1,10 +1,9 @@
 import React, { FormEvent, useState } from 'react';
 import photoDatabaseService from '../services/plant-site-photo-database.service';
-import { GeolocationService } from '../services/geolocation-service';
+import geolocationService from '../services/geolocation-service';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
-  const geolocationService = new GeolocationService();
 
   async function savePhotoLocally(event: FormEvent) {
     if (photo) {

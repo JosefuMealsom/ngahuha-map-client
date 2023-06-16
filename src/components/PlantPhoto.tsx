@@ -1,4 +1,4 @@
-import type { PlantSitePhoto } from '../services/database/plant-site-photo-type';
+import type { PlantSitePhoto } from '../types/plant-site-photo-type';
 
 export function PlantPhoto(props: PlantSitePhoto) {
   return (
