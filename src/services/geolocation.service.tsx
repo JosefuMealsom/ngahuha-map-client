@@ -8,7 +8,9 @@ class GeolocationService {
       const onError = (error: GeolocationPositionError) => {
         reject(error);
       };
-      navigator.geolocation.getCurrentPosition(onSuccess, onError);
+      navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+        enableHighAccuracy: true,
+      });
     });
   }
 }
