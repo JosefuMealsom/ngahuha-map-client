@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 import mapUrl from '../assets/map.jpg';
-import mapPositionInterpolator from '../services/map-position-interpolator-service';
-import geolocationService from '../services/geolocation-service';
-import imageLoaderService from '../services/image-loader-service';
+import mapPositionInterpolator from '../services/map-position-interpolator.service';
+import geolocationService from '../services/geolocation.service';
+import imageLoaderService from '../services/image-loader.service';
 import { usePosition } from '../hooks/use-position.hook';
-import { MapBounds } from '../types/map-bounds-type';
+import { MapBounds } from '../types/map-bounds.type';
 
 export function MapCanvas() {
   const canvasDimensions = { width: 432, height: 657 };
