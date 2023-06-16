@@ -1,20 +1,13 @@
 import { useEffect, useState } from 'react';
+import { usePosition } from '../hooks/use-position.hook';
 
 export function GeolocationStatus() {
   const [location, setGeolocation] = useState<GeolocationCoordinates>();
+  usePosition(onPositionChange);
 
-  const onPositionChange = (position: GeolocationPosition) => {
+  function onPositionChange(position: GeolocationPosition) {
     setGeolocation(position.coords);
-  };
-
-  // Really inefficient to be adding and removing handlers so frequently
-  useEffect(() => {
-    const handlerId = navigator.geolocation.watchPosition(onPositionChange);
-
-    return () => {
-      navigator.geolocation.clearWatch(handlerId);
-    };
-  });
+  }
 
   return (
     <div className="mb-4">
