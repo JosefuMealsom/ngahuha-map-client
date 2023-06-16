@@ -1,4 +1,4 @@
-import { MapBounds } from '../types/map-bounds-type';
+import { MapBounds } from '../types/map-bounds.type';
 
 type CanvasDimensions = {
   width: number;

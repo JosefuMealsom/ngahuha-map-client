@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import photoDatabaseService from '../services/plant-site-photo-database.service';
-import geolocationService from '../services/geolocation-service';
+import geolocationService from '../services/geolocation.service';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();

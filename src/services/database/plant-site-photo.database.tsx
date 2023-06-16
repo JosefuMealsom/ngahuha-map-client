@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie';
-import type { PlantSitePhoto } from '../../types/plant-site-photo-type';
+import type { PlantSitePhoto } from '../../types/plant-site-photo.type';
 
 export class PlantSitePhotoDatabase extends Dexie {
   public plantSitePhotos!: Table<PlantSitePhoto>;

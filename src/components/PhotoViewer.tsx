@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import photoDatabaseService from '../services/plant-site-photo-database.service';
 import { PlantPhoto } from './PlantPhoto';
-import type { PlantSitePhoto } from '../types/plant-site-photo-type';
+import type { PlantSitePhoto } from '../types/plant-site-photo.type';
 
 export function PhotoViewer() {
   const [data, setData] = useState<PlantSitePhoto[]>();
