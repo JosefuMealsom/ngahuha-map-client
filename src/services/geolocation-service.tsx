@@ -1,4 +1,4 @@
-export class GeolocationService {
+class GeolocationService {
   getCurrentPosition(): Promise<GeolocationCoordinates> {
     return new Promise((resolve, reject) => {
       const onSuccess = (position: GeolocationPosition) => {
@@ -12,3 +12,5 @@ export class GeolocationService {
     });
   }
 }
+
+export default new GeolocationService();
