@@ -1,4 +1,4 @@
 export type MapBounds = {
-  latitude: [number, number];
-  longitude: [number, number];
+  lat: [number, number];
+  long: [number, number];
 };

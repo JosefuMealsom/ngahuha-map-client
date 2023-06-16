@@ -1,37 +1,52 @@
 import { MapBounds } from '../types/map-bounds.type';
-
-type CanvasDimensions = {
-  width: number;
-  height: number;
-};
+import type { LatLong } from '../types/lat-long.type';
 
 class MapPositionInterpolatorService {
   interpolateToCanvasPosition(
     bounds: MapBounds,
-    currentLocation: GeolocationCoordinates,
-    canvasDimensions: CanvasDimensions,
+    currentLocation: LatLong,
+    canvasDimensions: { width: number; height: number },
   ) {
-    const { lat, long } = this.interpolateGeolocation(bounds, currentLocation);
+    const relativeCanvasPosition =
+      this.interpolateGeolocationToRelativePosition(bounds, currentLocation);
+
+    if (!this.testLocationInCanvasBounds(relativeCanvasPosition)) {
+      return null;
+    }
 
     return {
-      x: long * canvasDimensions.width,
-      y: lat * canvasDimensions.height,
+      x: relativeCanvasPosition.x * canvasDimensions.width,
+      y: relativeCanvasPosition.y * canvasDimensions.height,
     };
   }
 
-  private interpolateGeolocation(
+  private testLocationInCanvasBounds(relativePosition: {
+    x: number;
+    y: number;
+  }) {
+    if (
+      relativePosition.x < 0 ||
+      relativePosition.x > 1 ||
+      relativePosition.y < 0 ||
+      relativePosition.y > 1
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  private interpolateGeolocationToRelativePosition(
     bounds: MapBounds,
-    currentLocation: GeolocationCoordinates,
+    currentLocation: LatLong,
   ) {
     const interpolatedLat =
-      (currentLocation.latitude - bounds.latitude[0]) /
-      (bounds.latitude[1] - bounds.latitude[0]);
+      (currentLocation.lat - bounds.lat[0]) / (bounds.lat[1] - bounds.lat[0]);
 
     const interpolatedLong =
-      (currentLocation.longitude - bounds.longitude[0]) /
-      (bounds.longitude[1] - bounds.longitude[0]);
+      (currentLocation.long - bounds.long[0]) /
+      (bounds.long[1] - bounds.long[0]);
 
-    return { lat: interpolatedLat, long: interpolatedLong };
+    return { x: interpolatedLong, y: interpolatedLat };
   }
 }
 
