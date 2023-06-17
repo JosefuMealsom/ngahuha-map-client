@@ -1,31 +1,43 @@
 import { useRef } from 'react';
 import mapUrl from '../assets/map.jpg';
-import mapPositionInterpolator from '../services/map-position-interpolator.service';
-import geolocationService from '../services/geolocation.service';
 import imageLoaderService from '../services/image-loader.service';
 import { usePosition } from '../hooks/use-position.hook';
 import { MapBounds } from '../types/map-bounds.type';
 import canvasMapImage from './MapImage';
+import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
+import plantSitePhotoDatabaseService from '../services/plant-site-photo-database.service';
+import { PlantSitePhoto } from '../types/plant-site-photo.type';
+import MapRenderer from './MapRenderer';
 
 export function MapCanvas() {
   const scale = 2;
   const canvasDimensions = { width: 432 * scale, height: 657 * scale };
   const mapBounds: MapBounds = {
-    latitude: [-35.373941, -35.378587],
-    longitude: [173.96343, 173.967164],
+    lat: [-35.373941, -35.378587],
+    long: [173.96343, 173.967164],
   };
   const canvasRef = useRef(null);
-  let mapImage: HTMLImageElement | null;
+  const mapRenderer = new MapRenderer(canvasDimensions, mapBounds);
 
-  usePosition(onPositionChange);
+  let mapImage: HTMLImageElement | null;
+  let photos: PlantSitePhoto[] = [];
+  let coords: GeolocationCoordinates | null = null;
+
+  usePosition((geolocationPosition) => {
+    coords = geolocationPosition.coords;
+  });
 
   imageLoaderService.loadImage(mapUrl).then((image) => (mapImage = image));
 
-  function onPositionChange(position: GeolocationPosition) {
+  useAnimationFrame(() => {
     drawMap(canvasRef?.current);
-  }
+  });
 
-  async function drawMap(canvas: HTMLCanvasElement | null) {
+  plantSitePhotoDatabaseService.all().then((allPhotos) => {
+    photos = allPhotos;
+  });
+
+  function drawMap(canvas: HTMLCanvasElement | null) {
     if (!canvas) {
       return;
     }
@@ -36,59 +48,38 @@ export function MapCanvas() {
       return;
     }
 
-    const coords = await geolocationService.getCurrentPosition();
-
-    const { x, y } = mapPositionInterpolator.interpolateToCanvasPosition(
-      mapBounds,
-      coords,
-      canvasDimensions,
-    );
-
     context.clearRect(0, 0, canvasDimensions.width, canvasDimensions.height);
 
-    drawImageMap(context);
-    drawVectorMap(context);
-
-    context.beginPath();
-    context.rect(x - 5, y - 5, 10, 10);
-    context.fillStyle = '#f00';
-    context.fill();
+    drawMapImages(context);
+    drawMapMarkers(context);
+    drawLocationMarker(context);
   }
 
-  function drawVectorMap(context: CanvasRenderingContext2D) {
-    if (!canvasMapImage) {
-      return;
+  function drawMapImages(context: CanvasRenderingContext2D) {
+    if (mapImage) {
+      mapRenderer.drawImage(context, mapImage, 0.5);
     }
-
-    context.globalAlpha = 1;
-    context.drawImage(
-      canvasMapImage,
-      0,
-      0,
-      canvasDimensions.width,
-      canvasDimensions.height,
-    );
+    if (canvasMapImage) {
+      mapRenderer.drawImage(context, canvasMapImage);
+    }
   }
 
-  function drawImageMap(context: CanvasRenderingContext2D) {
-    if (!mapImage) {
-      return;
+  function drawMapMarkers(context: CanvasRenderingContext2D) {
+    for (const photo of photos) {
+      mapRenderer.drawMarker(context, photo, '#0f0');
     }
+  }
 
-    context.globalAlpha = 0.5;
-    context.drawImage(
-      mapImage,
-      0,
-      0,
-      canvasDimensions.width,
-      canvasDimensions.height,
-    );
+  function drawLocationMarker(context: CanvasRenderingContext2D) {
+    if (coords) {
+      mapRenderer.drawMarker(context, coords);
+    }
   }
 
   return (
     <div className="flex w-full justify-center">
       <canvas
-        className="w-full"
+        className="w-full max-w-md"
         ref={canvasRef}
         width={canvasDimensions.width}
         height={canvasDimensions.height}
