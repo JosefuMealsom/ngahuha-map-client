@@ -5,8 +5,8 @@ export function PlantPhoto(props: PlantSitePhoto) {
     <div className="w-1/6">
       <img src={props.dataURL} className="object-contain h-40" />
       <p>{props.filename}</p>
-      <p>{props.lat}</p>
-      <p>{props.long}</p>
+      <p>{props.latitude}</p>
+      <p>{props.longitude}</p>
       <p>{props.accuracy}</p>
     </div>
   );
