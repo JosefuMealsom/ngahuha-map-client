@@ -3,7 +3,7 @@ export type PlantSitePhoto = {
   plantSiteId: string;
   filename: string;
   dataURL: string;
-  lat: number;
-  long: number;
+  latitude: number;
+  longitude: number;
   accuracy: number;
 };
