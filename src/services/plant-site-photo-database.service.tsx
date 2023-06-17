@@ -21,8 +21,8 @@ class PlantSitePhotoDatabaseService {
         filename: File.name,
         plantSiteId: 'test_123',
         dataURL: photoData,
-        lat: location.latitude,
-        long: location.longitude,
+        latitude: location.latitude,
+        longitude: location.longitude,
         accuracy: location.accuracy,
       });
     }

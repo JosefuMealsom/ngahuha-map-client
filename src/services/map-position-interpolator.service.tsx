@@ -40,10 +40,11 @@ class MapPositionInterpolatorService {
     currentLocation: LatLong,
   ) {
     const interpolatedLat =
-      (currentLocation.lat - bounds.lat[0]) / (bounds.lat[1] - bounds.lat[0]);
+      (currentLocation.latitude - bounds.lat[0]) /
+      (bounds.lat[1] - bounds.lat[0]);
 
     const interpolatedLong =
-      (currentLocation.long - bounds.long[0]) /
+      (currentLocation.longitude - bounds.long[0]) /
       (bounds.long[1] - bounds.long[0]);
 
     return { x: interpolatedLong, y: interpolatedLat };

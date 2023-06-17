@@ -1,4 +1,4 @@
-import { assert, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import mapPositionInterpolatorService from './map-position-interpolator.service';
 import { MapBounds } from '../types/map-bounds.type';
 
@@ -11,7 +11,7 @@ describe('MapPositionInterpolatorService', () => {
     const canvasDimensions = { width: 1000, height: 1000 };
 
     it('interpolates the geolocation to an x,y point', () => {
-      const currentLocation = { lat: 30, long: 35 };
+      const currentLocation = { latitude: 30, longitude: 35 };
 
       expect(
         mapPositionInterpolatorService.interpolateToCanvasPosition(
@@ -24,10 +24,10 @@ describe('MapPositionInterpolatorService', () => {
 
     it('returns null if current location is out of bounds', () => {
       const locationsOutsideBounds = [
-        { lat: 100, long: 100 },
-        { lat: -100, long: -100 },
-        { lat: 30, long: 100 },
-        { lat: 100, long: 30 },
+        { latitude: 100, longitude: 100 },
+        { latitude: -100, longitude: -100 },
+        { latitude: 30, longitude: 100 },
+        { latitude: 100, longitude: 30 },
       ];
 
       for (const location of locationsOutsideBounds)
