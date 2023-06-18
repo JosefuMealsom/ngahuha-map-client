@@ -3,3 +3,9 @@ dist
 .secrets/
 .env
 coverage
+
+.devcontainer/
+node_modules/
+
+cypress/videos
+cypress/screenshots
