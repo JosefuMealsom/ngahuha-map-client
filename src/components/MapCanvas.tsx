@@ -7,7 +7,7 @@ import canvasMapImage from './MapImage';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
 import plantSitePhotoDatabaseService from '../services/plant-site-photo-database.service';
 import { PlantSitePhoto } from '../types/plant-site-photo.type';
-import MapRenderer from './MapRenderer';
+import MapRenderer from '../utils/MapRenderer';
 
 export function MapCanvas() {
   const scale = 2;
