@@ -1,5 +1,3 @@
-import { ConnectionStatus } from './components/ConnectionStatus';
-import { GeolocationStatus } from './components/GeolocationStatus';
 import { MapCanvas } from './components/MapCanvas';
 import { PhotoViewer } from './components/PhotoViewer';
 import { PlantPhotoForm } from './components/PlantPhotoForm';
@@ -7,8 +5,6 @@ import { PlantPhotoForm } from './components/PlantPhotoForm';
 function App() {
   return (
     <div className="touch-pan-y">
-      <ConnectionStatus></ConnectionStatus>
-      <GeolocationStatus></GeolocationStatus>
       <MapCanvas></MapCanvas>
       <PhotoViewer></PhotoViewer>
       <PlantPhotoForm></PlantPhotoForm>
