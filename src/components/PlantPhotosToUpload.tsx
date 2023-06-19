@@ -22,7 +22,7 @@ export function PlantPhotosToUpload() {
   }
 
   return (
-    <div className="z-10">
+    <div>
       <div
         className={`${
           modalOpen ? '' : 'hidden'

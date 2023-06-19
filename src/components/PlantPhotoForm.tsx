@@ -2,6 +2,7 @@ import React, { FormEvent, createRef, useRef, useState } from 'react';
 import photoDatabaseService from '../services/plant-site-photo-database.service';
 import geolocationService from '../services/geolocation.service';
 import fileToDataUrlService from '../services/file-to-data-url.service';
+import { ButtonComponent } from './ButtonComponent';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
@@ -106,13 +107,12 @@ export function PlantPhotoForm() {
           />
         </form>
       </div>
-      <button
+      <ButtonComponent
+        text={modalOpen ? 'Close' : 'New plant'}
+        onClickHandler={toggleModal}
+        className="absolute top-2 right-3"
         id="plant-form-btn"
-        className="absolute top-2 right-3 border-solid border-black border-2 p-2 hover:bg-gray-300 cursor-pointer mb-2 inline-block"
-        onClick={toggleModal}
-      >
-        {modalOpen ? 'Close' : 'New plant'}
-      </button>
+      ></ButtonComponent>
     </div>
   );
 }
