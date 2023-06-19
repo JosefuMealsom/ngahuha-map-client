@@ -1,12 +1,12 @@
 import { MapCanvas } from './components/MapCanvas';
-import { PhotoViewer } from './components/PhotoViewer';
+import { PlantPhotosToUpload } from './components/PlantPhotosToUpload';
 import { PlantPhotoForm } from './components/PlantPhotoForm';
 
 function App() {
   return (
     <div className="touch-pan-y">
       <MapCanvas></MapCanvas>
-      <PhotoViewer></PhotoViewer>
+      <PlantPhotosToUpload></PlantPhotosToUpload>
       <PlantPhotoForm></PlantPhotoForm>
     </div>
   );
