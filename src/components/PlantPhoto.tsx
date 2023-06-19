@@ -13,7 +13,7 @@ export function PlantPhoto(props: PlantSitePhoto) {
     <div className="w-full h-40 mb-5">
       <img
         src={props.dataURL}
-        className="w-40 h-full object-contain inline-block ml-8 pr-8"
+        className="w-1/3 h-full object-contain inline-block ml-8 pr-8"
       />
       <div className="inline-block align-middle">
         <h1 className="font-bold">Genus</h1>
