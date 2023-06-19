@@ -6,6 +6,10 @@ import { ButtonComponent } from './ButtonComponent';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
+  const [genus, setGenus] = useState<string>();
+  const [cultivar, setCultivar] = useState<string>();
+  const [species, setSpecies] = useState<string>();
+
   const [modalOpen, setModalState] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [currentPosition, setCurrentPosition] =
@@ -13,12 +17,18 @@ export function PlantPhotoForm() {
 
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
-    if (photo && currentPosition) {
-      const success = await photoDatabaseService.add(photo, currentPosition);
 
-      if (success) {
-        toggleModal();
-      }
+    if (!species || !genus || !currentPosition || !photo) {
+      return;
+    }
+
+    const success = await photoDatabaseService.add(photo, currentPosition, {
+      speciesName: species,
+      genusName: genus,
+      cultivarName: cultivar,
+    });
+    if (success) {
+      toggleModal();
     }
   }
 
@@ -57,8 +67,12 @@ export function PlantPhotoForm() {
           <input
             id="genus"
             type="text"
+            name="genus"
             className="mb-3 w-full"
             placeholder="Genus name"
+            onChange={(e) => {
+              setGenus(e.target.value);
+            }}
           />
           <label htmlFor="species" className="block">
             Species
@@ -66,17 +80,25 @@ export function PlantPhotoForm() {
           <input
             id="species"
             type="text"
+            name="species"
             className="mb-3 w-full"
             placeholder="Species name"
+            onChange={(e) => {
+              setSpecies(e.target.value);
+            }}
           />
           <label htmlFor="cultivar" className="block">
             Cultivar
           </label>
           <input
             id="cultivar"
+            name="cultivar"
             type="text"
             className="mb-3 w-full"
             placeholder="Cultivar name"
+            onChange={(e) => {
+              setCultivar(e.target.value);
+            }}
           />
           <div>
             <label

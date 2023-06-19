@@ -15,14 +15,19 @@ export function PlantPhoto(props: PlantSitePhoto) {
         src={props.dataURL}
         className="w-40 h-full object-contain inline-block ml-8 pr-8"
       />
-      <div className="inline-block">
-        <p>{props.filename}</p>
-        <ButtonComponent
-          onClickHandler={deletePhoto}
-          className=""
-          text="Delete"
-        ></ButtonComponent>
+      <div className="inline-block align-middle">
+        <h1 className="font-bold">Genus</h1>
+        <p>{props.species.genusName}</p>
+        <h1 className="font-bold">Species</h1>
+        <p>{props.species.speciesName}</p>
+        <h1 className="font-bold">Cultivar</h1>
+        <p>{props.species.cultivarName}</p>
       </div>
+      <ButtonComponent
+        onClickHandler={deletePhoto}
+        className="inline-block align-middle ml-8"
+        text="Delete"
+      ></ButtonComponent>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { PlantSpecies } from '../types/plant-species.type';
 import { PlantSitePhotoDatabase } from './database/plant-site-photo.database';
 import fileToDataUrlService from './file-to-data-url.service';
 
@@ -12,7 +13,11 @@ class PlantSitePhotoDatabaseService {
     return this.photoDatabase.plantSitePhotos.toArray();
   }
 
-  async add(photoFile: File, location: GeolocationCoordinates) {
+  async add(
+    photoFile: File,
+    location: GeolocationCoordinates,
+    species: PlantSpecies,
+  ) {
     const photoData = await fileToDataUrlService.convert(photoFile);
 
     // Promise object could possibly be an array buffer due to the
@@ -22,6 +27,7 @@ class PlantSitePhotoDatabaseService {
         filename: File.name,
         plantSiteId: 'test_123',
         dataURL: photoData,
+        species: species,
         latitude: location.latitude,
         longitude: location.longitude,
         accuracy: location.accuracy,
