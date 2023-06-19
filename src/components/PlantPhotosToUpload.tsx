@@ -40,7 +40,7 @@ export function PlantPhotosToUpload() {
       </div>
       <ButtonComponent
         onClickHandler={toggleModal}
-        className="absolute top-2 left-3 "
+        className="fixed top-2 left-3 "
         text={modalOpen ? 'Close' : 'Pending upload'}
       ></ButtonComponent>
     </div>
