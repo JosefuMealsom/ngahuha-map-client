@@ -1,4 +1,4 @@
-import React, { FormEvent, createRef, useRef, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import photoDatabaseService from '../services/plant-site-photo-database.service';
 import geolocationService from '../services/geolocation.service';
 import fileToDataUrlService from '../services/file-to-data-url.service';
