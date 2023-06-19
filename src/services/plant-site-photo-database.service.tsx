@@ -30,6 +30,10 @@ class PlantSitePhotoDatabaseService {
       return result;
     }
   }
+
+  async delete(id: number) {
+    return await this.photoDatabase.plantSitePhotos.delete(id);
+  }
 }
 
 export default new PlantSitePhotoDatabaseService();
