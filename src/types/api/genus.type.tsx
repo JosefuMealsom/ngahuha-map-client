@@ -1,4 +1,4 @@
 export type Genus = {
   id: string;
-  name: number;
+  name: string;
 };
