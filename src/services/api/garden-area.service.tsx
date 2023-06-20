@@ -1,4 +1,5 @@
 import type { GardenArea } from '../../types/api/garden-area.type';
+import offlineDatabase from '../database/offline.database';
 import apiUrlService from './api-url.service';
 
 class GardenAreaService {
@@ -11,13 +12,24 @@ class GardenAreaService {
       // type that can be assigned to anything therefore it overrides
       // type checking when assigned to a property.
       // Are there downsides to this approach?
-      success([
-        {
-          id: dataToJSON.id as string,
-          name: dataToJSON.name as string,
-          description: dataToJSON.description as string,
-        },
-      ]);
+      const gardenAreas = dataToJSON.map((area: GardenArea) => {
+        return {
+          id: area.id as string,
+          name: area.name as string,
+          description: area.description as string,
+        };
+      });
+
+      success(gardenAreas);
+    });
+  }
+
+  syncOffline(): Promise<GardenArea[]> {
+    return new Promise(async (success, reject) => {
+      const gardenAreas = await this.fetch();
+      await offlineDatabase.gardenArea.bulkAdd(gardenAreas);
+
+      success(gardenAreas);
     });
   }
 }
