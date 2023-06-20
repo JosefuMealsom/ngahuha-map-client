@@ -4,11 +4,11 @@ import { GardenArea } from '../../types/api/garden-area.type';
 import { Species } from '../../types/api/species.type';
 import { Genus } from '../../types/api/genus.type';
 
-export class OfflineDatabase extends Dexie {
-  public plantSitePhotos!: Table<PlantSite>;
-  public gardenArea!: Table<GardenArea>;
-  public species!: Table<Species>;
-  public genus!: Table<Genus>;
+class OfflineDatabase extends Dexie {
+  public readonly plantSitePhotos!: Table<PlantSite>;
+  public readonly gardenArea!: Table<GardenArea>;
+  public readonly species!: Table<Species>;
+  public readonly genus!: Table<Genus>;
 
   constructor() {
     super('OfflineDatabase');
@@ -19,3 +19,5 @@ export class OfflineDatabase extends Dexie {
     });
   }
 }
+
+export default new OfflineDatabase();
