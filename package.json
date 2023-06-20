@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "yarn vitest --mode test"
   },
   "dependencies": {
     "dexie": "^3.2.2",
