@@ -45,7 +45,7 @@ describe('SpeciesService', () => {
     });
   });
 
-  describe('syncOnline()', () => {
+  describe('syncOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
       fetchStub.stubFetchResponse([species1, species2]);
 
