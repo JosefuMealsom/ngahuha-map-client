@@ -1,5 +1,5 @@
-class FileToDataUrlService {
-  convert(file: File) {
+class BlobToDataUrlService {
+  convert(blob: Blob) {
     return new Promise<string | null>((resolve, reject) => {
       const reader = new FileReader();
 
@@ -11,9 +11,9 @@ class FileToDataUrlService {
         }
       };
       reader.onerror = reject;
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(blob);
     });
   }
 }
 
-export default new FileToDataUrlService();
+export default new BlobToDataUrlService();
