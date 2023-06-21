@@ -1,4 +1,3 @@
-import 'fake-indexeddb/auto';
 import genusService from './genus.service';
 import { expect, describe, it } from 'vitest';
 import { fetchStub } from '../../test-helpers/fetch-stub';

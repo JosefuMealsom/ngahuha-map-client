@@ -1,4 +1,3 @@
-import 'fake-indexeddb/auto';
 import gardenAreaService from './garden-area.service';
 import { expect, describe, it } from 'vitest';
 import { fetchStub } from '../../test-helpers/fetch-stub';
@@ -28,7 +27,7 @@ describe('GardenAreaService', () => {
     });
   });
 
-  describe('syncOnline()', () => {
+  describe('syncOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
       fetchStub.stubFetchResponse([
         {

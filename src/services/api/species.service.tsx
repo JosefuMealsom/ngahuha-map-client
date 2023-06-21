@@ -3,7 +3,7 @@ import apiUrlService from './api-url.service';
 import type { Species } from '../../types/api/species.type';
 
 class SpeciesService {
-  fetch(): Promise<[Species]> {
+  fetch(): Promise<Species[]> {
     return new Promise(async (success) => {
       const data = await fetch(apiUrlService.getFullPath('species'));
       const dataToJSON = await data.json();
@@ -22,7 +22,7 @@ class SpeciesService {
     });
   }
 
-  syncOffline(): Promise<[Species]> {
+  syncOffline(): Promise<Species[]> {
     return new Promise(async (success) => {
       const species = await this.fetch();
       await offlineDatabase.species.bulkAdd(species);
