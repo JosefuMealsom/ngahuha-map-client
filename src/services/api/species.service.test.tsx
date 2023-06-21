@@ -7,17 +7,17 @@ import offlineDatabase from '../database/offline.database';
 describe('SpeciesService', () => {
   const species1 = {
     id: '123',
-    genus_id: 'gg123',
-    type_id: 'tt123',
+    genusId: 'gg123',
+    typeId: 'tt123',
     name: 'special species',
-    common_name: [],
+    commonNames: [],
   };
   const species2 = {
     id: '456',
-    genus_id: 'gg456',
-    type_id: 'tt567',
+    genusId: 'gg456',
+    typeId: 'tt567',
     name: 'average species',
-    common_name: [],
+    commonNames: [],
   };
 
   describe('fetch()', () => {
@@ -30,17 +30,17 @@ describe('SpeciesService', () => {
       expect(species).toEqual([
         {
           id: '123',
-          genus_id: 'gg123',
-          type_id: 'tt123',
+          genusId: 'gg123',
+          typeId: 'tt123',
           name: 'special species',
-          common_name: [],
+          commonNames: [],
         },
         {
           id: '456',
-          genus_id: 'gg456',
-          type_id: 'tt567',
+          genusId: 'gg456',
+          typeId: 'tt567',
           name: 'average species',
-          common_name: [],
+          commonNames: [],
         },
       ]);
     });
@@ -56,17 +56,17 @@ describe('SpeciesService', () => {
       expect(savedDbData).toEqual([
         {
           id: '123',
-          genus_id: 'gg123',
-          type_id: 'tt123',
+          genusId: 'gg123',
+          typeId: 'tt123',
           name: 'special species',
-          common_name: [],
+          commonNames: [],
         },
         {
           id: '456',
-          genus_id: 'gg456',
-          type_id: 'tt567',
+          genusId: 'gg456',
+          typeId: 'tt567',
           name: 'average species',
-          common_name: [],
+          commonNames: [],
         },
       ]);
     });

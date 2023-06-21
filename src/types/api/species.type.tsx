@@ -1,8 +1,8 @@
 export type Species = {
   id: string;
-  genus_id: string;
-  type_id: string;
+  genusId: string;
+  typeId: string;
   name: string;
   cultivar?: string;
-  common_name?: string[];
+  commonNames?: string[];
 };

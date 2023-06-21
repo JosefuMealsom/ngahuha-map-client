@@ -11,9 +11,9 @@ class SpeciesService {
       const species = dataToJSON.map((species: Species) => {
         return {
           id: species.id as string,
-          genus_id: species.genus_id as string,
-          type_id: species.type_id as string,
-          common_name: species.common_name as [],
+          genusId: species.genusId as string,
+          typeId: species.typeId as string,
+          commonNames: species.commonNames as [],
           name: species.name as string,
         };
       });
