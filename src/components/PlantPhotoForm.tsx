@@ -1,13 +1,29 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import geolocationService from '../services/geolocation.service';
 import { ButtonComponent } from './ButtonComponent';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
+import { AutocompleteComponent } from './AutocompleteComponent';
+import offlineDatabase from '../services/database/offline.database';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
   const [genus, setGenus] = useState<string>();
   const [cultivar, setCultivar] = useState<string>();
   const [species, setSpecies] = useState<string>();
+
+  const [genusList, setGenusList] = useState<string[]>([]);
+  const [speciesList, setSpeciesList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const populateGenusList = async () => {
+      const genera = await offlineDatabase.genus.toArray();
+      setGenusList(genera.map((genus) => genus.name));
+
+      const allSpecies = await offlineDatabase.species.toArray();
+      setSpeciesList(allSpecies.map((species) => species.name));
+    };
+    populateGenusList();
+  });
 
   const [modalOpen, setModalState] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -51,31 +67,17 @@ export function PlantPhotoForm() {
       >
         <form onSubmit={savePhotoLocally}>
           <h1 className="font-bold mt-5 mb-3">Add a new plant</h1>
-          <label htmlFor="genus" className="block">
+          <label htmlFor="genera" className="block">
             Genus
           </label>
-          <input
-            id="genus"
-            type="text"
-            name="genus"
-            className="mb-3 w-full"
-            placeholder="Genus name"
-            onChange={(e) => {
-              setGenus(e.target.value);
-            }}
-          />
-          <label htmlFor="species" className="block">
+          <AutocompleteComponent items={genusList} placeholder="Genus name" />
+
+          <label htmlFor="test" className="block">
             Species
           </label>
-          <input
-            id="species"
-            type="text"
-            name="species"
-            className="mb-3 w-full"
+          <AutocompleteComponent
+            items={speciesList}
             placeholder="Species name"
-            onChange={(e) => {
-              setSpecies(e.target.value);
-            }}
           />
           <label htmlFor="cultivar" className="block">
             Cultivar
@@ -122,7 +124,7 @@ export function PlantPhotoForm() {
       <ButtonComponent
         text={modalOpen ? 'Close' : 'New plant site'}
         onClickHandler={toggleModal}
-        className="absolute bottom-2 right-3"
+        className="absolute top-2 right-3"
         id="plant-form-btn"
       ></ButtonComponent>
     </div>
