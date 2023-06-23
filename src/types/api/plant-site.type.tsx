@@ -4,6 +4,6 @@ export type PlantSite = {
   latitude: number;
   longitude: number;
   accuracy: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 };

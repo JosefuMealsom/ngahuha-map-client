@@ -1,20 +1,32 @@
 import { PlantSite } from '../../types/api/plant-site.type';
 import offlineDatabase from '../database/offline.database';
+import apiFetchUtil from './api-fetch.util';
 import apiUrlService from './api-url.service';
 
 class PlantSiteService {
   fetch(): Promise<PlantSite[]> {
     return new Promise(async (success) => {
-      const data = await fetch(apiUrlService.getFullPath('species'));
-      const dataToJSON = await data.json();
+      const dataToJSON = await apiFetchUtil.fetchUpdatedModels(
+        offlineDatabase.plantSite,
+        'plant-site',
+      );
 
-      const species = dataToJSON.map((plantSite: PlantSite) => {
+      const species = dataToJSON.map((plantSite: PlantSite): PlantSite => {
+        const createdAt = plantSite.createdAt
+          ? (plantSite.createdAt as string)
+          : undefined;
+        const updatedAt = plantSite.updatedAt
+          ? (plantSite.createdAt as string)
+          : undefined;
+
         return {
           id: plantSite.id as string,
           speciesId: plantSite.speciesId as string,
           latitude: plantSite.latitude as number,
           longitude: plantSite.longitude as number,
           accuracy: plantSite.accuracy as number,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
         };
       });
 
@@ -25,7 +37,7 @@ class PlantSiteService {
   syncOffline(): Promise<PlantSite[]> {
     return new Promise(async (success) => {
       const plantSites = await this.fetch();
-      await offlineDatabase.plantSite.bulkAdd(plantSites);
+      await offlineDatabase.plantSite.bulkPut(plantSites);
 
       success(plantSites);
     });

@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto';
 import plantSiteService from './plant-site.service';
-import { expect, describe, it, afterEach } from 'vitest';
+import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase from '../database/offline.database';
 import { fetchStub } from '../../test-helpers/fetch-stub';
 
@@ -15,6 +15,8 @@ describe('PlantSiteService', () => {
     latitude: 10,
     longitude: 20,
     accuracy: 30,
+    createdAt: '1988-11-11T00:00:00.000Z',
+    updatedAt: '1988-11-11T00:00:00.000Z',
   };
   const plantSite2 = {
     id: '456',
@@ -22,6 +24,8 @@ describe('PlantSiteService', () => {
     latitude: 40,
     longitude: 50,
     accuracy: 60,
+    createdAt: '1988-11-11T00:00:00.000Z',
+    updatedAt: '1988-11-11T00:00:00.000Z',
   };
   const location: GeolocationCoordinates = {
     accuracy: 10,
@@ -38,7 +42,7 @@ describe('PlantSiteService', () => {
       fetchStub.stubFetchResponse([plantSite1, plantSite2]);
 
       const plantSites = await plantSiteService.fetch();
-      fetchStub.assertEndPointCalled('https://www.dummy-api.com/species');
+      fetchStub.assertEndPointCalled('https://www.dummy-api.com/plant-site');
 
       expect(plantSites).toEqual([
         {
@@ -47,6 +51,8 @@ describe('PlantSiteService', () => {
           latitude: 10,
           longitude: 20,
           accuracy: 30,
+          createdAt: '1988-11-11T00:00:00.000Z',
+          updatedAt: '1988-11-11T00:00:00.000Z',
         },
         {
           id: '456',
@@ -54,6 +60,8 @@ describe('PlantSiteService', () => {
           latitude: 40,
           longitude: 50,
           accuracy: 60,
+          createdAt: '1988-11-11T00:00:00.000Z',
+          updatedAt: '1988-11-11T00:00:00.000Z',
         },
       ]);
     });
@@ -73,6 +81,8 @@ describe('PlantSiteService', () => {
           latitude: 10,
           longitude: 20,
           accuracy: 30,
+          createdAt: '1988-11-11T00:00:00.000Z',
+          updatedAt: '1988-11-11T00:00:00.000Z',
         },
         {
           id: '456',
@@ -80,8 +90,57 @@ describe('PlantSiteService', () => {
           latitude: 40,
           longitude: 50,
           accuracy: 60,
+          createdAt: '1988-11-11T00:00:00.000Z',
+          updatedAt: '1988-11-11T00:00:00.000Z',
         },
       ]);
+    });
+
+    describe('Plant site already synced offline', () => {
+      beforeEach(async () => {
+        await offlineDatabase.plantSite.add({
+          id: '123',
+          speciesId: '666',
+          latitude: 10,
+          longitude: 20,
+          accuracy: 30,
+          createdAt: '1988-11-11T00:00:00.000Z',
+          updatedAt: '1988-11-11T00:00:00.000Z',
+        });
+
+        fetchStub.stubFetchResponse([
+          {
+            id: '123',
+            speciesId: '666',
+            latitude: 1234,
+            longitude: 56789,
+            accuracy: 777,
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+          },
+        ]);
+      });
+
+      it('updates only the changed data', async () => {
+        await plantSiteService.syncOffline();
+        fetchStub.assertEndPointCalled(
+          'https://www.dummy-api.com/plant-site?lastModified=1988-11-11T00%3A00%3A00.000Z',
+        );
+
+        const savedDbData = await offlineDatabase.plantSite.toArray();
+
+        expect(savedDbData).toEqual([
+          {
+            id: '123',
+            speciesId: '666',
+            latitude: 1234,
+            longitude: 56789,
+            accuracy: 777,
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+          },
+        ]);
+      });
     });
   });
 
