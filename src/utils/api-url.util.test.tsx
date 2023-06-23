@@ -1,10 +1,10 @@
 import { expect, describe, it } from 'vitest';
-import apiUrlService from './api-url.service';
+import apiUrlUtil from './api-url.util';
 
-describe('ApiUrlService', () => {
+describe('ApiUrlUtil', () => {
   describe('getFullPath()', () => {
     it('generates a url with the correct path', async () => {
-      expect(apiUrlService.getFullPath('joe/is/cool')).toEqual(
+      expect(apiUrlUtil.getFullPath('joe/is/cool')).toEqual(
         'https://www.dummy-api.com/joe/is/cool',
       );
     });
@@ -12,7 +12,7 @@ describe('ApiUrlService', () => {
     describe('path has query params', () => {
       it('adds the query params to the url', async () => {
         expect(
-          apiUrlService.getFullPath('joe/is/cool', {
+          apiUrlUtil.getFullPath('joe/is/cool', {
             myAwesomeKey: 'hell yeah',
             myLameKey: 'hell no',
           }),
@@ -22,7 +22,7 @@ describe('ApiUrlService', () => {
       });
 
       it('does not add query params if the object is empty', async () => {
-        expect(apiUrlService.getFullPath('joe/is/cool', {})).toEqual(
+        expect(apiUrlUtil.getFullPath('joe/is/cool', {})).toEqual(
           'https://www.dummy-api.com/joe/is/cool',
         );
       });

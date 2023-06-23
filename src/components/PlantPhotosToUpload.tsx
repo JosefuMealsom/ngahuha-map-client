@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import photoDatabaseService from '../services/plant-site-photo-database.service';
-import { PlantPhoto } from './PlantPhoto';
-import type { PlantSitePhoto } from '../types/plant-site-photo.type';
+import photoDatabaseService from '../services/api/plant-site.service';
+import { PlantSite } from '../types/api/plant-site.type';
 import { ButtonComponent } from './ButtonComponent';
+import { PlantSiteComponent } from './PlantSiteComponent';
 
 export function PlantPhotosToUpload() {
   const [modalOpen, setModalState] = useState(false);
-  const [photos, setPhotos] = useState<PlantSitePhoto[]>([]);
+  const [photos, setPhotos] = useState<PlantSite[]>([]);
 
   useEffect(() => {
     if (!modalOpen) {
@@ -14,7 +14,7 @@ export function PlantPhotosToUpload() {
     }
 
     const fetchData = async () => {
-      setPhotos(await photoDatabaseService.all());
+      setPhotos(photoDatabaseService.pendingUpload());
     };
     fetchData();
   }, [modalOpen]);
@@ -30,18 +30,18 @@ export function PlantPhotosToUpload() {
           modalOpen ? '' : 'hidden'
         } mb-4 pt-14 w-full h-full absolute top-0 left-0 bg-white p-6`}
       >
-        <h1 className="font-bold mt-5 mb-3">Pending locations to upload</h1>
+        <h1 className="font-bold mt-5 mb-3">Pending changes</h1>
 
         <div>
           {photos.map((plantSitePhoto) => (
-            <PlantPhoto {...plantSitePhoto} />
+            <PlantSiteComponent {...plantSitePhoto} />
           ))}
         </div>
       </div>
       <ButtonComponent
         onClickHandler={toggleModal}
-        className="fixed top-2 left-3 "
-        text={modalOpen ? 'Close' : 'Pending upload'}
+        className="fixed top-2 left-3 bg-white"
+        text={modalOpen ? 'Close' : 'Pending changes'}
       ></ButtonComponent>
     </div>
   );

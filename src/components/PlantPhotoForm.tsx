@@ -1,8 +1,7 @@
 import React, { FormEvent, useState } from 'react';
-import photoDatabaseService from '../services/plant-site-photo-database.service';
 import geolocationService from '../services/geolocation.service';
-import fileToDataUrlService from '../services/file-to-data-url.service';
 import { ButtonComponent } from './ButtonComponent';
+import blobToDataUrlService from '../services/blob-to-data-url.service';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
@@ -21,15 +20,6 @@ export function PlantPhotoForm() {
     if (!species || !genus || !currentPosition || !photo) {
       return;
     }
-
-    const success = await photoDatabaseService.add(photo, currentPosition, {
-      speciesName: species,
-      genusName: genus,
-      cultivarName: cultivar,
-    });
-    if (success) {
-      toggleModal();
-    }
   }
 
   async function onPhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -37,7 +27,7 @@ export function PlantPhotoForm() {
     if (newPhoto) {
       setPhotoInput(newPhoto);
 
-      const photoData = await fileToDataUrlService.convert(newPhoto);
+      const photoData = await blobToDataUrlService.convert(newPhoto);
       if (photoData) {
         setPreviewImage(photoData);
       }
@@ -130,9 +120,9 @@ export function PlantPhotoForm() {
         </form>
       </div>
       <ButtonComponent
-        text={modalOpen ? 'Close' : 'New plant'}
+        text={modalOpen ? 'Close' : 'New plant site'}
         onClickHandler={toggleModal}
-        className="absolute top-2 right-3"
+        className="absolute bottom-2 right-3"
         id="plant-form-btn"
       ></ButtonComponent>
     </div>

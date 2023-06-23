@@ -1,5 +1,5 @@
 import Dexie from 'dexie';
-import apiUrlService from './api-url.service';
+import apiUrlService from './api-url.util';
 
 class ApiFetchUtil {
   fetchUpdatedModels(table: Dexie.Table, apiPath: string) {

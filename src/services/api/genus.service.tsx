@@ -1,6 +1,6 @@
 import type { Genus } from '../../types/api/genus.type';
 import offlineDatabase from '../database/offline.database';
-import apiFetchUtil from './api-fetch.util';
+import apiFetchUtil from '../../utils/api-fetch.util';
 
 class GenusService {
   fetch(): Promise<Genus[]> {

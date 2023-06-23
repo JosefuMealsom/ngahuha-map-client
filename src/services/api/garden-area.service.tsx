@@ -1,11 +1,11 @@
 import type { GardenArea } from '../../types/api/garden-area.type';
 import offlineDatabase from '../database/offline.database';
-import dataUtil from './api-fetch.util';
+import apiFetchUtil from '../../utils/api-fetch.util';
 
 class GardenAreaService {
   fetch(): Promise<GardenArea[]> {
     return new Promise(async (success, reject) => {
-      const dataToJSON = await dataUtil.fetchUpdatedModels(
+      const dataToJSON = await apiFetchUtil.fetchUpdatedModels(
         offlineDatabase.gardenArea,
         'garden-area',
       );

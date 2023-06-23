@@ -1,7 +1,12 @@
 import { PlantSite } from '../../types/api/plant-site.type';
 import offlineDatabase from '../database/offline.database';
-import apiFetchUtil from './api-fetch.util';
-import apiUrlService from './api-url.service';
+import apiFetchUtil from '../../utils/api-fetch.util';
+
+class PlantSiteServiceMissingSpeciesError extends Error {
+  constructor(speciesId: string) {
+    super(`Species with id: '${speciesId}' not found`);
+  }
+}
 
 class PlantSiteService {
   fetch(): Promise<PlantSite[]> {
@@ -47,12 +52,22 @@ class PlantSiteService {
     return offlineDatabase.plantSite.toArray();
   }
 
+  pendingUpload() {
+    return [];
+  }
+
   async add(
     photoBlob: Blob,
     location: GeolocationCoordinates,
     speciesId: string,
   ) {
-    return new Promise((success) => {
+    return new Promise(async (success, reject) => {
+      const species = await offlineDatabase.species.get(speciesId);
+
+      if (!species) {
+        reject(new PlantSiteServiceMissingSpeciesError(speciesId));
+      }
+
       offlineDatabase.transaction(
         'rw',
         offlineDatabase.plantSite,
