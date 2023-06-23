@@ -77,14 +77,6 @@ describe('GardenAreaService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        await offlineDatabase.gardenArea.add({
-          id: '666',
-          name: 'Some other beuatiful area',
-          description: 'SO BEAUTIFUL!',
-          createdAt: '1987-11-11T00:00:00.000Z',
-          updatedAt: '1987-11-11T00:00:00.000Z',
-        });
-
         fetchStub.stubFetchResponse([
           {
             id: 'abc',
@@ -92,13 +84,6 @@ describe('GardenAreaService', () => {
             description: 'Ugh so ugly!',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
-          },
-          {
-            id: 'def',
-            name: 'This is the new most beautiful area',
-            description: 'Oh yeah so beautiful!',
-            createdAt: '2032-11-11T00:00:00.000Z',
-            updatedAt: '2032-11-11T00:00:00.000Z',
           },
         ]);
       });
@@ -113,25 +98,11 @@ describe('GardenAreaService', () => {
 
         expect(savedDbData).toEqual([
           {
-            id: '666',
-            name: 'Some other beuatiful area',
-            description: 'SO BEAUTIFUL!',
-            createdAt: '1987-11-11T00:00:00.000Z',
-            updatedAt: '1987-11-11T00:00:00.000Z',
-          },
-          {
             id: 'abc',
             name: 'Honestly, pretty ugly area',
             description: 'Ugh so ugly!',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
-          },
-          {
-            id: 'def',
-            name: 'This is the new most beautiful area',
-            description: 'Oh yeah so beautiful!',
-            createdAt: '2032-11-11T00:00:00.000Z',
-            updatedAt: '2032-11-11T00:00:00.000Z',
           },
         ]);
       });

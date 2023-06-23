@@ -1,6 +1,6 @@
 import type { GardenArea } from '../../types/api/garden-area.type';
 import offlineDatabase from '../database/offline.database';
-import dataUtil from './data-util';
+import dataUtil from './api-fetch.util';
 
 class GardenAreaService {
   fetch(): Promise<GardenArea[]> {
@@ -14,7 +14,7 @@ class GardenAreaService {
       // type that can be assigned to anything therefore it overrides
       // type checking when assigned to a property.
       // Are there downsides to this approach?
-      const gardenAreas = dataToJSON.map((area: GardenArea) => {
+      const gardenAreas = dataToJSON.map((area: GardenArea): GardenArea => {
         return {
           id: area.id as string,
           name: area.name as string,
