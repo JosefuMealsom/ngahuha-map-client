@@ -16,10 +16,10 @@ class OfflineDatabase extends Dexie {
     super('OfflineDatabase');
     this.version(1).stores({
       gardenArea: 'id, name, updatedAt',
-      species: 'id, name',
-      genus: 'id, name',
-      plantSite: '++id',
-      plantSitePhoto: '++id',
+      species: 'id, name, updatedAt',
+      genus: 'id, name, updatedAt',
+      plantSite: '++id, updatedAt',
+      plantSitePhoto: '++id, updatedAt',
     });
   }
 }
