@@ -1,17 +1,14 @@
 import type { GardenArea } from '../../types/api/garden-area.type';
 import offlineDatabase from '../database/offline.database';
-import apiUrlService from './api-url.service';
+import dataUtil from './data-util';
 
 class GardenAreaService {
   fetch(): Promise<GardenArea[]> {
     return new Promise(async (success, reject) => {
-      const data = await fetch(
-        apiUrlService.getFullPath(
-          'garden-area',
-          await this.getLastmodifiedTimestamp(),
-        ),
+      const dataToJSON = await dataUtil.fetchUpdatedModels(
+        offlineDatabase.gardenArea,
+        'garden-area',
       );
-      const dataToJSON = await data.json();
 
       // Worried about the type safety here. JSON returns an any
       // type that can be assigned to anything therefore it overrides
@@ -38,21 +35,6 @@ class GardenAreaService {
 
       success(gardenAreas);
     });
-  }
-
-  private async getLastmodifiedTimestamp() {
-    if ((await offlineDatabase.gardenArea.count()) === 0) {
-      return {};
-    }
-
-    const lastModifiedItem = await offlineDatabase.gardenArea
-      .orderBy('updatedAt')
-      .reverse()
-      .first();
-
-    return {
-      lastModified: lastModifiedItem?.updatedAt,
-    };
   }
 }
 

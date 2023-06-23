@@ -109,7 +109,9 @@ describe('GardenAreaService', () => {
           'https://www.dummy-api.com/garden-area?lastModified=1988-11-11T00%3A00%3A00.000Z',
         );
 
-        expect(gardenAreas).toEqual([
+        const savedDbData = await offlineDatabase.gardenArea.toArray();
+
+        expect(savedDbData).toEqual([
           {
             id: '666',
             name: 'Some other beuatiful area',
