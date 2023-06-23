@@ -3,6 +3,7 @@ import plantSiteService from './plant-site.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase from '../database/offline.database';
 import { fetchStub } from '../../test-helpers/fetch-stub';
+import speciesFactory from '../../test-helpers/factories/species';
 
 describe('PlantSiteService', () => {
   afterEach(() => {
@@ -146,6 +147,10 @@ describe('PlantSiteService', () => {
 
   describe('add()', () => {
     it('adds a new plant site and saves it offline', async () => {
+      const s = await offlineDatabase.species.add(
+        speciesFactory.create({ id: 'abc' }),
+      );
+
       const blob = new Blob();
       await plantSiteService.add(blob, location, 'abc');
       const savedPlantSiteData = await offlineDatabase.plantSite.toArray();
@@ -161,6 +166,15 @@ describe('PlantSiteService', () => {
       expect(savedPlantPhotoData.length).toEqual(1);
       const photo = savedPlantPhotoData[0];
       expect(photo.plantSiteId).toEqual(plantSite.id);
+    });
+
+    describe('species missing', () => {
+      it('raises an exception', async () => {
+        const blob = new Blob();
+        await expect(() =>
+          plantSiteService.add(blob, location, 'missing id'),
+        ).rejects.toThrowError("Species with id: 'missing id' not found");
+      });
     });
   });
 });

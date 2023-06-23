@@ -1,4 +1,4 @@
-class ApiUrlService {
+class ApiUrlUtil {
   getFullPath(path: string, query?: { [propName: string]: any }) {
     const baseUrl = import.meta.env.VITE_BASE_API_URL;
     const apiUrl = new URL('/', baseUrl);
@@ -10,4 +10,4 @@ class ApiUrlService {
   }
 }
 
-export default new ApiUrlService();
+export default new ApiUrlUtil();

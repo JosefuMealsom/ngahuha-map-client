@@ -1,7 +1,6 @@
 import offlineDatabase from '../database/offline.database';
-import apiUrlService from './api-url.service';
 import type { Species } from '../../types/api/species.type';
-import apiFetchUtil from './api-fetch.util';
+import apiFetchUtil from '../../utils/api-fetch.util';
 
 class SpeciesService {
   fetch(): Promise<Species[]> {
