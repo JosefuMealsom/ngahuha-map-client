@@ -52,6 +52,10 @@ class PlantSiteService {
     return offlineDatabase.plantSite.toArray();
   }
 
+  pendingUpload() {
+    return [];
+  }
+
   async add(
     photoBlob: Blob,
     location: GeolocationCoordinates,

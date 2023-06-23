@@ -5,8 +5,8 @@ import { usePosition } from '../hooks/use-position.hook';
 import { MapBounds } from '../types/map-bounds.type';
 import canvasMapImage from './MapImage';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
-import plantSitePhotoDatabaseService from '../services/plant-site-photo-database.service';
-import { PlantSitePhoto } from '../types/plant-site-photo.type';
+import plantSiteService from '../services/api/plant-site.service';
+import { PlantSite } from '../types/api/plant-site.type';
 import MapRenderer from '../utils/MapRenderer';
 
 export function MapCanvas() {
@@ -20,7 +20,7 @@ export function MapCanvas() {
   const mapRenderer = new MapRenderer(canvasDimensions, mapBounds);
 
   let mapImage: HTMLImageElement | null;
-  let photos: PlantSitePhoto[] = [];
+  let plantSites: PlantSite[] = [];
   let coords: GeolocationCoordinates | null = null;
 
   usePosition((geolocationPosition) => {
@@ -33,8 +33,8 @@ export function MapCanvas() {
     drawMap(canvasRef?.current);
   });
 
-  plantSitePhotoDatabaseService.all().then((allPhotos) => {
-    photos = allPhotos;
+  plantSiteService.all().then((allPlantSites) => {
+    plantSites = allPlantSites;
   });
 
   function drawMap(canvas: HTMLCanvasElement | null) {
@@ -65,8 +65,8 @@ export function MapCanvas() {
   }
 
   function drawMapMarkers(context: CanvasRenderingContext2D) {
-    for (const photo of photos) {
-      mapRenderer.drawMarker(context, photo, '#0f0');
+    for (const plantSite of plantSites) {
+      mapRenderer.drawMarker(context, plantSite, '#0f0');
     }
   }
 
