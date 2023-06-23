@@ -5,6 +5,6 @@ export type Species = {
   name: string;
   cultivar?: string;
   commonNames?: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
