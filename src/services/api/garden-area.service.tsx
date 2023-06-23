@@ -5,7 +5,12 @@ import apiUrlService from './api-url.service';
 class GardenAreaService {
   fetch(): Promise<GardenArea[]> {
     return new Promise(async (success, reject) => {
-      const data = await fetch(apiUrlService.getFullPath('garden-area'));
+      const data = await fetch(
+        apiUrlService.getFullPath(
+          'garden-area',
+          await this.getLastmodifiedTimestamp(),
+        ),
+      );
       const dataToJSON = await data.json();
 
       // Worried about the type safety here. JSON returns an any
@@ -17,6 +22,8 @@ class GardenAreaService {
           id: area.id as string,
           name: area.name as string,
           description: area.description as string,
+          createdAt: area.createdAt as string,
+          updatedAt: area.updatedAt as string,
         };
       });
 
@@ -27,10 +34,25 @@ class GardenAreaService {
   syncOffline(): Promise<GardenArea[]> {
     return new Promise(async (success, reject) => {
       const gardenAreas = await this.fetch();
-      await offlineDatabase.gardenArea.bulkAdd(gardenAreas);
+      await offlineDatabase.gardenArea.bulkPut(gardenAreas);
 
       success(gardenAreas);
     });
+  }
+
+  private async getLastmodifiedTimestamp() {
+    if ((await offlineDatabase.gardenArea.count()) === 0) {
+      return {};
+    }
+
+    const lastModifiedItem = await offlineDatabase.gardenArea
+      .orderBy('updatedAt')
+      .reverse()
+      .first();
+
+    return {
+      lastModified: lastModifiedItem?.updatedAt,
+    };
   }
 }
 
