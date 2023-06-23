@@ -15,7 +15,7 @@ class OfflineDatabase extends Dexie {
   constructor() {
     super('OfflineDatabase');
     this.version(1).stores({
-      gardenArea: 'id, name',
+      gardenArea: 'id, name, updatedAt',
       species: 'id, name',
       genus: 'id, name',
       plantSite: '++id',
