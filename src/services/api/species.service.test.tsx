@@ -1,11 +1,11 @@
 import speciesService from './species.service';
 import { expect, describe, it, beforeEach, afterEach } from 'vitest';
 import { fetchStub } from '../../test-helpers/fetch-stub';
-import offlineDatabase from '../database/offline.database';
+import { speciesTable } from '../database/offline.database';
 
 describe('SpeciesService', () => {
   afterEach(() => {
-    offlineDatabase.species.clear();
+    speciesTable.clear();
   });
   const species1 = {
     id: '123',
@@ -61,7 +61,7 @@ describe('SpeciesService', () => {
       fetchStub.stubFetchResponse([species1, species2]);
 
       await speciesService.syncOffline();
-      const savedDbData = await offlineDatabase.species.toArray();
+      const savedDbData = await speciesTable.toArray();
 
       expect(savedDbData).toEqual([
         {
@@ -87,7 +87,7 @@ describe('SpeciesService', () => {
 
     describe('Species already synced offline', () => {
       beforeEach(async () => {
-        await offlineDatabase.species.add({
+        await speciesTable.add({
           id: '123',
           genusId: 'gg123',
           typeId: 'tt123',
@@ -116,7 +116,7 @@ describe('SpeciesService', () => {
           'https://www.dummy-api.com/species?lastModified=1988-11-11T00%3A00%3A00.000Z',
         );
 
-        const savedDbData = await offlineDatabase.species.toArray();
+        const savedDbData = await speciesTable.toArray();
 
         expect(savedDbData).toEqual([
           {

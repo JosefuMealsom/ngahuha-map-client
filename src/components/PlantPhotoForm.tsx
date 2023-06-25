@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import geolocationService from '../services/geolocation.service';
 import { ButtonComponent } from './ButtonComponent';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
-import { AutocompleteComponent } from './AutocompleteComponent';
+import AutocompleteComponent from './AutocompleteComponent';
 import offlineDatabase from '../services/database/offline.database';
 
 export function PlantPhotoForm() {
@@ -67,31 +67,14 @@ export function PlantPhotoForm() {
       >
         <form onSubmit={savePhotoLocally}>
           <h1 className="font-bold mt-5 mb-3">Add a new plant</h1>
-          <label htmlFor="genera" className="block">
-            Genus
-          </label>
-          <AutocompleteComponent items={genusList} placeholder="Genus name" />
-
-          <label htmlFor="test" className="block">
-            Species
+          <label htmlFor="plant-species" className="block mb-3">
+            Plant species
           </label>
           <AutocompleteComponent
-            items={speciesList}
-            placeholder="Species name"
+            items={genusList}
+            placeholder="Plant species"
           />
-          <label htmlFor="cultivar" className="block">
-            Cultivar
-          </label>
-          <input
-            id="cultivar"
-            name="cultivar"
-            type="text"
-            className="mb-3 w-full"
-            placeholder="Cultivar name"
-            onChange={(e) => {
-              setCultivar(e.target.value);
-            }}
-          />
+
           <div>
             <label
               htmlFor="photo"

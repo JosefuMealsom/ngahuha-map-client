@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 import React, { useState } from 'react';
 
-export function AutocompleteComponent(props: {
+export default function AutocompleteComponent(props: {
   items: string[];
   placeholder: string;
 }) {
@@ -22,7 +22,7 @@ export function AutocompleteComponent(props: {
 
   function updateInputValue(text: string) {
     setInputValue(text);
-    const result = fuse.search(text, { limit: 10 });
+    const result = fuse.search(text, { limit: 5 });
     setTextMatches(result.map((match) => match.item));
   }
 
@@ -36,7 +36,7 @@ export function AutocompleteComponent(props: {
         onChange={onChange}
       />
       <div className={`${autocompleteOpen ? '' : 'hidden '} block relative`}>
-        <ul className="absolute top-0 bg-white drop-shadow-md w-full">
+        <ul className="absolute top-0 bg-white drop-shadow-lg w-full">
           {textMatches.map((text) => (
             <li
               className="hover:bg-gray-50 cursor-pointer py-3 px-3 w-full"
