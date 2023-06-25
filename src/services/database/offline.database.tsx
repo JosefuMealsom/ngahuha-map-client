@@ -24,4 +24,11 @@ class OfflineDatabase extends Dexie {
   }
 }
 
-export default new OfflineDatabase();
+const offlineDatabase = new OfflineDatabase();
+
+export default offlineDatabase;
+export const gardenAreaTable = offlineDatabase.gardenArea;
+export const speciesTable = offlineDatabase.species;
+export const genusTable = offlineDatabase.genus;
+export const plantSiteTable = offlineDatabase.plantSite;
+export const plantSitePhotoTable = offlineDatabase.plantSitePhoto;

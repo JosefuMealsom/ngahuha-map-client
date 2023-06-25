@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+import react from '@vitejs/plugin-react-swc';
 
 export default defineConfig({
   e2e: {
@@ -8,6 +9,9 @@ export default defineConfig({
     devServer: {
       framework: 'react',
       bundler: 'vite',
+      viteConfig: {
+        plugins: [react()],
+      },
     },
   },
 });

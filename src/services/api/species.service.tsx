@@ -1,4 +1,4 @@
-import offlineDatabase from '../database/offline.database';
+import { speciesTable } from '../database/offline.database';
 import type { Species } from '../../types/api/species.type';
 import apiFetchUtil from '../../utils/api-fetch.util';
 
@@ -6,7 +6,7 @@ class SpeciesService {
   fetch(): Promise<Species[]> {
     return new Promise(async (success) => {
       const dataToJSON = await apiFetchUtil.fetchUpdatedModels(
-        offlineDatabase.species,
+        speciesTable,
         'species',
       );
 
@@ -29,7 +29,7 @@ class SpeciesService {
   syncOffline(): Promise<Species[]> {
     return new Promise(async (success) => {
       const species = await this.fetch();
-      await offlineDatabase.species.bulkPut(species);
+      await speciesTable.bulkPut(species);
 
       success(species);
     });
