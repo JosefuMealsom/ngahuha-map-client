@@ -1,6 +1,6 @@
 export type PlantSite = {
   id?: string;
-  speciesId: string;
+  plantId: string;
   latitude: number;
   longitude: number;
   accuracy: number;
