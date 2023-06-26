@@ -3,7 +3,7 @@ import offlineDatabase, {
   plantSitePhotoTable,
   plantSiteTable,
   plantTable,
-} from '../database/offline.database';
+} from '../offline.database';
 import apiFetchUtil from '../../utils/api-fetch.util';
 
 class PlantSiteServiceMissingPlantError extends Error {

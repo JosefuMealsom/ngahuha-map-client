@@ -3,7 +3,7 @@ import geolocationService from '../services/geolocation.service';
 import { ButtonComponent } from './ButtonComponent';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
 import AutocompleteComponent from './AutocompleteComponent';
-import { plantTable } from '../services/database/offline.database';
+import { plantTable } from '../services/offline.database';
 import { getFullPlantName } from '../utils/plant-name-decorator.util';
 
 export function PlantPhotoForm() {

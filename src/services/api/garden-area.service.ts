@@ -1,5 +1,5 @@
 import type { GardenArea } from '../../types/api/garden-area.type';
-import offlineDatabase from '../database/offline.database';
+import offlineDatabase from '../offline.database';
 import apiFetchUtil from '../../utils/api-fetch.util';
 
 class GardenAreaService {

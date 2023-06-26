@@ -7,7 +7,7 @@ import canvasMapImage from './MapImage';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
 import { PlantSite } from '../types/api/plant-site.type';
 import MapRenderer from '../utils/MapRenderer';
-import { plantSiteTable } from '../services/database/offline.database';
+import { plantSiteTable } from '../services/offline.database';
 
 export function MapCanvas() {
   const scale = 2;

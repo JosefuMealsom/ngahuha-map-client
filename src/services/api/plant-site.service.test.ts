@@ -8,7 +8,7 @@ import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase, {
   plantSiteTable,
   plantTable,
-} from '../database/offline.database';
+} from '../offline.database';
 import { fetchStub } from '../../test-helpers/fetch-stub';
 import plantFactory from '../../test-helpers/factories/plant';
 

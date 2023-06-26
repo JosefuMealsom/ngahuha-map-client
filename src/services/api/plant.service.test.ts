@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
-import { plantTable } from '../database/offline.database';
+import { plantTable } from '../offline.database';
 import { fetchStub } from '../../test-helpers/fetch-stub';
 import { fetchPlants, syncPlantsOffline } from './plant.service';
 
