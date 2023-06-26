@@ -1,54 +1,50 @@
 import { useEffect, useState } from 'react';
-import plantSitePhotoDatabaseService from '../services/api/plant-site.service';
+import type { Plant } from '../types/api/plant.type';
 import type { PlantSite } from '../types/api/plant-site.type';
 import { ButtonComponent } from './ButtonComponent';
-import offlineDatabase from '../services/database/offline.database';
-import { Genus } from '../types/api/genus.type';
-import { Species } from '../types/api/species.type';
+import offlineDatabase, {
+  plantTable,
+} from '../services/database/offline.database';
+import { getFullPlantName } from '../utils/plant-name-decorator.util';
 
 export function PlantSiteComponent(props: PlantSite) {
   const [photoDataUrl, setPhotoDataUrl] = useState('');
-  const [species, setSpecies] = useState<Species>();
-  const [genus, setGenus] = useState<Genus>();
+  const [plant, setPlant] = useState<Plant>();
 
-  const getSpeciesInfo = async () => {
-    const species = await offlineDatabase.species.get(props.speciesId);
+  const getPlantInfo = async () => {
+    const plant = await plantTable.get(props.plantId);
 
-    if (!species) {
+    if (!plant) {
       return;
     }
 
-    const genus = await offlineDatabase.genus.get(species.genusId);
-    setSpecies(species);
-    setGenus(genus);
+    setPlant(plant);
   };
-
-  useEffect(() => {
-    getSpeciesInfo();
-  }, []);
 
   function editPhoto() {}
 
-  function renderSpeciesInfo() {
-    if (!species || !genus) {
+  useEffect(() => {
+    getPlantInfo();
+  }, []);
+
+  function renderPlantInfo() {
+    if (!plant) {
       return;
     }
 
     return (
       <div>
-        <h1 className="font-bold">Genus</h1>
-        <p>{genus.name}</p>
         <h1 className="font-bold">Species</h1>
-        <p>{species.name}</p>
-        <h1 className="font-bold">Cultivar</h1>
-        <p>{species.cultivar}</p>
+        <p>
+          <span>{getFullPlantName(plant)}</span>
+        </p>
       </div>
     );
   }
 
   return (
     <div className="w-full h-40 mb-5">
-      <div className="inline-block align-middle">{renderSpeciesInfo()}</div>
+      <div className="inline-block align-middle">{renderPlantInfo()}</div>
       <ButtonComponent
         onClickHandler={editPhoto}
         className="absolute right-4 text-right"

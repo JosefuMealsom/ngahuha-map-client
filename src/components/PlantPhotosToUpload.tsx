@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import photoDatabaseService from '../services/api/plant-site.service';
+import { useState } from 'react';
 import { PlantSite } from '../types/api/plant-site.type';
 import { ButtonComponent } from './ButtonComponent';
 import { PlantSiteComponent } from './PlantSiteComponent';
@@ -7,17 +6,6 @@ import { PlantSiteComponent } from './PlantSiteComponent';
 export function PlantPhotosToUpload() {
   const [modalOpen, setModalState] = useState(false);
   const [photos, setPhotos] = useState<PlantSite[]>([]);
-
-  useEffect(() => {
-    if (!modalOpen) {
-      return;
-    }
-
-    const fetchData = async () => {
-      setPhotos(photoDatabaseService.pendingUpload());
-    };
-    fetchData();
-  }, [modalOpen]);
 
   function toggleModal() {
     setModalState(!modalOpen);
