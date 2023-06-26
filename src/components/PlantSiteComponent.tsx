@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Plant } from '../types/api/plant.type';
 import type { PlantSite } from '../types/api/plant-site.type';
 import { ButtonComponent } from './ButtonComponent';
-import offlineDatabase, {
-  plantTable,
-} from '../services/database/offline.database';
+import offlineDatabase, { plantTable } from '../services/offline.database';
 import { getFullPlantName } from '../utils/plant-name-decorator.util';
 
 export function PlantSiteComponent(props: PlantSite) {

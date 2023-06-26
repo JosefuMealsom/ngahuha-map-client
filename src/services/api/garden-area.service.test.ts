@@ -1,7 +1,7 @@
 import gardenAreaService from './garden-area.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import { fetchStub } from '../../test-helpers/fetch-stub';
-import offlineDatabase from '../database/offline.database';
+import offlineDatabase from '../offline.database';
 
 describe('GardenAreaService', () => {
   afterEach(() => {
