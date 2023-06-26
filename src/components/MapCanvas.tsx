@@ -5,9 +5,9 @@ import { usePosition } from '../hooks/use-position.hook';
 import { MapBounds } from '../types/map-bounds.type';
 import canvasMapImage from './MapImage';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
-import plantSiteService from '../services/api/plant-site.service';
 import { PlantSite } from '../types/api/plant-site.type';
 import MapRenderer from '../utils/MapRenderer';
+import { plantSiteTable } from '../services/database/offline.database';
 
 export function MapCanvas() {
   const scale = 2;
@@ -33,7 +33,7 @@ export function MapCanvas() {
     drawMap(canvasRef?.current);
   });
 
-  plantSiteService.all().then((allPlantSites) => {
+  plantSiteTable.toArray().then((allPlantSites) => {
     plantSites = allPlantSites;
   });
 
