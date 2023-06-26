@@ -1,18 +1,25 @@
 import 'fake-indexeddb/auto';
-import plantSiteService from './plant-site.service';
+import {
+  addPlantSiteWithPhoto,
+  fetchPlantSites,
+  syncPlantSitesOffline,
+} from './plant-site.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
-import offlineDatabase from '../database/offline.database';
+import offlineDatabase, {
+  plantSiteTable,
+  plantTable,
+} from '../database/offline.database';
 import { fetchStub } from '../../test-helpers/fetch-stub';
-import speciesFactory from '../../test-helpers/factories/species';
+import plantFactory from '../../test-helpers/factories/plant';
 
 describe('PlantSiteService', () => {
   afterEach(() => {
-    offlineDatabase.plantSite.clear();
+    plantSiteTable.clear();
   });
 
   const plantSite1 = {
     id: '123',
-    speciesId: '666',
+    plantId: '666',
     latitude: 10,
     longitude: 20,
     accuracy: 30,
@@ -21,7 +28,7 @@ describe('PlantSiteService', () => {
   };
   const plantSite2 = {
     id: '456',
-    speciesId: '888',
+    plantId: '888',
     latitude: 40,
     longitude: 50,
     accuracy: 60,
@@ -42,13 +49,13 @@ describe('PlantSiteService', () => {
     it('fetches the data from the API and returns it', async () => {
       fetchStub.stubFetchResponse([plantSite1, plantSite2]);
 
-      const plantSites = await plantSiteService.fetch();
+      const plantSites = await fetchPlantSites();
       fetchStub.assertEndPointCalled('https://www.dummy-api.com/plant-site');
 
       expect(plantSites).toEqual([
         {
           id: '123',
-          speciesId: '666',
+          plantId: '666',
           latitude: 10,
           longitude: 20,
           accuracy: 30,
@@ -57,7 +64,7 @@ describe('PlantSiteService', () => {
         },
         {
           id: '456',
-          speciesId: '888',
+          plantId: '888',
           latitude: 40,
           longitude: 50,
           accuracy: 60,
@@ -68,17 +75,17 @@ describe('PlantSiteService', () => {
     });
   });
 
-  describe('syncOffline()', () => {
+  describe('syncPlantSitesOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
       fetchStub.stubFetchResponse([plantSite1, plantSite2]);
 
-      await plantSiteService.syncOffline();
+      await syncPlantSitesOffline();
       const savedDbData = await offlineDatabase.plantSite.toArray();
 
       expect(savedDbData).toEqual([
         {
           id: '123',
-          speciesId: '666',
+          plantId: '666',
           latitude: 10,
           longitude: 20,
           accuracy: 30,
@@ -87,7 +94,7 @@ describe('PlantSiteService', () => {
         },
         {
           id: '456',
-          speciesId: '888',
+          plantId: '888',
           latitude: 40,
           longitude: 50,
           accuracy: 60,
@@ -99,9 +106,9 @@ describe('PlantSiteService', () => {
 
     describe('Plant site already synced offline', () => {
       beforeEach(async () => {
-        await offlineDatabase.plantSite.add({
+        await plantSiteTable.add({
           id: '123',
-          speciesId: '666',
+          plantId: '666',
           latitude: 10,
           longitude: 20,
           accuracy: 30,
@@ -112,7 +119,7 @@ describe('PlantSiteService', () => {
         fetchStub.stubFetchResponse([
           {
             id: '123',
-            speciesId: '666',
+            plantId: '666',
             latitude: 1234,
             longitude: 56789,
             accuracy: 777,
@@ -123,7 +130,7 @@ describe('PlantSiteService', () => {
       });
 
       it('updates only the changed data', async () => {
-        await plantSiteService.syncOffline();
+        await syncPlantSitesOffline();
         fetchStub.assertEndPointCalled(
           'https://www.dummy-api.com/plant-site?lastModified=1988-11-11T00%3A00%3A00.000Z',
         );
@@ -133,7 +140,7 @@ describe('PlantSiteService', () => {
         expect(savedDbData).toEqual([
           {
             id: '123',
-            speciesId: '666',
+            plantId: '666',
             latitude: 1234,
             longitude: 56789,
             accuracy: 777,
@@ -145,14 +152,12 @@ describe('PlantSiteService', () => {
     });
   });
 
-  describe('add()', () => {
+  describe('addPlantSiteWithPhoto()', () => {
     it('adds a new plant site and saves it offline', async () => {
-      const s = await offlineDatabase.species.add(
-        speciesFactory.create({ id: 'abc' }),
-      );
+      await plantTable.add(plantFactory.create({ id: 'abc' }));
 
       const blob = new Blob();
-      await plantSiteService.add(blob, location, 'abc');
+      await addPlantSiteWithPhoto(blob, location, 'abc');
       const savedPlantSiteData = await offlineDatabase.plantSite.toArray();
 
       expect(savedPlantSiteData.length).toEqual(1);
@@ -168,12 +173,12 @@ describe('PlantSiteService', () => {
       expect(photo.plantSiteId).toEqual(plantSite.id);
     });
 
-    describe('species missing', () => {
+    describe('plant missing', () => {
       it('raises an exception', async () => {
         const blob = new Blob();
         await expect(() =>
-          plantSiteService.add(blob, location, 'missing id'),
-        ).rejects.toThrowError("Species with id: 'missing id' not found");
+          addPlantSiteWithPhoto(blob, location, 'missing id'),
+        ).rejects.toThrowError("Plant with id: 'missing id' not found");
       });
     });
   });
