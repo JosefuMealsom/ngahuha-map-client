@@ -3,27 +3,20 @@ import geolocationService from '../services/geolocation.service';
 import { ButtonComponent } from './ButtonComponent';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
 import AutocompleteComponent from './AutocompleteComponent';
-import offlineDatabase from '../services/database/offline.database';
+import { plantTable } from '../services/database/offline.database';
+import { getFullPlantName } from '../utils/plant-name-decorator.util';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
-  const [genus, setGenus] = useState<string>();
-  const [cultivar, setCultivar] = useState<string>();
-  const [species, setSpecies] = useState<string>();
-
-  const [genusList, setGenusList] = useState<string[]>([]);
-  const [speciesList, setSpeciesList] = useState<string[]>([]);
+  const [plantList, setPlantList] = useState<string[]>([]);
 
   useEffect(() => {
-    const populateGenusList = async () => {
-      const genera = await offlineDatabase.genus.toArray();
-      setGenusList(genera.map((genus) => genus.name));
-
-      const allSpecies = await offlineDatabase.species.toArray();
-      setSpeciesList(allSpecies.map((species) => species.name));
+    const populatePlantList = async () => {
+      const plants = await plantTable.toArray();
+      setPlantList(plants.map((plant) => getFullPlantName(plant)));
     };
-    populateGenusList();
-  });
+    populatePlantList();
+  }, []);
 
   const [modalOpen, setModalState] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -33,7 +26,7 @@ export function PlantPhotoForm() {
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
 
-    if (!species || !genus || !currentPosition || !photo) {
+    if (!currentPosition || !photo) {
       return;
     }
   }
@@ -71,7 +64,7 @@ export function PlantPhotoForm() {
             Plant species
           </label>
           <AutocompleteComponent
-            items={genusList}
+            items={plantList}
             placeholder="Plant species"
           />
 
