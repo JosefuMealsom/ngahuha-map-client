@@ -44,7 +44,7 @@ export default function AutocompleteComponent(props: {
         <label>
           <input
             type="text"
-            className="w-full py-2 px-2 border border-gray-500 rounded-sm"
+            className="w-full py-2 px-2 border border-gray-400 rounded-md"
             placeholder={props.placeholder}
             value={inputValue}
             onChange={onChange}

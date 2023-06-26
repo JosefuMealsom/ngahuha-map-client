@@ -9,7 +9,7 @@ export function ButtonComponent(props: {
   return (
     <button
       id={props.id}
-      className={`${props.className} border-solid border-black border-2 p-2 hover:bg-gray-300 cursor-pointer mb-2`}
+      className={`${props.className} border-solid border-black bg-white border p-2 hover:bg-gray-300 cursor-pointer mb-2 rounded-md`}
       onClick={props.onClickHandler}
     >
       {props.text}
