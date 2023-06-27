@@ -37,4 +37,17 @@ describe('<AutocompleteComponent />', () => {
 
     cy.get('input').should('have.value', '');
   });
+
+  it('adds a flavour header to describe the suggestions if set', () => {
+    cy.mount(
+      <AutocompleteComponent
+        items={['hello', 'joe']}
+        placeholder="Yo"
+        suggestionText="These are the best!"
+      />,
+    );
+
+    cy.get('input').type('hell');
+    cy.contains('These are the best!');
+  });
 });

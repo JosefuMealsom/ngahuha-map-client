@@ -1,11 +1,12 @@
 import Fuse from 'fuse.js';
-import React, { useState } from 'react';
+import React, { RefObject, createRef, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 
 export default function AutocompleteComponent(props: {
   items: string[];
   placeholder: string;
   onChangeHandler?: (value: string) => any;
+  suggestionText?: string;
 }) {
   const [textMatches, setTextMatches] = useState<String[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -38,6 +39,15 @@ export default function AutocompleteComponent(props: {
     }
   }
 
+  function renderSuggestionText() {
+    if (!props.suggestionText || textMatches.length === 0) {
+      return;
+    }
+    return (
+      <h3 className="ml-3 mt-2 font-bold text-xs">{props.suggestionText}</h3>
+    );
+  }
+
   return (
     <div>
       <div className="relative mb-3">
@@ -57,16 +67,19 @@ export default function AutocompleteComponent(props: {
         </label>
       </div>
       <div className={`${autocompleteOpen ? '' : 'hidden '} block relative`}>
-        <ul className="absolute top-0 bg-white drop-shadow-lg w-full">
-          {textMatches.map((text) => (
-            <li
-              className="hover:bg-gray-50 cursor-pointer py-3 px-3 w-full"
-              onClick={() => onItemClick(text as string)}
-            >
-              {text}
-            </li>
-          ))}
-        </ul>
+        <div className="absolute top-0 bg-white drop-shadow-lg w-full">
+          {renderSuggestionText()}
+          <ul>
+            {textMatches.map((text) => (
+              <li
+                className="hover:bg-gray-50 cursor-pointer py-3 px-3 w-full"
+                onClick={() => onItemClick(text as string)}
+              >
+                {text}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

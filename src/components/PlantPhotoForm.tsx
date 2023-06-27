@@ -28,9 +28,7 @@ export function PlantPhotoForm() {
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
 
-    const plantId = plantList?.find(
-      (plant) => plant.name === plantNameValue,
-    )?.id;
+    const plantId = findPlantIdByFullName();
 
     if (!currentPosition || !photo || !plantId) {
       return;
@@ -40,6 +38,10 @@ export function PlantPhotoForm() {
 
     resetForm();
     toggleModal();
+  }
+
+  function findPlantIdByFullName() {
+    return plantList?.find((plant) => plant.name === plantNameValue)?.id;
   }
 
   function resetForm() {
@@ -122,6 +124,7 @@ export function PlantPhotoForm() {
               items={plantList?.map((plantItem) => plantItem.name) || []}
               placeholder="Type species name to search"
               onChangeHandler={(value: string) => setPlantNameValue(value)}
+              suggestionText="Available species"
             />
           </div>
           <div>
@@ -153,7 +156,6 @@ export function PlantPhotoForm() {
         text={modalOpen ? 'Close' : 'New plant site'}
         onClickHandler={toggleModal}
         className="absolute top-2 right-3"
-        id="plant-form-btn"
       ></ButtonComponent>
     </div>
   );
