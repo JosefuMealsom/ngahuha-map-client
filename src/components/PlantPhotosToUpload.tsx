@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { PlantSite } from '../types/api/plant-site.type';
 import { ButtonComponent } from './ButtonComponent';
 import { PlantSiteComponent } from './PlantSiteComponent';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { plantSiteUploadTable } from '../services/offline.database';
 
 export function PlantPhotosToUpload() {
   const [modalOpen, setModalState] = useState(false);
-  const [photos, setPhotos] = useState<PlantSite[]>([]);
+
+  const plantSites = useLiveQuery(() => plantSiteUploadTable.toArray());
 
   function toggleModal() {
     setModalState(!modalOpen);
@@ -21,8 +23,8 @@ export function PlantPhotosToUpload() {
         <h1 className="font-bold mt-5 mb-3">Pending changes</h1>
 
         <div>
-          {photos.map((plantSitePhoto) => (
-            <PlantSiteComponent {...plantSitePhoto} />
+          {plantSites?.map((plantSite) => (
+            <PlantSiteComponent {...plantSite} />
           ))}
         </div>
       </div>

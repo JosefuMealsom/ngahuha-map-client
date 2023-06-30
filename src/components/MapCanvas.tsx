@@ -5,9 +5,9 @@ import { usePosition } from '../hooks/use-position.hook';
 import { MapBounds } from '../types/map-bounds.type';
 import canvasMapImage from './MapImage';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
-import { PlantSite } from '../types/api/plant-site.type';
-import MapRenderer from '../utils/MapRenderer';
-import { plantSiteTable } from '../services/offline.database';
+import { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
+import MapRenderer from '../utils/map-renderer';
+import { plantSiteUploadTable } from '../services/offline.database';
 
 export function MapCanvas() {
   const scale = 2;
@@ -20,7 +20,7 @@ export function MapCanvas() {
   const mapRenderer = new MapRenderer(canvasDimensions, mapBounds);
 
   let mapImage: HTMLImageElement | null;
-  let plantSites: PlantSite[] = [];
+  let plantSites: PlantSiteUpload[] = [];
   let coords: GeolocationCoordinates | null = null;
 
   usePosition((geolocationPosition) => {
@@ -33,7 +33,7 @@ export function MapCanvas() {
     drawMap(canvasRef?.current);
   });
 
-  plantSiteTable.toArray().then((allPlantSites) => {
+  plantSiteUploadTable.toArray().then((allPlantSites) => {
     plantSites = allPlantSites;
   });
 
