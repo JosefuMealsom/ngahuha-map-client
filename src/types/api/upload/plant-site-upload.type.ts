@@ -1,9 +1,7 @@
-export type PlantSite = {
-  id: string;
+export type PlantSiteUpload = {
+  id?: number;
   plantId: string;
   latitude: number;
   longitude: number;
   accuracy: number;
-  createdAt: string;
-  updatedAt: string;
 };
