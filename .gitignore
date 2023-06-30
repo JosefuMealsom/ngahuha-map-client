@@ -2,6 +2,7 @@ dev-dist
 dist
 .secrets/
 .env
+.env.development
 coverage
 
 .devcontainer/

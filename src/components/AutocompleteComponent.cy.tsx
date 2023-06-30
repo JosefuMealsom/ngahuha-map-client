@@ -26,4 +26,28 @@ describe('<AutocompleteComponent />', () => {
 
     cy.contains('hello').should('not.be.visible');
   });
+
+  it('clears the content when you click on the x', () => {
+    cy.mount(
+      <AutocompleteComponent items={['hello', 'joe']} placeholder="Yo" />,
+    );
+
+    cy.get('input').type('hell');
+    cy.get('img').click();
+
+    cy.get('input').should('have.value', '');
+  });
+
+  it('adds a flavour header to describe the suggestions if set', () => {
+    cy.mount(
+      <AutocompleteComponent
+        items={['hello', 'joe']}
+        placeholder="Yo"
+        suggestionText="These are the best!"
+      />,
+    );
+
+    cy.get('input').type('hell');
+    cy.contains('These are the best!');
+  });
 });

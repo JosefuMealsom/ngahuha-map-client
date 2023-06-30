@@ -1,5 +1,7 @@
 export type PlantSitePhoto = {
-  id?: string;
+  id: string;
   plantSiteId: string;
   data: Blob;
+  createdAt: string;
+  updatedAt: string;
 };
