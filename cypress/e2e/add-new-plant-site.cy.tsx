@@ -4,7 +4,11 @@ import { stubGeolocation } from '../support/stubs/geolocation';
 
 describe('Add new plant site for upload', () => {
   before(() => {
-    stubGeolocation();
+    cy.visit('/', {
+      onBeforeLoad(window) {
+        stubGeolocation(window);
+      },
+    });
   });
 
   it('adds a plant site with a photo to be uploaded later', () => {

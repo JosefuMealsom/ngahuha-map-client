@@ -1,14 +1,18 @@
-export const stubGeolocation = () => {
-  cy.fixture('location.json').as('fakeLocation');
-  cy.get('@fakeLocation').then((fakeLocation) => {
-    cy.visit('/', {
-      onBeforeLoad(win) {
-        cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
-          (cb) => {
-            return cb(fakeLocation);
-          },
-        );
-      },
-    });
-  });
+export const stubGeolocation = (
+  window,
+  latitude = 20,
+  longitude = 20,
+  accuracy = 10,
+) => {
+  cy.stub(window.navigator.geolocation, 'getCurrentPosition').callsFake(
+    (cb) => {
+      return cb({
+        coords: {
+          latitude: latitude,
+          longitude: longitude,
+          accuracy: accuracy,
+        },
+      });
+    },
+  );
 };
