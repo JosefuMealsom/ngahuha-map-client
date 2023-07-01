@@ -11,4 +11,10 @@
 //
 // You can read more here:
 // https://on.cypress.io/configuration
+
+import { stubServerData } from './stubs/server';
+
 // ***********************************************************
+before(() => {
+  stubServerData();
+});

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "633539fa-2231-4e5a-99ad-698285c1a682",
+    "species": "Cool species",
+    "cultivar": "blue",
+    "createdAt": "2023-06-25T10:03:12.879Z",
+    "updatedAt": "2023-06-25T10:03:12.879Z",
+    "typeId": "cb653980-406e-4af0-ad08-7c86cf09b80d",
+    "commonNames": []
+  },
+  {
+    "id": "1f76b54d-b856-4568-85c0-26e4e4436e2b",
+    "species": "Interesting species",
+    "cultivar": "Bush Pioneer",
+    "createdAt": "2023-06-25T10:03:12.879Z",
+    "updatedAt": "2023-06-25T10:03:12.879Z",
+    "typeId": "cb653980-406e-4af0-ad08-7c86cf09b80d",
+    "commonNames": []
+  },
+  {
+    "id": "76ec1090-ff6f-4995-a95f-bf3eb947ac7a",
+    "species": "Funny mushroom",
+    "cultivar": "Bush Volcano",
+    "createdAt": "2023-06-25T10:03:12.879Z",
+    "updatedAt": "2023-06-25T10:03:12.879Z",
+    "typeId": "cb653980-406e-4af0-ad08-7c86cf09b80d",
+    "commonNames": []
+  }
+]

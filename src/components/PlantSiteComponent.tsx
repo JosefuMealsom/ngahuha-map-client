@@ -39,7 +39,7 @@ export function PlantSiteComponent(props: PlantSiteUpload) {
 
   useEffect(() => {
     getPlantInfo();
-  }, []);
+  }, [props]);
 
   function renderPlantInfo() {
     if (!plant) {

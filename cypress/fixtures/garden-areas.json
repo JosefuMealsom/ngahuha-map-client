@@ -1,0 +1,23 @@
+[
+  {
+    "id": "b57f8e7a-8401-40f6-866b-afcd3ba70995",
+    "name": "Rock Garden",
+    "description": "TBC",
+    "createdAt": "2023-06-25T10:03:12.837Z",
+    "updatedAt": "2023-06-25T10:03:12.837Z"
+  },
+  {
+    "id": "0187b014-f87d-46e8-912b-085799b43b90",
+    "name": "Secret Garden",
+    "description": "TBC",
+    "createdAt": "2023-06-25T10:03:12.837Z",
+    "updatedAt": "2023-06-25T10:03:12.837Z"
+  },
+  {
+    "id": "dcc33fbd-6a03-44b8-aec0-8701e28b0a75",
+    "name": "Other",
+    "description": "TBC",
+    "createdAt": "2023-06-25T10:03:12.837Z",
+    "updatedAt": "2023-06-25T10:03:12.837Z"
+  }
+]

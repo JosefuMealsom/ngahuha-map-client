@@ -7,7 +7,12 @@ import { plantSiteUploadTable } from '../services/offline.database';
 export function PlantPhotosToUpload() {
   const [modalOpen, setModalState] = useState(false);
 
-  const plantSites = useLiveQuery(() => plantSiteUploadTable.toArray());
+  const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
+
+  const plantSites = useLiveQuery(
+    () => plantSiteUploadTable.toArray(),
+    [plantUploadCount],
+  );
 
   function toggleModal() {
     setModalState(!modalOpen);
