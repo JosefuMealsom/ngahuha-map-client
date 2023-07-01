@@ -12,3 +12,19 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
+before(() => {
+  cy.intercept(
+    {
+      method: 'GET',
+      url: 'https://app.ngahuha-map-dev.com:8080/plant',
+    },
+    { fixture: 'plants.json' },
+  ).as('getPlants');
+  cy.intercept(
+    {
+      method: 'GET',
+      url: 'https://app.ngahuha-map-dev.com:8080/garden-area',
+    },
+    { fixture: 'garden-areas.json' },
+  ).as('getGardenAreas');
+});
