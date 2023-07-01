@@ -5,4 +5,8 @@ export const pendingUploadPage = {
       'Pending changes',
     );
   },
+
+  deleteButtonFor(species: string) {
+    return cy.contains('p', species).parent().contains('button', 'Delete');
+  },
 };
