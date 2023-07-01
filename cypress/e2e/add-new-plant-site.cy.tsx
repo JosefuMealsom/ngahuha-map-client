@@ -1,4 +1,5 @@
 import { newPlantSitePage } from '../support/pages/new-plant-site.page';
+import { pendingUploadPage } from '../support/pages/pending-upload.page';
 import { stubGeolocation } from '../support/stubs/geolocation';
 
 describe('Add new plant site for upload', () => {
@@ -25,5 +26,9 @@ describe('Add new plant site for upload', () => {
     newPlantSitePage.saveButton().click();
 
     cy.contains('Add a new location').should('not.be.visible');
+
+    pendingUploadPage.pendingUploadsButton().click();
+    cy.contains('Pending changes');
+    cy.contains('Cool species');
   });
 });
