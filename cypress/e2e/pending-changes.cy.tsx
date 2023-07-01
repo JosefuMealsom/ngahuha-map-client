@@ -6,13 +6,21 @@ function seedOfflineDatabase() {
   seed({
     plants: [
       {
+        id: 'abcdef',
+        species: 'The worst species',
+        cultivar: 'lame',
+      },
+      {
         id: '12345',
         species: 'The best species',
         cultivar: 'radical',
       },
     ],
-    plantSiteUploads: [{ id: 1, plantId: '12345' }],
-    plantSitePhotoUploads: [{ plantSiteId: 1 }],
+    plantSiteUploads: [
+      { id: 1, plantId: 'abcdef' },
+      { id: 2, plantId: '12345' },
+    ],
+    plantSitePhotoUploads: [{ plantSiteId: 1 }, { plantSiteId: 2 }],
   });
 }
 
@@ -25,8 +33,8 @@ describe('View changes on plant sites', () => {
   it('deletes a plant site from the list', () => {
     pendingUploadPage.pendingUploadsButton().click();
 
-    pendingUploadPage.deleteButtonFor("The best species 'radical'").click();
+    pendingUploadPage.deleteButtonFor("The worst species 'lame'").click();
 
-    cy.contains("The best species 'radical'").should('not.exist');
+    cy.contains("The worst species 'lame'").should('not.exist');
   });
 });
