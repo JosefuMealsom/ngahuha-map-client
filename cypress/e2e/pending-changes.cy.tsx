@@ -1,32 +1,25 @@
 import { pendingUploadPage } from '../support/pages/pending-upload.page';
 import { stubLastModifiedQueries } from '../support/stubs/server';
-import offlineDatabase from '../../src/services/offline.database';
-import PlantSiteUploadFactory from '../../src/test-helpers/factories/plant-site-upload';
-import PlantFactory from '../../src/test-helpers/factories/plant';
+import { seed } from '../support/indexed-db-seeder';
 
 function seedOfflineDatabase() {
-  offlineDatabase.plant.add(
-    PlantFactory.create({
-      id: '12345',
-      species: 'The best species',
-      cultivar: 'radical',
-    }),
-  );
-
-  offlineDatabase.plantSiteUpload.add(
-    PlantSiteUploadFactory.create({ id: 1, plantId: '12345' }),
-  );
-
-  offlineDatabase.plantSitePhotoUpload.add({
-    data: new Blob(),
-    plantSiteId: 1,
+  seed({
+    plants: [
+      {
+        id: '12345',
+        species: 'The best species',
+        cultivar: 'radical',
+      },
+    ],
+    plantSiteUploads: [{ id: 1, plantId: '12345' }],
+    plantSitePhotoUploads: [{ plantSiteId: 1 }],
   });
 }
 
 describe('View changes on plant sites', () => {
   before(() => {
-    stubLastModifiedQueries();
     seedOfflineDatabase();
+    stubLastModifiedQueries();
     cy.visit('/');
   });
   it('deletes a plant site from the list', () => {

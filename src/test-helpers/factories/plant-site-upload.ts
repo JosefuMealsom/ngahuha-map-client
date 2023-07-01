@@ -2,18 +2,18 @@ import { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.type';
 
 let count = 0;
 
-const plantSiteFactory = {
+const plantSiteUploadFactory = {
   create(data: Partial<PlantSiteUpload>) {
     const dummyData: PlantSiteUpload = {
-      id: data.id || count++,
-      plantId: data.plantId || '666',
-      latitude: data.latitude || 10,
-      longitude: data.longitude || 20,
-      accuracy: data.accuracy || 30,
+      id: count++,
+      plantId: '666',
+      latitude: 10,
+      longitude: 20,
+      accuracy: 30,
     };
 
     return Object.assign(dummyData, data);
   },
 };
 
-export default plantSiteFactory;
+export default plantSiteUploadFactory;
