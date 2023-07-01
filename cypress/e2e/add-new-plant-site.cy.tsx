@@ -1,19 +1,5 @@
-import { newPlantSitePage } from './new-plant-site.page';
-
-function stubGeolocation() {
-  cy.fixture('location.json').as('fakeLocation');
-  cy.get('@fakeLocation').then((fakeLocation) => {
-    cy.visit('/', {
-      onBeforeLoad(win) {
-        cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(
-          (cb) => {
-            return cb(fakeLocation);
-          },
-        );
-      },
-    });
-  });
-}
+import { newPlantSitePage } from '../support/pages/new-plant-site.page';
+import { stubGeolocation } from '../support/stubs/geolocation';
 
 describe('Add new plant site for upload', () => {
   before(() => {
