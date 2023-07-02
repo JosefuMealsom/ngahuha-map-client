@@ -45,7 +45,7 @@ export const deletePlantSite = async (id: number) => {
     async () => {
       const photoIds = await plantSitePhotoUploadTable
         .where({
-          plantSiteId: id,
+          plantSiteUploadId: id,
         })
         .toArray();
 
@@ -55,24 +55,29 @@ export const deletePlantSite = async (id: number) => {
       const filteredNumbers = idsToDelete.filter((id) => id !== undefined);
 
       await plantSitePhotoUploadTable.bulkDelete(filteredNumbers);
-
       await plantSiteUploadTable.delete(id);
     },
   );
 };
 
-function addPlantSiteUpload(plantId: string, location: GeolocationCoordinates) {
+const addPlantSiteUpload = (
+  plantId: string,
+  location: GeolocationCoordinates,
+) => {
   return plantSiteUploadTable.add({
     plantId: plantId,
     latitude: location.latitude,
     longitude: location.longitude,
     accuracy: location.accuracy,
   });
-}
+};
 
-async function addPlantSitePhotoUpload(plantSiteId: number, photoBlob: Blob) {
+const addPlantSitePhotoUpload = async (
+  plantSiteId: number,
+  photoBlob: Blob,
+) => {
   return await plantSitePhotoUploadTable.add({
-    plantSiteId: plantSiteId,
+    plantSiteUploadId: plantSiteId,
     data: photoBlob,
   });
-}
+};

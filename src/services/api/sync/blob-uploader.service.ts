@@ -1,4 +1,4 @@
-import { getFullApiPath } from '../../utils/api-url.util';
+import { getFullApiPath } from '../../../utils/api-url.util';
 
 type BlobUrl = { blobKey: string; url: string };
 

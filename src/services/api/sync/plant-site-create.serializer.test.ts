@@ -37,12 +37,12 @@ describe('serializeCreatePlantSite()', () => {
     name: 'Other',
   });
 
-  beforeEach(() => {
-    plantTable.add(plant);
-    plantSiteUploadTable.add(plantSite);
-    plantSitePhotoUploadTable.add(photo1);
-    plantSitePhotoUploadTable.add(photo2);
-    gardenAreaTable.add(gardenArea);
+  beforeEach(async () => {
+    await plantTable.add(plant);
+    await plantSiteUploadTable.add(plantSite);
+    await plantSitePhotoUploadTable.add(photo1);
+    await plantSitePhotoUploadTable.add(photo2);
+    await gardenAreaTable.add(gardenArea);
   });
 
   it('generates the correct json', async () => {
