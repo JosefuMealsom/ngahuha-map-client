@@ -1,6 +1,9 @@
 import gardenAreaService from './garden-area.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
-import { fetchStub } from '../../test-helpers/fetch-stub';
+import {
+  assertEndPointCalled,
+  stubFetchResponse,
+} from '../../test-helpers/fetch-stub';
 import offlineDatabase from '../offline.database';
 
 describe('GardenAreaService', () => {
@@ -10,7 +13,7 @@ describe('GardenAreaService', () => {
 
   describe('fetch()', () => {
     beforeEach(() => {
-      fetchStub.stubFetchResponse([
+      stubFetchResponse([
         {
           id: 'abc',
           name: 'Most beautiful area',
@@ -21,8 +24,7 @@ describe('GardenAreaService', () => {
 
     it('fetches the data from the API and returns it', async () => {
       const gardenAreas = await gardenAreaService.fetch();
-      fetchStub.assertEndPointCalled('https://www.dummy-api.com/garden-area');
-
+      assertEndPointCalled('https://www.dummy-api.com/garden-area');
       expect(gardenAreas).toEqual([
         {
           id: 'abc',
@@ -35,7 +37,7 @@ describe('GardenAreaService', () => {
 
   describe('syncOffline()', () => {
     beforeEach(() => {
-      fetchStub.stubFetchResponse([
+      stubFetchResponse([
         {
           id: 'abc',
           name: 'Most beautiful area',
@@ -77,7 +79,7 @@ describe('GardenAreaService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        fetchStub.stubFetchResponse([
+        stubFetchResponse([
           {
             id: 'abc',
             name: 'Honestly, pretty ugly area',
@@ -90,7 +92,7 @@ describe('GardenAreaService', () => {
 
       it('updates only the changed data', async () => {
         const gardenAreas = await gardenAreaService.syncOffline();
-        fetchStub.assertEndPointCalled(
+        assertEndPointCalled(
           'https://www.dummy-api.com/garden-area?lastModified=1988-11-11T00%3A00%3A00.000Z',
         );
 
