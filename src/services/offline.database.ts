@@ -27,7 +27,7 @@ class OfflineDatabase extends Dexie {
       plantSite: 'id, updatedAt, plantId',
       plantSitePhoto: 'id, updatedAt, plantSiteId',
       plantSiteUpload: '++id, plantId',
-      plantSitePhotoUpload: '++id, plantSiteId',
+      plantSitePhotoUpload: '++id, plantSiteUploadId',
     });
   }
 }

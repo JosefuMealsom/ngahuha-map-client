@@ -6,7 +6,7 @@ const plantSitePhotoUploadFactory = {
   create(photoData: Partial<PlantSitePhotoUpload>) {
     const dummyData: PlantSitePhotoUpload = {
       id: count++,
-      plantSiteId: 123,
+      plantSiteUploadId: 123,
       data: new Blob(),
     };
 
