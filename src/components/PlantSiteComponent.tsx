@@ -16,35 +16,29 @@ export function PlantSiteComponent(props: PlantSiteUpload) {
 
   const getPlantInfo = async () => {
     const plant = await plantTable.get(props.plantId);
-    if (!plant) {
-      return;
-    }
+
+    if (!plant) return;
 
     const photo = await plantSitePhotoUploadTable.get({
       plantSiteUploadId: props.id,
     });
-    if (!photo) {
-      return;
-    }
+
+    if (!photo) return;
 
     setPhotoDataUrl((await blobToDataUrlService.convert(photo.data)) || '');
     setPlant(plant);
   };
 
   function deletePhoto() {
-    if (props.id) {
-      deletePlantSite(props.id);
-    }
+    if (props.id) deletePlantSite(props.id);
   }
 
   useEffect(() => {
     getPlantInfo();
-  }, [props]);
+  });
 
   function renderPlantInfo() {
-    if (!plant) {
-      return;
-    }
+    if (!plant) return;
 
     return (
       <div className="flex">

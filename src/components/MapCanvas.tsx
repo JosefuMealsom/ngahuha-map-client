@@ -5,9 +5,14 @@ import { usePosition } from '../hooks/use-position.hook';
 import { MapBounds } from '../types/map-bounds.type';
 import canvasMapImage from './MapImage';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
-import { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
 import MapRenderer from '../utils/map-renderer';
-import { plantSiteUploadTable } from '../services/offline.database';
+import {
+  plantSiteTable,
+  plantSiteUploadTable,
+} from '../services/offline.database';
+import { PlantSite } from '../types/api/plant-site.type';
+import { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export function MapCanvas() {
   const scale = 2;
@@ -20,7 +25,13 @@ export function MapCanvas() {
   const mapRenderer = new MapRenderer(canvasDimensions, mapBounds);
 
   let mapImage: HTMLImageElement | null;
-  let plantSites: PlantSiteUpload[] = [];
+  let plantSites: PlantSite[] = [];
+  let plantSiteUploads: PlantSiteUpload[] = [];
+  useLiveQuery(async () => {
+    plantSites = await plantSiteTable.toArray();
+    plantSiteUploads = await plantSiteUploadTable.toArray();
+  });
+
   let coords: GeolocationCoordinates | null = null;
 
   usePosition((geolocationPosition) => {
@@ -33,20 +44,12 @@ export function MapCanvas() {
     drawMap(canvasRef?.current);
   });
 
-  plantSiteUploadTable.toArray().then((allPlantSites) => {
-    plantSites = allPlantSites;
-  });
-
   function drawMap(canvas: HTMLCanvasElement | null) {
-    if (!canvas) {
-      return;
-    }
+    if (!canvas) return;
 
     const context = canvas.getContext('2d');
 
-    if (!context) {
-      return;
-    }
+    if (!context) return;
 
     context.clearRect(0, 0, canvasDimensions.width, canvasDimensions.height);
 
@@ -68,12 +71,13 @@ export function MapCanvas() {
     for (const plantSite of plantSites) {
       mapRenderer.drawMarker(context, plantSite, '#0f0');
     }
+    for (const plantSiteUpload of plantSiteUploads) {
+      mapRenderer.drawMarker(context, plantSiteUpload, '#00f');
+    }
   }
 
   function drawLocationMarker(context: CanvasRenderingContext2D) {
-    if (coords) {
-      mapRenderer.drawMarker(context, coords);
-    }
+    if (coords) mapRenderer.drawMarker(context, coords);
   }
 
   return (

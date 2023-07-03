@@ -34,7 +34,7 @@ export function PlantPhotosToUpload() {
         ></ButtonComponent>
         <div>
           {plantSites?.map((plantSite) => (
-            <PlantSiteComponent {...plantSite} />
+            <PlantSiteComponent key={plantSite.id} {...plantSite} />
           ))}
         </div>
       </div>
