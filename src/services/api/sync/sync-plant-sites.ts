@@ -6,9 +6,10 @@ import {
 import { getFullApiPath } from '../../../utils/api-url.util';
 import { serializeCreatePlantSite } from './plant-site-create.serializer';
 
-export const uploadPlantSitesToServer = () => {
-  uploadPhotoBlobs();
-  uploadPlantSites();
+export const uploadPlantSitesToServer = async () => {
+  await uploadPhotoBlobs();
+  await uploadPlantSites();
+  await clearPlantUploads();
 };
 
 const uploadPhotoBlobs = async () => {
@@ -52,4 +53,9 @@ const uploadPlantSites = async () => {
       }
     }),
   );
+};
+
+const clearPlantUploads = async () => {
+  await plantSiteUploadTable.clear();
+  await plantSitePhotoUploadTable.clear();
 };

@@ -12,9 +12,13 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 
-import { stubServerData } from './stubs/server';
+import offlineDatabase from '../../src/services/offline.database';
+import { stubLastModifiedQueries, stubServerData } from './stubs/server';
 
 // ***********************************************************
-before(() => {
+beforeEach(() => {
+  cy.wrap(Promise.all(offlineDatabase.tables.map((table) => table.clear())));
+
   stubServerData();
+  stubLastModifiedQueries();
 });
