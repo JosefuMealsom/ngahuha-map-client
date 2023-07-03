@@ -1,5 +1,9 @@
 import { pendingUploadPage } from '../support/pages/pending-upload.page';
 import { seed } from '../support/indexed-db-seeder';
+import {
+  stubBlobUpload,
+  stubPresignedUrlsAndReturn,
+} from '../support/stubs/plant-site-api';
 
 function seedOfflineDatabase() {
   seed({
@@ -37,17 +41,11 @@ describe('Plant sites waiting to be uploaded', () => {
   ];
   beforeEach(() => {
     seedOfflineDatabase();
-    cy.intercept(
-      'https://app.ngahuha-map-dev.com:8080/blob/presigned-upload-url',
-      {
-        statusCode: 200,
-        body: { blobKey: 'mr blobby', url: 'https://coolupload.com' },
-      },
-    );
-    cy.intercept(
-      { method: 'PUT', url: 'https://coolupload.com' },
-      { statusCode: 200 },
-    );
+    stubPresignedUrlsAndReturn({
+      blobKey: 'mr blobby',
+      url: 'https://coolupload.com',
+    });
+    stubBlobUpload();
 
     cy.visit('/');
   });
