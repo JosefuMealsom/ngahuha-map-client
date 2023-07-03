@@ -3,7 +3,7 @@ import { pendingUploadPage } from '../support/pages/pending-upload.page';
 import { stubGeolocation } from '../support/stubs/geolocation';
 
 describe('Add new plant site for upload', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/', {
       onBeforeLoad(window) {
         stubGeolocation(window);

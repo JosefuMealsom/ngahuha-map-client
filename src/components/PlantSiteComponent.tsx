@@ -21,7 +21,7 @@ export function PlantSiteComponent(props: PlantSiteUpload) {
     }
 
     const photo = await plantSitePhotoUploadTable.get({
-      plantSiteId: props.id,
+      plantSiteUploadId: props.id,
     });
     if (!photo) {
       return;

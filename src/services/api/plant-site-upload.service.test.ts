@@ -47,7 +47,7 @@ describe('PlantSiteUploadService', () => {
         await offlineDatabase.plantSitePhotoUpload.toArray();
       expect(savedPlantPhotoData.length).toEqual(1);
       const photo = savedPlantPhotoData[0];
-      expect(photo.plantSiteId).toEqual(plantSite.id);
+      expect(photo.plantSiteUploadId).toEqual(plantSite.id);
     });
 
     describe('plant missing', () => {
@@ -68,7 +68,7 @@ describe('PlantSiteUploadService', () => {
 
       await plantSitePhotoUploadTable.add({
         data: new Blob(),
-        plantSiteId: plantSiteId,
+        plantSiteUploadId: plantSiteId,
       });
 
       await deletePlantSite(plantSiteId);

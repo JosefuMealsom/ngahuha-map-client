@@ -1,14 +1,11 @@
 import Dexie from 'dexie';
-import apiUrlService from './api-url.util';
+import { getFullApiPath } from './api-url.util';
 
 class ApiFetchUtil {
   fetchUpdatedModels(table: Dexie.Table, apiPath: string) {
     return new Promise<any>(async (success, reject) => {
       const data = await fetch(
-        apiUrlService.getFullPath(
-          apiPath,
-          await this.getLastmodifiedTimestamp(table),
-        ),
+        getFullApiPath(apiPath, await this.getLastmodifiedTimestamp(table)),
       );
       const dataToJSON = await data.json();
 

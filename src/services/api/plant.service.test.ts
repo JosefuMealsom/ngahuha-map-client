@@ -1,7 +1,10 @@
 import 'fake-indexeddb/auto';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import { plantTable } from '../offline.database';
-import { fetchStub } from '../../test-helpers/fetch-stub';
+import {
+  assertEndPointCalled,
+  stubFetchResponse,
+} from '../../test-helpers/fetch-stub';
 import { fetchPlants, syncPlantsOffline } from './plant.service';
 
 describe('PlantService', () => {
@@ -29,10 +32,10 @@ describe('PlantService', () => {
 
   describe('fetch()', () => {
     it('fetches the data from the API and returns it', async () => {
-      fetchStub.stubFetchResponse([plant1, plant2]);
+      stubFetchResponse([plant1, plant2]);
 
       const plantSites = await fetchPlants();
-      fetchStub.assertEndPointCalled('https://www.dummy-api.com/plant');
+      assertEndPointCalled('https://www.dummy-api.com/plant');
 
       expect(plantSites).toEqual([
         {
@@ -57,7 +60,7 @@ describe('PlantService', () => {
 
   describe('syncOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
-      fetchStub.stubFetchResponse([plant1, plant2]);
+      stubFetchResponse([plant1, plant2]);
 
       await syncPlantsOffline();
       const savedDbData = await plantTable.toArray();
@@ -93,7 +96,7 @@ describe('PlantService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        fetchStub.stubFetchResponse([
+        stubFetchResponse([
           {
             id: '123',
             typeId: '789',
@@ -107,7 +110,8 @@ describe('PlantService', () => {
 
       it('updates only the changed data', async () => {
         await syncPlantsOffline();
-        fetchStub.assertEndPointCalled(
+
+        assertEndPointCalled(
           'https://www.dummy-api.com/plant?lastModified=1988-11-11T00%3A00%3A00.000Z',
         );
 
