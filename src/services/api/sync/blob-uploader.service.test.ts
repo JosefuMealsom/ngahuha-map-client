@@ -3,7 +3,7 @@ import { fetchBlobUploadUrl } from './blob-uploader.service';
 import {
   assertEndPointCalled,
   stubFetchResponse,
-} from '../../test-helpers/fetch-stub';
+} from '../../../test-helpers/fetch-stub';
 
 describe('BlobUploaderService', () => {
   describe('fetchBlobUploadUrl()', () => {
