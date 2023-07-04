@@ -13,6 +13,7 @@ import {
 import { PlantSite } from '../types/api/plant-site.type';
 import { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { MapViewTransform } from '../services/view/map-view-transform.service';
 
 export function MapCanvas() {
   const scale = 2;
@@ -44,18 +45,25 @@ export function MapCanvas() {
     drawMap(canvasRef?.current);
   });
 
+  let mapViewTransform: MapViewTransform;
+
   function drawMap(canvas: HTMLCanvasElement | null) {
     if (!canvas) return;
 
     const context = canvas.getContext('2d');
 
     if (!context) return;
+    if (!mapViewTransform) {
+      mapViewTransform = new MapViewTransform(context, canvasDimensions);
+    }
 
     context.clearRect(0, 0, canvasDimensions.width, canvasDimensions.height);
 
-    drawMapImages(context);
-    drawMapMarkers(context);
-    drawLocationMarker(context);
+    mapViewTransform.transform(() => {
+      drawMapImages(context);
+      drawMapMarkers(context);
+      drawLocationMarker(context);
+    });
   }
 
   function drawMapImages(context: CanvasRenderingContext2D) {
@@ -81,13 +89,15 @@ export function MapCanvas() {
   }
 
   return (
-    <div className="flex w-full justify-center">
-      <canvas
-        className="w-full max-w-md"
-        ref={canvasRef}
-        width={canvasDimensions.width}
-        height={canvasDimensions.height}
-      />
+    <div>
+      <div className="touch-none flex w-full justify-center">
+        <canvas
+          className="h-full max-w-lg"
+          ref={canvasRef}
+          width={canvasDimensions.width}
+          height={canvasDimensions.height}
+        />
+      </div>
     </div>
   );
 }
