@@ -17,7 +17,7 @@ function App() {
   }, []);
 
   return (
-    <div className="touch-pan-y">
+    <div>
       <MapCanvas></MapCanvas>
       <PlantPhotosToUpload></PlantPhotosToUpload>
       <PlantPhotoForm></PlantPhotoForm>
