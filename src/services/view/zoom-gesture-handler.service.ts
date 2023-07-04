@@ -1,11 +1,27 @@
-export class PinchGestureHandler {
+import { AccelerationHandler } from './acceleration-handler.service';
+
+export class ZoomGestureHandler {
   element: HTMLElement;
   eventCache: PointerEvent[] = [];
   cachedDistance: number = 0;
+  zoomAccelerationHandler = new AccelerationHandler();
+  zoomSensitivity = 300;
+  private _zoom = 1;
 
   constructor(element: HTMLElement) {
     this.element = element;
     this.init();
+  }
+
+  get zoom() {
+    this.zoomAccelerationHandler.dampen();
+
+    // Only apply acceleration when no pointers touching
+    if (this.eventCache.length === 0) {
+      this._zoom += this.zoomAccelerationHandler.acceleration;
+    }
+    this._zoom = Math.min(10, Math.max(this._zoom, 0.8));
+    return this._zoom;
   }
 
   init() {
@@ -37,18 +53,12 @@ export class PinchGestureHandler {
 
     if (this.eventCache.length !== 2) return;
 
-    this.element.dispatchEvent(
-      new CustomEvent('pinch', {
-        detail: {
-          count: this.eventCache.length,
-          distance: this.calculateDistanceChange(),
-        },
-      }),
-    );
+    const diff = this.calculateDistanceChange() / this.zoomSensitivity;
+    this._zoom += diff;
+    this.zoomAccelerationHandler.setForce(diff);
   }
 
   private calculateDistanceChange() {
-    if (this.eventCache.length !== 2) return;
     const [pointer1, pointer2] = this.eventCache;
 
     const distance = Math.hypot(

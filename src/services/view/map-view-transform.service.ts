@@ -1,14 +1,12 @@
 import { PanGestureHandler } from './pan-gesture-handler.service';
-import { PinchGestureHandler } from './pinch-gesture-handler.service';
+import { ZoomGestureHandler } from './zoom-gesture-handler.service';
 
 export class MapViewTransform {
   context: CanvasRenderingContext2D;
   zoom: number = 1;
-  panX: number = 0;
-  panY: number = 0;
+  panGestureHandler = new PanGestureHandler(document.body);
+  zoomGestureHandler = new ZoomGestureHandler(document.body);
   canvasDimensions: { width: number; height: number };
-
-  private zoomSensitivity: number = 500;
 
   constructor(
     context: CanvasRenderingContext2D,
@@ -16,11 +14,11 @@ export class MapViewTransform {
   ) {
     this.context = context;
     this.canvasDimensions = canvasDimensions;
-    this.init();
   }
 
   transform(drawCallback: Function) {
     this.context.save();
+
     this.applyPan();
     this.applyZoom();
 
@@ -29,39 +27,22 @@ export class MapViewTransform {
     this.context.restore();
   }
 
-  private init() {
-    this.addGestureEvents();
-  }
-
-  private addGestureEvents() {
-    const pinchHandler = new PinchGestureHandler(document.body);
-    document.body.addEventListener('pinch', (e) => {
-      this.zoom = Math.max(
-        this.zoom + e.detail.distance / this.zoomSensitivity,
-        1,
-      );
-    });
-
-    const panHandler = new PanGestureHandler(document.body);
-    document.body.addEventListener('pan', (e) => {
-      this.panX += e.detail.changeX;
-      this.panY += e.detail.changeY;
-    });
-  }
-
   private applyZoom() {
+    const { x, y } = this.panGestureHandler.pan;
+    const zoom = this.zoomGestureHandler.zoom;
     this.context.translate(
-      this.canvasDimensions.width / 2,
-      this.canvasDimensions.height / 2,
+      this.canvasDimensions.width / 2 - x,
+      this.canvasDimensions.height / 2 - y,
     );
-    this.context.scale(this.zoom, this.zoom);
+    this.context.scale(zoom, zoom);
     this.context.translate(
-      -this.canvasDimensions.width / 2,
-      -this.canvasDimensions.height / 2,
+      -this.canvasDimensions.width / 2 + x,
+      -this.canvasDimensions.height / 2 + y,
     );
   }
 
   private applyPan() {
-    this.context.translate(this.panX, this.panY);
+    const { x, y } = this.panGestureHandler.pan;
+    this.context.translate(x, y);
   }
 }

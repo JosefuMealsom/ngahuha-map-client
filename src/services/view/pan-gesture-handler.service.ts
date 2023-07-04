@@ -1,37 +1,65 @@
+import { AccelerationHandler } from './acceleration-handler.service';
+
 export class PanGestureHandler {
   element: HTMLElement;
-  cachedPointerEvent?: PointerEvent;
+  eventCache: PointerEvent[] = [];
+  private panXAccelerationHandler = new AccelerationHandler();
+  private panYAccelerationHandler = new AccelerationHandler();
+  private panX = 0;
+  private panY = 0;
 
   constructor(element: HTMLElement) {
     this.element = element;
     this.init();
   }
 
-  init() {
+  get pan() {
+    this.panXAccelerationHandler.dampen();
+    this.panYAccelerationHandler.dampen();
+
+    // Only apply acceleration when no pointers touching
+    if (this.eventCache.length === 0) {
+      this.panX += this.panXAccelerationHandler.acceleration;
+      this.panY += this.panYAccelerationHandler.acceleration;
+    }
+    return { x: this.panX, y: this.panY };
+  }
+
+  private init() {
     this.element.addEventListener('pointerdown', (e) => this.onPointerDown(e));
     this.element.addEventListener('pointermove', (e) => this.onPointerMove(e));
+    this.element.addEventListener('pointerup', (e) => this.onPointerUp(e));
+    this.element.addEventListener('pointerout', (e) => this.onPointerUp(e));
+    this.element.addEventListener('pointerleave', (e) => this.onPointerUp(e));
   }
 
   private onPointerDown(pointerEvent: PointerEvent) {
-    this.cachedPointerEvent = pointerEvent;
+    this.eventCache.push(pointerEvent);
   }
 
   private onPointerMove(pointerEvent: PointerEvent) {
-    if (!this.cachedPointerEvent) return;
-    if (pointerEvent.pointerId !== this.cachedPointerEvent.pointerId) return;
+    if (this.eventCache.length !== 1) return;
 
     const { x: newX, y: newY } = pointerEvent;
-    const { x: oldX, y: oldY } = this.cachedPointerEvent;
+    const { x: oldX, y: oldY } = this.eventCache[0];
+    const changeX = newX - oldX;
+    const changeY = newY - oldY;
 
-    this.element.dispatchEvent(
-      new CustomEvent('pan', {
-        detail: {
-          changeX: newX - oldX,
-          changeY: newY - oldY,
-        },
-      }),
-    );
+    this.panX += changeX;
+    this.panY += changeY;
+    this.panXAccelerationHandler.setForce(changeX);
+    this.panYAccelerationHandler.setForce(changeY);
 
-    this.cachedPointerEvent = pointerEvent;
+    this.eventCache[0] = pointerEvent;
+  }
+
+  onPointerUp(pointerEvent: PointerEvent) {
+    if (this.eventCache.length > 1) {
+      this.eventCache = [];
+    } else {
+      this.eventCache = this.eventCache.filter(
+        (cachedEvent) => cachedEvent.pointerId !== pointerEvent.pointerId,
+      );
+    }
   }
 }
