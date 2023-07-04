@@ -8,14 +8,14 @@ import { getFullPlantName } from '../utils/plant-name-decorator.util';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { addPlantSiteWithPhoto } from '../services/api/plant-site-upload.service';
 import cameraUrl from '../assets/svg/camera.svg';
+import { usePosition } from '../hooks/use-position.hook';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
   const [plantNameValue, setPlantNameValue] = useState<string>();
   const [modalOpen, setModalState] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
-  const [currentPosition, setCurrentPosition] =
-    useState<GeolocationCoordinates>();
+  const [liveCoords, setLiveCoords] = useState<GeolocationCoordinates>();
 
   const plantList = useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
@@ -25,16 +25,20 @@ export function PlantPhotoForm() {
     }));
   });
 
+  usePosition((geolocationPosition) =>
+    setLiveCoords(geolocationPosition.coords),
+  );
+
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
 
     const plantId = findPlantIdByFullName();
 
-    if (!currentPosition || !photo || !plantId) {
+    if (!photo || !plantId || !liveCoords) {
       return;
     }
 
-    await addPlantSiteWithPhoto(photo, currentPosition, plantId);
+    await addPlantSiteWithPhoto(photo, liveCoords, plantId);
 
     resetForm();
     toggleModal();
@@ -46,7 +50,6 @@ export function PlantPhotoForm() {
 
   function resetForm() {
     setPhotoInput(undefined);
-    setCurrentPosition(undefined);
     setPreviewImage('');
     setPlantNameValue('');
   }
@@ -61,26 +64,10 @@ export function PlantPhotoForm() {
         setPreviewImage(photoData);
       }
     }
-    const position = await geolocationService.getCurrentPosition();
-    if (position) {
-      setCurrentPosition(position);
-    }
   }
 
   function toggleModal() {
     setModalState(!modalOpen);
-  }
-
-  function renderGelocation() {
-    if (!currentPosition) {
-      return;
-    }
-
-    return (
-      <p className="mb-3">
-        Geolocation accurate to: {currentPosition.accuracy.toFixed(2)} metres
-      </p>
-    );
   }
 
   function renderPhotos() {
@@ -95,8 +82,44 @@ export function PlantPhotoForm() {
     );
   }
 
+  function renderLiveLocation() {
+    if (!photo || !liveCoords) return;
+
+    return (
+      <div className="mb-5">
+        <div className="inline-block">
+          <h3 className="font-bold">Latitude</h3>
+          <p>{liveCoords.latitude.toFixed(2)}</p>
+        </div>
+        <div className="inline-block ml-6">
+          <h3 className="font-bold">Longitude</h3>
+          <p>{liveCoords.longitude.toFixed(2)}</p>
+        </div>
+        <div className="block mt-3 ">
+          <p>
+            Accurate to within{' '}
+            <span className={getAccuracyColorIndicator(liveCoords.accuracy)}>
+              {liveCoords.accuracy.toFixed(2)}
+              <b>m</b>
+            </span>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  function getAccuracyColorIndicator(accuracy: number) {
+    if (accuracy > 20) {
+      return 'text-red-600';
+    } else if (accuracy > 10 && accuracy < 20) {
+      return 'text-yellow-600';
+    } else {
+      return 'text-green-600';
+    }
+  }
+
   function renderSave() {
-    if (!currentPosition || !photo || !plantNameValue) {
+    if (!photo || !plantNameValue) {
       return;
     }
     return (
@@ -104,7 +127,7 @@ export function PlantPhotoForm() {
         className="block border-solid  border px-6 py-2 bg-sky-600
         font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
         type="submit"
-        value="Save"
+        value="Lock in location and save!"
         onSubmit={savePhotoLocally}
       />
     );
@@ -148,7 +171,7 @@ export function PlantPhotoForm() {
             />
           </div>
           {renderPhotos()}
-          {renderGelocation()}
+          {renderLiveLocation()}
           {renderSave()}
         </form>
       </div>

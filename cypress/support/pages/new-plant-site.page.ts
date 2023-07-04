@@ -16,6 +16,6 @@ export const newPlantSitePage = {
   },
 
   saveButton: () => {
-    return cy.get('input[value=Save]');
+    return cy.get("input[value='Lock in location and save!']");
   },
 };

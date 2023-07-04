@@ -13,6 +13,13 @@ export const stubServerData = () => {
     },
     { fixture: 'garden-areas.json' },
   ).as('getGardenAreas');
+  cy.intercept(
+    {
+      method: 'GET',
+      url: 'https://app.ngahuha-map-dev.com:8080/plant-site',
+    },
+    [],
+  );
 };
 
 export const stubLastModifiedQueries = () => {
@@ -20,6 +27,13 @@ export const stubLastModifiedQueries = () => {
     {
       method: 'GET',
       url: 'https://app.ngahuha-map-dev.com:8080/plant?lastModified=*',
+    },
+    [],
+  );
+  cy.intercept(
+    {
+      method: 'GET',
+      url: 'https://app.ngahuha-map-dev.com:8080/plant-site?lastModified=*',
     },
     [],
   );
