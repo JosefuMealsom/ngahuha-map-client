@@ -1,12 +1,12 @@
 import { newPlantSitePage } from '../support/pages/new-plant-site.page';
 import { pendingUploadPage } from '../support/pages/pending-upload.page';
-import { stubGeolocation } from '../support/stubs/geolocation';
+import { stubWatchPosition } from '../support/stubs/geolocation';
 
 describe('Add new plant site for upload', () => {
   beforeEach(() => {
     cy.visit('/', {
       onBeforeLoad(window) {
-        stubGeolocation(window);
+        stubWatchPosition(window, 123, 456, 888);
       },
     });
   });
@@ -27,6 +27,9 @@ describe('Add new plant site for upload', () => {
     cy.contains('Cool species');
     newPlantSitePage.autoCompleteEntry('Cool species').click();
     newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto');
+    cy.contains('123');
+    cy.contains('456');
+    cy.contains('Accurate to within 888.00m');
     newPlantSitePage.saveButton().click();
 
     cy.contains('Add a new location').should('not.be.visible');
