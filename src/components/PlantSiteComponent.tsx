@@ -10,7 +10,9 @@ import { getFullPlantName } from '../utils/plant-name-decorator.util';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
 import { deletePlantSite } from '../services/api/plant-site-upload.service';
 
-export function PlantSiteComponent(props: PlantSiteUpload) {
+export function PlantSiteComponent(
+  props: PlantSiteUpload & { isUploading: boolean },
+) {
   const [photoDataUrl, setPhotoDataUrl] = useState('');
   const [plant, setPlant] = useState<Plant>();
 
@@ -37,6 +39,18 @@ export function PlantSiteComponent(props: PlantSiteUpload) {
     getPlantInfo();
   });
 
+  function renderDelete() {
+    if (props.isUploading) return;
+
+    return (
+      <ButtonComponent
+        onClickHandler={deletePhoto}
+        className="block"
+        text="Delete"
+      ></ButtonComponent>
+    );
+  }
+
   function renderPlantInfo() {
     if (!plant) return;
 
@@ -49,11 +63,7 @@ export function PlantSiteComponent(props: PlantSiteUpload) {
         <div className="w-3/4 inline-block align-top">
           <h1 className="font-bold">Plant Species</h1>
           <p className="block">{getFullPlantName(plant)}</p>
-          <ButtonComponent
-            onClickHandler={deletePhoto}
-            className="block"
-            text="Delete"
-          ></ButtonComponent>
+          {renderDelete()}
         </div>
       </div>
     );
