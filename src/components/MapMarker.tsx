@@ -3,6 +3,7 @@ import { PlantSite } from '../types/api/plant-site.type';
 import { useMapStore } from '../store/map.store';
 import { interpolateToCanvasPosition } from '../services/map-position-interpolator.service';
 import { scale, translate, compose, applyToPoint } from 'transformation-matrix';
+import pinSvg from '../assets/svg/map-pin.svg';
 
 export function MapMarker(props: PlantSite) {
   const pan = useMapStore((state) => state.pan);
@@ -49,7 +50,9 @@ export function MapMarker(props: PlantSite) {
   return (
     <div
       ref={marker}
-      className="w-2 h-2 bg-purple-500 absolute top-0 left-0 rounded-full opacity-60"
-    ></div>
+      className="w-9 fill-white absolute -top-4 -left-2 rounded-full"
+    >
+      <img src={pinSvg} />
+    </div>
   );
 }
