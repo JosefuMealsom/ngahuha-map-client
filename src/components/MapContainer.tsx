@@ -21,7 +21,7 @@ export function MapContainer() {
 
   return (
     <div>
-      <div className="relative touch-none inline-block">
+      <div className="relative touch-none inline-block select-none">
         <MapCanvas></MapCanvas>
         {plantSites?.map((plantSite) => (
           <MapMarker key={plantSite.id} {...plantSite}></MapMarker>
