@@ -31,6 +31,12 @@ export class ZoomGestureHandler {
     this.element.addEventListener('pointerup', (e) => this.onPointerUp(e));
     this.element.addEventListener('pointerout', (e) => this.onPointerUp(e));
     this.element.addEventListener('pointerleave', (e) => this.onPointerUp(e));
+    window.addEventListener('focus', () => this.onWindowVisiblityChange());
+    window.addEventListener('blur', () => this.onWindowVisiblityChange());
+  }
+
+  onWindowVisiblityChange() {
+    this.eventCache = [];
   }
 
   private onPointerDown(pointerEvent: PointerEvent) {
