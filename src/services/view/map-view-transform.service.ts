@@ -15,7 +15,6 @@ export const applyTransform = (
 };
 
 const applyZoom = (context: CanvasRenderingContext2D) => {
-  const { x, y } = useMapStore.getState().pan;
   const zoom = useMapStore.getState().zoom;
 
   const { width, height } = useMapStore.getState().canvasDimensions;
@@ -26,7 +25,6 @@ const applyZoom = (context: CanvasRenderingContext2D) => {
 };
 
 const applyPan = (context: CanvasRenderingContext2D) => {
-  const zoom = useMapStore.getState().zoom;
   const { x, y } = useMapStore.getState().pan;
   context.translate(x, y);
 };
