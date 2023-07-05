@@ -1,3 +1,4 @@
+import { useMapStore } from '../../store/map.store';
 import { AccelerationHandler } from './acceleration-handler.service';
 
 export class ZoomGestureHandler {
@@ -13,7 +14,7 @@ export class ZoomGestureHandler {
     this.init();
   }
 
-  get zoom() {
+  update() {
     this.zoomAccelerationHandler.dampen();
 
     // Only apply acceleration when no pointers touching

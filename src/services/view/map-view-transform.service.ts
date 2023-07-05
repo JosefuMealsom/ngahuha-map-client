@@ -1,48 +1,32 @@
-import { PanGestureHandler } from './pan-gesture-handler.service';
-import { ZoomGestureHandler } from './zoom-gesture-handler.service';
+import { useMapStore } from '../../store/map.store';
 
-export class MapViewTransform {
-  context: CanvasRenderingContext2D;
-  zoom: number = 1;
-  panGestureHandler = new PanGestureHandler(document.body);
-  zoomGestureHandler = new ZoomGestureHandler(document.body);
-  canvasDimensions: { width: number; height: number };
+export const applyTransform = (
+  context: CanvasRenderingContext2D,
+  drawCallback: Function,
+) => {
+  context.save();
 
-  constructor(
-    context: CanvasRenderingContext2D,
-    canvasDimensions: { width: number; height: number },
-  ) {
-    this.context = context;
-    this.canvasDimensions = canvasDimensions;
-  }
+  applyPan(context);
+  applyZoom(context);
 
-  transform(drawCallback: Function) {
-    this.context.save();
+  drawCallback();
 
-    this.applyPan();
-    this.applyZoom();
+  context.restore();
+};
 
-    drawCallback();
+const applyZoom = (context: CanvasRenderingContext2D) => {
+  const { x, y } = useMapStore.getState().pan;
+  const zoom = useMapStore.getState().zoom;
 
-    this.context.restore();
-  }
+  const { width, height } = useMapStore.getState().canvasDimensions;
 
-  private applyZoom() {
-    const { x, y } = this.panGestureHandler.pan;
-    const zoom = this.zoomGestureHandler.zoom;
-    this.context.translate(
-      this.canvasDimensions.width / 2 - x,
-      this.canvasDimensions.height / 2 - y,
-    );
-    this.context.scale(zoom, zoom);
-    this.context.translate(
-      -this.canvasDimensions.width / 2 + x,
-      -this.canvasDimensions.height / 2 + y,
-    );
-  }
+  context.translate(width / 2, height / 2);
+  context.scale(zoom, zoom);
+  context.translate(-width / 2, -height / 2);
+};
 
-  private applyPan() {
-    const { x, y } = this.panGestureHandler.pan;
-    this.context.translate(x, y);
-  }
-}
+const applyPan = (context: CanvasRenderingContext2D) => {
+  const zoom = useMapStore.getState().zoom;
+  const { x, y } = useMapStore.getState().pan;
+  context.translate(x, y);
+};

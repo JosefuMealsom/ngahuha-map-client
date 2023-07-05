@@ -1,3 +1,4 @@
+import { useMapStore } from '../../store/map.store';
 import { AccelerationHandler } from './acceleration-handler.service';
 
 export class PanGestureHandler {
@@ -13,7 +14,7 @@ export class PanGestureHandler {
     this.init();
   }
 
-  get pan() {
+  update() {
     this.panXAccelerationHandler.dampen();
     this.panYAccelerationHandler.dampen();
 
