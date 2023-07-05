@@ -4,6 +4,7 @@ dist
 .env
 .env.development
 coverage
+map-canvas
 
 .devcontainer/
 node_modules/
