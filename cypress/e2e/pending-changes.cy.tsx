@@ -72,7 +72,7 @@ describe('Plant sites waiting to be uploaded', () => {
 
   it('deletes a plant site from the list', () => {
     pendingUploadPage.pendingUploadsButton().click();
-    pendingUploadPage.deleteButtonFor("The worst species 'lame'").click();
+    pendingUploadPage.deleteButtonForPlantSiteId('1').click();
     cy.contains("The worst species 'lame'").should('not.exist');
   });
 });

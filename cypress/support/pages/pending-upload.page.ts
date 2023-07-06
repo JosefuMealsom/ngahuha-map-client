@@ -1,19 +1,13 @@
 export const pendingUploadPage = {
   pendingUploadsButton: () => {
-    return cy.contains(
-      '.border-solid.border-black.bg-white',
-      'Pending changes',
-    );
+    return cy.get('[data-cy="open-upload-form"]');
   },
 
-  deleteButtonFor(species: string) {
-    return cy.contains('p', species).parent().contains('button', 'Delete');
+  deleteButtonForPlantSiteId(plantSiteId: string) {
+    return cy.get(`[data-cy="delete-plant-${plantSiteId}"]`);
   },
 
   uploadToServerButton: () => {
-    return cy.contains(
-      '.border-solid.border-black.bg-white',
-      'Upload to server',
-    );
+    return cy.get('[data-cy="upload-plants"]');
   },
 };

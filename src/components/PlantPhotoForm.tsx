@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from 'react';
-import geolocationService from '../services/geolocation.service';
 import { ButtonComponent } from './ButtonComponent';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
 import AutocompleteComponent from './AutocompleteComponent';
@@ -9,13 +8,15 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { addPlantSiteWithPhoto } from '../services/api/plant-site-upload.service';
 import cameraUrl from '../assets/svg/camera.svg';
 import { usePosition } from '../hooks/use-position.hook';
+import { useAppStore } from '../store/app.store';
 
 export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
   const [plantNameValue, setPlantNameValue] = useState<string>();
-  const [modalOpen, setModalState] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [liveCoords, setLiveCoords] = useState<GeolocationCoordinates>();
+  const currentView = useAppStore((state) => state.activeView);
+  const setActiveView = useAppStore((state) => state.setActiveView);
 
   const plantList = useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
@@ -41,7 +42,7 @@ export function PlantPhotoForm() {
     await addPlantSiteWithPhoto(photo, liveCoords, plantId);
 
     resetForm();
-    toggleModal();
+    setActiveView('ViewMap');
   }
 
   function findPlantIdByFullName() {
@@ -66,8 +67,16 @@ export function PlantPhotoForm() {
     }
   }
 
-  function toggleModal() {
-    setModalState(!modalOpen);
+  function isViewActive() {
+    return currentView == 'AddPlant';
+  }
+
+  function toggleView() {
+    if (isViewActive()) {
+      setActiveView('ViewMap');
+    } else {
+      setActiveView('AddPlant');
+    }
   }
 
   function renderPhotos() {
@@ -133,11 +142,27 @@ export function PlantPhotoForm() {
     );
   }
 
+  function renderModalButton() {
+    const buttonVisible =
+      currentView === 'AddPlant' || currentView === 'ViewMap';
+
+    if (!buttonVisible) {
+      return;
+    }
+    return (
+      <ButtonComponent
+        text={isViewActive() ? 'Close' : 'New plant site'}
+        onClickHandler={() => toggleView()}
+        className="absolute top-2 right-3"
+      ></ButtonComponent>
+    );
+  }
+
   return (
     <div>
       <div
         className={`${
-          modalOpen ? '' : 'hidden'
+          isViewActive() ? '' : 'hidden'
         } absolute top-0 pt-14 left-0 bg-white w-full h-full p-6`}
       >
         <form onSubmit={savePhotoLocally}>
@@ -175,11 +200,7 @@ export function PlantPhotoForm() {
           {renderSave()}
         </form>
       </div>
-      <ButtonComponent
-        text={modalOpen ? 'Close' : 'New plant site'}
-        onClickHandler={toggleModal}
-        className="absolute top-2 right-3"
-      ></ButtonComponent>
+      {renderModalButton()}
     </div>
   );
 }
