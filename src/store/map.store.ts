@@ -1,18 +1,12 @@
 import { create } from 'zustand';
-import { MapBounds } from '../types/map-bounds.type';
+import { MapState } from '../types/map-state.type';
 
-interface MapState {
-  pan: { x: number; y: number };
-  zoom: number;
-  viewBounds: MapBounds;
-  mapBounds: MapBounds;
-  canvasDimensions: { width: number; height: number };
-
+type MapStore = MapState & {
   setPan: (x: number, y: number) => void;
   setZoom: (zoom: number) => void;
-}
+};
 
-export const useMapStore = create<MapState>((set) => {
+export const useMapStore = create<MapStore>((set) => {
   const setPan = (x: number, y: number) => {
     set(() => {
       return { pan: { x: x, y: y } };
@@ -30,10 +24,6 @@ export const useMapStore = create<MapState>((set) => {
   return {
     pan: { x: 0, y: 0 },
     zoom: 1,
-    viewBounds: {
-      lat: [-35.373941, -35.378587],
-      long: [173.96343, 173.967164],
-    },
     mapBounds: {
       lat: [-35.373941, -35.378587],
       long: [173.96343, 173.967164],
