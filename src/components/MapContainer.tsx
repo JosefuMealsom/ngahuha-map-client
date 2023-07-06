@@ -7,6 +7,7 @@ import { PanGestureHandler } from '../services/view/pan-gesture-handler.service'
 import { ZoomGestureHandler } from '../services/view/zoom-gesture-handler.service';
 import { useMapStore } from '../store/map.store';
 import { LocationMarker } from './LocationMarker';
+import { FeatureMarker } from './FeatureMarker';
 
 export function MapContainer() {
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
@@ -28,6 +29,14 @@ export function MapContainer() {
           <MapMarker key={plantSite.id} {...plantSite}></MapMarker>
         ))}
         <LocationMarker></LocationMarker>
+        <FeatureMarker
+          text="The steppes"
+          position={{ latitude: -35.377761, longitude: 173.966039 }}
+        ></FeatureMarker>
+        <FeatureMarker
+          text="The avocado orchard"
+          position={{ latitude: -35.377025, longitude: 173.965264 }}
+        ></FeatureMarker>
       </div>
     </div>
   );
