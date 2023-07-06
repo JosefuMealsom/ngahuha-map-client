@@ -1,0 +1,38 @@
+import { useEffect, useRef } from 'react';
+import { PlantSite } from '../types/api/plant-site.type';
+import { interpolateToDomPosition } from '../services/map-position-interpolator.service';
+
+import pinSvg from '../assets/svg/map-pin.svg';
+import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
+import { useMapStore } from '../store/map.store';
+
+export function MapMarker(props: PlantSite) {
+  const marker = useRef<HTMLDivElement>(null);
+  const position = { latitude: props.latitude, longitude: props.longitude };
+  const zoom = useMapStore((state) => state.zoom);
+  const pan = useMapStore((state) => state.pan);
+
+  useEffect(() => {
+    if (!marker.current) return;
+
+    const newPosition = interpolateToDomPosition(
+      marker.current.parentElement?.clientHeight || window.innerHeight,
+      position,
+      useMapStore.getState(),
+    );
+
+    if (!newPosition) return;
+
+    marker.current.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
+  }, [zoom, pan]);
+
+  return (
+    <div
+      id={props.id}
+      ref={marker}
+      className="w-9 fill-white absolute -top-4 -left-2 rounded-full"
+    >
+      <img src={pinSvg} className="select-none pointer-events-none" />
+    </div>
+  );
+}

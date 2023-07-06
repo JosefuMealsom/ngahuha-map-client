@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export function OnlineComponent() {
   const [onlineStatus, setOnlineStatus] = useState(navigator.onLine);
