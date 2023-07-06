@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import mapUrl from '../assets/ngahuha.png';
 import imageLoaderService from '../services/image-loader.service';
-import canvasMapImage from './MapImage';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
 import {
   plantSiteTable,
@@ -12,7 +11,10 @@ import { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { applyTransform } from '../services/view/map-view-transform.service';
 import { useMapStore } from '../store/map.store';
-import { renderImageOnMap } from '../services/view/map-renderer';
+import {
+  renderImageOnMap,
+  renderMarkerOnMap,
+} from '../services/view/map-renderer';
 
 export function MapCanvas() {
   const canvasDimensions = useMapStore((state) => state.canvasDimensions);
@@ -44,7 +46,7 @@ export function MapCanvas() {
 
     applyTransform(context, () => {
       drawMapImages(context);
-      drawMapMarkers(context);
+      // drawMapMarkers(context);
     });
   }
 
@@ -52,17 +54,14 @@ export function MapCanvas() {
     if (mapImage) {
       renderImageOnMap(context, mapImage);
     }
-    if (canvasMapImage) {
-      // renderImageOnMap(context, canvasMapImage);
-    }
   }
 
   function drawMapMarkers(context: CanvasRenderingContext2D) {
     for (const plantSite of plantSites) {
-      // renderMarkerOnMap(context, plantSite, '#0f0');
+      renderMarkerOnMap(context, plantSite, '#0f0');
     }
     for (const plantSiteUpload of plantSiteUploads) {
-      // renderMarkerOnMap(context, plantSiteUpload, '#00f');
+      renderMarkerOnMap(context, plantSiteUpload, '#00f');
     }
   }
 
