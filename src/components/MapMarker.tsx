@@ -3,7 +3,6 @@ import { PlantSite } from '../types/api/plant-site.type';
 import { interpolateToDomPosition } from '../services/map-position-interpolator.service';
 
 import pinSvg from '../assets/svg/map-pin.svg';
-import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
 import { useMapStore } from '../store/map.store';
 
 export function MapMarker(props: PlantSite) {
