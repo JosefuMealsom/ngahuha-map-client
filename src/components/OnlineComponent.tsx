@@ -7,7 +7,7 @@ export function OnlineComponent() {
   window.addEventListener('online', (e) => setOnlineStatus(true));
 
   return (
-    <div className="absolute bottom-2 left-2">
+    <div className="absolute bottom-2 left-2 z-10">
       <p className="text-black font-bold text-lg">
         {onlineStatus ? 'Online' : 'Offline'}
       </p>
