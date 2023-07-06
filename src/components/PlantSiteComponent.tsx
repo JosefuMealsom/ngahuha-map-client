@@ -48,6 +48,7 @@ export function PlantSiteComponent(
         src={trashSvg}
         className="h-6 inline-block ml-6 cursor-pointer"
         onClick={deletePhoto}
+        data-cy={`delete-plant-${props.id}`}
       />
     );
   }
