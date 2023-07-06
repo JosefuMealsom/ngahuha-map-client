@@ -9,6 +9,7 @@ import {
 import { getFullPlantName } from '../utils/plant-name-decorator.util';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
 import { deletePlantSite } from '../services/api/plant-site-upload.service';
+import trashSvg from '../assets/svg/trash-2.svg';
 
 export function PlantSiteComponent(
   props: PlantSiteUpload & { isUploading: boolean },
@@ -43,11 +44,11 @@ export function PlantSiteComponent(
     if (props.isUploading) return;
 
     return (
-      <ButtonComponent
-        onClickHandler={deletePhoto}
-        className="block"
-        text="Delete"
-      ></ButtonComponent>
+      <img
+        src={trashSvg}
+        className="h-6 inline-block ml-6 cursor-pointer"
+        onClick={deletePhoto}
+      />
     );
   }
 
@@ -58,11 +59,11 @@ export function PlantSiteComponent(
       <div className="flex">
         <img
           src={photoDataUrl}
-          className="w-1/4 h-full object-contain inline-block ml-8 pr-8"
+          className="w-1/4 h-full object-contain inline-block ml-2 pr-8"
         />
         <div className="w-3/4 inline-block align-top">
           <h1 className="font-bold">Plant Species</h1>
-          <p className="block">{getFullPlantName(plant)}</p>
+          <p className="inline-block">{getFullPlantName(plant)}</p>
           {renderDelete()}
         </div>
       </div>
