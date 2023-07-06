@@ -23,6 +23,7 @@ export function MapMarker(props: PlantSite) {
 
     if (!newPosition) return;
 
+    marker.current.classList.remove('hidden');
     marker.current.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
   }, [zoom, pan]);
 
@@ -30,7 +31,7 @@ export function MapMarker(props: PlantSite) {
     <div
       id={props.id}
       ref={marker}
-      className="w-9 fill-white absolute -top-4 -left-2 rounded-full"
+      className="w-9 fill-white absolute -top-4 -left-2 rounded-full hidden"
     >
       <img src={pinSvg} className="select-none pointer-events-none" />
     </div>
