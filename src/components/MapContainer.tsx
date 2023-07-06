@@ -6,6 +6,7 @@ import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
 import { PanGestureHandler } from '../services/view/pan-gesture-handler.service';
 import { ZoomGestureHandler } from '../services/view/zoom-gesture-handler.service';
 import { useMapStore } from '../store/map.store';
+import { LocationMarker } from './LocationMarker';
 
 export function MapContainer() {
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
@@ -26,6 +27,7 @@ export function MapContainer() {
         {plantSites?.map((plantSite) => (
           <MapMarker key={plantSite.id} {...plantSite}></MapMarker>
         ))}
+        <LocationMarker></LocationMarker>
       </div>
     </div>
   );

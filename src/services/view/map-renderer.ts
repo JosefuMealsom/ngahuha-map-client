@@ -6,10 +6,6 @@ const canvasDimensions = () => {
   return useMapStore.getState().canvasDimensions;
 };
 
-const mapBounds = () => {
-  return useMapStore.getState().mapBounds;
-};
-
 export const renderImageOnMap = (
   context: CanvasRenderingContext2D,
   image: HTMLImageElement | HTMLCanvasElement,
@@ -27,9 +23,8 @@ export const renderMarkerOnMap = (
   colour?: string,
 ) => {
   const canvasPosition = interpolateToCanvasPosition(
-    mapBounds(),
     coords,
-    canvasDimensions(),
+    useMapStore.getState(),
   );
 
   if (!canvasPosition) {
