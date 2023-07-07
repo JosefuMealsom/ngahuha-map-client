@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import gardenAreaService from './services/api/garden-area.service';
 import { syncPlantsOffline } from './services/api/plant.service';
 import { syncPlantSitesOffline } from './services/api/plant-site.service';
-import { OnlineComponent } from './components/OnlineComponent';
 import { MapContainer } from './components/MapContainer';
+import { ClosestPlantsToUser } from './components/ClosestPlantsToUser';
 
 function App() {
   useEffect(() => {
@@ -22,10 +22,10 @@ function App() {
 
   return (
     <div>
-      <OnlineComponent></OnlineComponent>
       <MapContainer></MapContainer>
       <PlantPhotosToUpload></PlantPhotosToUpload>
       <PlantPhotoForm></PlantPhotoForm>
+      <ClosestPlantsToUser></ClosestPlantsToUser>
     </div>
   );
 }

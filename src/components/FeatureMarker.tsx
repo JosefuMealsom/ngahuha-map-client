@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMapStore } from '../store/map.store';
 import { interpolateToDomPosition } from '../services/map-position-interpolator.service';
 import { LatLong } from '../types/lat-long.type';

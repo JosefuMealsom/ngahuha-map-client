@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Plant } from '../types/api/plant.type';
 import type { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
-import { ButtonComponent } from './ButtonComponent';
 import {
   plantSitePhotoUploadTable,
   plantTable,
