@@ -1,5 +1,9 @@
 import { create } from 'zustand';
-type AppSection = 'ViewMap' | 'UploadPlants' | 'AddPlant';
+type AppSection =
+  | 'ViewMap'
+  | 'UploadPlants'
+  | 'AddPlant'
+  | 'ClosestPlantsToUser';
 type AppState = {
   activeView: AppSection;
   setActiveView: (activeView: AppSection) => void;
