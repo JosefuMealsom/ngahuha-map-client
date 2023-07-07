@@ -6,13 +6,9 @@ import { LatLong } from '../types/lat-long.type';
 
 export function LocationMarker() {
   const marker = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<LatLong>();
   const zoom = useMapStore((state) => state.zoom);
   const pan = useMapStore((state) => state.pan);
-
-  usePosition((position) => {
-    setPosition(position.coords);
-  });
+  const position = usePosition();
 
   useEffect(() => {
     if (!marker.current || !position) return;

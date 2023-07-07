@@ -14,9 +14,9 @@ export function PlantPhotoForm() {
   const [photo, setPhotoInput] = useState<File>();
   const [plantNameValue, setPlantNameValue] = useState<string>();
   const [previewImage, setPreviewImage] = useState('');
-  const [liveCoords, setLiveCoords] = useState<GeolocationCoordinates>();
   const currentView = useAppStore((state) => state.activeView);
   const setActiveView = useAppStore((state) => state.setActiveView);
+  const liveCoords = usePosition();
 
   const plantList = useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
@@ -25,10 +25,6 @@ export function PlantPhotoForm() {
       id: plant.id,
     }));
   });
-
-  usePosition((geolocationPosition) =>
-    setLiveCoords(geolocationPosition.coords),
-  );
 
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();

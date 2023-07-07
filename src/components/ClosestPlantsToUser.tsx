@@ -4,7 +4,6 @@ import { plantSiteTable } from '../services/offline.database';
 import { useAppStore } from '../store/app.store';
 import { usePosition } from '../hooks/use-position.hook';
 import { useState } from 'react';
-import { LatLong } from '../types/lat-long.type';
 import { PlantSite } from '../types/api/plant-site.type';
 import { getPlantSitesWithinDistance } from '../services/closest-plants.service';
 import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
@@ -12,13 +11,9 @@ import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
 export function ClosestPlantsToUser() {
   const currentView = useAppStore((state) => state.activeView);
   const setActiveView = useAppStore((state) => state.setActiveView);
-  const [position, setPosition] = useState<LatLong>();
   const [closestPlants, setClosestPlants] = useState<PlantSite[]>();
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
-
-  usePosition((position) => {
-    setPosition(position.coords);
-  });
+  const position = usePosition();
 
   function toggleView() {
     if (isViewActive()) {
