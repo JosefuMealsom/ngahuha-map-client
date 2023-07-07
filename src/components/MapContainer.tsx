@@ -8,11 +8,13 @@ import { ZoomGestureHandler } from '../services/view/zoom-gesture-handler.servic
 import { useMapStore } from '../store/map.store';
 import { LocationMarker } from './LocationMarker';
 import { FeatureMarker } from './FeatureMarker';
+import { createRef, useEffect } from 'react';
 
 export function MapContainer() {
+  const mapContainerRef = createRef<HTMLDivElement>();
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
-  const panGestureHandler = new PanGestureHandler(document.body);
-  const zoomGestureHandler = new ZoomGestureHandler(document.body);
+  let panGestureHandler: PanGestureHandler;
+  let zoomGestureHandler: ZoomGestureHandler;
 
   useAnimationFrame(() => {
     const pan = panGestureHandler.update();
@@ -21,8 +23,15 @@ export function MapContainer() {
     useMapStore.getState().setPan(pan.x, pan.y);
   });
 
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+
+    panGestureHandler = new PanGestureHandler(mapContainerRef.current);
+    zoomGestureHandler = new ZoomGestureHandler(mapContainerRef.current);
+  }, []);
+
   return (
-    <div>
+    <div ref={mapContainerRef}>
       <div className="relative touch-none inline-block select-none">
         <MapCanvas></MapCanvas>
         {plantSites?.map((plantSite) => (

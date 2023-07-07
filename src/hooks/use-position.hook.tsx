@@ -1,9 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-export function usePosition(onPositionChange: PositionCallback) {
+export function usePosition() {
+  const [position, setPosition] = useState<GeolocationCoordinates>();
+
   useEffect(() => {
     const handlerId = navigator.geolocation.watchPosition(
-      onPositionChange,
+      (position) => {
+        setPosition(position.coords);
+      },
       null,
       {
         enableHighAccuracy: true,
@@ -14,4 +18,6 @@ export function usePosition(onPositionChange: PositionCallback) {
       navigator.geolocation.clearWatch(handlerId);
     };
   }, []);
+
+  return position;
 }
