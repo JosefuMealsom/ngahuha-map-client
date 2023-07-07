@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMapStore } from '../store/map.store';
 import { interpolateToDomPosition } from '../services/map-position-interpolator.service';
 import { usePosition } from '../hooks/use-position.hook';
-import { LatLong } from '../types/lat-long.type';
 
 export function LocationMarker() {
   const marker = useRef<HTMLDivElement>(null);
