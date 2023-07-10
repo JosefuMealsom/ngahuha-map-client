@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import mapUrl from '../assets/ngahuha.png';
-import imageLoaderService from '../services/image-loader.service';
+import { loadImage } from '../services/image-loader.service';
 import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
 import {
   plantSiteTable,
@@ -33,7 +33,7 @@ export function MapCanvas() {
     drawMap(canvasRef?.current);
   });
 
-  imageLoaderService.loadImage(mapUrl).then((image) => (mapImage = image));
+  loadImage(mapUrl).then((image) => (mapImage = image));
 
   function drawMap(canvas: HTMLCanvasElement | null) {
     if (!canvas) return;
