@@ -27,7 +27,9 @@ export function PlantSiteComponent(
 
     if (!photo) return;
 
-    setPhotoDataUrl((await blobToDataUrlService.convert(photo.data)) || '');
+    const blobData = new Blob([photo.data]);
+    setPhotoDataUrl((await blobToDataUrlService.convert(blobData)) || '');
+
     setPlant(plant);
   };
 

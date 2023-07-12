@@ -78,6 +78,6 @@ const addPlantSitePhotoUpload = async (
 ) => {
   return await plantSitePhotoUploadTable.add({
     plantSiteUploadId: plantSiteId,
-    data: photoBlob,
+    data: await photoBlob.arrayBuffer(),
   });
 };

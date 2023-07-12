@@ -9,6 +9,7 @@ import {
   fetchPlantSitePhotos,
   syncPlantSitePhotosOffline,
 } from './plant-site-photo.service';
+import { stubArrayBufferCall } from '../../test-helpers/blob-stub';
 
 vi.mock('../image-loader.service', () => ({
   loadBlob: (url: string) => {
@@ -19,6 +20,10 @@ vi.mock('../image-loader.service', () => ({
 }));
 
 describe('PlantSitePhotoService', () => {
+  beforeEach(() => {
+    stubArrayBufferCall();
+  });
+
   afterEach(() => {
     plantSitePhotoTable.clear();
   });
@@ -93,7 +98,7 @@ describe('PlantSitePhotoService', () => {
         await plantSitePhotoTable.add({
           id: '123',
           plantSiteId: '456',
-          data: new Blob(),
+          data: new ArrayBuffer(8),
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
         });

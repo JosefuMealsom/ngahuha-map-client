@@ -51,10 +51,13 @@ const transformToOfflinePhotoModels = async (
 ): Promise<PlantSitePhoto[]> => {
   return Promise.all(
     photoData.map(async (data) => {
+      const blobData = await loadBlob(data.url);
+      const photoBuffer = await blobData.arrayBuffer();
+
       return {
         id: data.id,
         plantSiteId: data.plantSiteId,
-        data: await loadBlob(data.url),
+        data: photoBuffer,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
       };
