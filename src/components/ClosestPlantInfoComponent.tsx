@@ -23,28 +23,31 @@ export function ClosestPlantInfoComponent(props: PlantSite) {
       .first();
 
     if (!photo) return;
-
-    setPhotoDataUrl((await blobToDataUrlService.convert(photo.data)) || '');
+    const blobData = new Blob([photo.data]);
+    setPhotoDataUrl((await blobToDataUrlService.convert(blobData)) || '');
   };
 
-  getPlantInfo();
+  useEffect(() => {
+    getPlantInfo();
+  }, []);
 
   function renderPlantInfo() {
     if (!plant) return;
 
     return (
-      <div className="flex">
-        <div className="w-3/4 inline-block align-top">
-          <h1 className="font-bold">Plant Species</h1>
-          <img
-            src={photoDataUrl}
-            className="w-1/4 h-full object-contain inline-block ml-2 pr-8"
-          />
-          <p className="inline-block">{getFullPlantName(plant)}</p>
+      <div>
+        <div className="w-full align-top relative">
+          <img src={photoDataUrl} className="w-full object-contain" />
+
+          <div className="absolute top-0 p-3">
+            <p className="text-white font-bold text-2xl">
+              {getFullPlantName(plant)}
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
-  return <div className="w-full mb-5">{renderPlantInfo()}</div>;
+  return <div className="w-full">{renderPlantInfo()}</div>;
 }

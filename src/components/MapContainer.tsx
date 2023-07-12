@@ -31,7 +31,7 @@ export function MapContainer() {
   }, []);
 
   return (
-    <div ref={mapContainerRef}>
+    <div ref={mapContainerRef} className="h-screen overflow-hidden w-full">
       <div className="relative touch-none inline-block select-none overflow-hidden">
         <MapCanvas></MapCanvas>
         {plantSites?.map((plantSite) => (
