@@ -6,13 +6,17 @@ export const getPlantSitesWithinDistance = (
   location: LatLong,
   plantSites: PlantSite[],
 ) => {
-  return plantSites.filter(
-    (plantSite) =>
-      distanceBetweenCoords(location, {
-        latitude: plantSite.latitude,
-        longitude: plantSite.longitude,
-      }) <= distance,
-  );
+  const plantSitesWithDistance = plantSites.map((plantSite) => ({
+    distance: distanceBetweenCoords(location, {
+      latitude: plantSite.latitude,
+      longitude: plantSite.longitude,
+    }),
+    ...plantSite,
+  }));
+
+  return plantSitesWithDistance
+    .filter((plantSite) => plantSite.distance <= distance)
+    .sort((a, b) => a.distance - b.distance);
 };
 
 const distanceBetweenCoords = (position1: LatLong, position2: LatLong) => {
