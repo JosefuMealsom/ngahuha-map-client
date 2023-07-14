@@ -8,6 +8,6 @@ export const fetchBlobUploadUrl = async (): Promise<BlobUrl> => {
   return response.json();
 };
 
-export const uploadBlob = (blobUploadUrl: string, data: Blob) => {
+export const uploadBlob = (blobUploadUrl: string, data: ArrayBuffer) => {
   return fetch(blobUploadUrl, { method: 'PUT', body: data });
 };
