@@ -11,7 +11,8 @@ import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
 export function ClosestPlantsToUser() {
   const currentView = useAppStore((state) => state.activeView);
   const setActiveView = useAppStore((state) => state.setActiveView);
-  const [closestPlants, setClosestPlants] = useState<PlantSite[]>();
+  const [closestPlants, setClosestPlants] =
+    useState<(PlantSite & { distance: number })[]>();
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
   const position = usePosition();
 
@@ -56,9 +57,8 @@ export function ClosestPlantsToUser() {
       <div
         className={`${
           isViewActive() ? '' : 'hidden'
-        } mb-4 pt-14 w-full h-full absolute top-0 left-0 bg-white p-6`}
+        } mb-4 w-full h-full overflow-scroll absolute top-0 left-0 bg-white`}
       >
-        <h1 className="font-bold mt-5 relative mb-3"> Closest plants</h1>
         {closestPlants?.map((plantSite) => (
           <ClosestPlantInfoComponent
             key={plantSite.id}

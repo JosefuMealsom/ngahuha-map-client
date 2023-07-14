@@ -7,14 +7,16 @@ import { syncPlantsOffline } from './services/api/plant.service';
 import { syncPlantSitesOffline } from './services/api/plant-site.service';
 import { MapContainer } from './components/MapContainer';
 import { ClosestPlantsToUser } from './components/ClosestPlantsToUser';
+import { syncPlantSitePhotosOffline } from './services/api/plant-site-photo.service';
 
 function App() {
   useEffect(() => {
     if (navigator.onLine) {
       const syncData = async () => {
         await gardenAreaService.syncOffline();
-        await syncPlantSitesOffline();
         await syncPlantsOffline();
+        await syncPlantSitesOffline();
+        await syncPlantSitePhotosOffline();
       };
       syncData();
     }

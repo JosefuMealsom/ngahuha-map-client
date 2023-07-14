@@ -30,21 +30,13 @@ describe('PlantSiteService', () => {
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
   };
-  const location: GeolocationCoordinates = {
-    accuracy: 10,
-    latitude: 20,
-    longitude: 30,
-    altitude: 111,
-    altitudeAccuracy: 111,
-    heading: 111,
-    speed: 111,
-  };
 
   describe('fetch()', () => {
     it('fetches the data from the API and returns it', async () => {
       stubFetchResponse([plantSite1, plantSite2]);
 
       const plantSites = await fetchPlantSites();
+
       assertEndPointCalled('https://www.dummy-api.com/plant-site');
 
       expect(plantSites).toEqual([
@@ -75,9 +67,9 @@ describe('PlantSiteService', () => {
       stubFetchResponse([plantSite1, plantSite2]);
 
       await syncPlantSitesOffline();
-      const savedDbData = await offlineDatabase.plantSite.toArray();
+      const savedPlantSiteData = await offlineDatabase.plantSite.toArray();
 
-      expect(savedDbData).toEqual([
+      expect(savedPlantSiteData).toEqual([
         {
           id: '123',
           plantId: '666',

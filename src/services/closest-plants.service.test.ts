@@ -20,14 +20,19 @@ describe('ClosestPlantsService', () => {
   });
 
   describe('getPlantSitesWithinDistance()', () => {
-    it('returns the plants within a certain distance', async () => {
+    it('returns the plants within a certain distance ordered from closest to furthest', async () => {
+      // Object containing used due to the distance being
+      // calculated, bit hard to determine with latlong values in a test.
       expect(
         getPlantSitesWithinDistance(20, position, [
-          closePlantSite1,
-          closePlantSite2,
           farPlantSite,
+          closePlantSite2,
+          closePlantSite1,
         ]),
-      ).toEqual([closePlantSite1, closePlantSite2]);
+      ).toEqual([
+        expect.objectContaining(closePlantSite1),
+        expect.objectContaining(closePlantSite2),
+      ]);
     });
   });
 });

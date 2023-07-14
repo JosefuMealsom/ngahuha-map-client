@@ -11,11 +11,11 @@ export const fetchPlantSites = (): Promise<PlantSite[]> => {
 
     const plantSite = dataToJSON.map((plantSite: PlantSite): PlantSite => {
       return {
-        id: plantSite.id as string,
-        plantId: plantSite.plantId as string,
-        latitude: plantSite.latitude as number,
-        longitude: plantSite.longitude as number,
-        accuracy: plantSite.accuracy as number,
+        id: plantSite.id,
+        plantId: plantSite.plantId,
+        latitude: plantSite.latitude,
+        longitude: plantSite.longitude,
+        accuracy: plantSite.accuracy,
         createdAt: plantSite.createdAt,
         updatedAt: plantSite.updatedAt,
       };
@@ -27,9 +27,10 @@ export const fetchPlantSites = (): Promise<PlantSite[]> => {
 
 export const syncPlantSitesOffline = (): Promise<PlantSite[]> => {
   return new Promise(async (success) => {
-    const plantSites = await fetchPlantSites();
-    await plantSiteTable.bulkPut(plantSites);
+    const plantSiteServerData = await fetchPlantSites();
 
-    success(plantSites);
+    await plantSiteTable.bulkPut(plantSiteServerData);
+
+    success(plantSiteServerData);
   });
 };

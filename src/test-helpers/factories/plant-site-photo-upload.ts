@@ -7,7 +7,7 @@ const plantSitePhotoUploadFactory = {
     const dummyData: PlantSitePhotoUpload = {
       id: count++,
       plantSiteUploadId: 123,
-      data: new Blob(),
+      data: new ArrayBuffer(8),
     };
 
     return Object.assign(dummyData, photoData);

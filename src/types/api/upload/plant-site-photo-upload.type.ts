@@ -1,6 +1,6 @@
 export type PlantSitePhotoUpload = {
   id?: number;
   plantSiteUploadId: number;
-  data: Blob;
+  data: ArrayBuffer;
   blobKey?: string;
 };

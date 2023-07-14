@@ -20,6 +20,13 @@ export const stubServerData = () => {
     },
     [],
   );
+  cy.intercept(
+    {
+      method: 'GET',
+      url: 'https://app.ngahuha-map-dev.com:8080/plant-site-photo',
+    },
+    [],
+  );
 };
 
 export const stubLastModifiedQueries = () => {
@@ -41,6 +48,13 @@ export const stubLastModifiedQueries = () => {
     {
       method: 'GET',
       url: 'https://app.ngahuha-map-dev.com:8080/garden-area?lastModified=*',
+    },
+    [],
+  );
+  cy.intercept(
+    {
+      method: 'GET',
+      url: 'https://app.ngahuha-map-dev.com:8080/plant-site-photo?lastModified=*',
     },
     [],
   );
