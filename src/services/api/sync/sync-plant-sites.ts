@@ -8,8 +8,14 @@ import { serializeCreatePlantSite } from './plant-site-create.serializer';
 
 export const uploadPlantSitesToServer = async () => {
   await uploadPhotoBlobs();
-  await uploadPlantSites();
-  await clearPlantUploads();
+
+  await uploadPlantSites().then(async (response) => {
+    if (!response.ok) {
+      throw Error(`Upload failed: ${response.status}`);
+    }
+
+    await clearPlantUploads();
+  });
 };
 
 const uploadPhotoBlobs = async () => {
@@ -38,21 +44,13 @@ const uploadPlantSites = async () => {
     ),
   );
 
-  await fetch(getFullApiPath('plant-site/bulk'), {
+  return fetch(getFullApiPath('plant-site/bulk'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(createJSON),
   });
-
-  await Promise.all(
-    plantSiteUploads.map((plantSiteUpload) => {
-      if (!plantSiteUpload.id) {
-        return;
-      }
-    }),
-  );
 };
 
 const clearPlantUploads = async () => {
