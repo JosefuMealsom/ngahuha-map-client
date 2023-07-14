@@ -11,7 +11,8 @@ import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
 export function ClosestPlantsToUser() {
   const currentView = useAppStore((state) => state.activeView);
   const setActiveView = useAppStore((state) => state.setActiveView);
-  const [closestPlants, setClosestPlants] = useState<PlantSite[]>();
+  const [closestPlants, setClosestPlants] =
+    useState<(PlantSite & { distance: number })[]>();
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
   const position = usePosition();
 

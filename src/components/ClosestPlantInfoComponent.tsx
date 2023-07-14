@@ -5,7 +5,9 @@ import { PlantSite } from '../types/api/plant-site.type';
 import { getFullPlantName } from '../utils/plant-name-decorator.util';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
 
-export function ClosestPlantInfoComponent(props: PlantSite) {
+export function ClosestPlantInfoComponent(
+  props: PlantSite & { distance: number },
+) {
   const [plant, setPlant] = useState<Plant>();
   const [photoDataUrl, setPhotoDataUrl] = useState('');
 
@@ -43,6 +45,7 @@ export function ClosestPlantInfoComponent(props: PlantSite) {
             <p className="text-white font-bold text-2xl">
               {getFullPlantName(plant)}
             </p>
+            <p className="text-white">{props.distance.toFixed(1)}m away</p>
           </div>
         </div>
       </div>
