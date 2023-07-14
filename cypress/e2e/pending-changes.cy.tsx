@@ -75,4 +75,22 @@ describe('Plant sites waiting to be uploaded', () => {
     pendingUploadPage.deleteButtonForPlantSiteId('1').click();
     cy.contains("The worst species 'lame'").should('not.exist');
   });
+
+  it('does not delete plant site uploads when the server upload fails', () => {
+    cy.intercept(
+      'POST',
+      'https://app.ngahuha-map-dev.com:8080/plant-site/bulk',
+      { statusCode: 500 },
+    ).as('uploadPlantSites');
+
+    pendingUploadPage.pendingUploadsButton().click();
+    pendingUploadPage.uploadToServerButton().click();
+
+    cy.wait('@uploadPlantSites');
+
+    cy.wait(500);
+
+    cy.contains("The worst species 'lame'");
+    cy.contains("The best species 'radical'");
+  });
 });

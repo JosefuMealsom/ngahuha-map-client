@@ -31,9 +31,14 @@ export function PlantPhotosToUpload() {
 
   async function uploadPlants() {
     setUploadingState(true);
-    await uploadPlantSitesToServer();
-    setUploadingState(false);
-    setActiveView('ViewMap');
+
+    try {
+      await uploadPlantSitesToServer();
+      setUploadingState(false);
+      setActiveView('ViewMap');
+    } catch (error) {
+      setUploadingState(false);
+    }
   }
 
   function isViewActive() {
