@@ -12,29 +12,32 @@ class PlantIdMissingError extends Error {
 }
 
 export const addPlantSiteWithPhoto = async (
-  photoBlob: Blob,
+  photoBlobs: Blob | Blob[],
   location: GeolocationCoordinates,
   plantId: string,
 ) => {
-  return new Promise(async (success, reject) => {
-    const plant = await plantTable.get(plantId);
+  //convert to array if only 1 photo passed as a parameter
+  const photos = [photoBlobs].flat();
 
-    if (!plant) {
-      reject(new PlantIdMissingError(plantId));
-    }
+  const plant = await plantTable.get(plantId);
 
-    offlineDatabase.transaction(
-      'rw',
-      plantSiteUploadTable,
-      plantSitePhotoUploadTable,
-      async () => {
-        const plantSiteId = await addPlantSiteUpload(plantId, location);
-        await addPlantSitePhotoUpload(plantSiteId as number, photoBlob);
+  if (!plant) {
+    throw new PlantIdMissingError(plantId);
+  }
 
-        success(plantSiteId);
-      },
-    );
-  });
+  const plantSiteId = await addPlantSiteUpload(plantId, location);
+  return offlineDatabase.transaction(
+    'rw',
+    plantSiteUploadTable,
+    plantSitePhotoUploadTable,
+    async () => {
+      return Promise.all(
+        photos.map(async (blob) =>
+          addPlantSitePhotoUpload(plantSiteId as number, blob),
+        ),
+      );
+    },
+  );
 };
 
 export const deletePlantSite = async (id: number) => {

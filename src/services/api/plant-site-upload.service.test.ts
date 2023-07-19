@@ -21,6 +21,7 @@ describe('PlantSiteUploadService', () => {
   afterEach(async () => {
     await plantSiteUploadTable.clear();
     await plantSitePhotoUploadTable.clear();
+    await plantTable.clear();
   });
 
   const location: GeolocationCoordinates = {
@@ -34,25 +35,47 @@ describe('PlantSiteUploadService', () => {
   };
 
   describe('addPlantSiteWithPhoto()', () => {
-    it('adds a new plant site and saves it offline', async () => {
-      await plantTable.add(plantFactory.create({ id: 'abc' }));
+    describe('adding photos', () => {
+      beforeEach(async () => {
+        await plantTable.add(plantFactory.create({ id: 'abc' }));
+      });
 
-      const blob = new Blob();
-      await addPlantSiteWithPhoto(blob, location, 'abc');
-      const savedPlantSiteData =
-        await offlineDatabase.plantSiteUpload.toArray();
+      it('adds a new plant site and saves it offline', async () => {
+        const blob = new Blob();
+        await addPlantSiteWithPhoto(blob, location, 'abc');
+        const savedPlantSiteData =
+          await offlineDatabase.plantSiteUpload.toArray();
 
-      expect(savedPlantSiteData.length).toEqual(1);
-      const plantSite = savedPlantSiteData[0];
-      expect(plantSite.accuracy).toEqual(10);
-      expect(plantSite.latitude).toEqual(20);
-      expect(plantSite.longitude).toEqual(30);
+        expect(savedPlantSiteData.length).toEqual(1);
+        const plantSite = savedPlantSiteData[0];
+        expect(plantSite.accuracy).toEqual(10);
+        expect(plantSite.latitude).toEqual(20);
+        expect(plantSite.longitude).toEqual(30);
 
-      const savedPlantPhotoData =
-        await offlineDatabase.plantSitePhotoUpload.toArray();
-      expect(savedPlantPhotoData.length).toEqual(1);
-      const photo = savedPlantPhotoData[0];
-      expect(photo.plantSiteUploadId).toEqual(plantSite.id);
+        const savedPlantPhotoData =
+          await offlineDatabase.plantSitePhotoUpload.toArray();
+        expect(savedPlantPhotoData.length).toEqual(1);
+        const photo = savedPlantPhotoData[0];
+        expect(photo.plantSiteUploadId).toEqual(plantSite.id);
+      });
+
+      it('can add an array of photos', async () => {
+        const blobs = [new Blob(), new Blob()];
+        await addPlantSiteWithPhoto(blobs, location, 'abc');
+        const savedPlantSiteData =
+          await offlineDatabase.plantSiteUpload.toArray();
+        const plantSiteUploadId = savedPlantSiteData[0].id;
+
+        const savedPlantPhotoData =
+          await offlineDatabase.plantSitePhotoUpload.toArray();
+        expect(savedPlantPhotoData.length).toEqual(2);
+        expect(savedPlantPhotoData[0].plantSiteUploadId).toEqual(
+          plantSiteUploadId,
+        );
+        expect(savedPlantPhotoData[1].plantSiteUploadId).toEqual(
+          plantSiteUploadId,
+        );
+      });
     });
 
     describe('plant missing', () => {
