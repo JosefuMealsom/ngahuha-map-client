@@ -16,26 +16,33 @@ export const addPlantSiteWithPhoto = async (
   location: GeolocationCoordinates,
   plantId: string,
 ) => {
-  //convert to array if only 1 photo passed as a parameter
-  const photos = [photoBlobs].flat();
-
   const plant = await plantTable.get(plantId);
 
   if (!plant) {
     throw new PlantIdMissingError(plantId);
   }
 
-  const plantSiteId = await addPlantSiteUpload(plantId, location);
+  //convert to array if only 1 photo passed as a parameter
+  const photos = await Promise.all(
+    [photoBlobs].flat().map(async (blob) => blob.arrayBuffer()),
+  );
+
   return offlineDatabase.transaction(
     'rw',
     plantSiteUploadTable,
     plantSitePhotoUploadTable,
     async () => {
-      return Promise.all(
-        photos.map(async (blob) =>
-          addPlantSitePhotoUpload(plantSiteId as number, blob),
-        ),
-      );
+      return new Promise(async (success) => {
+        const plantSiteId = await addPlantSiteUpload(plantId, location);
+
+        await Promise.all(
+          photos.map(async (photoBuffer) =>
+            addPlantSitePhotoUpload(plantSiteId as number, photoBuffer),
+          ),
+        );
+
+        success(plantSiteId);
+      });
     },
   );
 };
@@ -77,9 +84,8 @@ const addPlantSiteUpload = (
 
 const addPlantSitePhotoUpload = async (
   plantSiteId: number,
-  photoBlob: Blob,
+  photoData: ArrayBuffer,
 ) => {
-  const photoData = await photoBlob.arrayBuffer();
   return plantSitePhotoUploadTable.add({
     plantSiteUploadId: plantSiteId,
     data: photoData,

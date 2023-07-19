@@ -12,10 +12,10 @@ export const newPlantSitePage = {
   },
 
   takePhotoButton: () => {
-    return cy.contains('.border-solid.border-black.border', 'Take photo');
+    return cy.get('[data-cy="add-photo"]');
   },
 
   saveButton: () => {
-    return cy.get("input[value='Lock in location and save!']");
+    return cy.get('[data-cy="save-plant-site"]');
   },
 };
