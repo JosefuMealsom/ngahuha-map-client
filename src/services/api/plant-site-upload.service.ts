@@ -12,29 +12,39 @@ class PlantIdMissingError extends Error {
 }
 
 export const addPlantSiteWithPhoto = async (
-  photoBlob: Blob,
+  photoBlobs: Blob | Blob[],
   location: GeolocationCoordinates,
   plantId: string,
 ) => {
-  return new Promise(async (success, reject) => {
-    const plant = await plantTable.get(plantId);
+  const plant = await plantTable.get(plantId);
 
-    if (!plant) {
-      reject(new PlantIdMissingError(plantId));
-    }
+  if (!plant) {
+    throw new PlantIdMissingError(plantId);
+  }
 
-    offlineDatabase.transaction(
-      'rw',
-      plantSiteUploadTable,
-      plantSitePhotoUploadTable,
-      async () => {
+  //convert to array if only 1 photo passed as a parameter
+  const photos = await Promise.all(
+    [photoBlobs].flat().map(async (blob) => blob.arrayBuffer()),
+  );
+
+  return offlineDatabase.transaction(
+    'rw',
+    plantSiteUploadTable,
+    plantSitePhotoUploadTable,
+    async () => {
+      return new Promise(async (success) => {
         const plantSiteId = await addPlantSiteUpload(plantId, location);
-        await addPlantSitePhotoUpload(plantSiteId as number, photoBlob);
+
+        await Promise.all(
+          photos.map(async (photoBuffer) =>
+            addPlantSitePhotoUpload(plantSiteId as number, photoBuffer),
+          ),
+        );
 
         success(plantSiteId);
-      },
-    );
-  });
+      });
+    },
+  );
 };
 
 export const deletePlantSite = async (id: number) => {
@@ -74,9 +84,8 @@ const addPlantSiteUpload = (
 
 const addPlantSitePhotoUpload = async (
   plantSiteId: number,
-  photoBlob: Blob,
+  photoData: ArrayBuffer,
 ) => {
-  const photoData = await photoBlob.arrayBuffer();
   return plantSitePhotoUploadTable.add({
     plantSiteUploadId: plantSiteId,
     data: photoData,

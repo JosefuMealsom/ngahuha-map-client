@@ -34,9 +34,9 @@ export function PlantPhotosToUpload() {
 
     try {
       await uploadPlantSitesToServer();
-      setUploadingState(false);
       setActiveView('ViewMap');
     } catch (error) {
+    } finally {
       setUploadingState(false);
     }
   }

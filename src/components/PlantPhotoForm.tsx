@@ -1,6 +1,5 @@
 import React, { FormEvent, useState } from 'react';
 import { ButtonComponent } from './ButtonComponent';
-import blobToDataUrlService from '../services/blob-to-data-url.service';
 import AutocompleteComponent from './AutocompleteComponent';
 import { plantTable } from '../services/offline.database';
 import { getFullPlantName } from '../utils/plant-name-decorator.util';
@@ -9,11 +8,12 @@ import { addPlantSiteWithPhoto } from '../services/api/plant-site-upload.service
 import cameraUrl from '../assets/svg/camera.svg';
 import { usePosition } from '../hooks/use-position.hook';
 import { useAppStore } from '../store/app.store';
+import { PlantPhotoImage } from './PlantPhotoImage';
 
 export function PlantPhotoForm() {
-  const [photo, setPhotoInput] = useState<File>();
+  const [photos, setPhotos] = useState<File[]>([]);
   const [plantNameValue, setPlantNameValue] = useState<string>();
-  const [previewImage, setPreviewImage] = useState('');
+
   const currentView = useAppStore((state) => state.activeView);
   const setActiveView = useAppStore((state) => state.setActiveView);
   const liveCoords = usePosition();
@@ -31,11 +31,11 @@ export function PlantPhotoForm() {
 
     const plantId = findPlantIdByFullName();
 
-    if (!photo || !plantId || !liveCoords) {
+    if (photos.length === 0 || !plantId || !liveCoords) {
       return;
     }
 
-    await addPlantSiteWithPhoto(photo, liveCoords, plantId);
+    await addPlantSiteWithPhoto(photos, liveCoords, plantId);
 
     resetForm();
     setActiveView('ViewMap');
@@ -46,20 +46,16 @@ export function PlantPhotoForm() {
   }
 
   function resetForm() {
-    setPhotoInput(undefined);
-    setPreviewImage('');
+    setPhotos([]);
     setPlantNameValue('');
   }
 
   async function onPhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newPhoto = event.target.files?.item(0);
     if (newPhoto) {
-      setPhotoInput(newPhoto);
-
-      const photoData = await blobToDataUrlService.convert(newPhoto);
-      if (photoData) {
-        setPreviewImage(photoData);
-      }
+      const photosCopy = [...photos];
+      photosCopy.push(newPhoto);
+      setPhotos(photosCopy);
     }
   }
 
@@ -76,19 +72,20 @@ export function PlantPhotoForm() {
   }
 
   function renderPhotos() {
-    if (!photo) {
-      return;
-    }
+    if (photos.length === 0) return;
+
     return (
-      <div>
+      <div data-cy="plant-form-images">
         <label className="block mb-3 font-semibold">Photos</label>
-        <img src={previewImage} className="mb-3 w-1/4" />
+        {photos?.map((photoImage, index) => {
+          return <PlantPhotoImage photoImage={photoImage} key={index} />;
+        })}
       </div>
     );
   }
 
   function renderLiveLocation() {
-    if (!photo || !liveCoords) return;
+    if (photos.length === 0 || !liveCoords) return;
 
     return (
       <div className="mb-5">
@@ -124,7 +121,7 @@ export function PlantPhotoForm() {
   }
 
   function renderSave() {
-    if (!photo || !plantNameValue) {
+    if (!photos || !plantNameValue) {
       return;
     }
     return (
@@ -132,6 +129,7 @@ export function PlantPhotoForm() {
         className="block border-solid  border px-6 py-2 bg-sky-600
         font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
         type="submit"
+        data-cy="save-plant-site"
         value="Lock in location and save!"
         onSubmit={savePhotoLocally}
       />
@@ -175,8 +173,9 @@ export function PlantPhotoForm() {
             <label
               htmlFor="photo"
               className="border-solid border-black border p-2 hover:bg-gray-300 cursor-pointer mb-7 inline-block rounded-md"
+              data-cy="add-photo"
             >
-              Take photo
+              Add photo
               <img
                 src={cameraUrl}
                 className="inline-block ml-2 mr-1 h-5 align-middle relative -top-0.5"
