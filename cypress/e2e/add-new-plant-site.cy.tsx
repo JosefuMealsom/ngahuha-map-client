@@ -30,9 +30,7 @@ describe('Add new plant site for upload', () => {
     newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
     newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto2');
 
-    newPlantSitePage.plantFormImageContainer().within(() => {
-      cy.get('img').should('have.length', 2);
-    });
+    newPlantSitePage.plantFormPhotos().should('have.length', 2);
 
     cy.contains('123');
     cy.contains('456');
@@ -44,5 +42,30 @@ describe('Add new plant site for upload', () => {
     pendingUploadPage.pendingUploadsButton().click();
     cy.contains('Pending changes');
     cy.contains('Cool species');
+  });
+
+  it('can remove a taken photo on the photo form', () => {
+    cy.wait(['@getPlants', '@getGardenAreas']);
+
+    //required for the live query hooks to populate the data correctly in the form
+    cy.wait(300);
+
+    //@ts-ignore https://docs.cypress.io/api/commands/selectfile?ref=cypress.io#From-a-fixture
+    cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
+    cy.fixture('images/lemons.jpeg', { encoding: null }).as('plantSitePhoto2');
+
+    newPlantSitePage.openFormButton().click();
+    cy.contains('Add a new location');
+    newPlantSitePage.plantSearchAutocomplete().type('Cool spec');
+
+    cy.contains('Cool species');
+    newPlantSitePage.autoCompleteEntry('Cool species').click();
+    newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
+    newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto2');
+
+    newPlantSitePage.removePhotoButtons().should('have.length', 2);
+    newPlantSitePage.removePhotoButtons().first().click();
+
+    newPlantSitePage.plantFormPhotos().should('have.length', 1);
   });
 });

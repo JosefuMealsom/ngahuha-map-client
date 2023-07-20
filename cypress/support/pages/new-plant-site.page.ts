@@ -19,7 +19,11 @@ export const newPlantSitePage = {
     return cy.get('[data-cy="save-plant-site"]');
   },
 
-  plantFormImageContainer: () => {
-    return cy.get('[data-cy="plant-form-images"]');
+  plantFormPhotos: () => {
+    return cy.get('[data-cy="photo-form-photo"]');
+  },
+
+  removePhotoButtons: () => {
+    return cy.get('[data-cy="remove-photo-button"]');
   },
 };

@@ -1,15 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PlantSite } from '../types/api/plant-site.type';
 import { interpolateToDomPosition } from '../services/map-position-interpolator.service';
 
 import pinSvg from '../assets/svg/map-pin.svg';
 import { useMapStore } from '../store/map.store';
+import { getFullPlantName } from '../utils/plant-name-decorator.util';
+import { plantTable } from '../services/offline.database';
 
 export function MapMarker(props: PlantSite) {
   const marker = useRef<HTMLDivElement>(null);
+  const infoWindow = useRef<HTMLDivElement>(null);
   const position = { latitude: props.latitude, longitude: props.longitude };
   const zoom = useMapStore((state) => state.zoom);
   const pan = useMapStore((state) => state.pan);
+  const [plantName, setPlantName] = useState('');
 
   useEffect(() => {
     if (!marker.current) return;

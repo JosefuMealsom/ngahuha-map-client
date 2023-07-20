@@ -1,6 +1,10 @@
 import { LatLong } from '../../types/lat-long.type';
 import { useMapStore } from '../../store/map.store';
 import { interpolateToCanvasPosition } from '../map-position-interpolator.service';
+import pinSvg from '../../assets/svg/map-pin.svg';
+
+const pinImage = new Image();
+pinImage.src = pinSvg;
 
 const canvasDimensions = () => {
   return useMapStore.getState().canvasDimensions;
@@ -15,6 +19,25 @@ export const renderImageOnMap = (
   context.globalAlpha = alpha || 1;
   context.drawImage(image, 0, 0, width, height);
   context.globalAlpha = 1;
+};
+
+export const renderMarkerImageOnMap = (
+  context: CanvasRenderingContext2D,
+  coords: LatLong,
+) => {
+  const canvasPosition = interpolateToCanvasPosition(
+    coords,
+    useMapStore.getState(),
+  );
+
+  if (!canvasPosition) {
+    return;
+  }
+
+  const { x, y } = canvasPosition;
+  const zoom = useMapStore.getState().zoom;
+
+  context.drawImage(pinImage, x, y, 25 / zoom, 25 / zoom);
 };
 
 export const renderMarkerOnMap = (
