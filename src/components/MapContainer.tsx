@@ -34,9 +34,9 @@ export function MapContainer() {
     <div ref={mapContainerRef} className="h-screen overflow-hidden w-full">
       <div className="relative touch-none inline-block select-none overflow-hidden">
         <MapCanvas></MapCanvas>
-        {plantSites?.map((plantSite) => (
+        {/* {plantSites?.map((plantSite) => (
           <MapMarker key={plantSite.id} {...plantSite}></MapMarker>
-        ))}
+        ))} */}
         <LocationMarker></LocationMarker>
         <FeatureMarker
           text="The steppes"
