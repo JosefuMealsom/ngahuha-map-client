@@ -13,6 +13,7 @@ import { applyTransform } from '../services/view/map-view-transform.service';
 import { useMapStore } from '../store/map.store';
 import {
   renderImageOnMap,
+  renderMarkerImageOnMap,
   renderMarkerOnMap,
 } from '../services/view/map-renderer';
 
@@ -58,7 +59,7 @@ export function MapCanvas() {
 
   function drawMapMarkers(context: CanvasRenderingContext2D) {
     for (const plantSite of plantSites) {
-      renderMarkerOnMap(context, plantSite, '#0f0');
+      renderMarkerImageOnMap(context, plantSite);
     }
     for (const plantSiteUpload of plantSiteUploads) {
       // renderMarkerOnMap(context, plantSiteUpload, '#00f');
