@@ -46,7 +46,7 @@ export function MapCanvas() {
 
     applyTransform(context, () => {
       drawMapImages(context);
-      // drawMapMarkers(context);
+      drawMapMarkers(context);
     });
   }
 
@@ -61,7 +61,7 @@ export function MapCanvas() {
       renderMarkerOnMap(context, plantSite, '#0f0');
     }
     for (const plantSiteUpload of plantSiteUploads) {
-      renderMarkerOnMap(context, plantSiteUpload, '#00f');
+      // renderMarkerOnMap(context, plantSiteUpload, '#00f');
     }
   }
 
