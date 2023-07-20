@@ -18,7 +18,8 @@ describe('Add new plant site for upload', () => {
     cy.wait(300);
 
     //@ts-ignore https://docs.cypress.io/api/commands/selectfile?ref=cypress.io#From-a-fixture
-    cy.fixture('ngahuha.png', { encoding: null }).as('plantSitePhoto');
+    cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
+    cy.fixture('images/lemons.jpeg', { encoding: null }).as('plantSitePhoto2');
 
     newPlantSitePage.openFormButton().click();
     cy.contains('Add a new location');
@@ -26,7 +27,13 @@ describe('Add new plant site for upload', () => {
 
     cy.contains('Cool species');
     newPlantSitePage.autoCompleteEntry('Cool species').click();
-    newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto');
+    newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
+    newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto2');
+
+    newPlantSitePage.plantFormImageContainer().within(() => {
+      cy.get('img').should('have.length', 2);
+    });
+
     cy.contains('123');
     cy.contains('456');
     cy.contains('Accurate to within 888.00m');

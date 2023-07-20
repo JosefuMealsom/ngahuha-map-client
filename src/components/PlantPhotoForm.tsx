@@ -53,7 +53,7 @@ export function PlantPhotoForm() {
   async function onPhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newPhoto = event.target.files?.item(0);
     if (newPhoto) {
-      const photosCopy = photos;
+      const photosCopy = [...photos];
       photosCopy.push(newPhoto);
       setPhotos(photosCopy);
     }
@@ -75,11 +75,11 @@ export function PlantPhotoForm() {
     if (photos.length === 0) return;
 
     return (
-      <div>
+      <div data-cy="plant-form-images">
         <label className="block mb-3 font-semibold">Photos</label>
-        {photos?.map((photoImage, index) => (
-          <PlantPhotoImage photoImage={photoImage} key={index} />
-        ))}
+        {photos?.map((photoImage, index) => {
+          return <PlantPhotoImage photoImage={photoImage} key={index} />;
+        })}
       </div>
     );
   }
