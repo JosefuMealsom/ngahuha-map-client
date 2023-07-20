@@ -10,8 +10,13 @@ import { usePosition } from '../hooks/use-position.hook';
 import { useAppStore } from '../store/app.store';
 import { PlantPhotoImage } from './PlantPhotoImage';
 
+type PhotoFile = {
+  id: string;
+  file: File;
+};
+
 export function PlantPhotoForm() {
-  const [photos, setPhotos] = useState<File[]>([]);
+  const [photos, setPhotos] = useState<PhotoFile[]>([]);
   const [plantNameValue, setPlantNameValue] = useState<string>();
 
   const currentView = useAppStore((state) => state.activeView);
@@ -35,7 +40,11 @@ export function PlantPhotoForm() {
       return;
     }
 
-    await addPlantSiteWithPhoto(photos, liveCoords, plantId);
+    await addPlantSiteWithPhoto(
+      photos.map((photo) => photo.file),
+      liveCoords,
+      plantId,
+    );
 
     resetForm();
     setActiveView('ViewMap');
@@ -54,7 +63,15 @@ export function PlantPhotoForm() {
     const newPhoto = event.target.files?.item(0);
     if (newPhoto) {
       const photosCopy = [...photos];
-      photosCopy.push(newPhoto);
+
+      const array = new Uint32Array(10);
+      crypto.getRandomValues(array);
+
+      photosCopy.push({
+        file: newPhoto,
+        id: crypto.randomUUID(),
+      });
+
       setPhotos(photosCopy);
     }
   }
@@ -74,14 +91,26 @@ export function PlantPhotoForm() {
   function renderPhotos() {
     if (photos.length === 0) return;
 
+    console.log('fds');
     return (
       <div data-cy="plant-form-images">
         <label className="block mb-3 font-semibold">Photos</label>
-        {photos?.map((photoImage, index) => {
-          return <PlantPhotoImage photoImage={photoImage} key={index} />;
-        })}
+        {photos?.map((photoImage) => (
+          <PlantPhotoImage
+            key={photoImage.id}
+            {...photoImage}
+            onRemoveHandler={removePlantPhoto}
+          />
+        ))}
       </div>
     );
+  }
+
+  function removePlantPhoto(photoIdToRemove: string) {
+    const photosCopy = photos.filter(
+      (photoFile) => photoFile.id !== photoIdToRemove,
+    );
+    setPhotos(photosCopy);
   }
 
   function renderLiveLocation() {
@@ -121,7 +150,7 @@ export function PlantPhotoForm() {
   }
 
   function renderSave() {
-    if (!photos || !plantNameValue) {
+    if (photos.length === 0 || !plantNameValue) {
       return;
     }
     return (
