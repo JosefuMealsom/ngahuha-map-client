@@ -1,10 +1,10 @@
-import { PlantPhotosToUpload } from './components/PlantPhotosToUpload';
-import { PlantPhotoForm } from './components/PlantPhotoForm';
+import { PlantPhotosToUpload } from './pages/PendingUploads/PlantPhotosToUpload';
+import { PlantPhotoForm } from './pages/NewPlantSite/PlantPhotoForm';
 import gardenAreaService from './services/api/garden-area.service';
 import { syncPlantsOffline } from './services/api/plant.service';
 import { syncPlantSitesOffline } from './services/api/plant-site.service';
-import { MapContainer } from './components/MapContainer';
-import { ClosestPlantsToUser } from './components/ClosestPlantsToUser';
+import { MapContainer } from './pages/MapView/MapContainer';
+import { ClosestPlantsToUser } from './pages/ClosestPlants/ClosestPlantsToUser';
 import { syncPlantSitePhotosOffline } from './services/api/plant-site-photo.service';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

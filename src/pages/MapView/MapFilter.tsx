@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { PlantSite } from '../types/api/plant-site.type';
-import AutocompleteComponent from './AutocompleteComponent';
+import { PlantSite } from '../../types/api/plant-site.type';
+import AutocompleteComponent from '../../components/AutocompleteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { plantSiteTable, plantTable } from '../services/offline.database';
-import { getFullPlantName } from '../utils/plant-name-decorator.util';
+import { plantSiteTable, plantTable } from '../../services/offline.database';
+import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { MapMarker } from './MapMarker';
 
 export function MapFilter() {

@@ -1,13 +1,13 @@
 import React, { FormEvent, useState } from 'react';
-import { ButtonComponent } from './ButtonComponent';
-import AutocompleteComponent from './AutocompleteComponent';
-import { plantTable } from '../services/offline.database';
-import { getFullPlantName } from '../utils/plant-name-decorator.util';
+import { ButtonComponent } from '../../components/ButtonComponent';
+import AutocompleteComponent from '../../components/AutocompleteComponent';
+import { plantTable } from '../../services/offline.database';
+import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { addPlantSiteWithPhoto } from '../services/api/plant-site-upload.service';
-import cameraUrl from '../assets/svg/camera.svg';
-import { usePosition } from '../hooks/use-position.hook';
-import { useAppStore } from '../store/app.store';
+import { addPlantSiteWithPhoto } from '../../services/api/plant-site-upload.service';
+import cameraUrl from '../../assets/svg/camera.svg';
+import { usePosition } from '../../hooks/use-position.hook';
+import { useAppStore } from '../../store/app.store';
 import { PlantPhotoImage } from './PlantPhotoImage';
 
 type PhotoFile = {

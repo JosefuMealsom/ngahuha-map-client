@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
-import type { Plant } from '../types/api/plant.type';
-import { plantTable, plantSitePhotoTable } from '../services/offline.database';
-import { PlantSite } from '../types/api/plant-site.type';
-import { getFullPlantName } from '../utils/plant-name-decorator.util';
-import blobToDataUrlService from '../services/blob-to-data-url.service';
+import type { Plant } from '../../types/api/plant.type';
+import {
+  plantTable,
+  plantSitePhotoTable,
+} from '../../services/offline.database';
+import { PlantSite } from '../../types/api/plant-site.type';
+import { getFullPlantName } from '../../utils/plant-name-decorator.util';
+import blobToDataUrlService from '../../services/blob-to-data-url.service';
 
 export function ClosestPlantInfoComponent(
   props: PlantSite & { distance: number },

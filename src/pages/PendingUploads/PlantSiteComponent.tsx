@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import type { Plant } from '../types/api/plant.type';
-import type { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
-import { plantTable } from '../services/offline.database';
-import { getFullPlantName } from '../utils/plant-name-decorator.util';
-import { deletePlantSite } from '../services/api/plant-site-upload.service';
-import trashSvg from '../assets/svg/trash-2.svg';
+import type { Plant } from '../../types/api/plant.type';
+import type { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.type';
+import { plantTable } from '../../services/offline.database';
+import { getFullPlantName } from '../../utils/plant-name-decorator.util';
+import { deletePlantSite } from '../../services/api/plant-site-upload.service';
+import trashSvg from '../../assets/svg/trash-2.svg';
 
 export function PlantSiteComponent(
   props: PlantSiteUpload & { isUploading: boolean },

@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { PlantSite } from '../types/api/plant-site.type';
-import { interpolateToDomPosition } from '../services/map-position-interpolator.service';
+import { PlantSite } from '../../types/api/plant-site.type';
+import { interpolateToDomPosition } from '../../services/map-position-interpolator.service';
 
-import pinSvg from '../assets/svg/map-pin.svg';
-import { useMapStore } from '../store/map.store';
+import pinSvg from '../../assets/svg/map-pin.svg';
+import { useMapStore } from '../../store/map.store';
 
 export function MapMarker(props: PlantSite) {
   const marker = useRef<HTMLDivElement>(null);
