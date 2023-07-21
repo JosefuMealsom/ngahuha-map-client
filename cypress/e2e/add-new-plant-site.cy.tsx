@@ -23,7 +23,7 @@ describe('Add new plant site for upload', () => {
 
     newPlantSitePage.openFormButton().click();
     cy.contains('Add a new location');
-    newPlantSitePage.plantSearchAutocomplete().type('Cool spec');
+    newPlantSitePage.plantSearchInput().type('Cool spec');
 
     cy.contains('Cool species');
     newPlantSitePage.autoCompleteEntry('Cool species').click();
@@ -56,7 +56,7 @@ describe('Add new plant site for upload', () => {
 
     newPlantSitePage.openFormButton().click();
     cy.contains('Add a new location');
-    newPlantSitePage.plantSearchAutocomplete().type('Cool spec');
+    newPlantSitePage.plantSearchInput().type('Cool spec');
 
     cy.contains('Cool species');
     newPlantSitePage.autoCompleteEntry('Cool species').click();

@@ -91,7 +91,6 @@ export function PlantPhotoForm() {
   function renderPhotos() {
     if (photos.length === 0) return;
 
-    console.log('fds');
     return (
       <div data-cy="plant-form-images">
         <label className="block mb-3 font-semibold">Photos</label>
@@ -190,7 +189,10 @@ export function PlantPhotoForm() {
       >
         <form onSubmit={savePhotoLocally}>
           <h1 className="font-bold mt-5 mb-7 text-xl">Add a new location</h1>
-          <div className="mb-7 z-10 relative max-w-md">
+          <div
+            className="mb-7 z-10 relative max-w-md"
+            data-cy="plant-form-autocomplete-container"
+          >
             <AutocompleteComponent
               items={plantList?.map((plantItem) => plantItem.name) || []}
               placeholder="Type species name to search"
