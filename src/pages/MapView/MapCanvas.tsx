@@ -1,21 +1,21 @@
 import { useRef } from 'react';
-import mapUrl from '../assets/ngahuha.png';
-import { loadImage } from '../services/image-loader.service';
-import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
+import mapUrl from '../../assets/ngahuha.png';
+import { loadImage } from '../../services/image-loader.service';
+import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
 import {
   plantSiteTable,
   plantSiteUploadTable,
-} from '../services/offline.database';
-import { PlantSite } from '../types/api/plant-site.type';
-import { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
+} from '../../services/offline.database';
+import { PlantSite } from '../../types/api/plant-site.type';
+import { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.type';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { applyTransform } from '../services/view/map-view-transform.service';
-import { useMapStore } from '../store/map.store';
+import { applyTransform } from '../../services/view/map-view-transform.service';
+import { useMapStore } from '../../store/map.store';
 import {
   renderImageOnMap,
   renderMarkerImageOnMap,
   renderMarkerOnMap,
-} from '../services/view/map-renderer';
+} from '../../services/view/map-renderer';
 
 export function MapCanvas() {
   const canvasDimensions = useMapStore((state) => state.canvasDimensions);

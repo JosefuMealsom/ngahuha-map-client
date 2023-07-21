@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import React, { RefObject, createRef, useState } from 'react';
+import React, { useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 
 export default function AutocompleteComponent(props: {

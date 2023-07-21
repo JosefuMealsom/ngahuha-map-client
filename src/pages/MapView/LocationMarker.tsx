@@ -1,19 +1,20 @@
 import { useEffect, useRef } from 'react';
-import { useMapStore } from '../store/map.store';
-import { interpolateToDomPosition } from '../services/map-position-interpolator.service';
-import { LatLong } from '../types/lat-long.type';
+import { useMapStore } from '../../store/map.store';
+import { interpolateToDomPosition } from '../../services/map-position-interpolator.service';
+import { usePosition } from '../../hooks/use-position.hook';
 
-export function FeatureMarker(props: { text: string; position: LatLong }) {
+export function LocationMarker() {
   const marker = useRef<HTMLDivElement>(null);
   const zoom = useMapStore((state) => state.zoom);
   const pan = useMapStore((state) => state.pan);
+  const position = usePosition();
 
   useEffect(() => {
-    if (!marker.current) return;
+    if (!marker.current || !position) return;
 
     const newPosition = interpolateToDomPosition(
       marker.current.parentElement?.clientHeight || window.innerHeight,
-      props.position,
+      position,
       useMapStore.getState(),
     );
 
@@ -21,11 +22,13 @@ export function FeatureMarker(props: { text: string; position: LatLong }) {
 
     marker.current.classList.remove('hidden');
     marker.current.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
-  }, [zoom, pan]);
+  }, [zoom, pan, position]);
 
   return (
-    <div ref={marker} className="text-black top-0 left-0 absolute">
-      <p className="text-xs -translate-x-1/2">{props.text}</p>
-    </div>
+    <div
+      ref={marker}
+      className="w-4 h-4 bg-sky-700 top-0 left-0 absolute hidden rounded-full"
+      data-cy="location-marker"
+    ></div>
   );
 }

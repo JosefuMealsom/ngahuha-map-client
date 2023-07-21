@@ -1,11 +1,11 @@
-import { ButtonComponent } from './ButtonComponent';
+import { ButtonComponent } from '../../components/ButtonComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { plantSiteTable } from '../services/offline.database';
-import { useAppStore } from '../store/app.store';
-import { usePosition } from '../hooks/use-position.hook';
-import { useState } from 'react';
-import { PlantSite } from '../types/api/plant-site.type';
-import { getPlantSitesWithinDistance } from '../services/closest-plants.service';
+import { plantSiteTable } from '../../services/offline.database';
+import { useAppStore } from '../../store/app.store';
+import { usePosition } from '../../hooks/use-position.hook';
+import { useEffect, useState } from 'react';
+import { PlantSite } from '../../types/api/plant-site.type';
+import { getPlantSitesWithinDistance } from '../../services/closest-plants.service';
 import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
 
 export function ClosestPlantsToUser() {
@@ -25,10 +25,16 @@ export function ClosestPlantsToUser() {
     }
   }
 
+  useEffect(() => {
+    if (!isViewActive) return;
+
+    getClosestPlants();
+  }, [position]);
+
   function getClosestPlants() {
     if (!position || !plantSites) return;
 
-    setClosestPlants(getPlantSitesWithinDistance(30, position, plantSites));
+    setClosestPlants(getPlantSitesWithinDistance(20, position, plantSites));
   }
 
   function isViewActive() {

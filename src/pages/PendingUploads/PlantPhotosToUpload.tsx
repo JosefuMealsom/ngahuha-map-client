@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { ButtonComponent } from './ButtonComponent';
+import { ButtonComponent } from '../../components/ButtonComponent';
 import { PlantSiteComponent } from './PlantSiteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { plantSiteUploadTable } from '../services/offline.database';
-import { uploadPlantSitesToServer } from '../services/api/sync/sync-plant-sites';
-import uploadSvg from '../assets/svg/upload-cloud.svg';
-import { useAppStore } from '../store/app.store';
-import { syncPlantSitesOffline } from '../services/api/plant-site.service';
-import { syncPlantSitePhotosOffline } from '../services/api/plant-site-photo.service';
+import { plantSiteUploadTable } from '../../services/offline.database';
+import { uploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
+import uploadSvg from '../../assets/svg/upload-cloud.svg';
+import { useAppStore } from '../../store/app.store';
+import { syncPlantSitesOffline } from '../../services/api/plant-site.service';
+import { syncPlantSitePhotosOffline } from '../../services/api/plant-site-photo.service';
 import { toast } from 'react-toastify';
 
 export function PlantPhotosToUpload() {
