@@ -18,8 +18,8 @@ export const stubServerData = () => {
       method: 'GET',
       url: 'https://app.ngahuha-map-dev.com:8080/plant-site',
     },
-    [],
-  );
+    { fixture: 'plant-sites.json' },
+  ).as('getPlantSites');
   cy.intercept(
     {
       method: 'GET',

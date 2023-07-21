@@ -31,6 +31,7 @@ export function MapMarker(props: PlantSite) {
       id={props.id}
       ref={marker}
       className="w-9 fill-white absolute -top-4 -left-2 rounded-full hidden"
+      data-cy="map-marker"
     >
       <img src={pinSvg} className="select-none pointer-events-none" />
     </div>

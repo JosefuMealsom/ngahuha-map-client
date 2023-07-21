@@ -85,6 +85,7 @@ export default function AutocompleteComponent(props: {
                 key={text as string}
                 className="hover:bg-gray-50 cursor-pointer py-3 px-3 w-full"
                 onClick={() => onItemClick(text as string)}
+                data-cy="autocomplete-entry"
               >
                 {text}
               </li>

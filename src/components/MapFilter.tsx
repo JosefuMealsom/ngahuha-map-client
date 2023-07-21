@@ -15,13 +15,6 @@ export function MapFilter() {
   >([]);
 
   useEffect(() => {
-    const getPlantSites = async () =>
-      setFilteredPlantSites(await plantSiteTable.toArray());
-
-    getPlantSites();
-  }, []);
-
-  useEffect(() => {
     if (!plants || !plantSites) return;
     const availablePlantIds = plantSites.map((plantSite) => plantSite.plantId);
     const filteredPlants = plants.filter((plant) =>
@@ -34,6 +27,7 @@ export function MapFilter() {
     }));
 
     setFilterItems(items);
+    setFilteredPlantSites(plantSites);
   }, [plants, plantSites]);
 
   function filterPlantSites(text: string) {
@@ -59,7 +53,10 @@ export function MapFilter() {
       {filteredPlantSites?.map((plantSite) => (
         <MapMarker key={plantSite.id} {...plantSite} />
       ))}
-      <div className="absolute left-1/2 -translate-x-1/2 top-16 flex w-full max-w-md">
+      <div
+        className="absolute left-1/2 -translate-x-1/2 top-16 flex w-full max-w-md"
+        data-cy="map-view-filter-container"
+      >
         <AutocompleteComponent
           placeholder="Filter plant sites"
           items={filterItems.map((item) => item.name)}
