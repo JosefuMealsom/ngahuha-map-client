@@ -1,8 +1,6 @@
 import { closestPlantsPage } from '../support/pages/closest-plants.page';
 import { seed } from '../support/indexed-db-seeder';
 import { stubWatchPosition } from '../support/stubs/geolocation';
-import { waitForDebugger } from 'inspector';
-import { createYield } from 'typescript';
 
 function seedOfflineDatabase() {
   seed({

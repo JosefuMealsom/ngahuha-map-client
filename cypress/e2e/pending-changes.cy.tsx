@@ -76,7 +76,7 @@ describe('Plant sites waiting to be uploaded', () => {
     cy.contains("The worst species 'lame'").should('not.exist');
   });
 
-  it('does not delete plant site uploads when the server upload fails', () => {
+  it('does not delete plant site uploads when the upload fails and shows a message', () => {
     cy.intercept(
       'POST',
       'https://app.ngahuha-map-dev.com:8080/plant-site/bulk',
@@ -89,6 +89,10 @@ describe('Plant sites waiting to be uploaded', () => {
     cy.wait('@uploadPlantSites');
 
     cy.wait(500);
+
+    cy.contains(
+      'An error occured when uploading to the server, please try again.',
+    );
 
     cy.contains("The worst species 'lame'");
     cy.contains("The best species 'radical'");
