@@ -7,6 +7,7 @@ export default function AutocompleteComponent(props: {
   placeholder: string;
   onChangeHandler?: (value: string) => any;
   onItemSelectHandler?: (value: string) => any;
+  onClearHandler?: () => any;
   suggestionText?: string;
 }) {
   const [textMatches, setTextMatches] = useState<String[]>([]);
@@ -31,6 +32,10 @@ export default function AutocompleteComponent(props: {
   function onClearClick() {
     setAutocompleteOpen(false);
     updateInputValue('');
+
+    if (props.onClearHandler) {
+      props.onClearHandler();
+    }
   }
 
   function updateInputValue(text: string) {
@@ -65,8 +70,9 @@ export default function AutocompleteComponent(props: {
           />
           <img
             src={closeIconUrl}
-            className="absolute right-1 top-1/2 -translate-y-1/2 w-10 p-2"
+            className="absolute right-1 top-1/2 -translate-y-1/2 w-10 p-2 cursor-pointer"
             onClick={onClearClick}
+            data-cy="autocomplete-clear-button"
           />
         </label>
       </div>

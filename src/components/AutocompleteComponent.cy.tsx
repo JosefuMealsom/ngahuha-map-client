@@ -51,7 +51,7 @@ describe('<AutocompleteComponent />', () => {
     cy.contains('These are the best!');
   });
 
-  it('triggers a the callback function when an item is clicked', () => {
+  it('triggers a callback function when an item is clicked', () => {
     const itemSelectCallback = cy.spy();
 
     cy.mount(
@@ -67,8 +67,26 @@ describe('<AutocompleteComponent />', () => {
     cy.get('li')
       .first()
       .click()
-      .then(() => {
-        expect(itemSelectCallback).to.have.been.calledOnceWith('hello');
-      });
+      .then(() =>
+        expect(itemSelectCallback).to.have.been.calledOnceWith('hello'),
+      );
+  });
+
+  it('triggers a callback function when the clear button is clicked', () => {
+    const clearAutocompleteCallback = cy.spy();
+
+    cy.mount(
+      <AutocompleteComponent
+        items={['hello', 'joe']}
+        placeholder="Yo"
+        suggestionText="These are the best!"
+        onClearHandler={clearAutocompleteCallback}
+      />,
+    );
+
+    cy.get('input').type('hell');
+    cy.get('[data-cy="autocomplete-clear-button"')
+      .click()
+      .then(() => expect(clearAutocompleteCallback).to.have.been.calledOnce);
   });
 });
