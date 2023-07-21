@@ -6,6 +6,7 @@ export default function AutocompleteComponent(props: {
   items: string[];
   placeholder: string;
   onChangeHandler?: (value: string) => any;
+  onItemSelectHandler?: (value: string) => any;
   suggestionText?: string;
 }) {
   const [textMatches, setTextMatches] = useState<String[]>([]);
@@ -21,7 +22,10 @@ export default function AutocompleteComponent(props: {
 
   function onItemClick(text: string) {
     setAutocompleteOpen(false);
-    updateInputValue(text as string);
+    updateInputValue(text);
+    if (props.onItemSelectHandler) {
+      props.onItemSelectHandler(text);
+    }
   }
 
   function onClearClick() {
@@ -49,7 +53,7 @@ export default function AutocompleteComponent(props: {
   }
 
   return (
-    <div>
+    <div className="w-full">
       <div className="relative mb-3">
         <label>
           <input
