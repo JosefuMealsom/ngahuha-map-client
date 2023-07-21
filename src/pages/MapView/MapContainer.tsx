@@ -1,8 +1,8 @@
 import { MapCanvas } from './MapCanvas';
-import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
-import { PanGestureHandler } from '../services/view/pan-gesture-handler.service';
-import { ZoomGestureHandler } from '../services/view/zoom-gesture-handler.service';
-import { useMapStore } from '../store/map.store';
+import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
+import { PanGestureHandler } from '../../services/view/pan-gesture-handler.service';
+import { ZoomGestureHandler } from '../../services/view/zoom-gesture-handler.service';
+import { useMapStore } from '../../store/map.store';
 import { LocationMarker } from './LocationMarker';
 import { FeatureMarker } from './FeatureMarker';
 import { createRef, useEffect } from 'react';
