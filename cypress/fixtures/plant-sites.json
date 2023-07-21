@@ -1,0 +1,38 @@
+[
+  {
+    "id": "020af475-4903-41bb-bfda-52f1398f9149",
+    "plantId": "633539fa-2231-4e5a-99ad-698285c1a682",
+    "latitude": "-35.377025",
+    "longitude": "173.965264",
+    "accuracy": "4.79058762046313",
+    "gardenAreaId": "b57f8e7a-8401-40f6-866b-afcd3ba70995",
+    "datePlanted": null,
+    "isAlive": true,
+    "createdAt": "2023-06-25T10:03:12.879Z",
+    "updatedAt": "2023-06-25T10:03:12.879Z"
+  },
+  {
+    "id": "5bfbc55c-2cbd-4821-9892-c290766d15bc",
+    "plantId": "1f76b54d-b856-4568-85c0-26e4e4436e2b",
+    "latitude": "-35.37536729473815",
+    "longitude": "173.9651495319875",
+    "accuracy": "5.027371902392051",
+    "gardenAreaId": "0187b014-f87d-46e8-912b-085799b43b90",
+    "datePlanted": null,
+    "isAlive": true,
+    "createdAt": "2023-06-25T10:03:12.879Z",
+    "updatedAt": "2023-06-25T10:03:12.879Z"
+  },
+  {
+    "id": "70f7d903-8aed-4ebe-93d0-70b0eb11c058",
+    "plantId": "76ec1090-ff6f-4995-a95f-bf3eb947ac7a",
+    "latitude": "-35.37550451300633",
+    "longitude": "173.9652960166284",
+    "accuracy": "5.039736922226067",
+    "gardenAreaId": "dcc33fbd-6a03-44b8-aec0-8701e28b0a75",
+    "datePlanted": null,
+    "isAlive": true,
+    "createdAt": "2023-06-25T10:03:12.879Z",
+    "updatedAt": "2023-06-25T10:03:12.879Z"
+  }
+]

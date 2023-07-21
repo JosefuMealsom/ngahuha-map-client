@@ -1,29 +1,49 @@
+const openFormButton = () => {
+  return cy.contains('.border-solid.border-black.bg-white', 'New plant site');
+};
+
+// const mapFilterEntry = (entryText: string) => {
+//   return mapFilterContainer()
+//     .find('[data-cy="autocomplete-entry"]')
+//     .contains(entryText);
+// };
+
+const plantSearchAutocompleteContainer = () => {
+  return cy.get('[data-cy="plant-form-autocomplete-container"]');
+};
+
+const plantSearchInput = () => {
+  return plantSearchAutocompleteContainer().find('input');
+};
+
+const autoCompleteEntry = (entryText: string) => {
+  return plantSearchAutocompleteContainer()
+    .find('[data-cy="autocomplete-entry"]')
+    .contains(entryText);
+};
+
+const takePhotoButton = () => {
+  return cy.get('[data-cy="add-photo"]');
+};
+
+const saveButton = () => {
+  return cy.get('[data-cy="save-plant-site"]');
+};
+
+const plantFormPhotos = () => {
+  return cy.get('[data-cy="photo-form-photo"]');
+};
+
+const removePhotoButtons = () => {
+  return cy.get('[data-cy="remove-photo-button"]');
+};
+
 export const newPlantSitePage = {
-  openFormButton: () => {
-    return cy.contains('.border-solid.border-black.bg-white', 'New plant site');
-  },
-
-  plantSearchAutocomplete: () => {
-    return cy.get('.w-full.py-2.px-2.border.border-gray-400.rounded-md');
-  },
-
-  autoCompleteEntry: (entryText: string) => {
-    return cy.contains('.absolute.top-0.bg-white.drop-shadow-lg', entryText);
-  },
-
-  takePhotoButton: () => {
-    return cy.get('[data-cy="add-photo"]');
-  },
-
-  saveButton: () => {
-    return cy.get('[data-cy="save-plant-site"]');
-  },
-
-  plantFormPhotos: () => {
-    return cy.get('[data-cy="photo-form-photo"]');
-  },
-
-  removePhotoButtons: () => {
-    return cy.get('[data-cy="remove-photo-button"]');
-  },
+  openFormButton,
+  plantSearchInput,
+  autoCompleteEntry,
+  takePhotoButton,
+  saveButton,
+  plantFormPhotos,
+  removePhotoButtons,
 };

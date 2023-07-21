@@ -6,6 +6,8 @@ export default function AutocompleteComponent(props: {
   items: string[];
   placeholder: string;
   onChangeHandler?: (value: string) => any;
+  onItemSelectHandler?: (value: string) => any;
+  onClearHandler?: () => any;
   suggestionText?: string;
 }) {
   const [textMatches, setTextMatches] = useState<String[]>([]);
@@ -21,12 +23,19 @@ export default function AutocompleteComponent(props: {
 
   function onItemClick(text: string) {
     setAutocompleteOpen(false);
-    updateInputValue(text as string);
+    updateInputValue(text);
+    if (props.onItemSelectHandler) {
+      props.onItemSelectHandler(text);
+    }
   }
 
   function onClearClick() {
     setAutocompleteOpen(false);
     updateInputValue('');
+
+    if (props.onClearHandler) {
+      props.onClearHandler();
+    }
   }
 
   function updateInputValue(text: string) {
@@ -49,7 +58,7 @@ export default function AutocompleteComponent(props: {
   }
 
   return (
-    <div>
+    <div className="w-full">
       <div className="relative mb-3">
         <label>
           <input
@@ -61,8 +70,9 @@ export default function AutocompleteComponent(props: {
           />
           <img
             src={closeIconUrl}
-            className="absolute right-1 top-1/2 -translate-y-1/2 w-10 p-2"
+            className="absolute right-1 top-1/2 -translate-y-1/2 w-10 p-2 cursor-pointer"
             onClick={onClearClick}
+            data-cy="autocomplete-clear-button"
           />
         </label>
       </div>
@@ -75,6 +85,7 @@ export default function AutocompleteComponent(props: {
                 key={text as string}
                 className="hover:bg-gray-50 cursor-pointer py-3 px-3 w-full"
                 onClick={() => onItemClick(text as string)}
+                data-cy="autocomplete-entry"
               >
                 {text}
               </li>

@@ -28,6 +28,7 @@ export function LocationMarker() {
     <div
       ref={marker}
       className="w-4 h-4 bg-sky-700 top-0 left-0 absolute hidden rounded-full"
+      data-cy="location-marker"
     ></div>
   );
 }
