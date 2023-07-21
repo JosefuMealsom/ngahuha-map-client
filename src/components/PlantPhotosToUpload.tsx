@@ -6,6 +6,9 @@ import { plantSiteUploadTable } from '../services/offline.database';
 import { uploadPlantSitesToServer } from '../services/api/sync/sync-plant-sites';
 import uploadSvg from '../assets/svg/upload-cloud.svg';
 import { useAppStore } from '../store/app.store';
+import { syncPlantSitesOffline } from '../services/api/plant-site.service';
+import { syncPlantSitePhotosOffline } from '../services/api/plant-site-photo.service';
+import { toast } from 'react-toastify';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);
@@ -36,6 +39,7 @@ export function PlantPhotosToUpload() {
       await uploadPlantSitesToServer();
       setActiveView('ViewMap');
     } catch (error) {
+      toast('An error occured when uploading to the server, please try again.');
     } finally {
       setUploadingState(false);
     }
