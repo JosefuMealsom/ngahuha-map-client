@@ -42,6 +42,8 @@ export function PlantPhotosToUpload() {
       toast('An error occured when uploading to the server, please try again.');
     } finally {
       setUploadingState(false);
+      await syncPlantSitesOffline();
+      await syncPlantSitePhotosOffline();
     }
   }
 
