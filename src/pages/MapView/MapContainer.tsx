@@ -30,9 +30,8 @@ export function MapContainer() {
 
   return (
     <div ref={mapContainerRef} className="h-screen overflow-hidden w-full">
-      <div className="relative touch-none inline-block select-none overflow-hidden">
+      <div className="relative touch-none inline-block select-none overflow-hidden w-full">
         <MapCanvas />
-        <LocationMarker />
         <FeatureMarker
           text="The steppes"
           position={{ latitude: -35.377761, longitude: 173.966039 }}

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mapUrl from '../../assets/ngahuha.png';
 import { loadImage } from '../../services/image-loader.service';
 import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
@@ -20,6 +20,7 @@ import {
 export function MapCanvas() {
   const canvasDimensions = useMapStore((state) => state.canvasDimensions);
   const canvasRef = useRef(null);
+  const [windowSizeClass, setWindowSizeClass] = useState('');
 
   let mapImage: HTMLImageElement | null;
   let plantSites: PlantSite[] = [];
@@ -33,6 +34,19 @@ export function MapCanvas() {
   useAnimationFrame(() => {
     drawMap(canvasRef?.current);
   });
+
+  function determineCanvasDomSize() {
+    const canvasSizeClass =
+      window.innerWidth < window.innerHeight ? 'h-screen' : 'w-screen';
+
+    setWindowSizeClass(canvasSizeClass);
+  }
+
+  useEffect(() => {
+    determineCanvasDomSize();
+  }, []);
+
+  window.addEventListener('resize', determineCanvasDomSize);
 
   loadImage(mapUrl).then((image) => (mapImage = image));
 
@@ -69,7 +83,7 @@ export function MapCanvas() {
   return (
     <div>
       <canvas
-        className="h-screen"
+        className={windowSizeClass}
         ref={canvasRef}
         width={canvasDimensions.width}
         height={canvasDimensions.height}

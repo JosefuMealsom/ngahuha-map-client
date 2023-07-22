@@ -49,12 +49,12 @@ export function MapFilter() {
   }
 
   return (
-    <div>
+    <div className="absolute w-full h-full top-0 left-0">
       {filteredPlantSites?.map((plantSite) => (
         <MapMarker key={plantSite.id} {...plantSite} />
       ))}
       <div
-        className="absolute left-1/2 -translate-x-1/2 top-16 flex w-full max-w-md"
+        className="absolute left-1/2 -translate-x-1/2 top-4 flex w-full max-w-md px-3"
         data-cy="map-view-filter-container"
       >
         <AutocompleteComponent
