@@ -41,6 +41,7 @@ export function MapContainer() {
           position={{ latitude: -35.377025, longitude: 173.965264 }}
         />
         <MapFilter />
+        <LocationMarker />
       </div>
     </div>
   );
