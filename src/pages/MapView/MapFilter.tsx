@@ -54,7 +54,7 @@ export function MapFilter() {
         <MapMarker key={plantSite.id} {...plantSite} />
       ))}
       <div
-        className="absolute left-1/2 -translate-x-1/2 top-4 flex w-full max-w-md px-3"
+        className="absolute left-1/2 -translate-x-1/2 top-12 flex w-full max-w-md px-3"
         data-cy="map-view-filter-container"
       >
         <AutocompleteComponent
