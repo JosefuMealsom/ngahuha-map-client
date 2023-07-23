@@ -19,7 +19,7 @@ import {
 
 export function MapCanvas() {
   const canvasDimensions = useMapStore((state) => state.canvasDimensions);
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [windowSizeClass, setWindowSizeClass] = useState('');
 
   let mapImage: HTMLImageElement | null;

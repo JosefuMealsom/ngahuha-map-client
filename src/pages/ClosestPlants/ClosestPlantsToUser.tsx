@@ -48,7 +48,7 @@ export function ClosestPlantsToUser() {
     if (!buttonVisible) return;
 
     return (
-      <div className="fixed bottom-2 left-3" data-cy="open-closest-plants">
+      <div className="fixed bottom-5 left-5" data-cy="open-closest-plants">
         <ButtonComponent
           onClickHandler={toggleView}
           className="bg-white"

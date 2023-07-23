@@ -175,7 +175,7 @@ export function PlantPhotoForm() {
       <ButtonComponent
         text={isViewActive() ? 'Close' : 'New plant site'}
         onClickHandler={() => toggleView()}
-        className="absolute top-2 right-3"
+        className="absolute bottom-5 right-5"
       ></ButtonComponent>
     );
   }
