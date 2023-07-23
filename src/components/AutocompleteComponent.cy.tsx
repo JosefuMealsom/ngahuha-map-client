@@ -58,7 +58,6 @@ describe('<AutocompleteComponent />', () => {
       <AutocompleteComponent
         items={['hello', 'joe']}
         placeholder="Yo"
-        suggestionText="These are the best!"
         onItemSelectHandler={itemSelectCallback}
       />,
     );
@@ -79,7 +78,6 @@ describe('<AutocompleteComponent />', () => {
       <AutocompleteComponent
         items={['hello', 'joe']}
         placeholder="Yo"
-        suggestionText="These are the best!"
         onClearHandler={clearAutocompleteCallback}
       />,
     );
@@ -88,5 +86,28 @@ describe('<AutocompleteComponent />', () => {
     cy.get('[data-cy="autocomplete-clear-button"')
       .click()
       .then(() => expect(clearAutocompleteCallback).to.have.been.calledOnce);
+  });
+
+  it.only('can control selecting the autocomplete options with the keyboard', () => {
+    cy.mount(
+      <AutocompleteComponent items={['hello', 'hey hey']} placeholder="Yo" />,
+    );
+
+    // Navigation down
+    cy.get('input').type('he');
+    cy.get('input').type('{downArrow}{enter}');
+    cy.get('input').should('have.value', 'hello');
+    cy.get('input').clear();
+
+    // Navigation up
+    cy.get('input').type('he');
+    cy.get('input').type('{upArrow}{enter}');
+    cy.get('input').should('have.value', 'hey hey');
+    cy.get('input').clear();
+
+    // Closing autocomplete with escape
+    cy.get('input').type('he');
+    cy.get('input').type('{esc}');
+    cy.get('ul').should('not.be.visible');
   });
 });
