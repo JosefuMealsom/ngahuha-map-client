@@ -21,7 +21,8 @@ if (navigator.onLine) {
 
 function App() {
   return (
-    <div className="bg-gray-200">
+    <div>
+      <div className="bg-black bg-opacity-50 pt-safe fixed top-0 left-0 z-30 w-full"></div>
       <MapContainer />
       <PlantPhotosToUpload />
       <PlantPhotoForm />

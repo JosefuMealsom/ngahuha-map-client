@@ -7,3 +7,7 @@
     height: -webkit-fill-available;
   }
 }
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
