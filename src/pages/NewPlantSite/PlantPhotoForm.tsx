@@ -64,9 +64,6 @@ export function PlantPhotoForm() {
     if (newPhoto) {
       const photosCopy = [...photos];
 
-      const array = new Uint32Array(10);
-      crypto.getRandomValues(array);
-
       photosCopy.push({
         file: newPhoto,
         id: crypto.randomUUID(),
