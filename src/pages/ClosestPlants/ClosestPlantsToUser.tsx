@@ -63,7 +63,7 @@ export function ClosestPlantsToUser() {
       <div
         className={`${
           isViewActive() ? '' : 'hidden'
-        } mb-4 w-full h-full overflow-scroll absolute top-0 left-0 bg-white`}
+        } mb-4 w-full h-full overflow-scroll absolute top-0 left-0 pt-safe bg-white`}
       >
         {closestPlants?.map((plantSite) => (
           <ClosestPlantInfoComponent

@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@supports (-webkit-touch-callout: none) {
-  .h-screen {
-    height: -webkit-fill-available;
-  }
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
 }
