@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 
 export default function AutocompleteComponent(props: {
@@ -10,11 +10,16 @@ export default function AutocompleteComponent(props: {
   onClearHandler?: () => any;
   suggestionText?: string;
 }) {
-  const [textMatches, setTextMatches] = useState<String[]>([]);
+  const [textMatches, setTextMatches] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
+  const [autocompleteIndex, setAutocompleteIndex] = useState(-1);
 
   const fuse = new Fuse(props.items, { includeScore: true, distance: 100 });
+
+  useEffect(() => {
+    setAutocompleteIndex(-1);
+  }, [autocompleteOpen]);
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setAutocompleteOpen(true);
@@ -57,8 +62,51 @@ export default function AutocompleteComponent(props: {
     );
   }
 
+  function onKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
+    switch (event.key) {
+      case 'ArrowUp':
+        getPreviousEntry();
+        break;
+      case 'ArrowDown':
+        getNextEntry();
+        break;
+      case 'Escape':
+        setAutocompleteIndex(-1);
+        setAutocompleteOpen(false);
+        break;
+      case 'Enter':
+        if (!autocompleteOpen) return;
+        onItemClick(textMatches[autocompleteIndex]);
+        break;
+    }
+  }
+
+  function getPreviousEntry() {
+    let prevIndex: number;
+    if (autocompleteIndex <= -1) {
+      prevIndex = textMatches.length - 1;
+    } else {
+      prevIndex = autocompleteIndex - 1;
+    }
+
+    setAutocompleteOpen(true);
+    setAutocompleteIndex(prevIndex);
+  }
+
+  function getNextEntry() {
+    let nextIndex: number;
+    if (autocompleteIndex >= textMatches.length - 1) {
+      nextIndex = -1;
+    } else {
+      nextIndex = autocompleteIndex + 1;
+    }
+
+    setAutocompleteOpen(true);
+    setAutocompleteIndex(nextIndex);
+  }
+
   return (
-    <div className="w-full">
+    <div className="w-full" onKeyUp={onKeyUp}>
       <div className="relative mb-3">
         <label>
           <input
@@ -80,10 +128,12 @@ export default function AutocompleteComponent(props: {
         <div className="absolute top-0 bg-white drop-shadow-lg w-full">
           {renderSuggestionText()}
           <ul>
-            {textMatches.map((text) => (
+            {textMatches.map((text, index) => (
               <li
                 key={text as string}
-                className="hover:bg-gray-50 cursor-pointer py-3 px-3 w-full"
+                className={`hover:bg-gray-50 cursor-pointer py-3 px-3 w-full ${
+                  autocompleteIndex === index ? 'bg-gray-50' : ''
+                }`}
                 onClick={() => onItemClick(text as string)}
                 data-cy="autocomplete-entry"
               >
