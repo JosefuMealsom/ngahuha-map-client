@@ -1,26 +1,17 @@
 import { useEffect, useState } from 'react';
-import type { Plant } from '../../types/api/plant.type';
-import {
-  plantTable,
-  plantSitePhotoTable,
-} from '../../services/offline.database';
+import { plantSitePhotoTable } from '../../services/offline.database';
 import { PlantSite } from '../../types/api/plant-site.type';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import blobToDataUrlService from '../../services/blob-to-data-url.service';
+import { usePlant } from '../../hooks/use-plant.hook';
 
 export function ClosestPlantInfoComponent(
   props: PlantSite & { distance: number },
 ) {
-  const [plant, setPlant] = useState<Plant>();
-  const [photoDataUrl, setPhotoDataUrl] = useState('');
+  const plant = usePlant(props.plantId);
+  const [photoDataUrl, setPhotoDataUrl] = useState<string>();
 
   const getPlantInfo = async () => {
-    const plant = await plantTable.get(props.plantId);
-
-    if (!plant) return;
-
-    setPlant(plant);
-
     const photo = await plantSitePhotoTable
       .where({
         plantSiteId: props.id,
