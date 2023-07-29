@@ -68,12 +68,14 @@ export function ClosestPlantsToUser() {
         } mb-4 w-full h-full overflow-scroll absolute top-0 left-0 pt-safe bg-white`}
         ref={pageRef}
       >
-        {closestPlants?.map((plantSite) => (
-          <ClosestPlantInfoComponent
-            key={plantSite.id}
-            {...plantSite}
-          ></ClosestPlantInfoComponent>
-        ))}
+        <div className="sm:grid sm:grid-cols-4">
+          {closestPlants?.map((plantSite) => (
+            <ClosestPlantInfoComponent
+              key={plantSite.id}
+              {...plantSite}
+            ></ClosestPlantInfoComponent>
+          ))}
+        </div>
       </div>
       {renderModalButton()}
     </div>
