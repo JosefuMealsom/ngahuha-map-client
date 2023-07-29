@@ -40,9 +40,9 @@ export function ClosestPlantInfoComponent(
     if (!plant) return;
 
     return (
-      <div>
-        <div className="w-full align-top relative">
-          <img src={photoDataUrl} className="w-full object-contain" />
+      <div className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white">
+        <div className="w-full h-full align-top relative">
+          <img src={photoDataUrl} className="w-full h-full object-cover" />
 
           <div className="absolute top-0 p-3 bg-black bg-opacity-40 w-full">
             <p className="text-white font-bold text-2xl">
