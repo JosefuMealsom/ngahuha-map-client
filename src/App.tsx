@@ -8,6 +8,9 @@ import { ClosestPlantsToUser } from './pages/ClosestPlants/ClosestPlantsToUser';
 import { syncPlantSitePhotosOffline } from './services/api/plant-site-photo.service';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Outlet } from 'react-router-dom';
+import { ButtonComponent } from './components/ButtonComponent';
+import { LinkComponent } from './components/LinkComponent';
 
 if (navigator.onLine) {
   const syncData = async () => {
@@ -22,12 +25,16 @@ if (navigator.onLine) {
 function App() {
   return (
     <div>
-      <div className="bg-black bg-opacity-50 pt-safe fixed top-0 left-0 z-30 w-full"></div>
       <MapContainer />
       <PlantPhotosToUpload />
       <PlantPhotoForm />
-      <ClosestPlantsToUser />
       <ToastContainer />
+
+      <div data-cy="open-closest-plants" className="fixed bottom-5 left-5 z-0">
+        <LinkComponent link="/closest-plants" text="Closest plants" />
+      </div>
+
+      <Outlet />
     </div>
   );
 }
