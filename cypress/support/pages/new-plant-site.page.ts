@@ -1,5 +1,5 @@
 const openFormButton = () => {
-  return cy.contains('.border-solid.border-black.bg-white', 'New plant site');
+  return cy.get('[data-cy="open-plant-form"]');
 };
 
 const plantSearchAutocompleteContainer = () => {

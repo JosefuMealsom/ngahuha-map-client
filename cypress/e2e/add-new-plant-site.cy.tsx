@@ -37,8 +37,6 @@ describe('Add new plant site for upload', () => {
     cy.contains('Accurate to within 888.00m');
     newPlantSitePage.saveButton().click();
 
-    cy.contains('Add a new location').should('not.be.visible');
-
     pendingUploadPage.pendingUploadsButton().click();
     cy.contains('Pending changes');
     cy.contains('Cool species');

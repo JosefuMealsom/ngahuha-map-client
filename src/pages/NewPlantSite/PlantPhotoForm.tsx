@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from 'react';
-import { ButtonComponent } from '../../components/ButtonComponent';
 import AutocompleteComponent from '../../components/AutocompleteComponent';
 import { plantTable } from '../../services/offline.database';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
@@ -7,8 +6,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { addPlantSiteWithPhoto } from '../../services/api/plant-site-upload.service';
 import cameraUrl from '../../assets/svg/camera.svg';
 import { usePosition } from '../../hooks/use-position.hook';
-import { useAppStore } from '../../store/app.store';
 import { PlantPhotoImage } from './PlantPhotoImage';
+import { useNavigate } from 'react-router-dom';
 
 type PhotoFile = {
   id: string;
@@ -18,10 +17,8 @@ type PhotoFile = {
 export function PlantPhotoForm() {
   const [photos, setPhotos] = useState<PhotoFile[]>([]);
   const [plantNameValue, setPlantNameValue] = useState<string>();
-
-  const currentView = useAppStore((state) => state.activeView);
-  const setActiveView = useAppStore((state) => state.setActiveView);
   const liveCoords = usePosition();
+  const navigate = useNavigate();
 
   const plantList = useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
@@ -46,17 +43,11 @@ export function PlantPhotoForm() {
       plantId,
     );
 
-    resetForm();
-    setActiveView('ViewMap');
+    navigate('/');
   }
 
   function findPlantIdByFullName() {
     return plantList?.find((plant) => plant.name === plantNameValue)?.id;
-  }
-
-  function resetForm() {
-    setPhotos([]);
-    setPlantNameValue('');
   }
 
   async function onPhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -70,18 +61,6 @@ export function PlantPhotoForm() {
       });
 
       setPhotos(photosCopy);
-    }
-  }
-
-  function isViewActive() {
-    return currentView == 'AddPlant';
-  }
-
-  function toggleView() {
-    if (isViewActive()) {
-      setActiveView('ViewMap');
-    } else {
-      setActiveView('AddPlant');
     }
   }
 
@@ -160,30 +139,9 @@ export function PlantPhotoForm() {
       />
     );
   }
-
-  function renderModalButton() {
-    const buttonVisible =
-      currentView === 'AddPlant' || currentView === 'ViewMap';
-
-    if (!buttonVisible) {
-      return;
-    }
-    return (
-      <ButtonComponent
-        text={isViewActive() ? 'Close' : 'New plant site'}
-        onClickHandler={() => toggleView()}
-        className="fixed bottom-5 right-5"
-      ></ButtonComponent>
-    );
-  }
-
   return (
     <div className="h-full">
-      <div
-        className={`${
-          isViewActive() ? '' : 'hidden'
-        } absolute top-0 pt-14 left-0 bg-white w-full h-full px-6`}
-      >
+      <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full px-6">
         <form onSubmit={savePhotoLocally}>
           <h1 className="font-bold mt-5 mb-7 text-xl">Add a new location</h1>
           <div
@@ -223,7 +181,6 @@ export function PlantPhotoForm() {
           {renderSave()}
         </form>
       </div>
-      {renderModalButton()}
     </div>
   );
 }
