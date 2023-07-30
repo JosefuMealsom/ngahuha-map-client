@@ -4,6 +4,7 @@ import { PlantSite } from '../../types/api/plant-site.type';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import blobToDataUrlService from '../../services/blob-to-data-url.service';
 import { usePlant } from '../../hooks/use-plant.hook';
+import { Link } from 'react-router-dom';
 
 export function ClosestPlantInfoComponent(
   props: PlantSite & { distance: number },
@@ -46,5 +47,9 @@ export function ClosestPlantInfoComponent(
     );
   }
 
-  return <div className="w-full">{renderPlantInfo()}</div>;
+  return (
+    <Link to={`/plant-site/${props.id}`}>
+      <div className="w-full">{renderPlantInfo()}</div>
+    </Link>
+  );
 }
