@@ -1,31 +1,17 @@
-import { useEffect, useState } from 'react';
-import type { Plant } from '../../types/api/plant.type';
 import type { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.type';
-import { plantTable } from '../../services/offline.database';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { deletePlantSite } from '../../services/api/plant-site-upload.service';
 import trashSvg from '../../assets/svg/trash-2.svg';
+import { usePlant } from '../../hooks/use-plant.hook';
 
 export function PlantSiteComponent(
   props: PlantSiteUpload & { isUploading: boolean },
 ) {
-  const [plant, setPlant] = useState<Plant>();
-
-  const getPlantInfo = async () => {
-    const plant = await plantTable.get(props.plantId);
-
-    if (!plant) return;
-
-    setPlant(plant);
-  };
+  const plant = usePlant(props.plantId);
 
   function deletePhoto() {
     if (props.id) deletePlantSite(props.id);
   }
-
-  useEffect(() => {
-    getPlantInfo();
-  });
 
   function renderDelete() {
     if (props.isUploading) return;

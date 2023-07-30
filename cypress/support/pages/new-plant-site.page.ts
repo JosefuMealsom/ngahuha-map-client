@@ -2,12 +2,6 @@ const openFormButton = () => {
   return cy.contains('.border-solid.border-black.bg-white', 'New plant site');
 };
 
-// const mapFilterEntry = (entryText: string) => {
-//   return mapFilterContainer()
-//     .find('[data-cy="autocomplete-entry"]')
-//     .contains(entryText);
-// };
-
 const plantSearchAutocompleteContainer = () => {
   return cy.get('[data-cy="plant-form-autocomplete-container"]');
 };

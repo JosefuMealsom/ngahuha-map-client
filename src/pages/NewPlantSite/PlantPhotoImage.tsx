@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import blobToDataUrlService from '../../services/blob-to-data-url.service';
 import closeImageUrl from '../../assets/svg/x-circle.svg';
 
