@@ -7,6 +7,8 @@ import ErrorPage from './pages/ErrorPage';
 import { ClosestPlantsToUser } from './pages/ClosestPlants/ClosestPlantsToUser';
 import { loadPlantSite } from './pages/PlantSiteInformation/plant-site.loader';
 import { PlantSiteInformation } from './pages/PlantSiteInformation/PlantSiteInformation';
+import { PlantPhotoForm } from './pages/NewPlantSite/PlantPhotoForm';
+import { PlantPhotosToUpload } from './pages/PendingUploads/PlantPhotosToUpload';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
         path: 'plant-site/:id',
         element: <PlantSiteInformation />,
         loader: loadPlantSite,
+      },
+      {
+        path: 'plant-site/new',
+        element: <PlantPhotoForm />,
+      },
+      {
+        path: 'plant-site/pending-upload',
+        element: <PlantPhotosToUpload />,
       },
     ],
   },

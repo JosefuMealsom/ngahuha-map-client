@@ -27,11 +27,12 @@ function App() {
     <div>
       <MapContainer />
       <PlantPhotosToUpload />
-      <PlantPhotoForm />
       <ToastContainer />
-
       <div data-cy="open-closest-plants" className="fixed bottom-5 left-5 z-0">
         <LinkComponent link="/closest-plants" text="Closest plants" />
+      </div>
+      <div data-cy="open-plant-form" className="fixed right-5 bottom-5 z-0">
+        <LinkComponent link="/plant-site/new" text="New plant site" />
       </div>
 
       <Outlet />
