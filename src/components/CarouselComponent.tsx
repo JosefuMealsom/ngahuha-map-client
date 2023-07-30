@@ -51,10 +51,12 @@ export function CarouselComponent(props: { elements: ReactNode[] }) {
       <div
         className="absolute top-0 left-0 w-32 h-full"
         onClick={previousItem}
+        data-cy="previous-item"
       ></div>
       <div
         className="absolute top-0 right-0 w-32 h-full"
         onClick={nextItem}
+        data-cy="next-item"
       ></div>
     </div>
   );
