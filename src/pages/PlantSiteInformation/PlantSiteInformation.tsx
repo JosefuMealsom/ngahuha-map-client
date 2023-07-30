@@ -13,20 +13,36 @@ export function PlantSiteInformation() {
     if (!plant) return;
 
     return (
-      <div className="h-full w-full">
-        <div className="w-3/4 inline-block align-top">
-          <h1 className="font-bold">Plant Species</h1>
-          <p className="inline-block">{getFullPlantName(plant)}</p>
+      <div className="h-full w-full bg-white">
+        <div>
           {plantSitePhotos?.map((photo) => (
-            <img key={photo.id} src={photo.dataUrl} />
+            <img
+              className="w-full h-96 object-cover"
+              key={photo.id}
+              src={photo.dataUrl}
+            />
           ))}
+        </div>
+        <div className="p-3">
+          <h2 className="mb-2 font-bold">Name</h2>
+          <p className="text-lg mb-2">{getFullPlantName(plant)}</p>
+          <h2 className="mb-2 font-bold">Description</h2>
+          <p className="text-lg">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full px-6">
+    <div className="absolute top-0 left-0 bg-white w-full h-full">
       <div className="w-full mb-5">{renderPlantInfo()}</div>
     </div>
   );

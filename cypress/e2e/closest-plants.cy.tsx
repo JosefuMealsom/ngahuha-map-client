@@ -15,7 +15,12 @@ function seedOfflineDatabase() {
     ],
     plantSites: [
       { plantId: 'abcdef', latitude: -35.375563, longitude: 173.965043 },
-      { plantId: '12345', latitude: -35.375506, longitude: 173.965156 },
+      {
+        id: 'best plant site id',
+        plantId: '12345',
+        latitude: -35.375506,
+        longitude: 173.965156,
+      },
       { plantId: 'qqqqq', latitude: -35.375204, longitude: 173.966025 },
     ],
   });
@@ -32,11 +37,19 @@ describe('Showing plant sites closest to the user', () => {
   });
 
   it('lists the plants closest to the user', () => {
-    cy.wait(500);
     closestPlantsPage.closestPlantsButton().click();
 
     cy.contains("The worst species 'lame'");
     cy.contains("The best species 'radical'");
     cy.contains("Some far far away plant 'very remote'").should('not.exist');
+  });
+
+  it('can click on a plant site item and be taken to a page with information about it', () => {
+    closestPlantsPage.closestPlantsButton().click();
+
+    closestPlantsPage.closestPlantSiteItem('best plant site id').click();
+
+    cy.contains("The best species 'radical'");
+    cy.contains('Lorem ipsum');
   });
 });

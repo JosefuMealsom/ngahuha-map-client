@@ -32,7 +32,10 @@ export function ClosestPlantInfoComponent(
     if (!plant) return;
 
     return (
-      <div className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white">
+      <div
+        className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white"
+        data-cy={`closest-plant-site-${props.id}`}
+      >
         <div className="w-full h-full align-top relative">
           <img src={photoDataUrl} className="w-full h-full object-cover" />
 
