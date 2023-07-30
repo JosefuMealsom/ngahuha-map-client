@@ -3,26 +3,37 @@ import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { usePlant } from '../../hooks/use-plant.hook';
 import { usePlantSitePhotos } from '../../hooks/use-plant-site-photos.hook';
 import { useLoaderData } from 'react-router-dom';
+import { CarouselComponent } from '../../components/CarouselComponent';
 
 export function PlantSiteInformation() {
   const plantSite: PlantSite = useLoaderData() as PlantSite;
   const plant = usePlant(plantSite.plantId);
   const plantSitePhotos = usePlantSitePhotos(plantSite.id);
 
+  function renderImageCarousel() {
+    if (!plantSitePhotos) return;
+
+    const photoNodes = plantSitePhotos.map((photo) => (
+      <img
+        className="w-full h-96 object-cover"
+        key={photo.id}
+        src={photo.dataUrl}
+      />
+    ));
+
+    return (
+      <div>
+        <CarouselComponent elements={photoNodes} />
+      </div>
+    );
+  }
+
   function renderPlantInfo() {
     if (!plant) return;
 
     return (
       <div className="h-full w-full bg-white">
-        <div>
-          {plantSitePhotos?.map((photo) => (
-            <img
-              className="w-full h-96 object-cover"
-              key={photo.id}
-              src={photo.dataUrl}
-            />
-          ))}
-        </div>
+        {renderImageCarousel()}
         <div className="p-3">
           <h2 className="mb-2 font-bold">Name</h2>
           <p className="text-lg mb-2">{getFullPlantName(plant)}</p>
