@@ -6,4 +6,8 @@ export const plantListPage = {
   plantItem: (itemId: string) => {
     return cy.get(`[data-cy="plant-item-${itemId}"]`);
   },
+
+  searchBox: () => {
+    return cy.get(`[data-cy="plant-list-search"]`).find('input');
+  },
 };

@@ -53,7 +53,10 @@ export function PlantList() {
   return (
     <div>
       <div className="mb-4 w-full h-full overflow-scroll absolute top-0 left-0 pt-safe bg-white">
-        <div className="px-2 sticky top-1 z-10 w-full max-w-md">
+        <div
+          className="px-2 sticky top-1 z-10 w-full max-w-md"
+          data-cy="plant-list-search"
+        >
           <SearchComponent
             items={filterItems}
             placeholder="Search plants"

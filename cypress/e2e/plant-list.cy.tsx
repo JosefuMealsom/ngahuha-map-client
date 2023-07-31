@@ -41,4 +41,13 @@ describe('Listing all plants in the app', () => {
     cy.contains('1');
     cy.contains('Lorem ipsum');
   });
+
+  it('can filter the plant items in the list', () => {
+    plantListPage.plantListButton().click();
+
+    plantListPage.searchBox().type('worst');
+
+    cy.contains("The worst species 'lame'");
+    cy.contains("The best species 'radical'").should('not.exist');
+  });
 });
