@@ -39,12 +39,17 @@ function App() {
   return (
     <div>
       <MapContainer />
-      <div data-cy="open-closest-plants" className="fixed bottom-5 left-5">
-        <LinkComponent link="/closest-plants" text="Closest plants" />
-      </div>
-      <div data-cy="open-plant-form" className="fixed right-5 bottom-5">
-        <LinkComponent link="/plant-site/new" text="New plant site" />
-      </div>
+      <nav className="fixed bottom-5 left-0 w-full flex justify-evenly">
+        <div data-cy="open-closest-plants">
+          <LinkComponent link="/closest-plants" text="Closest plants" />
+        </div>
+        <div data-cy="open-plant-list">
+          <LinkComponent link="/plants" text="All plants" />
+        </div>
+        <div data-cy="open-plant-form">
+          <LinkComponent link="/plant-site/new" text="New plant site" />
+        </div>
+      </nav>
       {renderPendingUploadLink()}
 
       <Outlet />
