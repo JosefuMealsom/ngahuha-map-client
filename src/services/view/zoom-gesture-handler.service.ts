@@ -1,4 +1,3 @@
-import { useMapStore } from '../../store/map.store';
 import { AccelerationHandler } from './acceleration-handler.service';
 
 export class ZoomGestureHandler {

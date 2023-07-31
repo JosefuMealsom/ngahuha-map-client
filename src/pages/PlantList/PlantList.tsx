@@ -1,4 +1,3 @@
-import { useLiveQuery } from 'dexie-react-hooks';
 import { plantSiteTable, plantTable } from '../../services/offline.database';
 import { PlantItemComponent } from './PlantItemComponent';
 import { useEffect, useState } from 'react';
