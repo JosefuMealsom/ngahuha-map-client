@@ -46,7 +46,9 @@ export function PlantList() {
         </div>
         <div className="sm:grid sm:grid-cols-4">
           {plants?.map((plant) => (
-            <PlantItemComponent key={plant.id} {...plant} />
+            <div data-cy={`plant-item-${plant.id}`}>
+              <PlantItemComponent key={plant.id} {...plant} />
+            </div>
           ))}
         </div>
       </div>
