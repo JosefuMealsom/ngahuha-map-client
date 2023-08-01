@@ -1,6 +1,5 @@
 import { plantListPage } from '../support/pages/plant-list.page';
 import { seed } from '../support/indexed-db-seeder';
-import { stubWatchPosition } from '../support/stubs/geolocation';
 
 function seedOfflineDatabase() {
   seed({
@@ -17,11 +16,7 @@ function seedOfflineDatabase() {
 describe('Listing all plants in the app', () => {
   beforeEach(() => {
     seedOfflineDatabase();
-    cy.visit('/', {
-      onBeforeLoad(window) {
-        stubWatchPosition(window, -35.375587, 173.964963);
-      },
-    });
+    cy.visit('/');
   });
 
   it('lists all the downloaded plants', () => {
