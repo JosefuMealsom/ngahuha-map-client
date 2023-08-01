@@ -88,7 +88,7 @@ describe('<AutocompleteComponent />', () => {
       .then(() => expect(clearAutocompleteCallback).to.have.been.calledOnce);
   });
 
-  it.only('can control selecting the autocomplete options with the keyboard', () => {
+  it('can control selecting the autocomplete options with the keyboard', () => {
     cy.mount(
       <AutocompleteComponent items={['hello', 'hey hey']} placeholder="Yo" />,
     );

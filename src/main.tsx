@@ -9,6 +9,9 @@ import { loadPlantSite } from './pages/PlantSiteInformation/plant-site.loader';
 import { PlantSiteInformation } from './pages/PlantSiteInformation/PlantSiteInformation';
 import { PlantPhotoForm } from './pages/NewPlantSite/PlantPhotoForm';
 import { PlantPhotosToUpload } from './pages/PendingUploads/PlantPhotosToUpload';
+import { PlantList } from './pages/PlantList/PlantList';
+import { loadPlant } from './pages/PlantInformation/plant.loader';
+import { PlantInformation } from './pages/PlantInformation/PlantInformation';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +22,15 @@ const router = createBrowserRouter([
       {
         path: 'closest-plants',
         element: <ClosestPlantsToUser />,
+      },
+      {
+        path: 'plants',
+        element: <PlantList />,
+      },
+      {
+        path: 'plants/:id',
+        element: <PlantInformation />,
+        loader: loadPlant,
       },
       {
         path: 'plant-site/:id',
