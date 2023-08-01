@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
+import { debounce } from 'underscore';
 
 export default function SearchComponent(props: {
   items: string[];
@@ -24,6 +25,8 @@ export default function SearchComponent(props: {
     }
   }, [textMatches]);
 
+  const debouncedUpdateTextMatches = debounce(updateTextMatches, 500);
+
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     updateInputValue(event.target.value);
   }
@@ -38,6 +41,10 @@ export default function SearchComponent(props: {
 
   function updateInputValue(text: string) {
     setInputValue(text);
+    debouncedUpdateTextMatches(text);
+  }
+
+  function updateTextMatches(text: string) {
     const result = fuse.search(text);
     setTextMatches(result.map((match) => match.item));
   }
