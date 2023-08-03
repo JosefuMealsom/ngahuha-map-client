@@ -3,6 +3,7 @@ export type Plant = {
   typeId: string;
   species: string;
   cultivar?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  extendedInfo?: { [key: string]: any };
 };

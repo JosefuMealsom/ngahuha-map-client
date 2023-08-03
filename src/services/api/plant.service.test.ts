@@ -19,6 +19,7 @@ describe('PlantService', () => {
     cultivar: 'pretty lady',
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
+    extendedInfo: { description: 'Wow so cool!' },
   };
 
   const plant2 = {
@@ -28,6 +29,10 @@ describe('PlantService', () => {
     cultivar: 'handsome gentleman',
     createdAt: '2020-11-11T00:00:00.000Z',
     updatedAt: '2020-11-11T00:00:00.000Z',
+    extendedInfo: {
+      'real name': 'Wow so cool!',
+      'some other property': 'Wow so interesting!',
+    },
   };
 
   describe('fetch()', () => {
@@ -45,6 +50,7 @@ describe('PlantService', () => {
           cultivar: 'pretty lady',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          extendedInfo: { description: 'Wow so cool!' },
         },
         {
           id: 'abc',
@@ -53,6 +59,10 @@ describe('PlantService', () => {
           cultivar: 'handsome gentleman',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          extendedInfo: {
+            'real name': 'Wow so cool!',
+            'some other property': 'Wow so interesting!',
+          },
         },
       ]);
     });
@@ -73,6 +83,7 @@ describe('PlantService', () => {
           cultivar: 'pretty lady',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          extendedInfo: { description: 'Wow so cool!' },
         },
         {
           id: 'abc',
@@ -81,6 +92,10 @@ describe('PlantService', () => {
           cultivar: 'handsome gentleman',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          extendedInfo: {
+            'real name': 'Wow so cool!',
+            'some other property': 'Wow so interesting!',
+          },
         },
       ]);
     });
@@ -94,6 +109,7 @@ describe('PlantService', () => {
           cultivar: 'pretty lady',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          extendedInfo: { description: 'Wow so cool!' },
         });
 
         stubFetchResponse([
@@ -104,6 +120,10 @@ describe('PlantService', () => {
             cultivar: 'ugly boy',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            extendedInfo: {
+              'real name': 'Wow so cool!',
+              'some other property': 'Wow so interesting!',
+            },
           },
         ]);
       });
@@ -125,6 +145,10 @@ describe('PlantService', () => {
             cultivar: 'ugly boy',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            extendedInfo: {
+              'real name': 'Wow so cool!',
+              'some other property': 'Wow so interesting!',
+            },
           },
         ]);
       });

@@ -17,6 +17,7 @@ export const fetchPlants = (): Promise<Plant[]> => {
         typeId: plant.typeId,
         createdAt: plant.createdAt,
         updatedAt: plant.updatedAt,
+        extendedInfo: plant.extendedInfo,
       };
     });
 
