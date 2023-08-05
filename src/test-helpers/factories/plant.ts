@@ -9,7 +9,6 @@ const plantFactory = {
       cultivar: 'Cool cultivar',
       createdAt: '1988-11-11T00:00:00.000Z',
       updatedAt: '1988-11-11T00:00:00.000Z',
-      extendedInfo: {},
     };
 
     return Object.assign(dummyData, data);

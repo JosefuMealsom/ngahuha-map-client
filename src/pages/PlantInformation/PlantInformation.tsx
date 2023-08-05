@@ -3,12 +3,29 @@ import { Plant } from '../../types/api/plant.type';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { useLoaderData } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useState } from 'react';
+import { ButtonComponent } from '../../components/ButtonComponent';
+import { MarkDownEditorComponent } from '../../components/MarkdownEditorComponent';
 
 export function PlantInformation() {
   const plant: Plant = useLoaderData() as Plant;
-  const plantSites = useLiveQuery(() =>
-    plantSiteTable.where({ plantId: plant.id }).toArray(),
-  );
+  // const plantSites = useLiveQuery(() =>
+  //   plantSiteTable.where({ plantId: plant.id }).toArray(),
+  // );
+
+  function renderExtendedInfo() {
+    if (!plant) return;
+    if (!plant.extendedInfo) return;
+
+    return Object.entries(plant.extendedInfo).map(([key, value]) => (
+      <div key={crypto.randomUUID()}>
+        <h2 className="mb-2 font-bold">{key}</h2>
+        <p className="text-lg">{value}</p>
+      </div>
+    ));
+  }
+
+  function onDescriptionSave(text: string) {}
 
   function renderPlantInfo() {
     if (!plant) return;

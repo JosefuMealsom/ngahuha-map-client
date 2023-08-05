@@ -19,7 +19,8 @@ describe('PlantService', () => {
     cultivar: 'pretty lady',
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
-    extendedInfo: { description: 'Wow so cool!' },
+    extendedInfo: { 'real name': 'Wow so cool!' },
+    description: 'Wow very descriptive!',
   };
 
   const plant2 = {
@@ -50,7 +51,8 @@ describe('PlantService', () => {
           cultivar: 'pretty lady',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
-          extendedInfo: { description: 'Wow so cool!' },
+          extendedInfo: { 'real name': 'Wow so cool!' },
+          description: 'Wow very descriptive!',
         },
         {
           id: 'abc',
@@ -83,7 +85,8 @@ describe('PlantService', () => {
           cultivar: 'pretty lady',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
-          extendedInfo: { description: 'Wow so cool!' },
+          extendedInfo: { 'real name': 'Wow so cool!' },
+          description: 'Wow very descriptive!',
         },
         {
           id: 'abc',
@@ -96,6 +99,7 @@ describe('PlantService', () => {
             'real name': 'Wow so cool!',
             'some other property': 'Wow so interesting!',
           },
+          description: undefined,
         },
       ]);
     });
@@ -110,6 +114,7 @@ describe('PlantService', () => {
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
           extendedInfo: { description: 'Wow so cool!' },
+          description: 'Hmmm not enough information',
         });
 
         stubFetchResponse([
@@ -124,6 +129,7 @@ describe('PlantService', () => {
               'real name': 'Wow so cool!',
               'some other property': 'Wow so interesting!',
             },
+            description: 'Wow very descriptive!',
           },
         ]);
       });
@@ -149,6 +155,7 @@ describe('PlantService', () => {
               'real name': 'Wow so cool!',
               'some other property': 'Wow so interesting!',
             },
+            description: 'Wow very descriptive!',
           },
         ]);
       });

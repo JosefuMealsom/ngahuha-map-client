@@ -6,4 +6,5 @@ export type Plant = {
   createdAt: string;
   updatedAt: string;
   extendedInfo?: { [key: string]: any };
+  description?: string;
 };
