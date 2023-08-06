@@ -2,7 +2,15 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '70ch',
+          },
+        },
+      },
+    },
   },
   plugins: [require('@tailwindcss/typography')],
 };
