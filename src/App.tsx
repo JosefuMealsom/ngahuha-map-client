@@ -27,7 +27,7 @@ function App() {
     if (plantUploadCount === 0) return;
 
     return (
-      <div data-cy="open-upload-form" className="fixed left-5 top-5">
+      <div data-cy="open-upload-form">
         <LinkComponent
           link="/plant-site/pending-upload"
           text="Pending upload"
@@ -40,6 +40,7 @@ function App() {
     <div>
       <MapContainer />
       <nav className="fixed bottom-5 left-0 w-full flex justify-evenly">
+        {renderPendingUploadLink()}
         <div data-cy="open-closest-plants">
           <LinkComponent link="/closest-plants" text="Closest plants" />
         </div>
@@ -50,7 +51,6 @@ function App() {
           <LinkComponent link="/plant-site/new" text="New plant site" />
         </div>
       </nav>
-      {renderPendingUploadLink()}
 
       <Outlet />
       <ToastContainer />

@@ -4,7 +4,12 @@ import { seed } from '../support/indexed-db-seeder';
 function seedOfflineDatabase() {
   seed({
     plants: [
-      { id: 'abcdef', species: 'The worst species', cultivar: 'lame' },
+      {
+        id: 'abcdef',
+        species: 'The worst species',
+        cultivar: 'lame',
+        description: 'Very interesting',
+      },
       { id: '12345', species: 'The best species', cultivar: 'radical' },
     ],
     plantSites: [
@@ -32,9 +37,7 @@ describe('Listing all plants in the app', () => {
     plantListPage.plantItem('abcdef').click();
 
     cy.contains("The worst species 'lame'");
-    cy.contains('Number of sites');
-    cy.contains('1');
-    cy.contains('Lorem ipsum');
+    cy.contains('Very interesting');
   });
 
   it('can filter the plant items in the list', () => {

@@ -11,7 +11,7 @@ import { PlantPhotoForm } from './pages/NewPlantSite/PlantPhotoForm';
 import { PlantPhotosToUpload } from './pages/PendingUploads/PlantPhotosToUpload';
 import { PlantList } from './pages/PlantList/PlantList';
 import { loadPlant } from './pages/PlantInformation/plant.loader';
-import { PlantInformation } from './pages/PlantInformation/PlantInformation';
+import { PlantInformationPage } from './pages/PlantInformation/PlantInformationPage';
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'plants/:id',
-        element: <PlantInformation />,
+        element: <PlantInformationPage />,
         loader: loadPlant,
       },
       {
