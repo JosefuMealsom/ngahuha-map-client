@@ -1,15 +1,16 @@
-import { Plant } from '../../types/api/plant.type';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
-import { useLoaderData } from 'react-router-dom';
 import { MarkDownEditorComponent } from '../../components/MarkdownEditorComponent';
 import { updateDescription } from '../../services/api/plant.service';
 import { toast } from 'react-toastify';
 import { CarouselComponent } from '../../components/CarouselComponent';
-import { usePlantPhotos } from '../../hooks/use-plant-photos.hook';
+import { usePlant } from '../../hooks/use-plant.hook';
 
-export function PlantInformation() {
-  const plant: Plant = useLoaderData() as Plant;
-  const photos = usePlantPhotos(plant.id);
+export function PlantDescription(props: {
+  plantId: string;
+  photos: { id: string; dataUrl: string }[];
+}) {
+  const { photos, plantId } = props;
+  const plant = usePlant(plantId);
 
   function renderCarousel() {
     if (!photos || photos.length === 0) return;
@@ -26,9 +27,11 @@ export function PlantInformation() {
   }
 
   async function onDescriptionSave(description: string) {
+    if (!plant) return;
+
     await updateDescription(plant.id, description);
 
-    toast('Description successfully saved');
+    toast('Description successfully updated');
   }
 
   function renderPlantInfo() {

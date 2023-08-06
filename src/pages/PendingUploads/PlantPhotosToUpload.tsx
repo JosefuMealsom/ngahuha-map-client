@@ -26,6 +26,7 @@ export function PlantPhotosToUpload() {
 
     try {
       await uploadPlantSitesToServer();
+      toast('Plant sites uploaded successfully');
     } catch (error) {
       toast('An error occured when uploading to the server, please try again.');
     } finally {
