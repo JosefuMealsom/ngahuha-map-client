@@ -1,37 +1,56 @@
-import { useState } from 'react';
-import { parse } from 'marked';
-import purify from 'dompurify';
+import { useEffect, useRef, useState } from 'react';
+import { parseMarkdown } from '../utils/markdown-parser.util';
 
 export function MarkDownEditorComponent(props: {
   value?: string;
+  className?: string;
   onSaveHandler: (text: string) => void;
 }) {
+  const textAreaInputRef = useRef<HTMLTextAreaElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState<string>(props.value || '');
 
-  function onInputChange(event: React.FormEvent<HTMLDivElement>) {
-    const div = event.target as HTMLDivElement;
-    setInputValue(div.innerText);
+  function onInputChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setInputValue(event.target.value);
   }
+
+  function resizeTextArea() {
+    if (textAreaInputRef.current) {
+      const scrollY = containerRef.current?.scrollTop;
+
+      textAreaInputRef.current.style.height = 'auto';
+      textAreaInputRef.current.style.height = `${textAreaInputRef.current?.scrollHeight}px`;
+
+      // Scroll position gets lost when we calculate the height
+      // of the text area above; so store the scroll position and then scroll
+      containerRef.current?.scroll({
+        top: scrollY,
+      });
+    }
+  }
+
+  useEffect(() => {
+    resizeTextArea();
+  }, [inputValue, isEditing]);
 
   function togglePreview() {
     setIsEditing(!isEditing);
   }
 
-  function parseMarkdown() {
-    const markdownToHtml = parse(inputValue, {
-      headerIds: false,
-      mangle: false,
-    });
-    return purify.sanitize(markdownToHtml);
+  function onSave() {
+    props.onSaveHandler(inputValue);
+    setIsEditing(false);
   }
 
   function renderSaveButton() {
+    if (!isEditing) return;
+
     return (
       <button
         className="border-solid  border px-6 py-2 bg-sky-600
         font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer inline-block ml-2 rounded-md"
-        onClick={() => props.onSaveHandler(inputValue)}
+        onClick={onSave}
         data-cy="markdown-save-button"
       >
         Save
@@ -40,26 +59,24 @@ export function MarkDownEditorComponent(props: {
   }
 
   return (
-    <div>
+    <div className={props.className} ref={containerRef}>
       <div className="mb-3">
         <div className={isEditing ? 'hidden' : ''}>
           <article
-            className="prose"
+            className="prose max-width-character"
             dangerouslySetInnerHTML={{
-              __html: parseMarkdown(),
+              __html: parseMarkdown(inputValue),
             }}
           ></article>
         </div>
         <div className={isEditing ? '' : 'hidden'}>
-          <div
-            className="w-full p-2 border border-gray-400 rounded-md resize-none whitespace-pre"
-            onInput={onInputChange}
-            contentEditable
-            suppressContentEditableWarning={true}
+          <textarea
+            ref={textAreaInputRef}
+            className="w-full p-2 border border-gray-400 rounded-md resize-none overflow-hidden"
+            onChange={onInputChange}
+            value={inputValue}
             data-cy="markdown-content-input"
-          >
-            {props.value}
-          </div>
+          />
         </div>
       </div>
       <button
