@@ -66,4 +66,28 @@ describe('Add new plant site for upload', () => {
 
     newPlantSitePage.plantFormPhotos().should('have.length', 1);
   });
+
+  it('can add a plant site without a name', () => {
+    cy.wait(['@getPlants', '@getGardenAreas']);
+
+    //required for the live query hooks to populate the data correctly in the form
+    cy.wait(300);
+
+    //@ts-ignore https://docs.cypress.io/api/commands/selectfile?ref=cypress.io#From-a-fixture
+    cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
+
+    newPlantSitePage.openFormButton().click();
+    newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
+
+    cy.contains(
+      'Note: You can save the plant site now, but you will need to identify it',
+    );
+    cy.contains('Accurate to within 888.00m');
+    newPlantSitePage.saveButton().click();
+
+    pendingUploadPage.pendingUploadsButton().click();
+    cy.contains('Pending changes');
+    cy.contains('Requires identification');
+    cy.contains('Missing information');
+  });
 });

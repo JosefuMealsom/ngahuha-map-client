@@ -33,7 +33,7 @@ export function PlantPhotoForm() {
 
     const plantId = findPlantIdByFullName();
 
-    if (photos.length === 0 || !plantId || !liveCoords) {
+    if (photos.length === 0 || !liveCoords) {
       return;
     }
 
@@ -47,6 +47,10 @@ export function PlantPhotoForm() {
   }
 
   function findPlantIdByFullName() {
+    // Case where there is a plant with a blank name
+    // Should fix this in the database
+    if (plantNameValue?.length === 0) return;
+
     return plantList?.find((plant) => plant.name === plantNameValue)?.id;
   }
 
@@ -125,9 +129,8 @@ export function PlantPhotoForm() {
   }
 
   function renderSave() {
-    if (photos.length === 0 || !plantNameValue) {
-      return;
-    }
+    if (photos.length === 0) return;
+
     return (
       <input
         className="block border-solid  border px-6 py-2 bg-sky-600
@@ -139,6 +142,18 @@ export function PlantPhotoForm() {
       />
     );
   }
+
+  function renderTipAboutMissingPlant() {
+    if (photos.length > 0 && !plantNameValue) {
+      return (
+        <p className="mb-5 text-blue-700">
+          Note: You can save the plant site now, but you will need to identify
+          it before you upload it on the pending uploads page
+        </p>
+      );
+    }
+  }
+
   return (
     <div className="h-full">
       <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full px-6">
@@ -178,6 +193,7 @@ export function PlantPhotoForm() {
           </div>
           {renderPhotos()}
           {renderLiveLocation()}
+          {renderTipAboutMissingPlant()}
           {renderSave()}
         </form>
       </div>

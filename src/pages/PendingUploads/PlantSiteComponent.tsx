@@ -9,7 +9,7 @@ export function PlantSiteComponent(
 ) {
   const plant = usePlant(props.plantId);
 
-  function deletePhoto() {
+  function deleteUpload() {
     if (props.id) deletePlantSite(props.id);
   }
 
@@ -20,19 +20,25 @@ export function PlantSiteComponent(
       <img
         src={trashSvg}
         className="h-6 inline-block ml-6 cursor-pointer"
-        onClick={deletePhoto}
+        onClick={deleteUpload}
         data-cy={`delete-plant-${props.id}`}
       />
     );
   }
 
   function renderPlantInfo() {
-    if (!plant) return;
-
+    if (!plant) {
+      return (
+        <div className="flex">
+          <p>Missing information</p>
+          {renderDelete()}
+        </div>
+      );
+    }
     return (
       <div className="flex">
         <div className="w-3/4 inline-block align-top">
-          <h1 className="font-bold">Plant Species</h1>
+          <h1 className="font-bold text-sm">Plant Species</h1>
           <p className="inline-block">{getFullPlantName(plant)}</p>
           {renderDelete()}
         </div>
