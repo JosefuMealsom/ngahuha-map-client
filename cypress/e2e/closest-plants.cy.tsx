@@ -6,7 +6,12 @@ function seedOfflineDatabase() {
   seed({
     plants: [
       { id: 'abcdef', species: 'The worst species', cultivar: 'lame' },
-      { id: '12345', species: 'The best species', cultivar: 'radical' },
+      {
+        id: '12345',
+        species: 'The best species',
+        cultivar: 'radical',
+        description: 'Very interesting',
+      },
       {
         id: 'qqqqq',
         species: 'Some far far away plant',
@@ -50,6 +55,6 @@ describe('Showing plant sites closest to the user', () => {
     closestPlantsPage.closestPlantSiteItem('best plant site id').click();
 
     cy.contains("The best species 'radical'");
-    cy.contains('Lorem ipsum');
+    cy.contains('Very interesting');
   });
 });
