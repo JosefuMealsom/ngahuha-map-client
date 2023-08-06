@@ -1,3 +1,4 @@
+import { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.type';
 import offlineDatabase, {
   plantSitePhotoUploadTable,
   plantSiteUploadTable,
@@ -14,18 +15,16 @@ class PlantIdMissingError extends Error {
 export const addPlantSiteWithPhoto = async (
   photoBlobs: Blob | Blob[],
   location: GeolocationCoordinates,
-  plantId: string,
+  plantId?: string,
 ) => {
-  const plant = await plantTable.get(plantId);
-
-  if (!plant) {
-    throw new PlantIdMissingError(plantId);
-  }
-
   //convert to array if only 1 photo passed as a parameter
   const photos = await Promise.all(
     [photoBlobs].flat().map(async (blob) => blob.arrayBuffer()),
   );
+
+  if (plantId) {
+    await validatePlantExists(plantId);
+  }
 
   return offlineDatabase.transaction(
     'rw',
@@ -33,7 +32,7 @@ export const addPlantSiteWithPhoto = async (
     plantSitePhotoUploadTable,
     async () => {
       return new Promise(async (success) => {
-        const plantSiteId = await addPlantSiteUpload(plantId, location);
+        const plantSiteId = await addPlantSiteUpload(location, plantId);
 
         await Promise.all(
           photos.map(async (photoBuffer) =>
@@ -70,9 +69,17 @@ export const deletePlantSite = async (id: number) => {
   );
 };
 
+const validatePlantExists = async (plantId: string) => {
+  const plant = await plantTable.get(plantId);
+
+  if (!plant) {
+    throw new PlantIdMissingError(plantId);
+  }
+};
+
 const addPlantSiteUpload = (
-  plantId: string,
   location: GeolocationCoordinates,
+  plantId?: string,
 ) => {
   return plantSiteUploadTable.add({
     plantId: plantId,
