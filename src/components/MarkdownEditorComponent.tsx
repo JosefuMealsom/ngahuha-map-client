@@ -19,14 +19,14 @@ export function MarkDownEditorComponent(props: {
   }
 
   function parseMarkdown() {
-    const markdown = parse(inputValue, { headerIds: false, mangle: false });
-
-    return purify.sanitize(markdown);
+    const markdownToHtml = parse(inputValue, {
+      headerIds: false,
+      mangle: false,
+    });
+    return purify.sanitize(markdownToHtml);
   }
 
   function renderSaveButton() {
-    if (!isEditing) return;
-
     return (
       <button
         className="border-solid  border px-6 py-2 bg-sky-600
@@ -52,11 +52,14 @@ export function MarkDownEditorComponent(props: {
         </div>
         <div className={isEditing ? '' : 'hidden'}>
           <div
-            className="w-full p-2 border border-gray-400 rounded-md resize-none"
+            className="w-full p-2 border border-gray-400 rounded-md resize-none whitespace-pre"
             onInput={onInputChange}
             contentEditable
+            suppressContentEditableWarning={true}
             data-cy="markdown-content-input"
-          />
+          >
+            {props.value}
+          </div>
         </div>
       </div>
       <button
