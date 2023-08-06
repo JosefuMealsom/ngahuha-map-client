@@ -1,5 +1,6 @@
 import type { Plant } from '../../types/api/plant.type';
 import apiFetchUtil from '../../utils/api-fetch.util';
+import { getFullApiPath } from '../../utils/api-url.util';
 import { plantTable } from '../offline.database';
 
 export const fetchPlants = (): Promise<Plant[]> => {
@@ -33,4 +34,20 @@ export const syncPlantsOffline = (): Promise<Plant[]> => {
 
     success(plants);
   });
+};
+
+export const updateDescription = async (
+  plantId: string,
+  description: string,
+) => {
+  const result = await fetch(getFullApiPath(`plant/${plantId}`), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ description: description }),
+  });
+
+  const dataToJSON = await result.json();
+  plantTable.put(dataToJSON);
+
+  return dataToJSON;
 };

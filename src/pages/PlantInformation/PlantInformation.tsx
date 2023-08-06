@@ -1,52 +1,55 @@
-import { plantSiteTable } from '../../services/offline.database';
 import { Plant } from '../../types/api/plant.type';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { useLoaderData } from 'react-router-dom';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { useState } from 'react';
-import { ButtonComponent } from '../../components/ButtonComponent';
 import { MarkDownEditorComponent } from '../../components/MarkdownEditorComponent';
+import { updateDescription } from '../../services/api/plant.service';
+import { toast } from 'react-toastify';
+import { CarouselComponent } from '../../components/CarouselComponent';
+import { usePlantPhotos } from '../../hooks/use-plant-photos.hook';
 
 export function PlantInformation() {
   const plant: Plant = useLoaderData() as Plant;
-  // const plantSites = useLiveQuery(() =>
-  //   plantSiteTable.where({ plantId: plant.id }).toArray(),
-  // );
+  const photos = usePlantPhotos(plant.id);
 
-  function renderExtendedInfo() {
-    if (!plant) return;
-    if (!plant.extendedInfo) return;
+  function renderCarousel() {
+    if (!photos || photos.length === 0) return;
 
-    return Object.entries(plant.extendedInfo).map(([key, value]) => (
-      <div key={crypto.randomUUID()}>
-        <h2 className="mb-2 font-bold">{key}</h2>
-        <p className="text-lg">{value}</p>
-      </div>
+    const elements = photos.map((photo) => (
+      <img
+        className="w-full sm:h-screen object-cover"
+        key={photo.id}
+        src={photo.dataUrl}
+      />
     ));
+
+    return <CarouselComponent elements={elements} />;
   }
 
-  function onDescriptionSave(text: string) {}
+  async function onDescriptionSave(description: string) {
+    await updateDescription(plant.id, description);
+
+    toast('Description successfully saved');
+  }
 
   function renderPlantInfo() {
     if (!plant) return;
 
     return (
-      <div className="h-full w-full bg-white">
-        <div className="p-3">
-          <h2 className="mb-2 font-bold">Name</h2>
-          <p className="text-lg mb-2">{getFullPlantName(plant)}</p>
-          <h2 className="mb-2 font-bold">Number of sites</h2>
-          <p className="text-lg mb-2">{plantSites?.length}</p>
-          <h2 className="mb-2 font-bold">Description</h2>
-          <p className="text-lg">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+      <div className="h-full w-full bg-white sm:fixed">
+        <div className="sm:flex h-full">
+          <div className="relative sm:w-1/2">
+            {renderCarousel()}
+            <p className="text-3xl absolute top-0 left-0 p-2 font-bold text-white bg-black bg-opacity-50">
+              {getFullPlantName(plant)}
+            </p>
+          </div>
+          <div className="sm:w-1/2">
+            <MarkDownEditorComponent
+              onSaveHandler={onDescriptionSave}
+              className="sm:h-screen sm:overflow-scroll pl-10 pr-10 py-6"
+              value={plant.description}
+            />
+          </div>
         </div>
       </div>
     );
