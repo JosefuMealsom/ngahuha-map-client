@@ -26,7 +26,9 @@ export const uploadPlantSiteToServer = async (
   await uploadPhotoBlobs(plantSitePhotos);
   await uploadPlantSite(plantSiteUpload).then(async (response) => {
     if (!response.ok) {
-      throw Error(`Upload failed: ${response.status}`);
+      throw Error(
+        `Upload failed: ${response.status}, ${(await response.json()).message}`,
+      );
     }
 
     await clearPlantUpload(plantSiteUpload);

@@ -29,7 +29,11 @@ export function PlantPhotosToUpload() {
       await bulkUploadPlantSitesToServer(readyForUpload);
       toast('Plant sites uploaded successfully');
     } catch (error) {
-      toast('An error occured when uploading to the server, please try again.');
+      toast(
+        `An error occured when uploading to the server: ${
+          (error as Error).message
+        }`,
+      );
     } finally {
       setUploadingState(false);
       await syncPlantSitesOffline();
