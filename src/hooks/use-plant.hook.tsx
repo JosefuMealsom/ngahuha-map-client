@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Plant } from '../types/api/plant.type';
 import { plantTable } from '../services/offline.database';
 
-export function usePlant(plantId: string) {
+export function usePlant(plantId?: string) {
   const [plant, setPlant] = useState<Plant>();
 
   const getPlantInfo = async () => {
+    if (!plantId) return;
+
     const plant = await plantTable.get(plantId);
 
     if (!plant) return;

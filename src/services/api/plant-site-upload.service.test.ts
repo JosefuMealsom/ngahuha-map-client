@@ -76,6 +76,17 @@ describe('PlantSiteUploadService', () => {
           plantSiteUploadId,
         );
       });
+
+      it('can add a plant site without a plantId', async () => {
+        const blob = new Blob();
+        await addPlantSiteWithPhoto(blob, location);
+        const savedPlantSiteData =
+          await offlineDatabase.plantSiteUpload.toArray();
+
+        expect(savedPlantSiteData.length).toEqual(1);
+        const plantSite = savedPlantSiteData[0];
+        expect(plantSite.plantId).toBeUndefined();
+      });
     });
 
     describe('plant missing', () => {

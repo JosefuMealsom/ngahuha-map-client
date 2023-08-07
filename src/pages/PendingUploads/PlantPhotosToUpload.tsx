@@ -2,18 +2,19 @@ import { useEffect, useState } from 'react';
 import { PlantSiteComponent } from './PlantSiteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { plantSiteUploadTable } from '../../services/offline.database';
-import { uploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
+import { bulkUploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
 import uploadSvg from '../../assets/svg/upload-cloud.svg';
 import { syncPlantSitesOffline } from '../../services/api/plant-site.service';
 import { syncPlantSitePhotosOffline } from '../../services/api/plant-site-photo.service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site-uploads';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);
   const navigate = useNavigate();
   const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
-  const plantSites = useLiveQuery(() => plantSiteUploadTable.toArray());
+  const [readyForUpload, requiresId] = useFilteredPlantSiteUploads();
 
   useEffect(() => {
     if (plantUploadCount === 0) {
@@ -25,10 +26,14 @@ export function PlantPhotosToUpload() {
     setUploadingState(true);
 
     try {
-      await uploadPlantSitesToServer();
+      await bulkUploadPlantSitesToServer(readyForUpload);
       toast('Plant sites uploaded successfully');
     } catch (error) {
-      toast('An error occured when uploading to the server, please try again.');
+      toast(
+        `An error occured when uploading to the server: ${
+          (error as Error).message
+        }`,
+      );
     } finally {
       setUploadingState(false);
       await syncPlantSitesOffline();
@@ -49,6 +54,43 @@ export function PlantPhotosToUpload() {
     );
   }
 
+  function renderReadyForUpload() {
+    if (readyForUpload.length === 0) return;
+
+    return (
+      <div>
+        <h2 className="font-bold mt-5 relative mb-3 text-sm">
+          Ready for upload
+        </h2>
+        {readyForUpload.map((plantSite) => (
+          <PlantSiteComponent
+            key={plantSite.id}
+            {...plantSite}
+            isUploading={uploading}
+          />
+        ))}
+      </div>
+    );
+  }
+  function renderRequiresIdentification() {
+    if (requiresId.length === 0) return;
+
+    return (
+      <div>
+        <h2 className="font-bold mt-5 text-sm relative mb-3">
+          Requires identification
+        </h2>
+        {requiresId.map((plantSite) => (
+          <PlantSiteComponent
+            key={crypto.randomUUID()}
+            {...plantSite}
+            isUploading={uploading}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="mb-4 pt-14 w-full h-full absolute top-0 left-0 bg-white p-6">
@@ -56,15 +98,8 @@ export function PlantPhotosToUpload() {
           {uploading ? 'Uploading' : 'Pending changes'}
           {renderUploadButton()}
         </h1>
-        <div>
-          {plantSites?.map((plantSite) => (
-            <PlantSiteComponent
-              key={plantSite.id}
-              {...plantSite}
-              isUploading={uploading}
-            />
-          ))}
-        </div>
+        {renderReadyForUpload()}
+        {renderRequiresIdentification()}
       </div>
     </div>
   );
