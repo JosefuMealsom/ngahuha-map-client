@@ -12,10 +12,9 @@ function seedOfflineDatabase() {
       { id: '12345', species: 'The worst species', cultivar: 'lame' },
     ],
     plantSiteUploads: [
-      { id: 1, plantId: 'abcdef' },
-      { id: 2, plantId: undefined },
+      { id: 1, plantId: 'abcdef', photos: [{ data: new ArrayBuffer(8) }] },
+      { id: 2, plantId: undefined, photos: [{ data: new ArrayBuffer(8) }] },
     ],
-    plantSitePhotoUploads: [{ plantSiteUploadId: 1 }, { plantSiteUploadId: 2 }],
     gardenAreas: [{ name: 'Other' }],
   });
 }
