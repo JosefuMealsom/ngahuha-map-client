@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from 'react-router-dom';
-import { plantTable } from '../../services/offline.database';
-import { Plant } from '../../types/api/plant.type';
+import { plantTable } from '../../../services/offline.database';
+import { Plant } from '../../../types/api/plant.type';
 
 export const loadPlant = async (
   loaderArgs: LoaderFunctionArgs,

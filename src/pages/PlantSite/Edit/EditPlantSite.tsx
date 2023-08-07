@@ -1,22 +1,34 @@
+import { PlantSiteForm } from '../CommonFormElements/PlantSiteForm';
+import { Plant } from '../../../types/api/plant.type';
+import { useLoaderData } from 'react-router-dom';
+import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import React, { FormEvent, useState } from 'react';
-import AutocompleteComponent from '../../components/AutocompleteComponent';
-import { plantTable } from '../../services/offline.database';
-import { getFullPlantName } from '../../utils/plant-name-decorator.util';
+import AutocompleteComponent from '../../../components/AutocompleteComponent';
+import { plantTable } from '../../../services/offline.database';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { addPlantSiteWithPhoto } from '../../services/api/plant-site-upload.service';
-import cameraUrl from '../../assets/svg/camera.svg';
-import { usePosition } from '../../hooks/use-position.hook';
-import { PlantPhotoImage } from './PlantPhotoImage';
+import { addPlantSiteWithPhoto } from '../../../services/api/plant-site-upload.service';
+import { usePosition } from '../../../hooks/use-position.hook';
 import { useNavigate } from 'react-router-dom';
+import { AccuracyIndicator } from '../CommonFormElements/AccuracyIndicator';
+import { PhotoInput } from '../CommonFormElements/PhotoInput';
+import { PlantSiteUpload } from '../../../types/api/upload/plant-site-upload.type';
 
+type EditLoaderData = {
+  plantSiteUpload: PlantSiteUpload;
+  plant?: Plant;
+};
 type PhotoFile = {
   id: string;
   file: File;
 };
 
-export function PlantPhotoForm() {
+export function EditPlantSite() {
+  const { plantSiteUpload, plant } = useLoaderData() as EditLoaderData;
+
   const [photos, setPhotos] = useState<PhotoFile[]>([]);
-  const [plantNameValue, setPlantNameValue] = useState<string>();
+  const [plantNameValue, setPlantNameValue] = useState<string>(
+    getPlantName() || '',
+  );
   const liveCoords = usePosition();
   const navigate = useNavigate();
 
@@ -27,6 +39,12 @@ export function PlantPhotoForm() {
       id: plant.id,
     }));
   });
+
+  function getPlantName() {
+    if (!plant) return '';
+
+    return getFullPlantName(plant);
+  }
 
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
@@ -41,6 +59,7 @@ export function PlantPhotoForm() {
       photos.map((photo) => photo.file),
       liveCoords,
       plantId,
+      plantSiteUpload?.id,
     );
 
     navigate('/');
@@ -68,21 +87,10 @@ export function PlantPhotoForm() {
     }
   }
 
-  function renderPhotos() {
-    if (photos.length === 0) return;
+  function renderLiveLocation() {
+    if (photos.length === 0 || !liveCoords) return;
 
-    return (
-      <div data-cy="plant-form-images">
-        <label className="block mb-3 font-semibold">Photos</label>
-        {photos?.map((photoImage) => (
-          <PlantPhotoImage
-            key={photoImage.id}
-            {...photoImage}
-            onRemoveHandler={removePlantPhoto}
-          />
-        ))}
-      </div>
-    );
+    return <AccuracyIndicator position={liveCoords} />;
   }
 
   function removePlantPhoto(photoIdToRemove: string) {
@@ -90,42 +98,6 @@ export function PlantPhotoForm() {
       (photoFile) => photoFile.id !== photoIdToRemove,
     );
     setPhotos(photosCopy);
-  }
-
-  function renderLiveLocation() {
-    if (photos.length === 0 || !liveCoords) return;
-
-    return (
-      <div className="mb-5">
-        <div className="inline-block">
-          <h3 className="font-bold">Latitude</h3>
-          <p>{liveCoords.latitude.toFixed(2)}</p>
-        </div>
-        <div className="inline-block ml-6">
-          <h3 className="font-bold">Longitude</h3>
-          <p>{liveCoords.longitude.toFixed(2)}</p>
-        </div>
-        <div className="block mt-3 ">
-          <p>
-            Accurate to within{' '}
-            <span className={getAccuracyColorIndicator(liveCoords.accuracy)}>
-              {liveCoords.accuracy.toFixed(2)}
-              <b>m</b>
-            </span>
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  function getAccuracyColorIndicator(accuracy: number) {
-    if (accuracy > 20) {
-      return 'text-red-600';
-    } else if (accuracy > 10 && accuracy < 20) {
-      return 'text-yellow-600';
-    } else {
-      return 'text-green-600';
-    }
   }
 
   function renderSave() {
@@ -168,30 +140,14 @@ export function PlantPhotoForm() {
               placeholder="Type species name to search"
               onChangeHandler={(value: string) => setPlantNameValue(value)}
               suggestionText="Available species"
+              value={plantNameValue}
             />
           </div>
-          <div>
-            <label
-              htmlFor="photo"
-              className="border-solid border-black border p-2 hover:bg-gray-300 cursor-pointer mb-7 inline-block rounded-md"
-              data-cy="add-photo"
-            >
-              Add photo
-              <img
-                src={cameraUrl}
-                className="inline-block ml-2 mr-1 h-5 align-middle relative -top-0.5"
-              />
-            </label>
-            <input
-              type="file"
-              capture="environment"
-              id="photo"
-              accept="image/*"
-              className="hidden"
-              onChange={onPhotoChange}
-            />
-          </div>
-          {renderPhotos()}
+          <PhotoInput
+            photos={photos}
+            onPhotoChangeHandler={onPhotoChange}
+            onPhotoRemoveHandler={removePlantPhoto}
+          />
           {renderLiveLocation()}
           {renderTipAboutMissingPlant()}
           {renderSave()}

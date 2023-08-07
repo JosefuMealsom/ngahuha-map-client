@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from 'react-router-dom';
-import { plantSiteTable } from '../../services/offline.database';
+import { plantSiteTable } from '../../../services/offline.database';
 
 export const loadPlantSite = async (loaderArgs: LoaderFunctionArgs) => {
   if (loaderArgs.params.id) {

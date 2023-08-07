@@ -1,9 +1,9 @@
-import { getFullPlantName } from '../../utils/plant-name-decorator.util';
-import { MarkDownEditorComponent } from '../../components/MarkdownEditorComponent';
-import { updateDescription } from '../../services/api/plant.service';
+import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
+import { MarkDownEditorComponent } from '../../../components/MarkdownEditorComponent';
+import { updateDescription } from '../../../services/api/plant.service';
 import { toast } from 'react-toastify';
-import { CarouselComponent } from '../../components/CarouselComponent';
-import { usePlant } from '../../hooks/use-plant.hook';
+import { CarouselComponent } from '../../../components/CarouselComponent';
+import { usePlant } from '../../../hooks/use-plant.hook';
 
 export function PlantDescription(props: {
   plantId: string;

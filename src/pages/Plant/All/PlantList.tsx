@@ -1,9 +1,9 @@
-import { plantSiteTable, plantTable } from '../../services/offline.database';
+import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { PlantItemComponent } from './PlantItemComponent';
 import { useEffect, useState } from 'react';
-import { Plant } from '../../types/api/plant.type';
-import { getFullPlantName } from '../../utils/plant-name-decorator.util';
-import SearchComponent from '../../components/SearchComponent';
+import { Plant } from '../../../types/api/plant.type';
+import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
+import SearchComponent from '../../../components/SearchComponent';
 
 export function PlantList() {
   const [plants, setPlants] = useState<Plant[]>([]);

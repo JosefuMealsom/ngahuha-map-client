@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import blobToDataUrlService from '../../services/blob-to-data-url.service';
-import closeImageUrl from '../../assets/svg/x-circle.svg';
+import blobToDataUrlService from '../../../services/blob-to-data-url.service';
+import closeImageUrl from '../../../assets/svg/x-circle.svg';
 
 export function PlantPhotoImage(props: {
   file: File;
