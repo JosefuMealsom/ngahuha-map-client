@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { PlantSiteComponent } from './PlantSiteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { plantSiteUploadTable } from '../../services/offline.database';
-import { uploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
+import { bulkUploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
 import uploadSvg from '../../assets/svg/upload-cloud.svg';
 import { syncPlantSitesOffline } from '../../services/api/plant-site.service';
 import { syncPlantSitePhotosOffline } from '../../services/api/plant-site-photo.service';
@@ -26,7 +26,7 @@ export function PlantPhotosToUpload() {
     setUploadingState(true);
 
     try {
-      await uploadPlantSitesToServer();
+      await bulkUploadPlantSitesToServer(readyForUpload);
       toast('Plant sites uploaded successfully');
     } catch (error) {
       toast('An error occured when uploading to the server, please try again.');
