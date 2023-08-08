@@ -11,3 +11,8 @@ export type PlantSiteUpload = {
   accuracy: number;
   photos: PlantSitePhotoUpload[];
 };
+
+export type PhotoFile = {
+  id: string;
+  file: Blob;
+};

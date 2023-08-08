@@ -3,7 +3,7 @@ import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import closeImageUrl from '../../../assets/svg/x-circle.svg';
 
 export function PlantPhotoImage(props: {
-  file: File;
+  file: Blob;
   id: string;
   onRemoveHandler: (id: string) => void;
 }) {

@@ -40,8 +40,13 @@ const router = createBrowserRouter([
         loader: loadPlantSite,
       },
       {
+        path: 'plant-site/:id/edit',
+        element: <EditPlantSite />,
+        loader: loadPlantSiteUploadWithPhotos,
+      },
+      {
         path: 'plant-site/new',
-        element: <PlantPhotoForm />,
+        element: <NewPlantSite />,
       },
       {
         path: 'plant-site/pending-upload',

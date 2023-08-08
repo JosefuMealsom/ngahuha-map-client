@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import { Plant } from '../../types/api/plant.type';
-import { getFullPlantName } from '../../utils/plant-name-decorator.util';
+import { Plant } from '../../../types/api/plant.type';
+import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import { useLiveQuery } from 'dexie-react-hooks';
 import {
   plantSitePhotoTable,
   plantSiteTable,
-} from '../../services/offline.database';
+} from '../../../services/offline.database';
 import { useEffect, useState } from 'react';
-import blobToDataUrlService from '../../services/blob-to-data-url.service';
+import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 
 export function PlantItemComponent(props: Plant) {
   const firstPlantSite = useLiveQuery(() =>

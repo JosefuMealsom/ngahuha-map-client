@@ -11,6 +11,7 @@ export const addPlantSiteWithPhoto = async (
   photoBlobs: Blob | Blob[],
   location: GeolocationCoordinates,
   plantId?: string,
+  plantSiteUploadId?: number,
 ) => {
   //convert to array if only 1 photo passed as a parameter
   const photos = await Promise.all(
@@ -21,7 +22,7 @@ export const addPlantSiteWithPhoto = async (
     await validatePlantExists(plantId);
   }
 
-  return addPlantSiteUpload(location, photos, plantId);
+  return addPlantSiteUpload(location, photos, plantId, plantSiteUploadId);
 };
 
 export const deletePlantSite = async (id: number) => {

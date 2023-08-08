@@ -9,9 +9,10 @@ export default function AutocompleteComponent(props: {
   onItemSelectHandler?: (value: string) => any;
   onClearHandler?: () => any;
   suggestionText?: string;
+  value?: string;
 }) {
   const [textMatches, setTextMatches] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(props.value || '');
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [autocompleteIndex, setAutocompleteIndex] = useState(-1);
 
