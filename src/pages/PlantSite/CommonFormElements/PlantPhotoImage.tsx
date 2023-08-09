@@ -25,7 +25,7 @@ export function PlantPhotoImage(props: {
   };
 
   return (
-    <div className="mb-5 block relative">
+    <div className="relative">
       <div className="relative inline-block" data-cy="photo-form-photo">
         <img
           src={closeImageUrl}
@@ -33,7 +33,7 @@ export function PlantPhotoImage(props: {
           onClick={onRemoveClick}
           data-cy="remove-photo-button"
         />
-        <img src={previewImage} className="mb-3 w-52 inline-block" />
+        <img src={previewImage} className="mb-3 sm:w-52 inline-block" />
       </div>
     </div>
   );

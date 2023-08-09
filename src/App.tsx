@@ -38,20 +38,21 @@ function App() {
 
   return (
     <div>
-      <MapContainer />
-      <nav className="fixed bottom-5 left-0 w-full flex justify-evenly">
-        {renderPendingUploadLink()}
-        <div data-cy="open-closest-plants">
-          <LinkComponent link="/closest-plants" text="Closest plants" />
-        </div>
-        <div data-cy="open-plant-list">
-          <LinkComponent link="/plants" text="All plants" />
-        </div>
-        <div data-cy="open-plant-form">
-          <LinkComponent link="/plant-site/new" text="New plant site" />
-        </div>
-      </nav>
-
+      <div>
+        <MapContainer />
+        <nav className="fixed bottom-5 left-0 w-full flex justify-evenly">
+          {renderPendingUploadLink()}
+          <div data-cy="open-closest-plants">
+            <LinkComponent link="/closest-plants" text="Closest plants" />
+          </div>
+          <div data-cy="open-plant-list">
+            <LinkComponent link="/plants" text="All plants" />
+          </div>
+          <div data-cy="open-plant-form">
+            <LinkComponent link="/plant-site/new" text="New plant site" />
+          </div>
+        </nav>
+      </div>
       <Outlet />
       <ToastContainer />
     </div>

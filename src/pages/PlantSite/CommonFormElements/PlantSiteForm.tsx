@@ -8,18 +8,20 @@ import { usePosition } from '../../../hooks/use-position.hook';
 import { AccuracyIndicator } from '../CommonFormElements/AccuracyIndicator';
 import { PhotoInput } from '../CommonFormElements/PhotoInput';
 import { PhotoFile } from '../../../types/api/upload/plant-site-upload.type';
+import { LatLong } from '../../../types/lat-long.type';
 
 export function PlantSiteForm(props: {
   onSaveHandlerSuccess: () => void;
   plantNameValue?: string;
   plantSiteUploadId?: number;
   photoFiles?: PhotoFile[];
+  coordinates?: LatLong;
 }) {
   const [photos, setPhotos] = useState<PhotoFile[]>(props.photoFiles || []);
   const [plantNameValue, setPlantNameValue] = useState<string>(
     props.plantNameValue || '',
   );
-  const liveCoords = usePosition();
+  const liveCoords = props.coordinates || usePosition();
 
   const plantList = useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
@@ -49,10 +51,6 @@ export function PlantSiteForm(props: {
   }
 
   function findPlantIdByFullName() {
-    // Case where there is a plant with a blank name
-    // Should fix this in the database
-    if (plantNameValue?.length === 0) return;
-
     return plantList?.find((plant) => plant.name === plantNameValue)?.id;
   }
 
@@ -87,14 +85,16 @@ export function PlantSiteForm(props: {
     if (photos.length === 0) return;
 
     return (
-      <input
-        className="block border-solid  border px-6 py-2 bg-sky-600
+      <div className="pb-10">
+        <input
+          className="block border-solid  border px-6 py-2 bg-sky-600
         font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
-        type="submit"
-        data-cy="save-plant-site"
-        value="Lock in location and save!"
-        onSubmit={savePhotoLocally}
-      />
+          type="submit"
+          data-cy="save-plant-site"
+          value="Lock in location and save!"
+          onSubmit={savePhotoLocally}
+        />
+      </div>
     );
   }
 
@@ -110,9 +110,9 @@ export function PlantSiteForm(props: {
   }
 
   return (
-    <form onSubmit={savePhotoLocally}>
+    <form onSubmit={savePhotoLocally} className="bg-white w-full">
       <div
-        className="mb-7 relative max-w-md"
+        className="mb-7 relative sm:max-w-md"
         data-cy="plant-form-autocomplete-container"
       >
         <div className="relative z-10">

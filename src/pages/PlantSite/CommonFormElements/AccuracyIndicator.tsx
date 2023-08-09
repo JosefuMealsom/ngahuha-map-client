@@ -1,4 +1,6 @@
-export function AccuracyIndicator(props: { position: GeolocationCoordinates }) {
+import { LatLong } from '../../../types/lat-long.type';
+
+export function AccuracyIndicator(props: { position: LatLong }) {
   const { position } = props;
 
   function getAccuracyColorIndicator(accuracy: number) {

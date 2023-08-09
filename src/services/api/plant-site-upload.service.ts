@@ -1,3 +1,4 @@
+import { LatLong } from '../../types/lat-long.type';
 import { plantSiteUploadTable, plantTable } from '../offline.database';
 
 class PlantIdMissingError extends Error {
@@ -9,7 +10,7 @@ class PlantIdMissingError extends Error {
 
 export const addPlantSiteWithPhoto = async (
   photoBlobs: Blob | Blob[],
-  location: GeolocationCoordinates,
+  location: LatLong,
   plantId?: string,
   plantSiteUploadId?: number,
 ) => {
@@ -38,7 +39,7 @@ const validatePlantExists = async (plantId: string) => {
 };
 
 const addPlantSiteUpload = (
-  location: GeolocationCoordinates,
+  location: LatLong,
   photos: ArrayBuffer[],
   plantId?: string,
   id?: number,
