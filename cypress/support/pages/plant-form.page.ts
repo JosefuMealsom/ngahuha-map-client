@@ -1,7 +1,3 @@
-const openFormButton = () => {
-  return cy.get('[data-cy="open-plant-form"]');
-};
-
 const plantSearchAutocompleteContainer = () => {
   return cy.get('[data-cy="plant-form-autocomplete-container"]');
 };
@@ -32,8 +28,7 @@ const removePhotoButtons = () => {
   return cy.get('[data-cy="remove-photo-button"]');
 };
 
-export const newPlantSitePage = {
-  openFormButton,
+export const plantFormPage = {
   plantSearchInput,
   autoCompleteEntry,
   takePhotoButton,
