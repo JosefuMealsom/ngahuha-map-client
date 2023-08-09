@@ -34,11 +34,19 @@ export function MapContainer() {
         <MapCanvas />
         <FeatureMarker
           text="The steppes"
-          position={{ latitude: -35.377761, longitude: 173.966039 }}
+          position={{
+            latitude: -35.377761,
+            longitude: 173.966039,
+            accuracy: 0,
+          }}
         />
         <FeatureMarker
           text="The avocado orchard"
-          position={{ latitude: -35.377025, longitude: 173.965264 }}
+          position={{
+            latitude: -35.377025,
+            longitude: 173.965264,
+            accuracy: 0,
+          }}
         />
         <LocationMarker />
         <MapFilter />
