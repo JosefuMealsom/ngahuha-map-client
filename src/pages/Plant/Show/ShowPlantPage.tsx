@@ -1,9 +1,9 @@
-import { Plant } from '../../types/api/plant.type';
+import { Plant } from '../../../types/api/plant.type';
 import { useLoaderData } from 'react-router-dom';
-import { usePlantPhotos } from '../../hooks/use-plant-photos.hook';
+import { usePlantPhotos } from '../../../hooks/use-plant-photos.hook';
 import { PlantDescription } from './PlantDescription';
 
-export function PlantInformationPage() {
+export function ShowPlantPage() {
   const plant: Plant = useLoaderData() as Plant;
   const photos = usePlantPhotos(plant.id);
 

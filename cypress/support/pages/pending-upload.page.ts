@@ -7,6 +7,10 @@ export const pendingUploadPage = {
     return cy.get(`[data-cy="delete-plant-${plantSiteId}"]`);
   },
 
+  editButtonForPlantSiteId(plantSiteId: string) {
+    return cy.get(`[data-cy="edit-plant-${plantSiteId}"]`);
+  },
+
   uploadToServerButton: () => {
     return cy.get('[data-cy="upload-plants"]');
   },

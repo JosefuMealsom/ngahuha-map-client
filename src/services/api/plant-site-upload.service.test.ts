@@ -5,7 +5,6 @@ import {
 } from './plant-site-upload.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase, {
-  plantSitePhotoUploadTable,
   plantSiteUploadTable,
   plantTable,
 } from '../offline.database';
@@ -20,7 +19,6 @@ describe('PlantSiteUploadService', () => {
 
   afterEach(async () => {
     await plantSiteUploadTable.clear();
-    await plantSitePhotoUploadTable.clear();
     await plantTable.clear();
   });
 
@@ -43,38 +41,22 @@ describe('PlantSiteUploadService', () => {
       it('adds a new plant site and saves it offline', async () => {
         const blob = new Blob();
         await addPlantSiteWithPhoto(blob, location, 'abc');
-        const savedPlantSiteData =
-          await offlineDatabase.plantSiteUpload.toArray();
+        const savedPlantSiteData = await plantSiteUploadTable.toArray();
 
         expect(savedPlantSiteData.length).toEqual(1);
         const plantSite = savedPlantSiteData[0];
         expect(plantSite.accuracy).toEqual(10);
         expect(plantSite.latitude).toEqual(20);
         expect(plantSite.longitude).toEqual(30);
-
-        const savedPlantPhotoData =
-          await offlineDatabase.plantSitePhotoUpload.toArray();
-        expect(savedPlantPhotoData.length).toEqual(1);
-        const photo = savedPlantPhotoData[0];
-        expect(photo.plantSiteUploadId).toEqual(plantSite.id);
+        expect(plantSite.photos.length).toEqual(1);
       });
 
       it('can add an array of photos', async () => {
         const blobs = [new Blob(), new Blob()];
         await addPlantSiteWithPhoto(blobs, location, 'abc');
-        const savedPlantSiteData =
-          await offlineDatabase.plantSiteUpload.toArray();
-        const plantSiteUploadId = savedPlantSiteData[0].id;
+        const savedPlantSiteData = await plantSiteUploadTable.toArray();
 
-        const savedPlantPhotoData =
-          await offlineDatabase.plantSitePhotoUpload.toArray();
-        expect(savedPlantPhotoData.length).toEqual(2);
-        expect(savedPlantPhotoData[0].plantSiteUploadId).toEqual(
-          plantSiteUploadId,
-        );
-        expect(savedPlantPhotoData[1].plantSiteUploadId).toEqual(
-          plantSiteUploadId,
-        );
+        expect(savedPlantSiteData[0].photos.length).toEqual(2);
       });
 
       it('can add a plant site without a plantId', async () => {
@@ -100,20 +82,14 @@ describe('PlantSiteUploadService', () => {
   });
 
   describe('deletePlantSite()', () => {
-    it('deletes the plantSite and the associated photo', async () => {
+    it('deletes the plantSite', async () => {
       const plantSiteId = (await plantSiteUploadTable.add(
         plantSiteFactory.create({}),
       )) as number;
 
-      await plantSitePhotoUploadTable.add({
-        data: new ArrayBuffer(8),
-        plantSiteUploadId: plantSiteId,
-      });
-
       await deletePlantSite(plantSiteId);
 
       expect(await plantSiteUploadTable.toArray()).toEqual([]);
-      expect(await plantSitePhotoUploadTable.toArray()).toEqual([]);
     });
   });
 });

@@ -5,13 +5,15 @@ import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
 import { ClosestPlantsToUser } from './pages/ClosestPlants/ClosestPlantsToUser';
-import { loadPlantSite } from './pages/PlantSiteInformation/plant-site.loader';
-import { PlantSiteInformation } from './pages/PlantSiteInformation/PlantSiteInformation';
-import { PlantPhotoForm } from './pages/NewPlantSite/PlantPhotoForm';
+import { loadPlantSite } from './pages/PlantSite/Show/plant-site.loader';
+import { PlantSiteInformation } from './pages/PlantSite/Show/ShowPlantSite';
+import { NewPlantSite } from './pages/PlantSite/New/NewPlantSite';
+import { EditPlantSite } from './pages/PlantSite/Edit/EditPlantSite';
 import { PlantPhotosToUpload } from './pages/PendingUploads/PlantPhotosToUpload';
-import { PlantList } from './pages/PlantList/PlantList';
-import { loadPlant } from './pages/PlantInformation/plant.loader';
-import { PlantInformationPage } from './pages/PlantInformation/PlantInformationPage';
+import { PlantList } from './pages/Plant/All/PlantList';
+import { loadPlant } from './pages/Plant/Show/plant.loader';
+import { ShowPlantPage } from './pages/Plant/Show/ShowPlantPage';
+import { loadPlantSiteUploadWithPhotos } from './pages/PlantSite/Edit/plant-site-edit.loader';
 
 const router = createBrowserRouter([
   {
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'plants/:id',
-        element: <PlantInformationPage />,
+        element: <ShowPlantPage />,
         loader: loadPlant,
       },
       {
@@ -38,8 +40,13 @@ const router = createBrowserRouter([
         loader: loadPlantSite,
       },
       {
+        path: 'plant-site/:id/edit',
+        element: <EditPlantSite />,
+        loader: loadPlantSiteUploadWithPhotos,
+      },
+      {
         path: 'plant-site/new',
-        element: <PlantPhotoForm />,
+        element: <NewPlantSite />,
       },
       {
         path: 'plant-site/pending-upload',

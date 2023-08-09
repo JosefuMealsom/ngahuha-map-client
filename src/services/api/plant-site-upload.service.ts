@@ -1,9 +1,4 @@
-import { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.type';
-import offlineDatabase, {
-  plantSitePhotoUploadTable,
-  plantSiteUploadTable,
-  plantTable,
-} from '../offline.database';
+import { plantSiteUploadTable, plantTable } from '../offline.database';
 
 class PlantIdMissingError extends Error {
   constructor(plantId: string) {
@@ -16,6 +11,7 @@ export const addPlantSiteWithPhoto = async (
   photoBlobs: Blob | Blob[],
   location: GeolocationCoordinates,
   plantId?: string,
+  plantSiteUploadId?: number,
 ) => {
   //convert to array if only 1 photo passed as a parameter
   const photos = await Promise.all(
@@ -26,47 +22,11 @@ export const addPlantSiteWithPhoto = async (
     await validatePlantExists(plantId);
   }
 
-  return offlineDatabase.transaction(
-    'rw',
-    plantSiteUploadTable,
-    plantSitePhotoUploadTable,
-    async () => {
-      return new Promise(async (success) => {
-        const plantSiteId = await addPlantSiteUpload(location, plantId);
-
-        await Promise.all(
-          photos.map(async (photoBuffer) =>
-            addPlantSitePhotoUpload(plantSiteId as number, photoBuffer),
-          ),
-        );
-
-        success(plantSiteId);
-      });
-    },
-  );
+  return addPlantSiteUpload(location, photos, plantId, plantSiteUploadId);
 };
 
 export const deletePlantSite = async (id: number) => {
-  offlineDatabase.transaction(
-    'rw',
-    plantSiteUploadTable,
-    plantSitePhotoUploadTable,
-    async () => {
-      const photoIds = await plantSitePhotoUploadTable
-        .where({
-          plantSiteUploadId: id,
-        })
-        .toArray();
-
-      // Bit funky here, Dexie has issues with the id type being conditional
-      // so it always complains that I may have undefined returned.
-      const idsToDelete = photoIds.map((item) => item.id as number);
-      const filteredNumbers = idsToDelete.filter((id) => id !== undefined);
-
-      await plantSitePhotoUploadTable.bulkDelete(filteredNumbers);
-      await plantSiteUploadTable.delete(id);
-    },
-  );
+  return plantSiteUploadTable.delete(id);
 };
 
 const validatePlantExists = async (plantId: string) => {
@@ -79,22 +39,20 @@ const validatePlantExists = async (plantId: string) => {
 
 const addPlantSiteUpload = (
   location: GeolocationCoordinates,
+  photos: ArrayBuffer[],
   plantId?: string,
+  id?: number,
 ) => {
-  return plantSiteUploadTable.add({
+  const photoData = photos.map((photoData) => ({
+    data: photoData,
+  }));
+
+  return plantSiteUploadTable.put({
+    id: id,
     plantId: plantId,
     latitude: location.latitude,
     longitude: location.longitude,
     accuracy: location.accuracy,
-  });
-};
-
-const addPlantSitePhotoUpload = async (
-  plantSiteId: number,
-  photoData: ArrayBuffer,
-) => {
-  return plantSitePhotoUploadTable.add({
-    plantSiteUploadId: plantSiteId,
-    data: photoData,
+    photos: photoData,
   });
 };

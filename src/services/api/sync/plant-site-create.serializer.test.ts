@@ -1,11 +1,9 @@
 import { beforeEach, expect, describe, it } from 'vitest';
 import {
   plantSiteUploadTable,
-  plantSitePhotoUploadTable,
   plantTable,
   gardenAreaTable,
 } from '../../offline.database';
-import plantSitePhotoUploadFactory from '../../../test-helpers/factories/plant-site-photo-upload';
 import plantSiteUploadFactory from '../../../test-helpers/factories/plant-site-upload';
 import { serializeCreatePlantSite } from './plant-site-create.serializer';
 import plantFactory from '../../../test-helpers/factories/plant';
@@ -18,17 +16,12 @@ describe('serializeCreatePlantSite()', () => {
     latitude: 20,
     longitude: 20,
     plantId: 'My cool plant id',
+    photos: [
+      { data: new Uint8Array(), blobKey: 'mr blobby' },
+      { data: new Uint8Array(), blobKey: 'mrs blobette' },
+    ],
   });
-  const photo1 = plantSitePhotoUploadFactory.create({
-    id: 1,
-    plantSiteUploadId: 1,
-    blobKey: 'mr blobby',
-  });
-  const photo2 = plantSitePhotoUploadFactory.create({
-    id: 2,
-    plantSiteUploadId: 1,
-    blobKey: 'mrs blobette',
-  });
+
   const plant = plantFactory.create({
     id: 'My cool plant id',
   });
@@ -40,8 +33,6 @@ describe('serializeCreatePlantSite()', () => {
   beforeEach(async () => {
     await plantTable.add(plant);
     await plantSiteUploadTable.add(plantSite);
-    await plantSitePhotoUploadTable.add(photo1);
-    await plantSitePhotoUploadTable.add(photo2);
     await gardenAreaTable.add(gardenArea);
   });
 

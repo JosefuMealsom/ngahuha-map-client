@@ -19,7 +19,12 @@ const locationMarker = () => {
   return cy.get('[data-cy="location-marker"]');
 };
 
+const addNewPlantSiteButton = () => {
+  return cy.get('[data-cy="open-plant-form"]');
+};
+
 export const mapViewPage = {
+  addNewPlantSiteButton,
   mapFilterInput,
   mapFilterContainer,
   mapFilterEntry,

@@ -1,6 +1,5 @@
 import Dexie, { Table } from 'dexie';
 import type { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
-import type { PlantSitePhotoUpload } from '../types/api/upload/plant-site-photo-upload.type';
 import type { GardenArea } from '../types/api/garden-area.type';
 import type { Plant } from '../types/api/plant.type';
 import type { PlantType } from '../types/api/plant-type.type';
@@ -15,7 +14,6 @@ class OfflineDatabase extends Dexie {
   public readonly plantType!: Table<PlantType>;
 
   public readonly plantSiteUpload!: Table<PlantSiteUpload, number>;
-  public readonly plantSitePhotoUpload!: Table<PlantSitePhotoUpload, number>;
 
   constructor() {
     super('OfflineDatabase');
@@ -27,7 +25,6 @@ class OfflineDatabase extends Dexie {
       plantSite: 'id, updatedAt, plantId',
       plantSitePhoto: 'id, updatedAt, plantSiteId',
       plantSiteUpload: '++id, plantId',
-      plantSitePhotoUpload: '++id, plantSiteUploadId',
     });
   }
 }
@@ -41,5 +38,4 @@ export const plantTypeTable = offlineDatabase.plantType;
 export const plantSiteTable = offlineDatabase.plantSite;
 export const plantSitePhotoTable = offlineDatabase.plantSitePhoto;
 
-export const plantSitePhotoUploadTable = offlineDatabase.plantSitePhotoUpload;
 export const plantSiteUploadTable = offlineDatabase.plantSiteUpload;

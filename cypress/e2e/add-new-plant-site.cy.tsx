@@ -1,4 +1,5 @@
-import { newPlantSitePage } from '../support/pages/new-plant-site.page';
+import { plantFormPage as newPlantSitePage } from '../support/pages/plant-form.page';
+import { mapViewPage } from '../support/pages/map-view.page';
 import { pendingUploadPage } from '../support/pages/pending-upload.page';
 import { stubWatchPosition } from '../support/stubs/geolocation';
 
@@ -21,7 +22,7 @@ describe('Add new plant site for upload', () => {
     cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
     cy.fixture('images/lemons.jpeg', { encoding: null }).as('plantSitePhoto2');
 
-    newPlantSitePage.openFormButton().click();
+    mapViewPage.addNewPlantSiteButton().click();
     cy.contains('Add a new location');
     newPlantSitePage.plantSearchInput().type('Cool spec');
 
@@ -52,7 +53,7 @@ describe('Add new plant site for upload', () => {
     cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
     cy.fixture('images/lemons.jpeg', { encoding: null }).as('plantSitePhoto2');
 
-    newPlantSitePage.openFormButton().click();
+    mapViewPage.addNewPlantSiteButton().click();
     cy.contains('Add a new location');
     newPlantSitePage.plantSearchInput().type('Cool spec');
 
@@ -76,7 +77,7 @@ describe('Add new plant site for upload', () => {
     //@ts-ignore https://docs.cypress.io/api/commands/selectfile?ref=cypress.io#From-a-fixture
     cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
 
-    newPlantSitePage.openFormButton().click();
+    mapViewPage.addNewPlantSiteButton().click();
     newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
 
     cy.contains(

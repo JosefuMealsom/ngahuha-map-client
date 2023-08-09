@@ -58,8 +58,8 @@ export function PlantPhotosToUpload() {
     if (readyForUpload.length === 0) return;
 
     return (
-      <div>
-        <h2 className="font-bold mt-5 relative mb-3 text-sm">
+      <div className="mb-16">
+        <h2 className="font-bold mt-5 relative text-sm mb-5">
           Ready for upload
         </h2>
         {readyForUpload.map((plantSite) => (
@@ -77,7 +77,7 @@ export function PlantPhotosToUpload() {
 
     return (
       <div>
-        <h2 className="font-bold mt-5 text-sm relative mb-3">
+        <h2 className="font-bold mt-5 text-sm relative mb-5">
           Requires identification
         </h2>
         {requiresId.map((plantSite) => (

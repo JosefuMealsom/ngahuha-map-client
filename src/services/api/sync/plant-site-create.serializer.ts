@@ -1,8 +1,5 @@
 import { PlantSiteUpload } from '../../../types/api/upload/plant-site-upload.type';
-import {
-  gardenAreaTable,
-  plantSitePhotoUploadTable,
-} from '../../offline.database';
+import { gardenAreaTable } from '../../offline.database';
 
 class GardenAreaMissingError extends Error {
   constructor(message: string) {
@@ -13,11 +10,7 @@ class GardenAreaMissingError extends Error {
 export const serializeCreatePlantSite = async (
   plantSiteUpload: PlantSiteUpload,
 ) => {
-  const photos = await plantSitePhotoUploadTable
-    .where({ plantSiteUploadId: plantSiteUpload.id })
-    .toArray();
-
-  const plantPhotosJSON = photos.map((photo) => ({
+  const plantPhotosJSON = plantSiteUpload.photos.map((photo) => ({
     blobKey: photo.blobKey,
   }));
 
