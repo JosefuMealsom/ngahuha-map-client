@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      target: staging
+      args:
+        VITE_BASE_API_URL: 'https://app.ngahuha-map-dev.com:3000'
+    ports:
+      - '4000:4173'
+    restart: always
