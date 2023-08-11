@@ -1,4 +1,4 @@
 #!/bin/zsh
 
-docker compose -f compose-staging.yaml -p ngahuha-map-staging build
-docker compose -f compose-staging.yaml -p ngahuha-map-staging up
+docker compose -f compose-staging.yaml -p ngahuha-map-client-staging build
+docker compose -f compose-staging.yaml -p ngahuha-map-client-staging up
