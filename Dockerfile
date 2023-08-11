@@ -19,6 +19,7 @@ RUN yarn install --immutable --immutable-cache --check-cache
 
 COPY --chown=node:node . .
 ARG VITE_BASE_API_URL
+ENV NODE_ENV production
 RUN yarn vite build
 
 FROM node:18 AS staging

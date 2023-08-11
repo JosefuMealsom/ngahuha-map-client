@@ -8,7 +8,11 @@ import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
 
 export function MapMarker(props: PlantSite) {
   const marker = useRef<HTMLDivElement>(null);
-  const position = { latitude: props.latitude, longitude: props.longitude };
+  const position = {
+    latitude: props.latitude,
+    longitude: props.longitude,
+    accuracy: props.accuracy,
+  };
 
   useAnimationFrame(() => {
     if (!marker.current) return;

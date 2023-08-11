@@ -12,10 +12,14 @@ export default defineConfig(({ command, mode }) => {
         cert: env.PRIVATE_DEV_CERT,
       },
     },
+
     plugins: [
       react(),
       VitePWA({
         registerType: 'autoUpdate',
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,jpg,png,svg}'],
+        },
       }),
     ],
   };

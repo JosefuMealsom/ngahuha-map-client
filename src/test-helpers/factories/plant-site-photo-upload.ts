@@ -1,12 +1,10 @@
-import { PlantSitePhotoUpload } from '../../types/api/upload/plant-site-photo-upload.type';
+import { PlantSitePhotoUpload } from '../../types/api/upload/plant-site-upload.type';
 
 let count = 0;
 
 const plantSitePhotoUploadFactory = {
   create(photoData: Partial<PlantSitePhotoUpload>) {
     const dummyData: PlantSitePhotoUpload = {
-      id: count++,
-      plantSiteUploadId: 123,
       data: new ArrayBuffer(8),
     };
 

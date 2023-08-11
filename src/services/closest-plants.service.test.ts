@@ -5,7 +5,8 @@ import { getPlantSitesWithinDistance } from './closest-plants.service';
 describe('ClosestPlantsService', () => {
   // Positions obtained by selecting points on google maps,
   // Thankfully there is a distance scale on the map.
-  const position = { latitude: -35.375587, longitude: 173.964963 };
+  const position = { latitude: -35.375587, longitude: 173.964963, accuracy: 1 };
+
   const closePlantSite1 = plantSiteFactory.create({
     latitude: -35.375563,
     longitude: 173.965043,
