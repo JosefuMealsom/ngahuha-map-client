@@ -3,9 +3,9 @@ services:
   app:
     build:
       context: .
+      target: development
     ports:
       - '9090:5173'
-      - '8090:4173'
     command: /bin/sh -c "while sleep 1000; do :; done"
     volumes:
       - ./:/app

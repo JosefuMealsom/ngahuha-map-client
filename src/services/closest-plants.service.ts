@@ -10,6 +10,7 @@ export const getPlantSitesWithinDistance = (
     distance: distanceBetweenCoords(location, {
       latitude: plantSite.latitude,
       longitude: plantSite.longitude,
+      accuracy: plantSite.accuracy,
     }),
     ...plantSite,
   }));
