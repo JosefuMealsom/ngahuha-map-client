@@ -40,7 +40,7 @@ function App() {
     <div>
       <div>
         <MapContainer />
-        <nav className="fixed bottom-5 left-0 w-full flex justify-evenly">
+        <nav className="absolute bottom-5 left-0 w-full flex justify-evenly">
           {renderPendingUploadLink()}
           <div data-cy="open-closest-plants">
             <LinkComponent link="/closest-plants" text="Closest plants" />
