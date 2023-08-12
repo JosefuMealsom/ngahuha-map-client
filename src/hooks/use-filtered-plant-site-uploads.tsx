@@ -7,25 +7,37 @@ export const useFilteredPlantSiteUploads = (): [
   readyForUpload: PlantSiteUpload[],
   requiresId: PlantSiteUpload[],
 ] => {
-  const plantSiteUploads = useLiveQuery(() => plantSiteUploadTable.toArray());
+  const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
   const [readyForUpload, setReadyForUpload] = useState<PlantSiteUpload[]>([]);
   const [requiresId, setRequiresId] = useState<PlantSiteUpload[]>([]);
 
   useEffect(() => {
-    if (!plantSiteUploads) return;
+    const setData = async () => {
+      const plantSiteUploads: PlantSiteUpload[] = [];
 
-    setRequiresId(
-      plantSiteUploads.filter(
-        (plantSiteUpload) => plantSiteUpload.plantId === undefined,
-      ),
-    );
+      await plantSiteUploadTable.toCollection().each((upload) => {
+        if (upload.plantId) {
+          plantSiteUploads.push(upload);
+          return;
+        }
 
-    setReadyForUpload(
-      plantSiteUploads.filter(
-        (plantSiteUpload) => plantSiteUpload.plantId !== undefined,
-      ),
-    );
-  }, [plantSiteUploads]);
+        plantSiteUploads.push({ ...upload, photos: [] });
+      });
+
+      setRequiresId(
+        plantSiteUploads.filter(
+          (plantSiteUpload) => plantSiteUpload.plantId === undefined,
+        ),
+      );
+      setReadyForUpload(
+        plantSiteUploads.filter(
+          (plantSiteUpload) => plantSiteUpload.plantId !== undefined,
+        ),
+      );
+    };
+
+    setData();
+  }, [plantUploadCount]);
 
   return [readyForUpload, requiresId];
 };

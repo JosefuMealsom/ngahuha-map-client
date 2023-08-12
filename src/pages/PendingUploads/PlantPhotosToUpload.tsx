@@ -83,7 +83,7 @@ export function PlantPhotosToUpload() {
         {requiresId.map((plantSite) => (
           <PlantSiteComponent
             key={crypto.randomUUID()}
-            {...plantSite}
+            {...{ ...plantSite, photos: [] }}
             isUploading={uploading}
           />
         ))}

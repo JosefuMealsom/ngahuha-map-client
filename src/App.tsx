@@ -30,7 +30,7 @@ function App() {
       <div data-cy="open-upload-form">
         <LinkComponent
           link="/plant-site/pending-upload"
-          text="Pending upload"
+          text="Upload changes"
         />
       </div>
     );
