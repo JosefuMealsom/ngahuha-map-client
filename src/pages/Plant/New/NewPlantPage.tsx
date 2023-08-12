@@ -57,7 +57,7 @@ export function NewPlantPage() {
           <input
             type="text"
             className="w-full p-2 border border-gray-400 rounded-md mb-5"
-            placeholder="Optional"
+            placeholder="Subspecies"
             value={description}
             onChange={(event) => {
               setDescription(event.target.value);
