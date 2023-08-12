@@ -14,6 +14,7 @@ import { PlantList } from './pages/Plant/All/PlantList';
 import { loadPlant } from './pages/Plant/Show/plant.loader';
 import { ShowPlantPage } from './pages/Plant/Show/ShowPlantPage';
 import { loadPlantSiteUploadWithPhotos } from './pages/PlantSite/Edit/plant-site-edit.loader';
+import { NewPlantPage } from './pages/Plant/New/NewPlantPage';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
         path: 'plants/:id',
         element: <ShowPlantPage />,
         loader: loadPlant,
+      },
+      {
+        path: 'plants/new',
+        element: <NewPlantPage />,
       },
       {
         path: 'plant-site/:id',

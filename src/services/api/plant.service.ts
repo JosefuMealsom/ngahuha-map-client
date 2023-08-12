@@ -51,3 +51,24 @@ export const updateDescription = async (
 
   return dataToJSON;
 };
+
+export const createPlant = async (
+  species: string,
+  cultivar: string,
+  description: string,
+) => {
+  const result = await fetch(getFullApiPath(`plant`), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      species: species,
+      cultivar: cultivar,
+      description: description,
+    }),
+  });
+
+  const dataToJSON = await result.json();
+  plantTable.put(dataToJSON);
+
+  return dataToJSON;
+};

@@ -110,7 +110,7 @@ export function PlantSiteForm(props: {
   }
 
   return (
-    <form onSubmit={savePhotoLocally} className="bg-white w-full">
+    <form className="bg-white w-full">
       <div
         className="mb-7 relative sm:max-w-md"
         data-cy="plant-form-autocomplete-container"

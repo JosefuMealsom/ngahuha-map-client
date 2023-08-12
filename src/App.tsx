@@ -40,7 +40,7 @@ function App() {
     <div>
       <div>
         <MapContainer />
-        <nav className="fixed bottom-5 left-0 w-full flex justify-evenly">
+        <nav className="absolute bottom-5 left-0 w-full flex justify-evenly">
           {renderPendingUploadLink()}
           <div data-cy="open-closest-plants">
             <LinkComponent link="/closest-plants" text="Closest plants" />
@@ -50,6 +50,9 @@ function App() {
           </div>
           <div data-cy="open-plant-form">
             <LinkComponent link="/plant-site/new" text="New plant site" />
+          </div>
+          <div data-cy="new-plant-form">
+            <LinkComponent link="/plants/new" text="Create new plant" />
           </div>
         </nav>
       </div>
