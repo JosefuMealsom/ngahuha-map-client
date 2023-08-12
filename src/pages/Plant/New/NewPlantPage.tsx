@@ -1,0 +1,72 @@
+import { FormEvent, useState } from 'react';
+import { createPlant } from '../../../services/api/plant.service';
+import { useNavigate } from 'react-router-dom';
+
+export function NewPlantPage() {
+  const navigate = useNavigate();
+
+  const [species, setSpecies] = useState('');
+  const [subSpecies, setSubspecies] = useState('');
+  const [description, setDescription] = useState('');
+
+  async function createPlantSite(event: FormEvent) {
+    event.preventDefault();
+
+    await createPlant(species, subSpecies, description);
+
+    navigate('/');
+  }
+
+  return (
+    <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full">
+      <div className="w-full bg-white px-6">
+        <h1 className="font-bold mt-5 mb-7 text-xl">Create a new plant</h1>
+        <form onSubmit={createPlantSite} className="bg-white w-full sm:w-96">
+          <label className="mb-5">Species</label>
+          <input
+            type="text"
+            className="w-full p-2 border border-gray-400 rounded-md mb-5"
+            placeholder="Species"
+            value={species}
+            onChange={(event) => {
+              setSpecies(event.target.value);
+            }}
+          />
+
+          <label className="mb-5">Subspecies</label>
+          <input
+            type="text"
+            className="w-full p-2 border border-gray-400 rounded-md mb-5"
+            placeholder="Optional"
+            value={subSpecies}
+            onChange={(event) => {
+              setSubspecies(event.target.value);
+            }}
+          />
+
+          <label className="mb-5">Description</label>
+          <input
+            type="text"
+            className="w-full p-2 border border-gray-400 rounded-md mb-5"
+            placeholder="Optional"
+            value={description}
+            onChange={(event) => {
+              setDescription(event.target.value);
+            }}
+          />
+
+          <div className="pb-10">
+            <input
+              className="block border-solid  border px-6 py-2 bg-sky-600
+        font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
+              type="submit"
+              data-cy="create-plant"
+              value="Create new plant"
+              onSubmit={createPlantSite}
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

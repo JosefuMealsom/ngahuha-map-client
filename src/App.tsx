@@ -51,6 +51,9 @@ function App() {
           <div data-cy="open-plant-form">
             <LinkComponent link="/plant-site/new" text="New plant site" />
           </div>
+          <div data-cy="new-plant-form">
+            <LinkComponent link="/plants/new" text="Create new plant" />
+          </div>
         </nav>
       </div>
       <Outlet />
