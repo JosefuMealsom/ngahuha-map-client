@@ -5,7 +5,7 @@ import {
   assertEndPointCalled,
   stubFetchResponse,
 } from '../../test-helpers/fetch-stub';
-import { fetchPlants, syncPlantsOffline } from './plant.service';
+import { createPlant, fetchPlants, syncPlantsOffline } from './plant.service';
 
 describe('PlantService', () => {
   afterEach(() => {
@@ -159,6 +159,34 @@ describe('PlantService', () => {
           },
         ]);
       });
+    });
+  });
+
+  describe('createPlant()', () => {
+    it('creates a new plant on the server and saves it locally', async () => {
+      stubFetchResponse(plant1);
+
+      const plantSites = await createPlant(
+        'joeus maximus',
+        'pretty lady',
+        'Wow very descriptive!',
+      );
+      assertEndPointCalled('https://www.dummy-api.com/plant');
+
+      const savedDbData = await plantTable.toArray();
+
+      expect(savedDbData).toEqual([
+        {
+          id: '123',
+          typeId: '456',
+          species: 'joeus maximus',
+          cultivar: 'pretty lady',
+          createdAt: '1988-11-11T00:00:00.000Z',
+          updatedAt: '1988-11-11T00:00:00.000Z',
+          extendedInfo: { 'real name': 'Wow so cool!' },
+          description: 'Wow very descriptive!',
+        },
+      ]);
     });
   });
 });
