@@ -92,7 +92,6 @@ export function PlantSiteForm(props: {
           type="submit"
           data-cy="save-plant-site"
           value="Lock in location and save!"
-          onSubmit={savePhotoLocally}
         />
       </div>
     );
@@ -110,7 +109,7 @@ export function PlantSiteForm(props: {
   }
 
   return (
-    <form className="bg-white w-full">
+    <form onSubmit={savePhotoLocally} className="bg-white w-full">
       <div
         className="mb-7 relative sm:max-w-md"
         data-cy="plant-form-autocomplete-container"

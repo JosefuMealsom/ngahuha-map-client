@@ -40,7 +40,7 @@ describe('Editing a plant site before upload', () => {
     editPlantSitePage.autoCompleteEntry("The best species 'radical'").click();
     editPlantSitePage.saveButton().click();
 
-    cy.contains('Pending changes');
+    cy.contains('Upload changes');
     cy.contains('Ready for upload');
     cy.contains("The best species 'radical'");
   });

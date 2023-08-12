@@ -14,12 +14,11 @@ export function NewPlantPage() {
     event.preventDefault();
     try {
       await createPlant(species, subSpecies, description);
+      toast('Plant created successfully');
       navigate('/');
     } catch (error) {
       toast(
-        `An error occured when uploading to the server: ${
-          (error as Error).message
-        }`,
+        `An error occured when creating the plant: ${(error as Error).message}`,
       );
     }
   }
