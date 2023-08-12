@@ -39,7 +39,7 @@ describe('Add new plant site for upload', () => {
     newPlantSitePage.saveButton().click();
 
     pendingUploadPage.pendingUploadsButton().click();
-    cy.contains('Pending changes');
+    cy.contains('Upload changes');
     cy.contains('Cool species');
   });
 
@@ -87,7 +87,7 @@ describe('Add new plant site for upload', () => {
     newPlantSitePage.saveButton().click();
 
     pendingUploadPage.pendingUploadsButton().click();
-    cy.contains('Pending changes');
+    cy.contains('Upload changes');
     cy.contains('Requires identification');
     cy.contains('Missing information');
   });

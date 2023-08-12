@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { createPlant } from '../../../services/api/plant.service';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export function NewPlantPage() {
   const navigate = useNavigate();
@@ -11,10 +12,15 @@ export function NewPlantPage() {
 
   async function createPlantSite(event: FormEvent) {
     event.preventDefault();
-
-    await createPlant(species, subSpecies, description);
-
-    navigate('/');
+    try {
+      await createPlant(species, subSpecies, description);
+      toast('Plant created successfully');
+      navigate('/');
+    } catch (error) {
+      toast(
+        `An error occured when creating the plant: ${(error as Error).message}`,
+      );
+    }
   }
 
   return (
@@ -50,7 +56,7 @@ export function NewPlantPage() {
           <input
             type="text"
             className="w-full p-2 border border-gray-400 rounded-md mb-5"
-            placeholder="Optional"
+            placeholder="Subspecies"
             value={description}
             onChange={(event) => {
               setDescription(event.target.value);

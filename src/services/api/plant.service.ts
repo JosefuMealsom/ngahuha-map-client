@@ -57,15 +57,23 @@ export const createPlant = async (
   cultivar: string,
   description: string,
 ) => {
-  const result = await fetch(getFullApiPath(`plant`), {
+  const createData = {
+    species: species,
+    cultivar: cultivar,
+    description: description,
+  };
+
+  const result = await fetch(getFullApiPath('plant'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      species: species,
-      cultivar: cultivar,
-      description: description,
-    }),
+    body: JSON.stringify(createData),
   });
+
+  if (!result.ok) {
+    throw Error(
+      `Upload failed: ${result.status}, ${(await result.json()).message}`,
+    );
+  }
 
   const dataToJSON = await result.json();
   plantTable.put(dataToJSON);

@@ -11,7 +11,7 @@ export const createNewPlant = {
     return cy.get(`[data-cy="description-input"]`);
   },
 
-  craetePlantButton: () => {
+  createPlantButton: () => {
     return cy.get('[data-cy="create-plant"]');
   },
 };

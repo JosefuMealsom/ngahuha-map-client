@@ -20,11 +20,24 @@ describe('Create new plant page', () => {
     createNewPlant.speciesInput().type('Cool species');
     createNewPlant.subSpeciesInput().type('lame');
     createNewPlant.descriptionInput().type('### Wow! This is so cool!');
-    createNewPlant.craetePlantButton().click();
+    createNewPlant.createPlantButton().click();
 
     cy.wait('@createPlant');
 
     plantListPage.plantListButton().click();
     cy.contains("Cool species 'lame'");
+    cy.contains('Plant created successfully');
+  });
+
+  it('shows an error toast on failure', () => {
+    cy.intercept('POST', 'https://app.ngahuha-map-dev.com:8080/plant', {
+      statusCode: 500,
+    }).as('createPlant');
+
+    createNewPlant.createPlantButton().click();
+
+    cy.wait('@createPlant');
+
+    cy.contains('An error occured when creating the plant');
   });
 });
