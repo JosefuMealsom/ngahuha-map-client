@@ -4,12 +4,15 @@ import { getFullApiPath } from '../../../utils/api-url.util';
 import { serializeCreatePlantSite } from './plant-site-create.serializer';
 import { PlantSiteUpload } from '../../../types/api/upload/plant-site-upload.type';
 
-export const bulkUploadPlantSitesToServer = (
+export const bulkUploadPlantSitesToServer = async (
   plantSiteUploads: PlantSiteUpload[],
 ) => {
-  return Promise.all(
-    plantSiteUploads.map((plantSite) => uploadPlantSiteToServer(plantSite)),
-  );
+  // run uploads sequentially to the server
+  // as the photo files are huge and don't
+  // want to overload the render view
+  for (const upload of plantSiteUploads) {
+    await uploadPlantSiteToServer(upload);
+  }
 };
 
 export const uploadPlantSiteToServer = async (
@@ -35,7 +38,7 @@ export const uploadPlantSiteToServer = async (
 const uploadPhotoBlobs = async (plantSiteUpload: PlantSiteUpload) => {
   return Promise.all(
     plantSiteUpload.photos.map(async (photo) => {
-      // On server upload failure, don't upload again
+      // On server upload failure, don't upload blob again
       if (photo.blobKey) {
         return photo;
       }
