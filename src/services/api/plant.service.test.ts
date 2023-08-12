@@ -166,7 +166,7 @@ describe('PlantService', () => {
     it('creates a new plant on the server and saves it locally', async () => {
       stubFetchResponse(plant1);
 
-      const plantSites = await createPlant(
+      await createPlant(
         'joeus maximus',
         'pretty lady',
         'Wow very descriptive!',

@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { createPlant } from '../../../services/api/plant.service';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export function NewPlantPage() {
   const navigate = useNavigate();
@@ -11,10 +12,16 @@ export function NewPlantPage() {
 
   async function createPlantSite(event: FormEvent) {
     event.preventDefault();
-
-    await createPlant(species, subSpecies, description);
-
-    navigate('/');
+    try {
+      await createPlant(species, subSpecies, description);
+      navigate('/');
+    } catch (error) {
+      toast(
+        `An error occured when uploading to the server: ${
+          (error as Error).message
+        }`,
+      );
+    }
   }
 
   return (

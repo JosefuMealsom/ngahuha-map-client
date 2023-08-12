@@ -5,6 +5,7 @@ global.fetch = stubbedFetch;
 
 export const stubFetchResponse = (data: {}) => {
   stubbedFetch.mockResolvedValue({
+    ok: true,
     json: () => new Promise((resolve) => resolve(data)),
   });
 };
