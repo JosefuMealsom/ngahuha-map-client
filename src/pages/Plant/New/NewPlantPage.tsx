@@ -31,6 +31,7 @@ export function NewPlantPage() {
             onChange={(event) => {
               setSpecies(event.target.value);
             }}
+            data-cy="species-input"
           />
 
           <label className="mb-5">Subspecies</label>
@@ -42,6 +43,7 @@ export function NewPlantPage() {
             onChange={(event) => {
               setSubspecies(event.target.value);
             }}
+            data-cy="subspecies-input"
           />
 
           <label className="mb-5">Description</label>
@@ -53,6 +55,7 @@ export function NewPlantPage() {
             onChange={(event) => {
               setDescription(event.target.value);
             }}
+            data-cy="description-input"
           />
 
           <div className="pb-10">
@@ -60,9 +63,9 @@ export function NewPlantPage() {
               className="block border-solid  border px-6 py-2 bg-sky-600
         font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
               type="submit"
-              data-cy="create-plant"
               value="Create new plant"
               onSubmit={createPlantSite}
+              data-cy="create-plant"
             />
           </div>
         </form>
