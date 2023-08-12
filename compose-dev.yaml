@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   app:
+    container_name: frontend
     build:
       context: .
       target: development
@@ -9,3 +10,10 @@ services:
     command: /bin/sh -c "while sleep 1000; do :; done"
     volumes:
       - ./:/app
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    name: 'ngahuha_map_dev_external_frontend'
+    external: true
