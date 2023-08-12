@@ -6,13 +6,6 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    server: {
-      https: {
-        key: env.PRIVATE_DEV_KEY,
-        cert: env.PRIVATE_DEV_CERT,
-      },
-    },
-
     plugins: [
       react(),
       VitePWA({

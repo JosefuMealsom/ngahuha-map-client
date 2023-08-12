@@ -35,4 +35,6 @@ COPY --chown=node:node .secrets .secrets
 COPY --chown=node:node .env .env
 COPY --chown=node:node vite.config.ts vite.config.ts
 
+ENV NODE_ENV production
+
 CMD [ "yarn", "preview", "--host"]
