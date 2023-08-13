@@ -1,11 +1,17 @@
 version: '3.7'
 services:
   app:
+    container_name: frontend-staging
     build:
       context: .
       target: staging
       args:
         VITE_BASE_API_URL: 'https://app.ngahuha-map-dev.com:3000'
-    ports:
-      - '4000:4173'
     restart: always
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    name: 'ngahuha_map_staging_external_frontend'
+    external: true
