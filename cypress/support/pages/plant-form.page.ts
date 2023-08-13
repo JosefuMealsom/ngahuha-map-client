@@ -28,6 +28,14 @@ const removePhotoButtons = () => {
   return cy.get('[data-cy="remove-photo-button"]');
 };
 
+const lockOnLocationButton = () => {
+  return cy.get('[data-cy="lock-on-location-button"]');
+};
+
+const finishLockOnButton = () => {
+  return cy.get('[data-cy="finish-lock-on-button"]');
+};
+
 export const plantFormPage = {
   plantSearchInput,
   autoCompleteEntry,
@@ -35,4 +43,6 @@ export const plantFormPage = {
   saveButton,
   plantFormPhotos,
   removePhotoButtons,
+  lockOnLocationButton,
+  finishLockOnButton,
 };

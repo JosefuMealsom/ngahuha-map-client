@@ -4,11 +4,11 @@ import { plantTable } from '../../../services/offline.database';
 import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { addPlantSiteWithPhoto } from '../../../services/api/plant-site-upload.service';
-import { usePosition } from '../../../hooks/use-position.hook';
 import { AccuracyIndicator } from '../CommonFormElements/AccuracyIndicator';
 import { PhotoInput } from '../CommonFormElements/PhotoInput';
 import { PhotoFile } from '../../../types/api/upload/plant-site-upload.type';
 import { LatLong } from '../../../types/lat-long.type';
+import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
 
 export function PlantSiteForm(props: {
   onSaveHandlerSuccess: () => void;
@@ -21,7 +21,7 @@ export function PlantSiteForm(props: {
   const [plantNameValue, setPlantNameValue] = useState<string>(
     props.plantNameValue || '',
   );
-  const liveCoords = props.coordinates || usePosition();
+  const [position, setPosition] = useState(props.coordinates);
 
   const plantList = useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
@@ -36,13 +36,13 @@ export function PlantSiteForm(props: {
 
     const plantId = findPlantIdByFullName();
 
-    if (photos.length === 0 || !liveCoords) {
+    if (photos.length === 0 || !position) {
       return;
     }
 
     await addPlantSiteWithPhoto(
       photos.map((photo) => photo.file),
-      liveCoords,
+      position,
       plantId,
       props.plantSiteUploadId,
     );
@@ -68,12 +68,6 @@ export function PlantSiteForm(props: {
     }
   }
 
-  function renderLiveLocation() {
-    if (photos.length === 0 || !liveCoords) return;
-
-    return <AccuracyIndicator position={liveCoords} />;
-  }
-
   function removePlantPhoto(photoIdToRemove: string) {
     const photosCopy = photos.filter(
       (photoFile) => photoFile.id !== photoIdToRemove,
@@ -82,7 +76,7 @@ export function PlantSiteForm(props: {
   }
 
   function renderSave() {
-    if (photos.length === 0) return;
+    if (photos.length === 0 || !position) return;
 
     return (
       <div className="pb-10">
@@ -91,7 +85,7 @@ export function PlantSiteForm(props: {
         font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
           type="submit"
           data-cy="save-plant-site"
-          value="Lock in location and save!"
+          value="Save offline to upload later"
         />
       </div>
     );
@@ -106,6 +100,12 @@ export function PlantSiteForm(props: {
         </p>
       );
     }
+  }
+
+  function renderPosition() {
+    if (!position) return;
+
+    return <AccuracyIndicator position={position} />;
   }
 
   return (
@@ -124,14 +124,20 @@ export function PlantSiteForm(props: {
           />
         </div>
       </div>
-      <div className="relative">
+      <div className="relative mb-5">
         <PhotoInput
           photos={photos}
           onPhotoChangeHandler={onPhotoChange}
           onPhotoRemoveHandler={removePlantPhoto}
         />
       </div>
-      {renderLiveLocation()}
+      <div className="mb-8">
+        <GeolocationLockOnComponent
+          onGeolocationLocked={(coordinates) => setPosition(coordinates)}
+          onLockingOn={() => setPosition(undefined)}
+        />
+        {renderPosition()}
+      </div>
       {renderTipAboutMissingPlant()}
       {renderSave()}
     </form>

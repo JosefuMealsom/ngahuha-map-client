@@ -33,6 +33,9 @@ describe('Add new plant site for upload', () => {
 
     newPlantSitePage.plantFormPhotos().should('have.length', 2);
 
+    newPlantSitePage.lockOnLocationButton().click();
+    newPlantSitePage.finishLockOnButton().click();
+
     cy.contains('123');
     cy.contains('456');
     cy.contains('Accurate to within 888.00m');
@@ -79,6 +82,9 @@ describe('Add new plant site for upload', () => {
 
     mapViewPage.addNewPlantSiteButton().click();
     newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
+
+    newPlantSitePage.lockOnLocationButton().click();
+    newPlantSitePage.finishLockOnButton().click();
 
     cy.contains(
       'Note: You can save the plant site now, but you will need to identify it',
