@@ -5,7 +5,7 @@ import { Plant } from '../../../types/api/plant.type';
 import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import SearchComponent from '../../../components/SearchComponent';
 
-export function PlantList() {
+export function AllPlantsList() {
   const [plants, setPlants] = useState<Plant[]>([]);
   const [visiblePlants, setVisiblePlants] = useState<Plant[]>([]);
   const [filterItems, setFilterItems] = useState<string[]>([]);

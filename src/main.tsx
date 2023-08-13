@@ -10,11 +10,11 @@ import { PlantSiteInformation } from './pages/PlantSite/Show/ShowPlantSite';
 import { NewPlantSite } from './pages/PlantSite/New/NewPlantSite';
 import { EditPlantSite } from './pages/PlantSite/Edit/EditPlantSite';
 import { PlantPhotosToUpload } from './pages/PendingUploads/PlantPhotosToUpload';
-import { PlantList } from './pages/Plant/All/PlantList';
 import { loadPlant } from './pages/Plant/Show/plant.loader';
 import { ShowPlantPage } from './pages/Plant/Show/ShowPlantPage';
 import { loadPlantSiteUploadWithPhotos } from './pages/PlantSite/Edit/plant-site-edit.loader';
 import { NewPlantPage } from './pages/Plant/New/NewPlantPage';
+import { PlantsPage } from './pages/Plant/All/PlantsPage';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'plants',
-        element: <PlantList />,
+        element: <PlantsPage />,
       },
       {
         path: 'plants/:id',

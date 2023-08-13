@@ -32,7 +32,7 @@ describe('Editing a plant site before upload', () => {
     cy.contains('Missing information');
 
     pendingUploadPage.editButtonForPlantSiteId('1').click();
-    cy.contains('Edit an plant site upload');
+    cy.contains('Edit plant site 1');
     editPlantSitePage.plantSearchInput().type('The best');
 
     cy.contains("The best species 'radical'");
