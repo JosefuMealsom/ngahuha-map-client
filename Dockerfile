@@ -31,10 +31,8 @@ WORKDIR /app
 COPY --chown=node:node --from=build /app/dist dist
 COPY --chown=node:node --from=build /app/node_modules node_modules
 COPY --chown=node:node --from=build /app/package.json package.json
-COPY --chown=node:node .secrets .secrets
-COPY --chown=node:node .env .env
 COPY --chown=node:node vite.config.ts vite.config.ts
 
 ENV NODE_ENV production
 
-CMD [ "yarn", "preview", "--host"]
+CMD [ "yarn", "preview", "--port", "5173", "--host"]

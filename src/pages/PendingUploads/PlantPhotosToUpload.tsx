@@ -81,11 +81,16 @@ export function PlantPhotosToUpload() {
           Requires identification
         </h2>
         {requiresId.map((plantSite) => (
-          <PlantSiteComponent
-            key={crypto.randomUUID()}
-            {...{ ...plantSite, photos: [] }}
-            isUploading={uploading}
-          />
+          <div className="mb-3">
+            <h3 className="font-bold mt-5 text-sm relative mb-1">
+              Site {plantSite.id}
+            </h3>
+            <PlantSiteComponent
+              key={crypto.randomUUID()}
+              {...{ ...plantSite, photos: [] }}
+              isUploading={uploading}
+            />
+          </div>
         ))}
       </div>
     );

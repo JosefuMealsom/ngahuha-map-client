@@ -28,7 +28,7 @@ export function EditPlantSite() {
       <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full">
         <div className="w-full bg-white px-6">
           <h1 className="font-bold mt-5 mb-7 text-xl">
-            Edit an plant site upload
+            Edit plant site {plantSiteUpload.id}
           </h1>
           <PlantSiteForm
             onSaveHandlerSuccess={onSaveSuccess}
