@@ -21,7 +21,7 @@ describe('SearchPlantsFilter', () => {
   });
 
   describe('search()', () => {
-    it('searches the plant species and returns the results with the correect description', async () => {
+    it('searches the plant species and returns the results with the correct description', async () => {
       const searchPlantsFilter = new SearchPlantsFilter([plant1, plant2]);
 
       expect(searchPlantsFilter.search('hello')).toEqual([
