@@ -6,27 +6,46 @@ import { SearchFilterMatch } from '../../../types/filter.type';
 import { Plant } from '../../../types/api/plant.type';
 import SearchComponent from '../../../components/SearchComponent';
 import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
-import { plantTable } from '../../../services/offline.database';
+import { plantSiteTable, plantTable } from '../../../services/offline.database';
+import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
+import { PlantSite } from '../../../types/api/plant-site.type';
+import { SearchPlantSitesFilter } from '../../../services/filter/search-plant-sites.fiiter';
 
 type PlantListViews = 'AllPlants' | 'ClosestPlants';
 
 export function PlantsPage() {
   const [currentView, setCurrentView] = useState<PlantListViews>('AllPlants');
   const [plants, setPlants] = useState<Plant[]>([]);
+  const [plantSites, setPlantSites] = useState<PlantSite[]>([]);
+
+  const [position, setPosition] = useState<GeolocationCoordinates>();
   const [searchPlantsFilter, setSearchPlantsFilter] =
     useState<SearchPlantsFilter>(new SearchPlantsFilter([]));
+  const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
+    useState<SearchPlantSitesFilter>(new SearchPlantSitesFilter([], []));
 
   useEffect(() => {
-    const getAllPlants = async () => {
-      const allPlants = await plantTable.toArray();
-      setPlants(allPlants);
-      setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
-    };
-    getAllPlants();
+    getAllPlantsAndSites();
   }, []);
+
+  async function getAllPlantsAndSites() {
+    const allPlants = await plantTable.toArray();
+    setPlants(allPlants);
+    setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
+
+    const allPlantSites = await plantSiteTable.toArray();
+    setPlantSites(allPlantSites);
+    setSearchPlantSitesFilter(
+      new SearchPlantSitesFilter(allPlantSites, allPlants),
+    );
+  }
 
   function onSearchPlants(matches: SearchFilterMatch<Plant>[]) {
     setPlants(matches.map((match) => match.data));
+  }
+
+  function onSearchPlantSites(matches: SearchFilterMatch<PlantSite>[]) {
+    setPlantSites(matches.map((match) => match.data));
   }
 
   function renderSearchPlant() {
@@ -42,9 +61,17 @@ export function PlantsPage() {
   }
 
   function renderSearchClosestPlants() {
-    if (currentView !== 'ClosestPlants') return;
-
-    return <div></div>;
+    return (
+      <div
+        className={`${currentView !== 'ClosestPlants' ? 'hidden' : ''} mb-1`}
+      >
+        <SearchComponent<PlantSite>
+          searchFilter={searchPlantSitesFilter}
+          placeholder="Search plants"
+          onMatchesChange={onSearchPlantSites}
+        />
+      </div>
+    );
   }
 
   function renderView() {
@@ -52,7 +79,9 @@ export function PlantsPage() {
       case 'AllPlants':
         return <AllPlantsList plants={plants} />;
       case 'ClosestPlants':
-        return <ClosestPlantsList />;
+        return (
+          <ClosestPlantsList position={position} plantSites={plantSites} />
+        );
       default:
         return <AllPlantsList plants={plants} />;
     }
@@ -67,7 +96,7 @@ export function PlantsPage() {
         <div>
           {renderSearchPlant()}
           {renderSearchClosestPlants()}
-          <div>
+          <div className="flex">
             <ActiveFilterButtonComponent
               text="Show All"
               onClickHandler={() => setCurrentView('AllPlants')}
@@ -80,6 +109,14 @@ export function PlantsPage() {
               active={currentView === 'ClosestPlants'}
               data-cy="show-closest"
             />
+            <div
+              className={`${currentView !== 'ClosestPlants' ? 'hidden' : ''}`}
+            >
+              <GeolocationLockOnComponent
+                onGeolocationLocked={(position) => setPosition(position)}
+                targetAccuracy={10}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -1,26 +1,22 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-import { plantSiteTable } from '../../../services/offline.database';
-import { usePosition } from '../../../hooks/use-position.hook';
 import { useEffect, useState } from 'react';
 import { PlantSite } from '../../../types/api/plant-site.type';
 import { getPlantSitesWithinDistance } from '../../../services/closest-plants.service';
 import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
 
-export function ClosestPlantsList() {
+export function ClosestPlantsList(props: {
+  position?: GeolocationCoordinates;
+  plantSites: PlantSite[];
+}) {
   const [closestPlants, setClosestPlants] =
     useState<(PlantSite & { distance: number })[]>();
-  const plantSites = useLiveQuery(() => plantSiteTable.toArray());
-  const position = usePosition();
 
   useEffect(() => {
-    getClosestPlants();
-  }, [position]);
+    if (!props.plantSites || !props.position) return;
 
-  function getClosestPlants() {
-    if (!position || !plantSites) return;
-
-    setClosestPlants(getPlantSitesWithinDistance(20, position, plantSites));
-  }
+    setClosestPlants(
+      getPlantSitesWithinDistance(20, props.position, props.plantSites),
+    );
+  }, [props.position, props.plantSites]);
 
   return (
     <div>

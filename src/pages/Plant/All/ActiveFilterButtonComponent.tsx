@@ -11,7 +11,7 @@ export function ActiveFilterButtonComponent(props: {
 
   return (
     <button
-      className={`border p-2 cursor-pointer rounded-md ${
+      className={`border p-2 cursor-pointer rounded-md h-min ${
         props.active
           ? 'bg-sky-500 text-white'
           : 'text-sky-500 border-sky-500 bg-white border-solid'
