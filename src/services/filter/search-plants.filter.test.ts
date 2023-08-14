@@ -94,5 +94,37 @@ describe('SearchPlantsFilter', () => {
         },
       ]);
     });
+
+    it('returns all the plants when the search is an empty string', async () => {
+      const searchPlantsFilter = new SearchPlantsFilter([plant1, plant2]);
+
+      expect(searchPlantsFilter.search('')).toEqual([
+        {
+          description: "hello 'joe'",
+          data: {
+            id: '123',
+            species: 'hello',
+            cultivar: 'joe',
+            createdAt: '1988-11-11T00:00:00.000Z',
+            updatedAt: '1988-11-11T00:00:00.000Z',
+            extendedInfo: { type: ['tree'], commonNames: ["Jeffrey's bush"] },
+          },
+        },
+        {
+          description: "goodbye 'moe'",
+          data: {
+            id: 'abc',
+            species: 'goodbye',
+            cultivar: 'moe',
+            createdAt: '1988-11-11T00:00:00.000Z',
+            updatedAt: '1988-11-11T00:00:00.000Z',
+            extendedInfo: {
+              type: ['mushroom'],
+              commonNames: ["Barry's cactus"],
+            },
+          },
+        },
+      ]);
+    });
   });
 });

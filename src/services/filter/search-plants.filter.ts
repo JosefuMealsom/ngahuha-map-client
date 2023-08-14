@@ -30,6 +30,13 @@ export class SearchPlantsFilter implements SearchFilter<Plant> {
   }
 
   search(searchText: string): SearchFilterMatch<Plant>[] {
+    if (searchText === '') {
+      return this.plantList.map((plant) => ({
+        description: getFullPlantName(plant),
+        data: plant,
+      }));
+    }
+
     const fuseSearchResults = this.fuseInstance.search(searchText);
 
     return fuseSearchResults.map((result) => ({
