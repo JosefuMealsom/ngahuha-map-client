@@ -3,7 +3,7 @@ import Fuse from 'fuse.js';
 import { SearchFilter, SearchFilterMatch } from '../../types/filter.type';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 
-export class SearchPlantsFilter implements SearchFilter {
+export class SearchPlantsFilter implements SearchFilter<Plant> {
   private plantList: Plant[];
   private fuseInstance: Fuse<Plant>;
   private fuseOptions = {
@@ -29,7 +29,7 @@ export class SearchPlantsFilter implements SearchFilter {
     this.fuseInstance = new Fuse(this.plantList, this.fuseOptions);
   }
 
-  search(searchText: string): SearchFilterMatch[] {
+  search(searchText: string): SearchFilterMatch<Plant>[] {
     const fuseSearchResults = this.fuseInstance.search(searchText);
 
     return fuseSearchResults.map((result) => ({

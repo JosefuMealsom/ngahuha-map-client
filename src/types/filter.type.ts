@@ -1,8 +1,8 @@
-export type SearchFilter = {
-  search: (value: string) => SearchFilterMatch[];
+export type SearchFilter<T> = {
+  search: (value: string) => SearchFilterMatch<T>[];
 };
 
-export type SearchFilterMatch = {
+export type SearchFilterMatch<T> = {
   description: string;
-  data: { [key: string]: any };
+  data: T;
 };
