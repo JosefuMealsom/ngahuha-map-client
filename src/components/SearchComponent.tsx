@@ -46,7 +46,7 @@ export default function SearchComponent<T>(props: {
 
   return (
     <div className="w-full">
-      <div className="relative mb-3">
+      <div className="relative">
         <label>
           <input
             type="text"

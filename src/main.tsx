@@ -4,7 +4,6 @@ import App from './App';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
-import { ClosestPlantsToUser } from './pages/ClosestPlants/ClosestPlantsToUser';
 import { loadPlantSite } from './pages/PlantSite/Show/plant-site.loader';
 import { PlantSiteInformation } from './pages/PlantSite/Show/ShowPlantSite';
 import { NewPlantSite } from './pages/PlantSite/New/NewPlantSite';
@@ -22,10 +21,6 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: 'closest-plants',
-        element: <ClosestPlantsToUser />,
-      },
       {
         path: 'plants',
         element: <PlantsPage />,
