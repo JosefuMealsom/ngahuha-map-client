@@ -1,29 +1,25 @@
-import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 import { debounce } from 'underscore';
+import { SearchFilter, SearchFilterMatch } from '../types/filter.type';
 
-export default function SearchComponent(props: {
-  items: string[];
+export default function SearchComponent<T>(props: {
+  searchFilter: SearchFilter<T>;
   placeholder: string;
   onClearHandler?: () => any;
-  onTextMatchesChange?: (matches: string[]) => any;
+  onMatchesChange?: (matches: SearchFilterMatch<T>[]) => any;
   suggestionText?: string;
 }) {
-  const [textMatches, setTextMatches] = useState<string[]>([]);
+  const [searchMatches, setSearchMatches] = useState<SearchFilterMatch<T>[]>(
+    [],
+  );
   const [inputValue, setInputValue] = useState('');
 
-  const fuse = new Fuse(props.items, {
-    includeScore: true,
-    distance: 100,
-    threshold: 0.2,
-  });
-
   useEffect(() => {
-    if (props.onTextMatchesChange) {
-      props.onTextMatchesChange(textMatches);
+    if (props.onMatchesChange) {
+      props.onMatchesChange(searchMatches);
     }
-  }, [textMatches]);
+  }, [searchMatches]);
 
   const debouncedUpdateTextMatches = debounce(updateTextMatches, 500);
 
@@ -45,8 +41,7 @@ export default function SearchComponent(props: {
   }
 
   function updateTextMatches(text: string) {
-    const result = fuse.search(text);
-    setTextMatches(result.map((match) => match.item));
+    setSearchMatches(props.searchFilter.search(text));
   }
 
   return (
