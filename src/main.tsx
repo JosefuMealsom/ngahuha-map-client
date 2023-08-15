@@ -13,17 +13,26 @@ import { loadPlant } from './pages/Plant/Show/plant.loader';
 import { ShowPlantPage } from './pages/Plant/Show/ShowPlantPage';
 import { loadPlantSiteUploadWithPhotos } from './pages/PlantSite/Edit/plant-site-edit.loader';
 import { NewPlantPage } from './pages/Plant/New/NewPlantPage';
-import { PlantsPage } from './pages/Plant/All/PlantsPage';
+import { AllPlantsPage } from './pages/Plant/All/PlantsPage';
+import { MapPage } from './pages/MapView/MapPage';
+import { ClosestPlantsPage } from './pages/Plant/ClosestPlants/ClosestPlantsPage';
 
 const router = createBrowserRouter([
   {
-    path: '/',
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
       {
+        path: '/',
+        element: <MapPage />,
+      },
+      {
         path: 'plants',
-        element: <PlantsPage />,
+        element: <AllPlantsPage />,
+      },
+      {
+        path: 'plants/closest',
+        element: <ClosestPlantsPage />,
       },
       {
         path: 'plants/:id',

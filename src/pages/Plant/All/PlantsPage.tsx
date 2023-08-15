@@ -1,126 +1,90 @@
-import { useEffect, useState } from 'react';
-import { AllPlantsList } from './AllPlantsList';
-import { ClosestPlantsList } from './ClosestPlantsList';
-import { ActiveFilterButtonComponent } from './ActiveFilterButtonComponent';
-import { SearchFilterMatch } from '../../../types/filter.type';
-import { Plant } from '../../../types/api/plant.type';
-import SearchComponent from '../../../components/SearchComponent';
-import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
 import { plantSiteTable, plantTable } from '../../../services/offline.database';
-import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
-import { PlantSite } from '../../../types/api/plant-site.type';
-import { SearchPlantSitesFilter } from '../../../services/filter/search-plant-sites.fiiter';
+import { PlantItemComponent } from './PlantItemComponent';
+import { ReactNode, useEffect, useState } from 'react';
+import { Plant } from '../../../types/api/plant.type';
+import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
+import SearchComponent from '../../../components/SearchComponent';
+import { SearchFilterMatch } from '../../../types/filter.type';
+import { partition } from 'underscore';
+import { PlantNavComponent } from '../PlantNavComponent';
+import { ActiveFilterLinkComponent } from '../ActiveFilterLinkComponent';
 
-type PlantListViews = 'AllPlants' | 'ClosestPlants';
-
-export function PlantsPage() {
-  const [currentView, setCurrentView] = useState<PlantListViews>('AllPlants');
-  const [plants, setPlants] = useState<Plant[]>([]);
-  const [plantSites, setPlantSites] = useState<PlantSite[]>([]);
-
-  const [position, setPosition] = useState<GeolocationCoordinates>();
+export function AllPlantsPage() {
+  const [filteredPlants, setFilteredPlants] = useState<Plant[]>([]);
   const [searchPlantsFilter, setSearchPlantsFilter] =
     useState<SearchPlantsFilter>(new SearchPlantsFilter([]));
-  const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
-    useState<SearchPlantSitesFilter>(new SearchPlantSitesFilter([], []));
+  const [visiblePlants, setVisiblePlants] = useState<Plant[]>([]);
 
   useEffect(() => {
-    getAllPlantsAndSites();
+    initSearchablePlants();
   }, []);
 
-  async function getAllPlantsAndSites() {
-    const allPlants = await plantTable.toArray();
-    setPlants(allPlants);
-    setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
+  useEffect(() => {
+    updateVisiblePlants();
+  }, [filteredPlants]);
 
-    const allPlantSites = await plantSiteTable.toArray();
-    setPlantSites(allPlantSites);
-    setSearchPlantSitesFilter(
-      new SearchPlantSitesFilter(allPlantSites, allPlants),
+  async function initSearchablePlants() {
+    const allPlants = await plantTable.toArray();
+    setFilteredPlants(allPlants);
+    setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
+  }
+
+  async function updateVisiblePlants() {
+    const plantSites = await plantSiteTable.toArray();
+
+    const plantIdsWithPhotos = Array.from(
+      new Set(plantSites.map((plantSite) => plantSite.plantId)),
     );
+
+    const [plantsWithPhotos, plantsWithoutPhotos] = partition(
+      filteredPlants,
+      (plant) => plantIdsWithPhotos.includes(plant.id),
+    );
+
+    const sortedPlants = plantsWithPhotos.concat(plantsWithoutPhotos);
+    setVisiblePlants(sortedPlants);
   }
 
   function onSearchPlants(matches: SearchFilterMatch<Plant>[]) {
-    setPlants(matches.map((match) => match.data));
+    setFilteredPlants(matches.map((match) => match.data));
   }
 
-  function onSearchPlantSites(matches: SearchFilterMatch<PlantSite>[]) {
-    setPlantSites(matches.map((match) => match.data));
-  }
-
-  function renderSearchPlant() {
-    return (
-      <div className={`${currentView !== 'AllPlants' ? 'hidden' : ''} mb-1`}>
+  return (
+    <div className="w-full h-full bg-white">
+      <div
+        className="px-2 sticky z-10 top-0 w-full max-w-md sm:max-w-lg pt-safe"
+        data-cy="plant-list-search"
+      >
         <SearchComponent<Plant>
           searchFilter={searchPlantsFilter}
           placeholder="Search plants"
           onMatchesChange={onSearchPlants}
         />
-      </div>
-    );
-  }
-
-  function renderSearchClosestPlants() {
-    return (
-      <div
-        className={`${currentView !== 'ClosestPlants' ? 'hidden' : ''} mb-1`}
-      >
-        <SearchComponent<PlantSite>
-          searchFilter={searchPlantSitesFilter}
-          placeholder="Search plants"
-          onMatchesChange={onSearchPlantSites}
-        />
-      </div>
-    );
-  }
-
-  function renderView() {
-    switch (currentView) {
-      case 'AllPlants':
-        return <AllPlantsList plants={plants} />;
-      case 'ClosestPlants':
-        return (
-          <ClosestPlantsList position={position} plantSites={plantSites} />
-        );
-      default:
-        return <AllPlantsList plants={plants} />;
-    }
-  }
-
-  return (
-    <div className="absolute top-0 left-0 w-full h-full bg-white overflow-scroll">
-      <div
-        className="px-2 sticky z-10 top-0 w-full max-w-md sm:max-w-lg"
-        data-cy="plant-list-search"
-      >
-        <div>
-          {renderSearchPlant()}
-          {renderSearchClosestPlants()}
-          <div className="flex">
-            <ActiveFilterButtonComponent
-              text="Show All"
-              onClickHandler={() => setCurrentView('AllPlants')}
-              active={currentView === 'AllPlants'}
-              data-cy="show-all"
-            />
-            <ActiveFilterButtonComponent
-              text="Show closest"
-              onClickHandler={() => setCurrentView('ClosestPlants')}
-              active={currentView === 'ClosestPlants'}
-              data-cy="show-closest"
-            />
-            <div
-              className={`${currentView !== 'ClosestPlants' ? 'hidden' : ''}`}
-            >
-              <GeolocationLockOnComponent
-                onGeolocationLocked={(position) => setPosition(position)}
-                targetAccuracy={10}
-              />
-            </div>
-          </div>
+        <div className="flex">
+          <ActiveFilterLinkComponent
+            text="Show all"
+            link="/plants"
+            active={true}
+            replace={true}
+          />
+          <ActiveFilterLinkComponent
+            text="Closest plants"
+            link="/plants/closest"
+            active={false}
+            replace={true}
+          />
         </div>
       </div>
-      {renderView()}
+
+      <div className="mb-4 w-full h-full bg-white">
+        <div className="sm:grid sm:grid-cols-4">
+          {visiblePlants?.map((plant) => (
+            <div data-cy={`plant-item-${plant.id}`}>
+              <PlantItemComponent key={plant.id} {...plant} />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

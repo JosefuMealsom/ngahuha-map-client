@@ -38,11 +38,11 @@ export function PlantDescription(props: {
     if (!plant) return;
 
     return (
-      <div className="h-full w-full bg-white sm:fixed">
+      <div className="h-full w-full bg-white">
         <div className="sm:flex h-full">
           <div className="relative sm:w-1/2">
             {renderCarousel()}
-            <p className="text-3xl absolute top-0 left-0 p-2 font-bold text-white bg-black bg-opacity-50">
+            <p className="text-3xl absolute top-0 left-0 p-2 font-bold text-white bg-black bg-opacity-50 pt-safe w-full sm:max-w-fit">
               {getFullPlantName(plant)}
             </p>
           </div>

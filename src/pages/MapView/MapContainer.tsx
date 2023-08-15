@@ -29,10 +29,7 @@ export function MapContainer() {
   });
 
   return (
-    <div
-      ref={mapContainerRef}
-      className="h-full overflow-hidden w-full absolute top-0 left-0"
-    >
+    <div ref={mapContainerRef} className="h-full overflow-hidden w-full">
       <div className="relative touch-none inline-block select-none overflow-hidden w-full">
         <MapCanvas />
         <FeatureMarker
