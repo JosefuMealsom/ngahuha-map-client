@@ -1,4 +1,3 @@
-import { useMapStore } from '../../store/map.store';
 import { AccelerationHandler } from './acceleration-handler.service';
 
 export class PanGestureHandler {
@@ -6,11 +5,14 @@ export class PanGestureHandler {
   eventCache: PointerEvent[] = [];
   private panXAccelerationHandler = new AccelerationHandler();
   private panYAccelerationHandler = new AccelerationHandler();
-  private panX = 0;
-  private panY = 0;
+  private panX: number;
+  private panY: number;
+  private cleanupListenerController = new AbortController();
 
-  constructor(element: HTMLElement) {
+  constructor(element: HTMLElement, panX: number, panY: number) {
     this.element = element;
+    this.panX = panX;
+    this.panY = panY;
     this.init();
   }
 
@@ -27,13 +29,37 @@ export class PanGestureHandler {
   }
 
   private init() {
-    this.element.addEventListener('pointerdown', (e) => this.onPointerDown(e));
-    this.element.addEventListener('pointermove', (e) => this.onPointerMove(e));
-    this.element.addEventListener('pointerup', (e) => this.onPointerUp(e));
-    this.element.addEventListener('pointerout', (e) => this.onPointerUp(e));
-    this.element.addEventListener('pointerleave', (e) => this.onPointerUp(e));
-    window.addEventListener('focus', () => this.onWindowVisiblityChange());
-    window.addEventListener('blur', () => this.onWindowVisiblityChange());
+    this.setupEventListeners();
+  }
+
+  setupEventListeners() {
+    const { signal } = this.cleanupListenerController;
+
+    this.element.addEventListener('pointerdown', (e) => this.onPointerDown(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointermove', (e) => this.onPointerMove(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointerup', (e) => this.onPointerUp(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointerout', (e) => this.onPointerUp(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointerleave', (e) => this.onPointerUp(e), {
+      signal: signal,
+    });
+    window.addEventListener('focus', () => this.onWindowVisiblityChange(), {
+      signal: signal,
+    });
+    window.addEventListener('blur', () => this.onWindowVisiblityChange(), {
+      signal: signal,
+    });
+  }
+
+  removeEventListeners() {
+    this.cleanupListenerController.abort();
   }
 
   onWindowVisiblityChange() {
