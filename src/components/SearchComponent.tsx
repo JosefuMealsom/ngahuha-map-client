@@ -10,13 +10,11 @@ export default function SearchComponent<T>(props: {
   onMatchesChange?: (matches: SearchFilterMatch<T>[]) => any;
   suggestionText?: string;
 }) {
-  const [searchMatches, setSearchMatches] = useState<SearchFilterMatch<T>[]>(
-    [],
-  );
+  const [searchMatches, setSearchMatches] = useState<SearchFilterMatch<T>[]>();
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    if (props.onMatchesChange) {
+    if (props.onMatchesChange && searchMatches) {
       props.onMatchesChange(searchMatches);
     }
   }, [searchMatches]);
