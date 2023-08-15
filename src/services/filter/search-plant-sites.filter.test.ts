@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import plantFactory from '../../test-helpers/factories/plant';
 import plantSiteFactory from '../../test-helpers/factories/plant-site';
-import { SearchPlantSitesFilter } from './search-plant-sites.fiiter';
+import { SearchPlantSitesFilter } from './search-plant-sites.filter';
+import { PlantSiteWithinDistance } from '../../types/api/plant-site.type';
 
 describe('SearchPlantSitesFilter', () => {
   const plant1 = plantFactory.create({
@@ -59,6 +60,28 @@ describe('SearchPlantSitesFilter', () => {
         {
           description: 'bbb',
           data: expect.objectContaining({ id: 'bbb', plantId: 'abc' }),
+        },
+      ]);
+    });
+
+    it('can search and return sub classes of plant sites that have added properties', async () => {
+      const searchPlantsFilter =
+        new SearchPlantSitesFilter<PlantSiteWithinDistance>(
+          [
+            Object.assign(plantSite1, { distance: 10 }),
+            Object.assign(plantSite2, { distance: 20 }),
+          ],
+          [plant1, plant2],
+        );
+
+      expect(searchPlantsFilter.search("Barry's cactus")).toEqual([
+        {
+          description: 'bbb',
+          data: expect.objectContaining({
+            id: 'bbb',
+            plantId: 'abc',
+            distance: 20,
+          }),
         },
       ]);
     });

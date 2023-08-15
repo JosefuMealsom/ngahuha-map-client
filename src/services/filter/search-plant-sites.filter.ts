@@ -3,8 +3,11 @@ import Fuse from 'fuse.js';
 import { SearchFilter, SearchFilterMatch } from '../../types/filter.type';
 import { PlantSite } from '../../types/api/plant-site.type';
 
-export class SearchPlantSitesFilter implements SearchFilter<PlantSite> {
-  private plantSiteList: PlantSite[];
+export class SearchPlantSitesFilter<
+  PlantSiteSubclass extends PlantSite = PlantSite,
+> implements SearchFilter<PlantSiteSubclass>
+{
+  private plantSiteList: PlantSiteSubclass[];
   private plantList: Plant[];
   private fuseInstance: Fuse<Plant>;
   private fuseOptions = {
@@ -25,13 +28,13 @@ export class SearchPlantSitesFilter implements SearchFilter<PlantSite> {
     ],
   };
 
-  constructor(plantSites: PlantSite[], plants: Plant[]) {
+  constructor(plantSites: PlantSiteSubclass[], plants: Plant[]) {
     this.plantSiteList = plantSites;
     this.plantList = plants;
     this.fuseInstance = new Fuse(this.plantList, this.fuseOptions);
   }
 
-  search(searchText: string): SearchFilterMatch<PlantSite>[] {
+  search(searchText: string): SearchFilterMatch<PlantSiteSubclass>[] {
     if (searchText === '') {
       return this.plantSiteList.map((plantSite) => ({
         description: plantSite.id,

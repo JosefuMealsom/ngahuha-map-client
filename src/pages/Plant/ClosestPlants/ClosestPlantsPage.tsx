@@ -1,9 +1,12 @@
-import { ReactNode, useEffect, useState } from 'react';
-import { PlantSite } from '../../../types/api/plant-site.type';
+import { useEffect, useState } from 'react';
+import {
+  PlantSite,
+  PlantSiteWithinDistance,
+} from '../../../types/api/plant-site.type';
 import { getPlantSitesWithinDistance } from '../../../services/closest-plants.service';
 import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
 import SearchComponent from '../../../components/SearchComponent';
-import { SearchPlantSitesFilter } from '../../../services/filter/search-plant-sites.fiiter';
+import { SearchPlantSitesFilter } from '../../../services/filter/search-plant-sites.filter';
 import { SearchFilterMatch } from '../../../types/filter.type';
 import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
 import { plantSiteTable, plantTable } from '../../../services/offline.database';
@@ -14,17 +17,21 @@ export function ClosestPlantsPage() {
   const [plants, setPlants] = useState<Plant[]>([]);
   const [plantSites, setPlantSites] = useState<PlantSite[]>([]);
   const [position, setPosition] = useState<GeolocationCoordinates>();
-
-  const [closestPlants, setClosestPlants] =
-    useState<(PlantSite & { distance: number })[]>();
   const [visiblePlantSites, setVisiblePlantSites] =
-    useState<(PlantSite & { distance: number })[]>();
+    useState<PlantSiteWithinDistance[]>();
+  const [searchPlantSitesFilter, setSearchPlantSitesFilter] = useState<
+    SearchPlantSitesFilter<PlantSiteWithinDistance>
+  >(new SearchPlantSitesFilter<PlantSiteWithinDistance>([], []));
 
-  const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
-    useState<SearchPlantSitesFilter>(new SearchPlantSitesFilter([], []));
+  function onSearchPlantSites(
+    matches: SearchFilterMatch<PlantSiteWithinDistance>[],
+  ) {
+    setVisiblePlantSites(matches.map((match) => match.data));
+  }
 
-  function onSearchPlantSites(matches: SearchFilterMatch<PlantSite>[]) {
-    setPlantSites(matches.map((match) => match.data));
+  async function initSearchablePlantSites() {
+    setPlants(await plantTable.toArray());
+    setPlantSites(await plantSiteTable.toArray());
   }
 
   useEffect(() => {
@@ -40,30 +47,21 @@ export function ClosestPlantsPage() {
       plantSites,
     );
 
-    setClosestPlants(closestPlantSites);
     setSearchPlantSitesFilter(
       new SearchPlantSitesFilter(closestPlantSites, plants),
     );
-  }, [position, plantSites]);
 
-  async function initSearchablePlantSites() {
-    const allPlants = await plantTable.toArray();
-    const allPlantSites = await plantSiteTable.toArray();
-
-    setPlants(allPlants);
-    setSearchPlantSitesFilter(
-      new SearchPlantSitesFilter(allPlantSites, allPlants),
-    );
-  }
+    setVisiblePlantSites(closestPlantSites);
+  }, [position]);
 
   return (
     <div>
-      <div className="mb-4 w-full h-full pt-safe bg-white">
+      <div className="mb-4 w-full h-full bg-white">
         <div
           className="px-2 sticky z-10 top-0 w-full max-w-md sm:max-w-lg pt-safe"
           data-cy="plant-list-search"
         >
-          <SearchComponent<PlantSite>
+          <SearchComponent<PlantSiteWithinDistance>
             searchFilter={searchPlantSitesFilter}
             placeholder="Search plants"
             onMatchesChange={onSearchPlantSites}
@@ -84,11 +82,12 @@ export function ClosestPlantsPage() {
             <GeolocationLockOnComponent
               onGeolocationLocked={(position) => setPosition(position)}
               targetAccuracy={10}
+              triggerOnView={true}
             />
           </div>
         </div>
         <div className="sm:grid sm:grid-cols-4">
-          {closestPlants?.map((plantSite) => (
+          {visiblePlantSites?.map((plantSite) => (
             <ClosestPlantInfoComponent
               key={plantSite.id}
               {...plantSite}

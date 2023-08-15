@@ -7,3 +7,5 @@ export type PlantSite = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type PlantSiteWithinDistance = PlantSite & { distance: number };
