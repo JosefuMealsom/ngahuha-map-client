@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 export function GeolocationLockOnComponent(props: {
   onGeolocationLocked: (coords: GeolocationCoordinates) => void;
   onLockingOn?: () => void;
+  triggerOnView?: boolean;
   targetAccuracy?: number;
 }) {
   const [geolocationHandlerId, setGeolocationHandlerId] = useState<number>();
@@ -31,10 +32,21 @@ export function GeolocationLockOnComponent(props: {
         enableHighAccuracy: true,
       },
     );
-
     setGeolocationHandlerId(handlerId);
     setIsLockingOn(true);
+
+    return handlerId;
   }
+
+  useEffect(() => {
+    if (props.triggerOnView) {
+      const handlerId = setupGelocationWatchHandler();
+
+      return () => {
+        navigator.geolocation.clearWatch(handlerId);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     if (!livePosition) return;
