@@ -4,8 +4,6 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { plantSiteUploadTable } from '../../services/offline.database';
 import { bulkUploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
 import uploadSvg from '../../assets/svg/upload-cloud.svg';
-import { syncPlantSitesOffline } from '../../services/api/plant-site.service';
-import { syncPlantSitePhotosOffline } from '../../services/api/plant-site-photo.service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site-uploads';
@@ -36,8 +34,6 @@ export function PlantPhotosToUpload() {
       );
     } finally {
       setUploadingState(false);
-      await syncPlantSitesOffline();
-      await syncPlantSitePhotosOffline();
     }
   }
 
