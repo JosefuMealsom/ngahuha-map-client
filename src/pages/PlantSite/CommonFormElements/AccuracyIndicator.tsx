@@ -14,7 +14,7 @@ export function AccuracyIndicator(props: { position: LatLong }) {
   }
 
   return (
-    <div className="mb-5">
+    <div className="mb-5 text-inverted-background text-sm">
       <div className="inline-block">
         <h3 className="font-bold">Latitude</h3>
         <p>{position.latitude.toFixed(2)}</p>

@@ -10,10 +10,10 @@ export function ActiveFilterLinkComponent(props: {
   return (
     <Link
       to={props.link}
-      className={`border p-2 cursor-pointer rounded-md h-max ${
+      className={`border block py-2 text-xs px-4 font-bold cursor-pointer rounded-full ${
         props.active
-          ? 'bg-sky-500 text-white'
-          : 'text-sky-500 border-sky-500 bg-white border-solid'
+          ? 'bg-[#002D04] text-white border-[#002D04]'
+          : 'text-white border-slate-300 bg-slate-300 border-solid'
       }`}
       replace={props.replace || false}
     >

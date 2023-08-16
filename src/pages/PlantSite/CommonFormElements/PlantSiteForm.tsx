@@ -81,11 +81,11 @@ export function PlantSiteForm(props: {
     return (
       <div className="pb-10">
         <input
-          className="block border-solid  border px-6 py-2 bg-sky-600
-        font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
+          className="block border-solid border px-4 py-2 text-sm rounded-full bg-sky-600
+        font-semibold text-white hover:bg-gray-300 cursor-pointer"
           type="submit"
           data-cy="save-plant-site"
-          value="Save offline to upload later"
+          value="Save offline"
         />
       </div>
     );
@@ -94,7 +94,7 @@ export function PlantSiteForm(props: {
   function renderTipAboutMissingPlant() {
     if (photos.length > 0 && !plantNameValue) {
       return (
-        <p className="mb-5 text-blue-700">
+        <p className="pb-5 text-xs text-blue-700">
           Note: You can save the plant site now, but you will need to identify
           it before you upload it on the pending uploads page
         </p>
@@ -109,7 +109,7 @@ export function PlantSiteForm(props: {
   }
 
   return (
-    <form onSubmit={savePhotoLocally} className="bg-white w-full">
+    <form onSubmit={savePhotoLocally} className="w-full">
       <div
         className="mb-7 relative sm:max-w-md"
         data-cy="plant-form-autocomplete-container"
@@ -131,13 +131,13 @@ export function PlantSiteForm(props: {
           onPhotoRemoveHandler={removePlantPhoto}
         />
       </div>
-      <div className="mb-8">
+      <div className="mb-2">
         <GeolocationLockOnComponent
           onGeolocationLocked={(coordinates) => setPosition(coordinates)}
           onLockingOn={() => setPosition(undefined)}
         />
-        {renderPosition()}
       </div>
+      <div>{renderPosition()}</div>
       {renderTipAboutMissingPlant()}
       {renderSave()}
     </form>

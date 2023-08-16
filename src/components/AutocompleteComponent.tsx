@@ -112,14 +112,14 @@ export default function AutocompleteComponent(props: {
         <label>
           <input
             type="text"
-            className="w-full p-2 border border-gray-400 rounded-md"
+            className="w-full py-2 px-4 border font-light border-gray-400 rounded-full"
             placeholder={props.placeholder}
             value={inputValue}
             onChange={onChange}
           />
           <img
             src={closeIconUrl}
-            className="absolute right-1 top-1/2 -translate-y-1/2 w-10 p-2 cursor-pointer"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 p-2 cursor-pointer"
             onClick={onClearClick}
             data-cy="autocomplete-clear-button"
           />

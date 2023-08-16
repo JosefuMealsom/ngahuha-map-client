@@ -22,7 +22,9 @@ export function PhotoInput(props: {
 
     return (
       <div data-cy="plant-form-images">
-        <label className="block mb-3 font-semibold">Photos</label>
+        <label className="block mb-3 font-semibold text-inverted-background">
+          Photos
+        </label>
         {photos?.map((photoImage) => (
           <PlantPhotoImage
             key={photoImage.id}
@@ -39,13 +41,14 @@ export function PhotoInput(props: {
       <div>
         <label
           htmlFor="photo"
-          className="border-solid border-black border p-2 hover:bg-gray-300 cursor-pointer mb-7 inline-block rounded-md"
+          className="py-2 px-4 text-xs font-bold text-white
+          bg-[#002D04] border-[#002D04] cursor-pointer  mb-7 inline-block rounded-full"
           data-cy="add-photo"
         >
           Add photo
           <img
             src={cameraUrl}
-            className="inline-block ml-2 mr-1 h-5 align-middle relative -top-0.5"
+            className="inline-block ml-2 mr-1 h-4 align-middle relative -top-0.5"
           />
         </label>
         <input

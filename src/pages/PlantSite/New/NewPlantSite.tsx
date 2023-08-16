@@ -9,10 +9,12 @@ export function NewPlantSite() {
   }
 
   return (
-    <div className="h-full bg-white w-full">
-      <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full">
-        <div className="px-6 bg-white">
-          <h1 className="font-bold mt-5 mb-7 text-xl">Add a new location</h1>
+    <div className="h-screen w-full bg-background">
+      <div className="absolute top-0 pt-safe left-0 w-full h-full">
+        <div className="px-6 pt-7">
+          <h1 className="font-bold mt mb-7 text-inverted-background text-xl">
+            Add a new location
+          </h1>
           <PlantSiteForm onSaveHandlerSuccess={onSaveSuccess} />
         </div>
       </div>

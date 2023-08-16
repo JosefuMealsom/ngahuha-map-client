@@ -81,7 +81,7 @@ export function GeolocationLockOnComponent(props: {
 
     return (
       <button
-        className="bg-red-400 border p-2 text-white hover:bg-gray-300 cursor-pointer rounded-md"
+        className="bg-red-400 border-red-400 border py-2 px-4 text-xs font-bold text-white cursor-pointer rounded-full"
         onClick={lockOnLocation}
         data-cy="lock-on-location-button"
       >
@@ -95,14 +95,12 @@ export function GeolocationLockOnComponent(props: {
 
     return (
       <div>
-        <p>Locking on location, don't move!</p>
-        <p>Current accuracy: {lockedOnPosition?.accuracy.toFixed(0)}</p>
         <button
-          className="bg-sky-500 border p-2 hover:bg-gray-300 cursor-pointer mb-2 rounded-md"
+          className="bg-sky-500 border-sky-500 border py-2 px-4 text-xs font-bold text-white cursor-pointer rounded-full"
           onClick={() => onGeolocationLockingOnComplete(lockedOnPosition)}
           data-cy="finish-lock-on-button"
         >
-          Finish locking on
+          Locking on: accuracy {lockedOnPosition?.accuracy.toFixed(0)}m
         </button>
       </div>
     );

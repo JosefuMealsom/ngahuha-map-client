@@ -17,7 +17,7 @@ export default defineConfig(({ command, mode }) => {
           name: 'Ngahuha Map',
           short_name: 'NgahuhaMap',
           description: 'Plant catalog and map for Ngahuha gardens',
-          theme_color: '#ffffff',
+          theme_color: '#001E02',
           background_color: '#ffffff',
           display: 'standalone',
           icons: [

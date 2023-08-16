@@ -45,7 +45,7 @@ export function MapContainer() {
   return (
     <div
       ref={mapContainerRef}
-      className="h-full fixed top-0 left-0 overflow-hidden w-full"
+      className="h-full fixed top-0 left-0 overflow-hidden w-full bg-background"
     >
       <div className="relative touch-none inline-block select-none overflow-hidden w-full">
         <MapCanvas />

@@ -25,9 +25,9 @@ export function EditPlantSite() {
 
   return (
     <div className="h-full">
-      <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full">
-        <div className="w-full bg-white px-6">
-          <h1 className="font-bold mt-5 mb-7 text-xl">
+      <div className="absolute top-0 pt-7 left-0 bg-background w-full h-full">
+        <div className="w-full bg-background px-6">
+          <h1 className="font-bold mt-5 mb-7 text-xl text-inverted-background">
             Edit plant site {plantSiteUpload.id}
           </h1>
           <PlantSiteForm

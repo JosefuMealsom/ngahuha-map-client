@@ -24,14 +24,21 @@ export function NewPlantPage() {
   }
 
   return (
-    <div className="absolute top-0 pt-14 left-0 bg-white w-full h-full">
-      <div className="w-full bg-white px-6">
-        <h1 className="font-bold mt-5 mb-7 text-xl">Create a new plant</h1>
-        <form onSubmit={createPlantSite} className="bg-white w-full sm:w-96">
-          <label className="mb-5">Species</label>
+    <div className="absolute top-0 pt-7 left-0 bg-background w-full h-full">
+      <div className="w-full bg-background px-6">
+        <h1 className="font-bold mb-7 text-xl text-inverted-background">
+          Create a new plant
+        </h1>
+        <form
+          onSubmit={createPlantSite}
+          className="bg-background w-full sm:w-96"
+        >
+          <label className="mb-2 text-inverted-background text-sm font-bold block">
+            Species
+          </label>
           <input
             type="text"
-            className="w-full p-2 border border-gray-400 rounded-md mb-5"
+            className="w-full py-2 px-4 border font-light border-gray-400 rounded-full mb-5"
             placeholder="Species"
             value={species}
             onChange={(event) => {
@@ -40,10 +47,12 @@ export function NewPlantPage() {
             data-cy="species-input"
           />
 
-          <label className="mb-5">Subspecies</label>
+          <label className="mb-2 text-inverted-background text-sm font-bold block">
+            Subspecies
+          </label>
           <input
             type="text"
-            className="w-full p-2 border border-gray-400 rounded-md mb-5"
+            className="w-full py-2 px-4 border font-light border-gray-400 rounded-full mb-5"
             placeholder="Optional"
             value={subSpecies}
             onChange={(event) => {
@@ -52,10 +61,12 @@ export function NewPlantPage() {
             data-cy="subspecies-input"
           />
 
-          <label className="mb-5">Description</label>
+          <label className="mb-2 text-inverted-background text-sm font-bold block">
+            Description
+          </label>
           <input
             type="text"
-            className="w-full p-2 border border-gray-400 rounded-md mb-5"
+            className="w-full py-2 px-4 border font-light border-gray-400 rounded-full mb-5"
             placeholder="Optional"
             value={description}
             onChange={(event) => {
@@ -66,8 +77,8 @@ export function NewPlantPage() {
 
           <div className="pb-10">
             <input
-              className="block border-solid  border px-6 py-2 bg-sky-600
-        font-semibold tracking-wide text-white hover:bg-gray-300 cursor-pointer"
+              className="block border-solid border px-4 py-2 text-sm rounded-full bg-sky-600
+              font-semibold text-white hover:bg-gray-300 cursor-pointer"
               type="submit"
               value="Create new plant"
               onSubmit={createPlantSite}
