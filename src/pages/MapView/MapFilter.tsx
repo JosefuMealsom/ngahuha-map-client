@@ -3,43 +3,35 @@ import { PlantSite } from '../../types/api/plant-site.type';
 import AutocompleteComponent from '../../components/AutocompleteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { plantSiteTable, plantTable } from '../../services/offline.database';
-import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { MapMarker } from './MapMarker';
+import { SearchPlantSitesFilter } from '../../services/filter/search-plant-sites.filter';
+import { SearchFilterMatch } from '../../types/filter.type';
+import SearchComponent from '../../components/SearchComponent';
 
 export function MapFilter() {
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
   const plants = useLiveQuery(() => plantTable.toArray());
   const [filteredPlantSites, setFilteredPlantSites] = useState<PlantSite[]>();
-  const [filterItems, setFilterItems] = useState<
-    { name: string; id: string }[]
-  >([]);
+  const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
+    useState<SearchPlantSitesFilter>(new SearchPlantSitesFilter([], []));
 
   useEffect(() => {
     if (!plants || !plantSites) return;
-    const availablePlantIds = plantSites.map((plantSite) => plantSite.plantId);
-    const filteredPlants = plants.filter((plant) =>
-      availablePlantIds.includes(plant.id),
-    );
 
-    const items = filteredPlants.map((plant) => ({
-      name: getFullPlantName(plant),
-      id: plant.id,
-    }));
-
-    setFilterItems(items);
     setFilteredPlantSites(plantSites);
+    setSearchPlantSitesFilter(new SearchPlantSitesFilter(plantSites, plants));
   }, [plants, plantSites]);
 
-  function filterPlantSites(text: string) {
+  function filterPlantSites(matches: SearchFilterMatch<PlantSite>[]) {
     if (!plants || !plantSites) return;
 
-    const plantId = filterItems.find((item) => item.name === text)?.id;
+    setFilteredPlantSites(matches.map((match) => match.data));
+  }
 
-    const sites = plantSites.filter(
-      (plantSite) => plantSite.plantId === plantId,
-    );
-
-    setFilteredPlantSites(sites);
+  function onChange(text: string) {
+    if (text === '') {
+      resetFilter();
+    }
   }
 
   function resetFilter() {
@@ -57,11 +49,11 @@ export function MapFilter() {
         className="absolute left-1/2 -translate-x-1/2 top-4 pt-safe flex w-full max-w-md px-3"
         data-cy="map-view-filter-container"
       >
-        <AutocompleteComponent
+        <SearchComponent
           placeholder="Filter plant sites"
-          items={filterItems.map((item) => item.name)}
+          searchFilter={searchPlantSitesFilter}
           suggestionText="Available"
-          onItemSelectHandler={filterPlantSites}
+          onMatchesChange={filterPlantSites}
           onClearHandler={resetFilter}
         />
       </div>

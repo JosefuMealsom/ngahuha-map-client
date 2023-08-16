@@ -16,7 +16,6 @@ describe('Map view', () => {
     cy.wait(['@getPlants', '@getGardenAreas', '@getPlantSites']);
 
     mapViewPage.mapFilterInput().type('Cool spec');
-    mapViewPage.mapFilterEntry("Cool species 'blue'").click();
 
     mapViewPage.mapMarkers().should('have.length', 1);
   });

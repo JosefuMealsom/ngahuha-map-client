@@ -55,35 +55,40 @@ export function ClosestPlantsPage() {
   }, [position]);
 
   return (
-    <div>
-      <div className="mb-4 w-full h-full bg-white">
-        <div
-          className="px-2 sticky z-10 top-0 w-full max-w-md sm:max-w-lg pt-safe"
-          data-cy="plant-list-search"
-        >
-          <SearchComponent<PlantSiteWithinDistance>
-            searchFilter={searchPlantSitesFilter}
-            placeholder="Search plants"
-            onMatchesChange={onSearchPlantSites}
-          />
-          <div className="flex">
-            <ActiveFilterLinkComponent
-              text="Show all"
-              link="/plants"
-              active={false}
-              replace={true}
+    <div className="w-full h-full bg-background pt-safe">
+      <div className="w-full">
+        <div className="px-4 pt-2 sticky z-10 top-safe w-full max-w-md sm:max-w-lg">
+          <div className="mb-2" data-cy="plant-list-search">
+            <SearchComponent<PlantSiteWithinDistance>
+              searchFilter={searchPlantSitesFilter}
+              placeholder="Search plants"
+              onMatchesChange={onSearchPlantSites}
             />
-            <ActiveFilterLinkComponent
-              text="Closest plants"
-              link="/plants/closest"
-              active={true}
-              replace={true}
-            />
-            <GeolocationLockOnComponent
-              onGeolocationLocked={(position) => setPosition(position)}
-              targetAccuracy={10}
-              triggerOnView={true}
-            />
+          </div>
+          <div className="flex mb-2">
+            <div className="mr-1">
+              <ActiveFilterLinkComponent
+                text="All"
+                link="/plants"
+                active={false}
+                replace={true}
+              />
+            </div>
+            <div className="mr-1">
+              <ActiveFilterLinkComponent
+                text="Closest"
+                link="/plants/closest"
+                active={true}
+                replace={true}
+              />
+            </div>
+            <div className="mb-1 absolute right-4">
+              <GeolocationLockOnComponent
+                onGeolocationLocked={(position) => setPosition(position)}
+                targetAccuracy={10}
+                triggerOnView={true}
+              />
+            </div>
           </div>
         </div>
         <div className="sm:grid sm:grid-cols-4">

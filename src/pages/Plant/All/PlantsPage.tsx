@@ -49,32 +49,33 @@ export function AllPlantsPage() {
   }
 
   return (
-    <div className="w-full h-full bg-white">
-      <div
-        className="px-2 sticky z-10 top-0 w-full max-w-md sm:max-w-lg pt-safe"
-        data-cy="plant-list-search"
-      >
-        <SearchComponent<Plant>
-          searchFilter={searchPlantsFilter}
-          placeholder="Search plants"
-          onMatchesChange={onSearchPlants}
-        />
-        <div className="flex">
-          <div data-cy="show-all-plants">
-            <ActiveFilterLinkComponent
-              text="Show all"
-              link="/plants"
-              active={true}
-              replace={true}
+    <div className="w-full h-full bg-background pt-safe">
+      <div className="sticky top-safe z-10">
+        <div className="px-4 z-10 pt-2 w-full max-w-md sm:max-w-lg">
+          <div data-cy="plant-list-search" className="pb-2">
+            <SearchComponent<Plant>
+              searchFilter={searchPlantsFilter}
+              placeholder="Search plants"
+              onMatchesChange={onSearchPlants}
             />
           </div>
-          <div data-cy="show-closest-plants">
-            <ActiveFilterLinkComponent
-              text="Closest plants"
-              link="/plants/closest"
-              active={false}
-              replace={true}
-            />
+          <div className="flex mb-2">
+            <div className="mr-1">
+              <ActiveFilterLinkComponent
+                text="All"
+                link="/plants"
+                active={true}
+                replace={true}
+              />
+            </div>
+            <div>
+              <ActiveFilterLinkComponent
+                text="Closest"
+                link="/plants/closest"
+                active={false}
+                replace={true}
+              />
+            </div>
           </div>
         </div>
       </div>

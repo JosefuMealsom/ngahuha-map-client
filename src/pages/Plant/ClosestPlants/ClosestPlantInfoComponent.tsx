@@ -43,7 +43,6 @@ export function ClosestPlantInfoComponent(
             <p className="text-white font-bold text-2xl">
               {getFullPlantName(plant)}
             </p>
-            <p className="text-white">{props.distance.toFixed(1)}m away</p>
           </div>
         </div>
       </div>
