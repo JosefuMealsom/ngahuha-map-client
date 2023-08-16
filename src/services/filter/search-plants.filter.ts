@@ -21,6 +21,10 @@ export class SearchPlantsFilter implements SearchFilter<Plant> {
         name: 'extendedInfo.type',
         weight: 1,
       },
+      {
+        name: 'extendedInfo.tags',
+        weight: 2,
+      },
     ],
   };
 

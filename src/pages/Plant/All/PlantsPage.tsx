@@ -1,12 +1,11 @@
 import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { PlantItemComponent } from './PlantItemComponent';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plant } from '../../../types/api/plant.type';
 import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
 import SearchComponent from '../../../components/SearchComponent';
 import { SearchFilterMatch } from '../../../types/filter.type';
 import { partition } from 'underscore';
-import { PlantNavComponent } from '../PlantNavComponent';
 import { ActiveFilterLinkComponent } from '../ActiveFilterLinkComponent';
 
 export function AllPlantsPage() {
@@ -61,22 +60,26 @@ export function AllPlantsPage() {
           onMatchesChange={onSearchPlants}
         />
         <div className="flex">
-          <ActiveFilterLinkComponent
-            text="Show all"
-            link="/plants"
-            active={true}
-            replace={true}
-          />
-          <ActiveFilterLinkComponent
-            text="Closest plants"
-            link="/plants/closest"
-            active={false}
-            replace={true}
-          />
+          <div data-cy="show-all-plants">
+            <ActiveFilterLinkComponent
+              text="Show all"
+              link="/plants"
+              active={true}
+              replace={true}
+            />
+          </div>
+          <div data-cy="show-closest-plants">
+            <ActiveFilterLinkComponent
+              text="Closest plants"
+              link="/plants/closest"
+              active={false}
+              replace={true}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="mb-4 w-full h-full bg-white">
+      <div className="mb-4 w-full h-full bg-white overflow-scroll ">
         <div className="sm:grid sm:grid-cols-4">
           {visiblePlants?.map((plant) => (
             <div data-cy={`plant-item-${plant.id}`}>
