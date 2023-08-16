@@ -1,5 +1,5 @@
 import { createNewPlant } from '../support/pages/create-plant.page';
-import { plantListPage } from '../support/pages/plant-list.page';
+import { mapViewPage } from '../support/pages/map-view.page';
 
 describe('Create new plant page', () => {
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('Create new plant page', () => {
 
     cy.wait('@createPlant');
 
-    plantListPage.plantListButton().click();
+    mapViewPage.plantListButton().click();
     cy.contains("Cool species 'lame'");
     cy.contains('Plant created successfully');
   });

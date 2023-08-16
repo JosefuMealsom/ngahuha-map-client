@@ -4,31 +4,35 @@ import App from './App';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
-import { ClosestPlantsToUser } from './pages/ClosestPlants/ClosestPlantsToUser';
 import { loadPlantSite } from './pages/PlantSite/Show/plant-site.loader';
 import { PlantSiteInformation } from './pages/PlantSite/Show/ShowPlantSite';
 import { NewPlantSite } from './pages/PlantSite/New/NewPlantSite';
 import { EditPlantSite } from './pages/PlantSite/Edit/EditPlantSite';
 import { PlantPhotosToUpload } from './pages/PendingUploads/PlantPhotosToUpload';
-import { PlantList } from './pages/Plant/All/PlantList';
 import { loadPlant } from './pages/Plant/Show/plant.loader';
 import { ShowPlantPage } from './pages/Plant/Show/ShowPlantPage';
 import { loadPlantSiteUploadWithPhotos } from './pages/PlantSite/Edit/plant-site-edit.loader';
 import { NewPlantPage } from './pages/Plant/New/NewPlantPage';
+import { AllPlantsPage } from './pages/Plant/All/PlantsPage';
+import { MapPage } from './pages/MapView/MapPage';
+import { ClosestPlantsPage } from './pages/Plant/ClosestPlants/ClosestPlantsPage';
 
 const router = createBrowserRouter([
   {
-    path: '/',
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: 'closest-plants',
-        element: <ClosestPlantsToUser />,
+        path: '/',
+        element: <MapPage />,
       },
       {
         path: 'plants',
-        element: <PlantList />,
+        element: <AllPlantsPage />,
+      },
+      {
+        path: 'plants/closest',
+        element: <ClosestPlantsPage />,
       },
       {
         path: 'plants/:id',

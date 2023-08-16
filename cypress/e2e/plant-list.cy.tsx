@@ -1,5 +1,6 @@
-import { plantListPage } from '../support/pages/plant-list.page';
 import { seed } from '../support/indexed-db-seeder';
+import { mapViewPage } from '../support/pages/map-view.page';
+import { plantListPage } from '../support/pages/plant-list.page';
 
 function seedOfflineDatabase() {
   seed({
@@ -25,14 +26,14 @@ describe('Listing all plants in the app', () => {
   });
 
   it('lists all the downloaded plants', () => {
-    plantListPage.plantListButton().click();
+    mapViewPage.plantListButton().click();
 
     cy.contains("The worst species 'lame'");
     cy.contains("The best species 'radical'");
   });
 
   it('can click on a plant item and be taken to a page with information about it', () => {
-    plantListPage.plantListButton().click();
+    mapViewPage.plantListButton().click();
 
     plantListPage.plantItem('abcdef').click();
 
@@ -41,7 +42,7 @@ describe('Listing all plants in the app', () => {
   });
 
   it('can filter the plant items in the list', () => {
-    plantListPage.plantListButton().click();
+    mapViewPage.plantListButton().click();
 
     plantListPage.searchBox().type('worst');
 

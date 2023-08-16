@@ -14,11 +14,25 @@ export function MapContainer() {
   let panGestureHandler: PanGestureHandler;
   let zoomGestureHandler: ZoomGestureHandler;
 
+  const mapStore = useMapStore();
+
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    panGestureHandler = new PanGestureHandler(mapContainerRef.current);
-    zoomGestureHandler = new ZoomGestureHandler(mapContainerRef.current);
+    panGestureHandler = new PanGestureHandler(
+      mapContainerRef.current,
+      mapStore.pan.x,
+      mapStore.pan.y,
+    );
+    zoomGestureHandler = new ZoomGestureHandler(
+      mapContainerRef.current,
+      mapStore.zoom,
+    );
+
+    return () => {
+      panGestureHandler.removeEventListeners();
+      zoomGestureHandler.removeEventListeners();
+    };
   }, []);
 
   useAnimationFrame(() => {
@@ -31,7 +45,7 @@ export function MapContainer() {
   return (
     <div
       ref={mapContainerRef}
-      className="h-full overflow-hidden w-full absolute top-0 left-0"
+      className="h-full fixed top-0 left-0 overflow-hidden w-full"
     >
       <div className="relative touch-none inline-block select-none overflow-hidden w-full">
         <MapCanvas />

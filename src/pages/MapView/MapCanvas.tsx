@@ -37,7 +37,7 @@ export function MapCanvas() {
 
   function determineCanvasDomSize() {
     const canvasSizeClass =
-      window.innerWidth < window.innerHeight ? 'h-screen' : 'w-screen';
+      window.innerWidth < window.innerHeight ? 'h-full' : 'w-full';
 
     setWindowSizeClass(canvasSizeClass);
   }

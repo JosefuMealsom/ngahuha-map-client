@@ -5,7 +5,7 @@ export function NewPlantSite() {
   const navigate = useNavigate();
 
   function onSaveSuccess() {
-    navigate('/');
+    navigate('/', { replace: true });
   }
 
   return (

@@ -23,6 +23,10 @@ const addNewPlantSiteButton = () => {
   return cy.get('[data-cy="open-plant-form"]');
 };
 
+const plantListButton = () => {
+  return cy.get('[data-cy="open-plant-list"]');
+};
+
 export const mapViewPage = {
   addNewPlantSiteButton,
   mapFilterInput,
@@ -30,4 +34,5 @@ export const mapViewPage = {
   mapFilterEntry,
   mapMarkers,
   locationMarker,
+  plantListButton,
 };

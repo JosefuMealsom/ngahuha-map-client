@@ -1,21 +1,32 @@
 import SearchComponent from './SearchComponent';
 
 describe('<SearchComponent />', () => {
-  it('triggers a callback function when the text matches change', () => {
-    const onTextMatchChange = cy.spy();
+  it('takes a callback function when the text matches change', () => {
+    const onMatchChange = cy.spy();
+    const searchFilter = {
+      search: (text: string) => [
+        { description: 'lovely text', data: { someNiceData: 123 } },
+      ],
+    };
+
+    type NiceDataType = { someNiceData: number };
 
     cy.mount(
-      <SearchComponent
-        items={['hello', 'joe']}
+      <SearchComponent<NiceDataType>
+        searchFilter={searchFilter}
         placeholder="Yo"
-        onTextMatchesChange={onTextMatchChange}
+        onMatchesChange={onMatchChange}
       />,
     );
 
+    // need to wait due to the debounced function
     cy.get('input')
-      .type('hell')
+      .type('meh')
+      .wait(1000)
       .then(() => {
-        expect(onTextMatchChange).to.have.been.called;
+        expect(onMatchChange).to.have.been.calledWith([
+          { description: 'lovely text', data: { someNiceData: 123 } },
+        ]);
       });
   });
 });

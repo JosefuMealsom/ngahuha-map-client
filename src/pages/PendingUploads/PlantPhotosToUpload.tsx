@@ -4,8 +4,6 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { plantSiteUploadTable } from '../../services/offline.database';
 import { bulkUploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
 import uploadSvg from '../../assets/svg/upload-cloud.svg';
-import { syncPlantSitesOffline } from '../../services/api/plant-site.service';
-import { syncPlantSitePhotosOffline } from '../../services/api/plant-site-photo.service';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site-uploads';
@@ -18,7 +16,7 @@ export function PlantPhotosToUpload() {
 
   useEffect(() => {
     if (plantUploadCount === 0) {
-      navigate('/');
+      navigate('/', { replace: true });
     }
   }, [plantUploadCount]);
 
@@ -36,8 +34,6 @@ export function PlantPhotosToUpload() {
       );
     } finally {
       setUploadingState(false);
-      await syncPlantSitesOffline();
-      await syncPlantSitePhotosOffline();
     }
   }
 
@@ -100,7 +96,7 @@ export function PlantPhotosToUpload() {
     <div className="h-full bg-white w-full absolute top-0 left-0">
       <div className="mb-4 pt-14 w-full h-full bg-white p-6">
         <h1 className="font-bold mt-5 relative mb-3">
-          {uploading ? 'Uploading' : 'Pending changes'}
+          {uploading ? 'Uploading' : 'Upload changes'}
           {renderUploadButton()}
         </h1>
         {renderReadyForUpload()}

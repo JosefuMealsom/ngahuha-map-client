@@ -6,10 +6,12 @@ export class ZoomGestureHandler {
   cachedDistance: number = 0;
   zoomAccelerationHandler = new AccelerationHandler();
   zoomSensitivity = 300;
-  private _zoom = 1;
+  private _zoom: number;
+  private cleanupListenerController = new AbortController();
 
-  constructor(element: HTMLElement) {
+  constructor(element: HTMLElement, initialZoom: number) {
     this.element = element;
+    this._zoom = initialZoom;
     this.init();
   }
 
@@ -20,19 +22,45 @@ export class ZoomGestureHandler {
     if (this.eventCache.length === 0) {
       this._zoom += this.zoomAccelerationHandler.acceleration;
     }
-    this._zoom = Math.min(10, Math.max(this._zoom, 0.8));
+    this._zoom = Math.min(10, Math.max(this._zoom, 0.5));
     return this._zoom;
   }
 
   init() {
-    this.element.addEventListener('pointerdown', (e) => this.onPointerDown(e));
-    this.element.addEventListener('pointermove', (e) => this.onPointerMove(e));
-    this.element.addEventListener('pointerup', (e) => this.onPointerUp(e));
-    this.element.addEventListener('pointerout', (e) => this.onPointerUp(e));
-    this.element.addEventListener('pointerleave', (e) => this.onPointerUp(e));
-    this.element.addEventListener('wheel', (e) => this.onWheel(e));
-    window.addEventListener('focus', () => this.onWindowVisiblityChange());
-    window.addEventListener('blur', () => this.onWindowVisiblityChange());
+    this.addEventListeners();
+  }
+
+  addEventListeners() {
+    const { signal } = this.cleanupListenerController;
+
+    this.element.addEventListener('pointerdown', (e) => this.onPointerDown(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointermove', (e) => this.onPointerMove(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointerup', (e) => this.onPointerUp(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointerout', (e) => this.onPointerUp(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('pointerleave', (e) => this.onPointerUp(e), {
+      signal: signal,
+    });
+    this.element.addEventListener('wheel', (e) => this.onWheel(e), {
+      signal: signal,
+    });
+    window.addEventListener('focus', () => this.onWindowVisiblityChange(), {
+      signal: signal,
+    });
+    window.addEventListener('blur', () => this.onWindowVisiblityChange(), {
+      signal: signal,
+    });
+  }
+
+  removeEventListeners() {
+    this.cleanupListenerController.abort();
   }
 
   onWindowVisiblityChange() {
