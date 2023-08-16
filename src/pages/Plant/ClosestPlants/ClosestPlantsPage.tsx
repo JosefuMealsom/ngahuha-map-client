@@ -56,18 +56,15 @@ export function ClosestPlantsPage() {
 
   return (
     <div className="w-full h-full bg-background pt-safe">
-      <div className="mt-2 w-full" data-cy="plant-list-search">
-        <div className="px-3 w-full max-w-md sm:max-w-lg bg-background">
-          <SearchComponent<PlantSiteWithinDistance>
-            searchFilter={searchPlantSitesFilter}
-            placeholder="Search plants"
-            onMatchesChange={onSearchPlantSites}
-          />
-        </div>
-        <div
-          className="px-4 pt-2 sticky z-10 top-safe w-full max-w-md sm:max-w-lg"
-          data-cy="plant-list-search"
-        >
+      <div className="w-full">
+        <div className="px-4 pt-2 sticky z-10 top-safe w-full max-w-md sm:max-w-lg">
+          <div className="mb-2" data-cy="plant-list-search">
+            <SearchComponent<PlantSiteWithinDistance>
+              searchFilter={searchPlantSitesFilter}
+              placeholder="Search plants"
+              onMatchesChange={onSearchPlantSites}
+            />
+          </div>
           <div className="flex mb-2">
             <div className="mr-1">
               <ActiveFilterLinkComponent

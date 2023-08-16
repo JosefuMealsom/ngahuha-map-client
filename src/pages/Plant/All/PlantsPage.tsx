@@ -50,18 +50,15 @@ export function AllPlantsPage() {
 
   return (
     <div className="w-full h-full bg-background pt-safe">
-      <div
-        className="mt-2 px-3 w-full max-w-md sm:max-w-lg"
-        data-cy="plant-list-search"
-      >
-        <SearchComponent<Plant>
-          searchFilter={searchPlantsFilter}
-          placeholder="Search plants"
-          onMatchesChange={onSearchPlants}
-        />
-      </div>
       <div className="sticky top-safe z-10">
         <div className="px-4 z-10 pt-2 w-full max-w-md sm:max-w-lg">
+          <div data-cy="plant-list-search" className="pb-2">
+            <SearchComponent<Plant>
+              searchFilter={searchPlantsFilter}
+              placeholder="Search plants"
+              onMatchesChange={onSearchPlants}
+            />
+          </div>
           <div className="flex mb-2">
             <div className="mr-1">
               <ActiveFilterLinkComponent
