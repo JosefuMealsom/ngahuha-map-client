@@ -9,6 +9,9 @@ import { PhotoInput } from '../CommonFormElements/PhotoInput';
 import { PhotoFile } from '../../../types/api/upload/plant-site-upload.type';
 import { LatLong } from '../../../types/lat-long.type';
 import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
+import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
+import { SearchFilterMatch } from '../../../types/filter.type';
+import { Plant } from '../../../types/api/plant.type';
 
 export function PlantSiteForm(props: {
   onSaveHandlerSuccess: () => void;
@@ -18,13 +21,15 @@ export function PlantSiteForm(props: {
   coordinates?: LatLong;
 }) {
   const [photos, setPhotos] = useState<PhotoFile[]>(props.photoFiles || []);
-  const [plantNameValue, setPlantNameValue] = useState<string>(
-    props.plantNameValue || '',
-  );
   const [position, setPosition] = useState(props.coordinates);
+  const [searchPlantsFilter, setSearchPlantsFilter] = useState(
+    new SearchPlantsFilter([]),
+  );
+  const [selectedPlant, setSelectedPlant] = useState<Plant>();
 
   const plantList = useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
+    setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
     return allPlants.map((plant) => ({
       name: getFullPlantName(plant),
       id: plant.id,
@@ -34,24 +39,18 @@ export function PlantSiteForm(props: {
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
 
-    const plantId = findPlantIdByFullName();
-
-    if (photos.length === 0 || !position) {
+    if (photos.length === 0 || !position || !selectedPlant) {
       return;
     }
 
     await addPlantSiteWithPhoto(
       photos.map((photo) => photo.file),
       position,
-      plantId,
+      selectedPlant.id,
       props.plantSiteUploadId,
     );
 
     props.onSaveHandlerSuccess();
-  }
-
-  function findPlantIdByFullName() {
-    return plantList?.find((plant) => plant.name === plantNameValue)?.id;
   }
 
   async function onPhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -92,7 +91,7 @@ export function PlantSiteForm(props: {
   }
 
   function renderTipAboutMissingPlant() {
-    if (photos.length > 0 && !plantNameValue) {
+    if (photos.length > 0 && !selectedPlant) {
       return (
         <p className="pb-5 text-xs text-blue-700">
           Note: You can save the plant site now, but you will need to identify
@@ -116,11 +115,13 @@ export function PlantSiteForm(props: {
       >
         <div className="relative z-10">
           <AutocompleteComponent
-            items={plantList?.map((plantItem) => plantItem.name) || []}
+            searchFilter={searchPlantsFilter}
             placeholder="Type species name to search"
-            onChangeHandler={(value: string) => setPlantNameValue(value)}
+            onItemSelectHandler={(match: SearchFilterMatch<Plant>) =>
+              setSelectedPlant(match.data)
+            }
             suggestionText="Available species"
-            value={plantNameValue}
+            // value={plantNameValue}
           />
         </div>
       </div>
