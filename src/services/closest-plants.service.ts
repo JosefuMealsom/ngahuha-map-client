@@ -20,32 +20,26 @@ export const getPlantSitesWithinDistance = (
     .sort((a, b) => a.distance - b.distance);
 };
 
-const distanceBetweenCoords = (position1: LatLong, position2: LatLong) => {
-  const position1ToMetres = convertToMetres(position1);
-  const position2ToMetres = convertToMetres(position2);
+// Haversine formula for calculating distance http://www.movable-type.co.uk/scripts/latlong.html
+function distanceBetweenCoords(position1: LatLong, position2: LatLong) {
+  const radiusOfEarthInMetres = 6371 * 1000;
+  const deltaLat = degreesToRadians(position2.latitude - position1.latitude);
+  const deltaLon = degreesToRadians(position2.longitude - position1.longitude);
+  const halfChordLengthSquared =
+    Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+    Math.cos(degreesToRadians(position1.latitude)) *
+      Math.cos(degreesToRadians(position2.latitude)) *
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2);
+  const angularDistanceInRadians =
+    2 *
+    Math.atan2(
+      Math.sqrt(halfChordLengthSquared),
+      Math.sqrt(1 - halfChordLengthSquared),
+    );
+  return radiusOfEarthInMetres * angularDistanceInRadians;
+}
 
-  return Math.hypot(
-    position2ToMetres.latitudeToMetres - position1ToMetres.latitudeToMetres,
-    position2ToMetres.longitudeToMetres - position1ToMetres.longitudeToMetres,
-  );
-};
-
-// https://en.wikipedia.org/wiki/Geographic_coordinate_system#Length_of_a_degree
-const convertToMetres = (latLong: LatLong) => {
-  const { latitude, longitude } = latLong;
-  const latitudeToMetres =
-    111132.92 -
-    559.82 * Math.cos(2 * latitude) +
-    1.1175 * Math.cos(4 * latitude) -
-    0.0023 * Math.cos(6 * latitude);
-
-  const longitudeToMetres =
-    111412.84 * Math.cos(longitude) -
-    93.5 * Math.cos(3 * longitude) +
-    0.118 * Math.cos(5 * longitude);
-
-  return {
-    latitudeToMetres: latitudeToMetres,
-    longitudeToMetres: longitudeToMetres,
-  };
-};
+function degreesToRadians(degrees: number) {
+  return degrees * (Math.PI / 180);
+}
