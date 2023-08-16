@@ -39,14 +39,14 @@ export function PlantSiteForm(props: {
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
 
-    if (photos.length === 0 || !position || !selectedPlant) {
+    if (photos.length === 0 || !position) {
       return;
     }
 
     await addPlantSiteWithPhoto(
       photos.map((photo) => photo.file),
       position,
-      selectedPlant.id,
+      selectedPlant?.id,
       props.plantSiteUploadId,
     );
 

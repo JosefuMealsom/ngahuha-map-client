@@ -8,8 +8,8 @@ export function LinkComponent(props: {
   return (
     <Link
       to={props.link}
-      className={`${props.className} border-none bg-white border p-1
-      py-2 cursor-pointer mb-2 rounded-md text-[0.65rem] sm:text-sm`}
+      className={`${props.className} border-solid border-black bg-white border p-1
+      py-2 hover:bg-gray-300 cursor-pointer mb-2 rounded-md text-[0.65rem] sm:text-base`}
     >
       {props.text}
     </Link>
