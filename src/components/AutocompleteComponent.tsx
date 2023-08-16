@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 import { SearchFilter, SearchFilterMatch } from '../types/filter.type';
+import { debounce } from 'underscore';
 
 export default function AutocompleteComponent<T>(props: {
   searchFilter: SearchFilter<T>;
@@ -17,6 +18,7 @@ export default function AutocompleteComponent<T>(props: {
   const [inputValue, setInputValue] = useState(props.value || '');
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [autocompleteIndex, setAutocompleteIndex] = useState(-1);
+  const debouncedUpdateInput = debounce(updateInputValue, 500);
 
   useEffect(() => {
     setAutocompleteIndex(-1);
@@ -24,12 +26,15 @@ export default function AutocompleteComponent<T>(props: {
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setAutocompleteOpen(true);
-    updateInputValue(event.target.value);
+    setInputValue(event.target.value);
+    debouncedUpdateInput.cancel();
+    debouncedUpdateInput(event.target.value);
   }
 
   function onItemClick(match: SearchFilterMatch<T>) {
     setAutocompleteOpen(false);
-    updateInputValue(match.description);
+    setInputValue(match.description);
+
     if (props.onItemSelectHandler) {
       props.onItemSelectHandler(match);
     }
@@ -37,6 +42,8 @@ export default function AutocompleteComponent<T>(props: {
 
   function onClearClick() {
     setAutocompleteOpen(false);
+    debouncedUpdateInput.cancel();
+    setInputValue('');
     updateInputValue('');
 
     if (props.onClearHandler) {
@@ -45,7 +52,11 @@ export default function AutocompleteComponent<T>(props: {
   }
 
   function updateInputValue(text: string) {
-    setInputValue(text);
+    if (text === '') {
+      setSearchMatches([]);
+      return;
+    }
+
     setSearchMatches(props.searchFilter.search(text));
 
     if (props.onChangeHandler) {
