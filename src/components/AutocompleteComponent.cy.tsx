@@ -1,35 +1,50 @@
 import AutocompleteComponent from './AutocompleteComponent';
 
+type TestType = { id: string; value: string };
+
 describe('<AutocompleteComponent />', () => {
+  let searchFilter = {
+    search: () => [
+      {
+        description: 'hellos id or description',
+        data: { id: '123', value: 'Some important value' },
+      },
+    ],
+  };
+
   it('renders a list of autocomplete suggestions', () => {
     cy.mount(
-      <AutocompleteComponent items={['hello', 'joe']} placeholder="Yo" />,
+      <AutocompleteComponent<TestType>
+        searchFilter={searchFilter}
+        placeholder="Yo"
+      />,
     );
 
     cy.get('input').type('hel');
-    cy.contains('hello');
-
-    cy.get('input').clear();
-
-    cy.get('input').type('jo');
-    cy.contains('joe');
+    cy.contains('hellos id or description');
   });
 
   it('sets the value to the suggestion you click on', () => {
+    const itemSelectCallback = cy.spy();
+
     cy.mount(
-      <AutocompleteComponent items={['hello', 'joe']} placeholder="Yo" />,
+      <AutocompleteComponent<TestType>
+        searchFilter={searchFilter}
+        placeholder="Yo"
+        onItemSelectHandler={itemSelectCallback}
+      />,
     );
 
     cy.get('input').type('hell');
     cy.get('li').first().click();
-    cy.get('input').should('have.value', 'hello');
+    cy.get('input').should('have.value', 'hellos id or description');
 
     cy.contains('hello').should('not.be.visible');
   });
 
   it('clears the content when you click on the x', () => {
     cy.mount(
-      <AutocompleteComponent items={['hello', 'joe']} placeholder="Yo" />,
+      <AutocompleteComponent searchFilter={searchFilter} placeholder="Yo" />,
     );
 
     cy.get('input').type('hell');
@@ -41,7 +56,7 @@ describe('<AutocompleteComponent />', () => {
   it('adds a flavour header to describe the suggestions if set', () => {
     cy.mount(
       <AutocompleteComponent
-        items={['hello', 'joe']}
+        searchFilter={searchFilter}
         placeholder="Yo"
         suggestionText="These are the best!"
       />,
@@ -56,7 +71,7 @@ describe('<AutocompleteComponent />', () => {
 
     cy.mount(
       <AutocompleteComponent
-        items={['hello', 'joe']}
+        searchFilter={searchFilter}
         placeholder="Yo"
         onItemSelectHandler={itemSelectCallback}
       />,
@@ -67,7 +82,10 @@ describe('<AutocompleteComponent />', () => {
       .first()
       .click()
       .then(() =>
-        expect(itemSelectCallback).to.have.been.calledOnceWith('hello'),
+        expect(itemSelectCallback).to.have.been.calledOnceWith({
+          description: 'hellos id or description',
+          data: { id: '123', value: 'Some important value' },
+        }),
       );
   });
 
@@ -76,7 +94,7 @@ describe('<AutocompleteComponent />', () => {
 
     cy.mount(
       <AutocompleteComponent
-        items={['hello', 'joe']}
+        searchFilter={searchFilter}
         placeholder="Yo"
         onClearHandler={clearAutocompleteCallback}
       />,
@@ -89,20 +107,33 @@ describe('<AutocompleteComponent />', () => {
   });
 
   it('can control selecting the autocomplete options with the keyboard', () => {
+    searchFilter = {
+      search: () => [
+        {
+          description: 'hellos id or description',
+          data: { id: '123', value: 'Some important value' },
+        },
+        {
+          description: 'hey heys id or description',
+          data: { id: 'abc', value: 'Another value' },
+        },
+      ],
+    };
+
     cy.mount(
-      <AutocompleteComponent items={['hello', 'hey hey']} placeholder="Yo" />,
+      <AutocompleteComponent searchFilter={searchFilter} placeholder="Yo" />,
     );
 
     // Navigation down
     cy.get('input').type('he');
     cy.get('input').type('{downArrow}{enter}');
-    cy.get('input').should('have.value', 'hello');
+    cy.get('input').should('have.value', 'hellos id or description');
     cy.get('input').clear();
 
     // Navigation up
     cy.get('input').type('he');
     cy.get('input').type('{upArrow}{enter}');
-    cy.get('input').should('have.value', 'hey hey');
+    cy.get('input').should('have.value', 'hey heys id or description');
     cy.get('input').clear();
 
     // Closing autocomplete with escape

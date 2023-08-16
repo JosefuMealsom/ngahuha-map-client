@@ -1,22 +1,22 @@
-import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
+import { SearchFilter, SearchFilterMatch } from '../types/filter.type';
 
-export default function AutocompleteComponent(props: {
-  items: string[];
+export default function AutocompleteComponent<T>(props: {
+  searchFilter: SearchFilter<T>;
   placeholder: string;
   onChangeHandler?: (value: string) => any;
-  onItemSelectHandler?: (value: string) => any;
+  onItemSelectHandler?: (match: SearchFilterMatch<T>) => any;
   onClearHandler?: () => any;
   suggestionText?: string;
   value?: string;
 }) {
-  const [textMatches, setTextMatches] = useState<string[]>([]);
+  const [searchMatches, setSearchMatches] = useState<SearchFilterMatch<T>[]>(
+    [],
+  );
   const [inputValue, setInputValue] = useState(props.value || '');
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [autocompleteIndex, setAutocompleteIndex] = useState(-1);
-
-  const fuse = new Fuse(props.items, { includeScore: true, distance: 100 });
 
   useEffect(() => {
     setAutocompleteIndex(-1);
@@ -27,11 +27,11 @@ export default function AutocompleteComponent(props: {
     updateInputValue(event.target.value);
   }
 
-  function onItemClick(text: string) {
+  function onItemClick(match: SearchFilterMatch<T>) {
     setAutocompleteOpen(false);
-    updateInputValue(text);
+    updateInputValue(match.description);
     if (props.onItemSelectHandler) {
-      props.onItemSelectHandler(text);
+      props.onItemSelectHandler(match);
     }
   }
 
@@ -46,8 +46,7 @@ export default function AutocompleteComponent(props: {
 
   function updateInputValue(text: string) {
     setInputValue(text);
-    const result = fuse.search(text, { limit: 5 });
-    setTextMatches(result.map((match) => match.item));
+    setSearchMatches(props.searchFilter.search(text));
 
     if (props.onChangeHandler) {
       props.onChangeHandler(text);
@@ -55,7 +54,7 @@ export default function AutocompleteComponent(props: {
   }
 
   function renderSuggestionText() {
-    if (!props.suggestionText || textMatches.length === 0) {
+    if (!props.suggestionText || searchMatches.length === 0) {
       return;
     }
     return (
@@ -77,7 +76,7 @@ export default function AutocompleteComponent(props: {
         break;
       case 'Enter':
         if (!autocompleteOpen) return;
-        onItemClick(textMatches[autocompleteIndex]);
+        onItemClick(searchMatches[autocompleteIndex]);
         break;
     }
   }
@@ -85,7 +84,7 @@ export default function AutocompleteComponent(props: {
   function getPreviousEntry() {
     let prevIndex: number;
     if (autocompleteIndex <= -1) {
-      prevIndex = textMatches.length - 1;
+      prevIndex = searchMatches.length - 1;
     } else {
       prevIndex = autocompleteIndex - 1;
     }
@@ -96,7 +95,7 @@ export default function AutocompleteComponent(props: {
 
   function getNextEntry() {
     let nextIndex: number;
-    if (autocompleteIndex >= textMatches.length - 1) {
+    if (autocompleteIndex >= searchMatches.length - 1) {
       nextIndex = -1;
     } else {
       nextIndex = autocompleteIndex + 1;
@@ -129,16 +128,16 @@ export default function AutocompleteComponent(props: {
         <div className="absolute top-0 bg-white drop-shadow-lg w-full">
           {renderSuggestionText()}
           <ul>
-            {textMatches.map((text, index) => (
+            {searchMatches.map((match, index) => (
               <li
-                key={text as string}
+                key={match.description}
                 className={`hover:bg-gray-50 cursor-pointer py-3 px-3 w-full ${
                   autocompleteIndex === index ? 'bg-gray-50' : ''
                 }`}
-                onClick={() => onItemClick(text as string)}
+                onClick={() => onItemClick(match)}
                 data-cy="autocomplete-entry"
               >
-                {text}
+                {match.description}
               </li>
             ))}
           </ul>
