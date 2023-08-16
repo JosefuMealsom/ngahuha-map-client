@@ -138,7 +138,7 @@ export default function AutocompleteComponent<T>(props: {
       <div className={`${autocompleteOpen ? '' : 'hidden '} block relative`}>
         <div className="absolute top-0 bg-white drop-shadow-lg w-full">
           {renderSuggestionText()}
-          <ul>
+          <ul className="max-h-72 overflow-scroll">
             {searchMatches.map((match, index) => (
               <li
                 key={match.description}
