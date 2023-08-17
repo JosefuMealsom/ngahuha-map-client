@@ -53,7 +53,7 @@ export default function AutocompleteComponent<T>(props: {
 
   function updateInputValue(text: string) {
     if (text === '') {
-      setSearchMatches([]);
+      setAutocompleteOpen(false);
       return;
     }
 

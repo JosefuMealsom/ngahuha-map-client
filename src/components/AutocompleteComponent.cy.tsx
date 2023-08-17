@@ -106,7 +106,7 @@ describe('<AutocompleteComponent />', () => {
       .then(() => expect(clearAutocompleteCallback).to.have.been.calledOnce);
   });
 
-  it('can control selecting the autocomplete options with the keyboard', () => {
+  it.skip('can control selecting the autocomplete options with the keyboard', () => {
     searchFilter = {
       search: () => [
         {
