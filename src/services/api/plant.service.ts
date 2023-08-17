@@ -15,7 +15,6 @@ export const fetchPlants = (): Promise<Plant[]> => {
         id: plant.id,
         species: plant.species,
         cultivar: plant.cultivar,
-        typeId: plant.typeId,
         createdAt: plant.createdAt,
         updatedAt: plant.updatedAt,
         extendedInfo: plant.extendedInfo,
@@ -52,6 +51,30 @@ export const updateDescription = async (
   return dataToJSON;
 };
 
+export const updateExtendedInfo = async (
+  plantId: string,
+  tags: string[],
+  types: string[],
+  commonNames: string[],
+) => {
+  const result = await fetch(getFullApiPath(`plant/${plantId}`), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      extendedInfo: {
+        tags: tags.map((tag) => tag.trim()),
+        types: types.map((type) => type.trim()),
+        commonNames: commonNames.map((name) => name.trim()),
+      },
+    }),
+  });
+
+  const dataToJSON = await result.json();
+  await plantTable.put(dataToJSON);
+
+  return dataToJSON;
+};
+
 export const createPlant = async (
   species: string,
   cultivar: string,
@@ -76,7 +99,7 @@ export const createPlant = async (
   }
 
   const dataToJSON = await result.json();
-  plantTable.put(dataToJSON);
 
+  await plantTable.put(dataToJSON);
   return dataToJSON;
 };
