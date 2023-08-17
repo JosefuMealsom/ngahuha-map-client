@@ -9,6 +9,7 @@ function seedOfflineDatabase() {
         species: 'The worst species',
         cultivar: 'lame',
         description: '### Description\n\nVery interesting!',
+        extendedInfo: undefined,
       },
     ],
     plantSites: [{ plantId: 'abcdef' }],
@@ -47,5 +48,37 @@ describe('Plant information page', () => {
 
     cy.contains('### Wow! This is so cool!');
     cy.contains('Description successfully updated');
+  });
+
+  it('can edit the plants extended info', () => {
+    cy.intercept('PATCH', 'https://app.ngahuha-map-dev.com:8080/plant/abcdef', {
+      statusCode: 200,
+      body: {
+        id: 'abcdef',
+        species: 'The worst species',
+        cultivar: 'lame',
+        description: '',
+        extendedInfo: {
+          tags: ['yummy', 'german'],
+          types: ['sausage plant'],
+          commonNames: ['totally sie wurst'],
+        },
+      },
+    }).as('updateExtendedInfo');
+
+    plantPage.typesInput().type('  sausage plant  ');
+    plantPage.tagsInput().type(' yummy, german ');
+    plantPage.commonNamesInput().type('  totally sie wurst');
+    plantPage.updateExtendedInfoInput().click();
+
+    cy.wait('@updateExtendedInfo');
+
+    cy.contains('Extended info successfully updated');
+
+    cy.reload().then(() => {
+      plantPage.typesInput().should('have.value', 'sausage plant');
+      plantPage.tagsInput().should('have.value', 'yummy,german');
+      plantPage.commonNamesInput().should('have.value', 'totally sie wurst');
+    });
   });
 });

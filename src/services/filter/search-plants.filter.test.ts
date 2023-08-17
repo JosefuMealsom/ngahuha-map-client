@@ -9,7 +9,7 @@ describe('SearchPlantsFilter', () => {
     cultivar: 'joe',
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
-    extendedInfo: { type: ['tree'], commonNames: ["Jeffrey's bush"] },
+    extendedInfo: { types: ['tree'], commonNames: ["Jeffrey's bush"] },
   });
   const plant2 = plantFactory.create({
     id: 'abc',
@@ -17,7 +17,7 @@ describe('SearchPlantsFilter', () => {
     cultivar: 'moe',
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
-    extendedInfo: { type: ['mushroom'], commonNames: ["Barry's cactus"] },
+    extendedInfo: { types: ['mushroom'], commonNames: ["Barry's cactus"] },
   });
 
   describe('search()', () => {
@@ -33,7 +33,7 @@ describe('SearchPlantsFilter', () => {
             cultivar: 'joe',
             createdAt: '1988-11-11T00:00:00.000Z',
             updatedAt: '1988-11-11T00:00:00.000Z',
-            extendedInfo: { type: ['tree'], commonNames: ["Jeffrey's bush"] },
+            extendedInfo: { types: ['tree'], commonNames: ["Jeffrey's bush"] },
           },
         },
       ]);
@@ -52,7 +52,7 @@ describe('SearchPlantsFilter', () => {
             createdAt: '1988-11-11T00:00:00.000Z',
             updatedAt: '1988-11-11T00:00:00.000Z',
             extendedInfo: {
-              type: ['mushroom'],
+              types: ['mushroom'],
               commonNames: ["Barry's cactus"],
             },
           },
@@ -72,7 +72,7 @@ describe('SearchPlantsFilter', () => {
             cultivar: 'joe',
             createdAt: '1988-11-11T00:00:00.000Z',
             updatedAt: '1988-11-11T00:00:00.000Z',
-            extendedInfo: { type: ['tree'], commonNames: ["Jeffrey's bush"] },
+            extendedInfo: { types: ['tree'], commonNames: ["Jeffrey's bush"] },
           },
         },
       ]);
@@ -87,7 +87,7 @@ describe('SearchPlantsFilter', () => {
             createdAt: '1988-11-11T00:00:00.000Z',
             updatedAt: '1988-11-11T00:00:00.000Z',
             extendedInfo: {
-              type: ['mushroom'],
+              types: ['mushroom'],
               commonNames: ["Barry's cactus"],
             },
           },
@@ -107,7 +107,7 @@ describe('SearchPlantsFilter', () => {
             cultivar: 'joe',
             createdAt: '1988-11-11T00:00:00.000Z',
             updatedAt: '1988-11-11T00:00:00.000Z',
-            extendedInfo: { type: ['tree'], commonNames: ["Jeffrey's bush"] },
+            extendedInfo: { types: ['tree'], commonNames: ["Jeffrey's bush"] },
           },
         },
         {
@@ -119,7 +119,7 @@ describe('SearchPlantsFilter', () => {
             createdAt: '1988-11-11T00:00:00.000Z',
             updatedAt: '1988-11-11T00:00:00.000Z',
             extendedInfo: {
-              type: ['mushroom'],
+              types: ['mushroom'],
               commonNames: ["Barry's cactus"],
             },
           },

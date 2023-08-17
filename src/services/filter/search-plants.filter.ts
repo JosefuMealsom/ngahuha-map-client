@@ -6,10 +6,12 @@ import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 export class SearchPlantsFilter implements SearchFilter<Plant> {
   private plantList: Plant[];
   private fuseInstance: Fuse<Plant>;
-  private fuseOptions = {
+  private fuseOptions: Fuse.IFuseOptions<Plant> = {
     includeScore: true,
+    useExtendedSearch: true,
     distance: 100,
     threshold: 0.2,
+
     keys: [
       { name: 'species', weight: 2 },
       { name: 'cultivar', weight: 2 },
@@ -18,7 +20,7 @@ export class SearchPlantsFilter implements SearchFilter<Plant> {
         weight: 2,
       },
       {
-        name: 'extendedInfo.type',
+        name: 'extendedInfo.types',
         weight: 1,
       },
       {
