@@ -9,13 +9,13 @@ describe('SearchPlantSitesFilter', () => {
     id: '123',
     species: 'hello',
     cultivar: 'joe',
-    extendedInfo: { type: ['tree'], commonNames: ["Jeffrey's bush"] },
+    extendedInfo: { types: ['tree'], commonNames: ["Jeffrey's bush"] },
   });
   const plant2 = plantFactory.create({
     id: 'abc',
     species: 'goodbye',
     cultivar: 'moe',
-    extendedInfo: { type: ['mushroom'], commonNames: ["Barry's cactus"] },
+    extendedInfo: { types: ['mushroom'], commonNames: ["Barry's cactus"] },
   });
 
   const plantSite1 = plantSiteFactory.create({ id: 'aaa', plantId: '123' });

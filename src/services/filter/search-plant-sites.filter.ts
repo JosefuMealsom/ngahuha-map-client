@@ -10,10 +10,11 @@ export class SearchPlantSitesFilter<
   private plantSiteList: PlantSiteSubclass[];
   private plantList: Plant[];
   private fuseInstance: Fuse<Plant>;
-  private fuseOptions = {
+  private fuseOptions: Fuse.IFuseOptions<Plant> = {
     includeScore: true,
     distance: 100,
     threshold: 0.2,
+    useExtendedSearch: true,
     keys: [
       { name: 'species', weight: 2 },
       { name: 'cultivar', weight: 2 },
@@ -22,7 +23,7 @@ export class SearchPlantSitesFilter<
         weight: 2,
       },
       {
-        name: 'extendedInfo.type',
+        name: 'extendedInfo.types',
         weight: 1,
       },
       {
