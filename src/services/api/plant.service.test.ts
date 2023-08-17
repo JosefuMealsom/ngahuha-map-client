@@ -212,7 +212,11 @@ describe('PlantService', () => {
     });
 
     it('updates the extendedInfo and saves the changes locally', async () => {
-      await updateExtendedInfo('123', ['wow'], ['tree', 'bush'], ['joes bush']);
+      await updateExtendedInfo('123', {
+        tags: ['wow'],
+        types: ['tree', 'bush'],
+        commonNames: ['joes bush'],
+      });
 
       assertEndPointCalled('https://www.dummy-api.com/plant');
 

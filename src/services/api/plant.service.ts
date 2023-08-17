@@ -53,18 +53,16 @@ export const updateDescription = async (
 
 export const updateExtendedInfo = async (
   plantId: string,
-  tags: string[],
-  types: string[],
-  commonNames: string[],
+  data: { tags: string[]; types: string[]; commonNames: string[] },
 ) => {
   const result = await fetch(getFullApiPath(`plant/${plantId}`), {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       extendedInfo: {
-        tags: tags.map((tag) => tag.trim()),
-        types: types.map((type) => type.trim()),
-        commonNames: commonNames.map((name) => name.trim()),
+        tags: data.tags.map((tag) => tag.trim()),
+        types: data.types.map((type) => type.trim()),
+        commonNames: data.commonNames.map((name) => name.trim()),
       },
     }),
   });
