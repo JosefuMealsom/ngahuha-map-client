@@ -4,6 +4,7 @@ import { updateDescription } from '../../../services/api/plant.service';
 import { toast } from 'react-toastify';
 import { CarouselComponent } from '../../../components/CarouselComponent';
 import { usePlant } from '../../../hooks/use-plant.hook';
+import { ExtendedInfoEditor } from './ExtendedInfoEditor';
 
 export function PlantDescription(props: {
   plantId: string;
@@ -49,9 +50,12 @@ export function PlantDescription(props: {
           <div className="sm:w-1/2">
             <MarkDownEditorComponent
               onSaveHandler={onDescriptionSave}
-              className="sm:h-screen sm:overflow-scroll pl-10 pr-10 py-6"
+              className="sm:overflow-scroll px-10 py-6"
               value={plant.description}
             />
+            <div className="px-10">
+              <ExtendedInfoEditor plant={plant} />
+            </div>
           </div>
         </div>
       </div>
