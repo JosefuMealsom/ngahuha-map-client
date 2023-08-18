@@ -18,9 +18,8 @@ describe('Add new plant site for upload', () => {
     //required for the live query hooks to populate the data correctly in the form
     cy.wait(300);
 
-    //@ts-ignore https://docs.cypress.io/api/commands/selectfile?ref=cypress.io#From-a-fixture
-    cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
-    cy.fixture('images/lemons.jpeg', { encoding: null }).as('plantSitePhoto2');
+    cy.fixture('images/ngahuha.png', null).as('plantSitePhoto1');
+    cy.fixture('images/lemons.jpeg', null).as('plantSitePhoto2');
 
     mapViewPage.addNewPlantSiteButton().click();
     cy.contains('Add a new location');
@@ -52,9 +51,8 @@ describe('Add new plant site for upload', () => {
     //required for the live query hooks to populate the data correctly in the form
     cy.wait(300);
 
-    //@ts-ignore https://docs.cypress.io/api/commands/selectfile?ref=cypress.io#From-a-fixture
-    cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
-    cy.fixture('images/lemons.jpeg', { encoding: null }).as('plantSitePhoto2');
+    cy.fixture('images/ngahuha.png', null).as('plantSitePhoto1');
+    cy.fixture('images/lemons.jpeg', null).as('plantSitePhoto2');
 
     mapViewPage.addNewPlantSiteButton().click();
     cy.contains('Add a new location');
@@ -77,8 +75,7 @@ describe('Add new plant site for upload', () => {
     //required for the live query hooks to populate the data correctly in the form
     cy.wait(300);
 
-    //@ts-ignore https://docs.cypress.io/api/commands/selectfile?ref=cypress.io#From-a-fixture
-    cy.fixture('images/ngahuha.png', { encoding: null }).as('plantSitePhoto1');
+    cy.fixture('images/ngahuha.png', null).as('plantSitePhoto1');
 
     mapViewPage.addNewPlantSiteButton().click();
     newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
