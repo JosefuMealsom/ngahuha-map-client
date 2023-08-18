@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import AutocompleteComponent from '../../../components/AutocompleteComponent';
 import { plantTable } from '../../../services/offline.database';
-import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { addPlantSiteWithPhoto } from '../../../services/api/plant-site-upload.service';
 import { AccuracyIndicator } from '../CommonFormElements/AccuracyIndicator';
@@ -27,13 +26,9 @@ export function PlantSiteForm(props: {
   );
   const [selectedPlant, setSelectedPlant] = useState<Plant>();
 
-  const plantList = useLiveQuery(async () => {
+  useLiveQuery(async () => {
     const allPlants = await plantTable.toArray();
     setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
-    return allPlants.map((plant) => ({
-      name: getFullPlantName(plant),
-      id: plant.id,
-    }));
   });
 
   async function savePhotoLocally(event: FormEvent) {
