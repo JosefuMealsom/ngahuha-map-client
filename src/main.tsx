@@ -19,6 +19,9 @@ import { ClosestPlantsPage } from './pages/Plant/ClosestPlants/ClosestPlantsPage
 import { LoginPage } from './pages/Login/LoginPage';
 import {} from './pages/Login/LoginPage';
 import { ProtectedRoute } from './pages/ProtectedRoute';
+import { readUserStateFromCookie } from './services/user.service';
+
+readUserStateFromCookie();
 
 const router = createBrowserRouter([
   {
