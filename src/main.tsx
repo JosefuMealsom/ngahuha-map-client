@@ -16,6 +16,9 @@ import { NewPlantPage } from './pages/Plant/New/NewPlantPage';
 import { AllPlantsPage } from './pages/Plant/All/PlantsPage';
 import { MapPage } from './pages/MapView/MapPage';
 import { ClosestPlantsPage } from './pages/Plant/ClosestPlants/ClosestPlantsPage';
+import { LoginPage } from './pages/Login/LoginPage';
+import {} from './pages/Login/LoginPage';
+import { ProtectedRoute } from './pages/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <MapPage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
       },
       {
         path: 'plants',
@@ -41,7 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'plants/new',
-        element: <NewPlantPage />,
+        element: (
+          <ProtectedRoute>
+            <NewPlantPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'plant-site/:id',
@@ -50,16 +61,28 @@ const router = createBrowserRouter([
       },
       {
         path: 'plant-site/:id/edit',
-        element: <EditPlantSite />,
+        element: (
+          <ProtectedRoute>
+            <EditPlantSite />
+          </ProtectedRoute>
+        ),
         loader: loadPlantSiteUploadWithPhotos,
       },
       {
         path: 'plant-site/new',
-        element: <NewPlantSite />,
+        element: (
+          <ProtectedRoute>
+            <NewPlantSite />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'plant-site/pending-upload',
-        element: <PlantPhotosToUpload />,
+        element: (
+          <ProtectedRoute>
+            <PlantPhotosToUpload />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
