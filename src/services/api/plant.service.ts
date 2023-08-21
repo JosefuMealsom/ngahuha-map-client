@@ -41,9 +41,16 @@ export const updateDescription = async (
 ) => {
   const result = await fetch(getFullApiPath(`plant/${plantId}`), {
     method: 'PATCH',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ description: description }),
   });
+
+  if (!result.ok) {
+    throw Error(
+      `Login failed: ${result.status}, ${(await result.json()).message}`,
+    );
+  }
 
   const dataToJSON = await result.json();
   plantTable.put(dataToJSON);
@@ -58,6 +65,7 @@ export const updateExtendedInfo = async (
   const result = await fetch(getFullApiPath(`plant/${plantId}`), {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({
       extendedInfo: {
         tags: data.tags.map((tag) => tag.trim()),
@@ -86,6 +94,7 @@ export const createPlant = async (
 
   const result = await fetch(getFullApiPath('plant'), {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(createData),
   });

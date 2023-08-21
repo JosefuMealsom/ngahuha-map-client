@@ -56,6 +56,7 @@ const uploadPlantSite = async (plantSite: PlantSiteUpload) => {
 
   return fetch(getFullApiPath('plant-site'), {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
