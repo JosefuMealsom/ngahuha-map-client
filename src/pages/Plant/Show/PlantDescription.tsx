@@ -5,12 +5,16 @@ import { toast } from 'react-toastify';
 import { CarouselComponent } from '../../../components/CarouselComponent';
 import { usePlant } from '../../../hooks/use-plant.hook';
 import { ExtendedInfoEditor } from './ExtendedInfoEditor';
+import { ProtectedLayout } from '../../ProtectedLayout';
+import { parseMarkdown } from '../../../utils/markdown-parser.util';
+import { useState } from 'react';
 
 export function PlantDescription(props: {
   plantId: string;
   photos: { id: string; dataUrl: string }[];
 }) {
   const { photos, plantId } = props;
+  const [editMarkdown, setEditMarkdown] = useState(false);
   const plant = usePlant(plantId);
 
   function renderCarousel() {
@@ -30,9 +34,49 @@ export function PlantDescription(props: {
   async function onDescriptionSave(description: string) {
     if (!plant) return;
 
-    await updateDescription(plant.id, description);
+    try {
+      await updateDescription(plant.id, description);
+      toast('Description successfully updated');
+    } catch (error) {
+      toast(`There was an error updating: ${(error as Error).message}`);
+    }
+  }
 
-    toast('Description successfully updated');
+  function renderMarkdownEditor() {
+    if (!editMarkdown) return;
+
+    return (
+      <MarkDownEditorComponent
+        onSaveHandler={onDescriptionSave}
+        className="sm:overflow-scroll px-10 py-6"
+        value={plant?.description}
+      />
+    );
+  }
+
+  function renderDescription() {
+    if (editMarkdown) return;
+
+    return (
+      <div>
+        <article
+          className="prose max-width-character"
+          dangerouslySetInnerHTML={{
+            __html: parseMarkdown(plant?.description || ''),
+          }}
+        ></article>
+        <ProtectedLayout>
+          <button
+            className="border inline-block py-1.5 text-xs px-4 font-bold cursor-pointer
+                 rounded-full mb-2 bg-[#002D04] text-white border-[#002D04]"
+            onClick={() => setEditMarkdown(true)}
+            data-cy="markdown-toggle-edit"
+          >
+            Edit description
+          </button>
+        </ProtectedLayout>
+      </div>
+    );
   }
 
   function renderPlantInfo() {
@@ -48,13 +92,12 @@ export function PlantDescription(props: {
             </p>
           </div>
           <div className="sm:w-1/2">
-            <MarkDownEditorComponent
-              onSaveHandler={onDescriptionSave}
-              className="sm:overflow-scroll px-10 py-6"
-              value={plant.description}
-            />
             <div className="px-10">
-              <ExtendedInfoEditor plant={plant} />
+              {renderDescription()}
+              <ProtectedLayout>
+                {renderMarkdownEditor()}
+                <ExtendedInfoEditor plant={plant} />
+              </ProtectedLayout>
             </div>
           </div>
         </div>
