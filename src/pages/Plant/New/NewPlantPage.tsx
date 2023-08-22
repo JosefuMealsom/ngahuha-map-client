@@ -12,14 +12,13 @@ export function NewPlantPage() {
 
   async function createPlantSite(event: FormEvent) {
     event.preventDefault();
+
     try {
       await createPlant(species, subSpecies, description);
       toast('Plant created successfully');
       navigate('/', { replace: true });
     } catch (error) {
-      toast(
-        `An error occured when creating the plant: ${(error as Error).message}`,
-      );
+      toast(`An error occured when creating the plant: ${error}`);
     }
   }
 

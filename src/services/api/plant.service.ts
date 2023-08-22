@@ -1,6 +1,6 @@
 import type { Plant } from '../../types/api/plant.type';
 import apiFetchUtil from '../../utils/api-fetch.util';
-import { getFullApiPath } from '../../utils/api-url.util';
+import axiosClient from '../axios/axios-client';
 import { plantTable } from '../offline.database';
 
 export const fetchPlants = (): Promise<Plant[]> => {
@@ -39,20 +39,11 @@ export const updateDescription = async (
   plantId: string,
   description: string,
 ) => {
-  const result = await fetch(getFullApiPath(`plant/${plantId}`), {
-    method: 'PATCH',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ description: description }),
+  const result = await axiosClient.patch(`plant/${plantId}`, {
+    description: description,
   });
 
-  if (!result.ok) {
-    throw Error(
-      `Update failed: ${result.status}, ${(await result.json()).message}`,
-    );
-  }
-
-  const dataToJSON = await result.json();
+  const dataToJSON = await result.data;
   plantTable.put(dataToJSON);
 
   return dataToJSON;
@@ -62,30 +53,17 @@ export const updateExtendedInfo = async (
   plantId: string,
   data: { tags: string[]; types: string[]; commonNames: string[] },
 ) => {
-  const result = await fetch(getFullApiPath(`plant/${plantId}`), {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({
-      extendedInfo: {
-        tags: data.tags.map((tag) => tag.trim()),
-        types: data.types.map((type) => type.trim()),
-        commonNames: data.commonNames.map((name) => name.trim()),
-      },
-    }),
+  const result = await axiosClient.patch(`plant/${plantId}`, {
+    extendedInfo: {
+      tags: data.tags.map((tag) => tag.trim()),
+      types: data.types.map((type) => type.trim()),
+      commonNames: data.commonNames.map((name) => name.trim()),
+    },
   });
 
-  if (!result.ok) {
-    throw Error(
-      `Update failed: ${result.status}, ${(await result.json()).message}`,
-    );
-  }
+  await plantTable.put(result.data);
 
-  const dataToJSON = await result.json();
-
-  await plantTable.put(dataToJSON);
-
-  return dataToJSON;
+  return result.data;
 };
 
 export const createPlant = async (
@@ -99,21 +77,8 @@ export const createPlant = async (
     description: description,
   };
 
-  const result = await fetch(getFullApiPath('plant'), {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(createData),
-  });
+  const result = await axiosClient.post(`plant`, createData);
 
-  if (!result.ok) {
-    throw Error(
-      `Upload failed: ${result.status}, ${(await result.json()).message}`,
-    );
-  }
-
-  const dataToJSON = await result.json();
-
-  await plantTable.put(dataToJSON);
-  return dataToJSON;
+  await plantTable.put(result.data);
+  return result.data;
 };
