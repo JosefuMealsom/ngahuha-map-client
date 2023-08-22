@@ -48,7 +48,7 @@ export const updateDescription = async (
 
   if (!result.ok) {
     throw Error(
-      `Login failed: ${result.status}, ${(await result.json()).message}`,
+      `Update failed: ${result.status}, ${(await result.json()).message}`,
     );
   }
 
@@ -75,7 +75,14 @@ export const updateExtendedInfo = async (
     }),
   });
 
+  if (!result.ok) {
+    throw Error(
+      `Update failed: ${result.status}, ${(await result.json()).message}`,
+    );
+  }
+
   const dataToJSON = await result.json();
+
   await plantTable.put(dataToJSON);
 
   return dataToJSON;
