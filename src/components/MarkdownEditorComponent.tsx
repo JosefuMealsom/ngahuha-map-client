@@ -8,7 +8,7 @@ export function MarkDownEditorComponent(props: {
 }) {
   const textAreaInputRef = useRef<HTMLTextAreaElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
   const [inputValue, setInputValue] = useState<string>(props.value || '');
 
   function onInputChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
