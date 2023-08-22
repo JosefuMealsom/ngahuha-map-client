@@ -1,15 +1,13 @@
-import { getFullApiPath } from '../../../utils/api-url.util';
+import axiosClient from '../../axios/axios-client';
 
 type BlobUrl = { blobKey: string; url: string };
 
 export const fetchBlobUploadUrl = async (): Promise<BlobUrl> => {
-  const response = await fetch(getFullApiPath('blob/presigned-upload-url'), {
-    credentials: 'include',
-  });
+  const response = await axiosClient.get('blob/presigned-upload-url');
 
-  return response.json();
+  return response.data;
 };
 
 export const uploadBlob = (blobUploadUrl: string, data: ArrayBuffer) => {
-  return fetch(blobUploadUrl, { method: 'PUT', body: data });
+  return axiosClient.put(blobUploadUrl, { method: 'PUT', body: data });
 };
