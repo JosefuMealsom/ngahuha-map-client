@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "yarn vitest"
   },
+  "packageManager": "yarn@1.22.19",
   "dependencies": {
     "dexie": "^3.2.4",
     "dexie-react-hooks": "^1.1.6",
