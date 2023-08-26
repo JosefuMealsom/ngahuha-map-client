@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { PlantSite } from '../../types/api/plant-site.type';
-import AutocompleteComponent from '../../components/AutocompleteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { plantSiteTable, plantTable } from '../../services/offline.database';
 import { MapMarker } from './MapMarker';
@@ -18,7 +17,6 @@ export function MapFilter() {
   useEffect(() => {
     if (!plants || !plantSites) return;
 
-    setFilteredPlantSites(plantSites);
     setSearchPlantSitesFilter(new SearchPlantSitesFilter(plantSites, plants));
   }, [plants, plantSites]);
 
@@ -37,7 +35,7 @@ export function MapFilter() {
   function resetFilter() {
     if (!plantSites) return;
 
-    setFilteredPlantSites(plantSites);
+    setFilteredPlantSites([]);
   }
 
   return (
