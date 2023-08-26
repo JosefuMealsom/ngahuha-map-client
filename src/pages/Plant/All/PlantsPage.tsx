@@ -12,36 +12,25 @@ export function AllPlantsPage() {
   const [filteredPlants, setFilteredPlants] = useState<Plant[]>([]);
   const [searchPlantsFilter, setSearchPlantsFilter] =
     useState<SearchPlantsFilter>(new SearchPlantsFilter([]));
-  const [visiblePlants, setVisiblePlants] = useState<Plant[]>([]);
-
-  useEffect(() => {
-    initSearchablePlants();
-  }, []);
 
   useEffect(() => {
     updateVisiblePlants();
-  }, [filteredPlants]);
-
-  async function initSearchablePlants() {
-    const allPlants = await plantTable.toArray();
-    setFilteredPlants(allPlants);
-    setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
-  }
+  }, []);
 
   async function updateVisiblePlants() {
     const plantSites = await plantSiteTable.toArray();
+    const plants = await plantTable.toArray();
 
     const plantIdsWithPhotos = Array.from(
       new Set(plantSites.map((plantSite) => plantSite.plantId)),
     );
 
-    const [plantsWithPhotos, plantsWithoutPhotos] = partition(
-      filteredPlants,
-      (plant) => plantIdsWithPhotos.includes(plant.id),
+    const [plantsWithPhotos, _] = partition(plants, (plant) =>
+      plantIdsWithPhotos.includes(plant.id),
     );
 
-    const sortedPlants = plantsWithPhotos.concat(plantsWithoutPhotos);
-    setVisiblePlants(sortedPlants);
+    setSearchPlantsFilter(new SearchPlantsFilter(plantsWithPhotos));
+    setFilteredPlants(plantsWithPhotos);
   }
 
   function onSearchPlants(matches: SearchFilterMatch<Plant>[]) {
@@ -82,7 +71,7 @@ export function AllPlantsPage() {
 
       <div className="mb-4 w-full h-full bg-white overflow-scroll ">
         <div className="sm:grid sm:grid-cols-4">
-          {visiblePlants?.map((plant) => (
+          {filteredPlants?.map((plant) => (
             <div data-cy={`plant-item-${plant.id}`}>
               <PlantItemComponent key={plant.id} {...plant} />
             </div>
