@@ -72,8 +72,8 @@ export function AllPlantsPage() {
       <div className="mb-4 w-full h-full bg-white overflow-scroll ">
         <div className="sm:grid sm:grid-cols-4">
           {filteredPlants?.map((plant) => (
-            <div data-cy={`plant-item-${plant.id}`}>
-              <PlantItemComponent key={plant.id} {...plant} />
+            <div key={plant.id} data-cy={`plant-item-${plant.id}`}>
+              <PlantItemComponent {...plant} />
             </div>
           ))}
         </div>
