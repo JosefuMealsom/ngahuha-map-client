@@ -19,6 +19,7 @@ function seedOfflineDatabase() {
 describe('Plant information page', () => {
   beforeEach(() => {
     seedOfflineDatabase();
+    cy.login();
     cy.visit('/plants/abcdef');
   });
 

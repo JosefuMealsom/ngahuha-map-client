@@ -43,7 +43,7 @@ export function LoginPage() {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setEmailValue(event.target.value)
             }
-            data-cy="types-input"
+            data-cy="login-email-input"
           />
           <label className="mb-2 text-inverted-background text-sm font-bold block">
             Password
@@ -56,7 +56,7 @@ export function LoginPage() {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setPasswordValue(event.target.value)
             }
-            data-cy="tags-input"
+            data-cy="login-password-input"
           />
           <div className="pb-10">
             <input

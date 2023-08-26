@@ -4,5 +4,11 @@
     "lib": ["es6", "dom"],
     "types": ["cypress", "node"]
   },
-  "include": ["**/*.ts", "**/*.cy.tsx", "cypress.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.cy.tsx",
+    "cypress.d.ts",
+    "support/e2e.ts",
+    "support/commands.js"
+  ]
 }
