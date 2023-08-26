@@ -38,13 +38,7 @@ export function PlantItemComponent(props: Plant) {
   }, [firstPlantSite]);
 
   function renderImage() {
-    if (previewImage.length === 0) {
-      return (
-        <div className="w-full h-full flex items-center justify-center min-h-[15rem]">
-          <p>No image available</p>
-        </div>
-      );
-    }
+    if (previewImage.length === 0) return;
 
     return <img src={previewImage} className="w-full h-full object-cover" />;
   }
