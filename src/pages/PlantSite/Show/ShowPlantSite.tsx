@@ -7,10 +7,5 @@ export function PlantSiteInformation() {
   const plantSite: PlantSite = useLoaderData() as PlantSite;
   const plantSitePhotos = usePlantSitePhotos(plantSite.id);
 
-  return (
-    <PlantDescription
-      plantId={plantSite.plantId}
-      photos={plantSitePhotos || []}
-    />
-  );
+  return <PlantDescription plantId={plantSite.plantId} />;
 }
