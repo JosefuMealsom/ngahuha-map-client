@@ -8,7 +8,6 @@ export function GeolocationLockOnComponent(props: {
   triggerOnView?: boolean;
   targetAccuracy?: number;
 }) {
-  const [geolocationHandlerId, setGeolocationHandlerId] = useState<number>();
   const [livePosition, setLivePosition] = useState<LatLong>();
   const [lockedOnPosition, setLockedOnPosition] = useState<LatLong>();
   const [isLockingOn, setIsLockingOn] = useState(false);
@@ -35,7 +34,7 @@ export function GeolocationLockOnComponent(props: {
   }, []);
 
   useEffect(() => {
-    if (!livePosition) return;
+    if (!livePosition || !isLockingOn) return;
 
     checkLocationAccuracy(livePosition);
   }, [livePosition]);
