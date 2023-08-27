@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from 'react-router-dom';
-import { plantSiteTable } from '../../../services/offline.database';
+import { plantSiteTable, plantTable } from '../../../services/offline.database';
 
 export const loadPlantSite = async (loaderArgs: LoaderFunctionArgs) => {
   if (loaderArgs.params.id) {
@@ -7,7 +7,8 @@ export const loadPlantSite = async (loaderArgs: LoaderFunctionArgs) => {
     if (!plantSite) {
       throw Error('Plant site not found');
     }
-    return plantSite;
+    const plant = await plantTable.get(plantSite.id);
+    return { plantSite: plantSite, plant: plant };
   }
 
   throw Error('Url invalid');
