@@ -4,6 +4,7 @@ import { LinkComponent } from '../../components/LinkComponent';
 import { plantSiteUploadTable } from '../../services/offline.database';
 import { Link } from 'react-router-dom';
 import { ProtectedLayout } from '../ProtectedLayout';
+import userImageUrl from '../../assets/svg/user.svg';
 
 export function MapPage() {
   const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
