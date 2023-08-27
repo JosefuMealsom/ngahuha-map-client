@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 export function SyncComponent() {
   const [isSyncing, setIsSyncing] = useState(false);
+  const [syncText, setSyncText] = useState('');
 
   useEffect(() => {
     if (navigator.onLine) {
@@ -18,10 +19,12 @@ export function SyncComponent() {
 
   async function syncData() {
     setIsSyncing(true);
+    setSyncText('Syncing plants...');
     await gardenAreaService.syncOffline();
     await syncPlantsOffline();
     await syncPlantSitesOffline();
     await syncPlantSitePhotosOffline();
+    setSyncText('Syncing photos...');
     await syncPhotoFilesOffline();
     setIsSyncing(false);
   }
@@ -31,7 +34,7 @@ export function SyncComponent() {
       className={`py-2 px-4 text-white text-sm font-semibold rounded-full
      bg-sky-500 transition-opacity ${isSyncing ? 'opacity-100' : 'opacity-0'}`}
     >
-      Syncing data
+      {syncText}
     </div>
   );
 }
