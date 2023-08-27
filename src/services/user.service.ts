@@ -18,5 +18,8 @@ export const readUserStateFromCookie = () => {
 };
 
 const updateUserStateFromCookie = (loggedIn: boolean) => {
-  Cookies.set('loggedIn', loggedIn.toString());
+  Cookies.set('loggedIn', loggedIn.toString(), {
+    sameSite: 'Strict',
+    secure: true,
+  });
 };
