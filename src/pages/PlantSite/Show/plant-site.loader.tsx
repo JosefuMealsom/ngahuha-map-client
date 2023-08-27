@@ -7,7 +7,7 @@ export const loadPlantSite = async (loaderArgs: LoaderFunctionArgs) => {
     if (!plantSite) {
       throw Error('Plant site not found');
     }
-    const plant = await plantTable.get(plantSite.id);
+    const plant = await plantTable.get(plantSite.plantId);
     return { plantSite: plantSite, plant: plant };
   }
 
