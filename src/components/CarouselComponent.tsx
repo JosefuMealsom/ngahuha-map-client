@@ -36,6 +36,7 @@ export function CarouselComponent(props: { elements: ReactNode[] }) {
             className={`${
               carouselIndex !== index ? 'opacity-50' : ''
             } h-2 w-2 rounded-full bottom-5 left-1/2 bg-white inline-block mx-1`}
+            key={index}
           ></div>
         ))}
       </div>
