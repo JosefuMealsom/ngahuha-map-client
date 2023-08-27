@@ -24,7 +24,7 @@ export function PlantItemComponent(props: Plant) {
         .where({ plantSiteId: firstPlantSite.id })
         .first();
 
-      if (!previewImage) return;
+      if (!previewImage || !previewImage?.data) return;
 
       const photoData = await blobToDataUrlService.convert(
         new Blob([previewImage.data]),

@@ -20,7 +20,7 @@ export function ClosestPlantInfoComponent(
       })
       .first();
 
-    if (!photo) return;
+    if (!photo || !photo?.data) return;
     const blobData = new Blob([photo.data]);
     setPhotoDataUrl((await blobToDataUrlService.convert(blobData)) || '');
   };
