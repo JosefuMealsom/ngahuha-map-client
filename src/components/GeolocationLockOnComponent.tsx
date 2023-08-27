@@ -18,6 +18,10 @@ export function GeolocationLockOnComponent(props: {
     setLockedOnPosition(position);
     setIsLockingOn(true);
 
+    if (position) {
+      checkLocationAccuracy(position);
+    }
+
     if (props.onLockingOn) {
       props.onLockingOn();
     }
