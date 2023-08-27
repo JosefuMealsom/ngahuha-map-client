@@ -45,28 +45,30 @@ export function MapContainer() {
   return (
     <div
       ref={mapContainerRef}
-      className="h-full fixed top-0 left-0 overflow-hidden w-full bg-background"
+      className="h-full top-0 left-0 overflow-hidden w-full bg-background"
     >
-      <div className="relative touch-none inline-block select-none overflow-hidden w-full">
-        <MapCanvas />
-        <FeatureMarker
-          text="The steppes"
-          position={{
-            latitude: -35.377761,
-            longitude: 173.966039,
-            accuracy: 0,
-          }}
-        />
-        <FeatureMarker
-          text="The avocado orchard"
-          position={{
-            latitude: -35.377025,
-            longitude: 173.965264,
-            accuracy: 0,
-          }}
-        />
-        <LocationMarker />
-        <MapFilter />
+      <div className="h-screen">
+        <div className="relative touch-none inline-block select-none overflow-hidden w-full">
+          <MapCanvas />
+          <FeatureMarker
+            text="The steppes"
+            position={{
+              latitude: -35.377761,
+              longitude: 173.966039,
+              accuracy: 0,
+            }}
+          />
+          <FeatureMarker
+            text="The avocado orchard"
+            position={{
+              latitude: -35.377025,
+              longitude: 173.965264,
+              accuracy: 0,
+            }}
+          />
+          <LocationMarker />
+          <MapFilter />
+        </div>
       </div>
     </div>
   );

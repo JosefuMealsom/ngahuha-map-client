@@ -32,7 +32,7 @@ export function ShowPlantPage() {
             {getFullPlantName(plant)}
           </p>
         </div>
-        <div className="sm:w-1/2">
+        <div className="sm:w-1/2 pb-safe">
           <PlantDescription plantId={plant.id} />
         </div>
       </div>

@@ -6,6 +6,8 @@ import { MapMarker } from './MapMarker';
 import { SearchPlantSitesFilter } from '../../services/filter/search-plant-sites.filter';
 import { SearchFilterMatch } from '../../types/filter.type';
 import SearchComponent from '../../components/SearchComponent';
+import { ActiveFilterLinkComponent } from '../../components/ActiveFilterLinkComponent';
+import { NavigationBar } from '../Navigation';
 
 export function MapFilter() {
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
@@ -44,16 +46,19 @@ export function MapFilter() {
         <MapMarker key={plantSite.id} {...plantSite} />
       ))}
       <div
-        className="absolute left-1/2 -translate-x-1/2 top-4 pt-safe flex w-full max-w-md px-3"
+        className="absolute left-0 top-2 pt-safe w-full max-w-md px-4"
         data-cy="map-view-filter-container"
       >
-        <SearchComponent
-          placeholder="Filter plant sites"
-          searchFilter={searchPlantSitesFilter}
-          suggestionText="Available"
-          onMatchesChange={filterPlantSites}
-          onClearHandler={resetFilter}
-        />
+        <div className="pb-2">
+          <SearchComponent
+            placeholder="Filter plant sites"
+            searchFilter={searchPlantSitesFilter}
+            suggestionText="Available"
+            onMatchesChange={filterPlantSites}
+            onClearHandler={resetFilter}
+          />
+        </div>
+        <NavigationBar activePage="Map" />
       </div>
     </div>
   );

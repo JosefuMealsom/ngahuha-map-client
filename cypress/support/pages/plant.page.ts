@@ -1,29 +1,29 @@
 export const plantPage = {
-  toggleDescriptionButton: () => {
-    return cy.get('[data-cy="markdown-toggle-edit"]');
+  toggleEditButton: () => {
+    return cy.dataCy('plant-toggle-edit');
   },
 
   saveDescriptionButton: () => {
-    return cy.get('[data-cy="markdown-save-button"]');
+    return cy.dataCy('markdown-save-button');
   },
 
   markdownInput: () => {
-    return cy.get('[data-cy="markdown-content-input"]');
+    return cy.dataCy('markdown-content-input');
   },
 
   typesInput: () => {
-    return cy.get('[data-cy="types-input"]');
+    return cy.dataCy('types-input');
   },
 
   tagsInput: () => {
-    return cy.get('[data-cy="tags-input"]');
+    return cy.dataCy('tags-input');
   },
 
   commonNamesInput: () => {
-    return cy.get('[data-cy="common-names-input"]');
+    return cy.dataCy('common-names-input');
   },
 
   updateExtendedInfoInput: () => {
-    return cy.get('[data-cy="save-extended-info"]');
+    return cy.dataCy('save-extended-info');
   },
 };

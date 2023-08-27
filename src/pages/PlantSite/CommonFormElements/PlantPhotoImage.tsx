@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
-import closeImageUrl from '../../../assets/svg/x-circle.svg';
+import closeImageUrl from '../../../assets/svg/x-white.svg';
 
 export function PlantPhotoImage(props: {
   file: Blob;
@@ -29,7 +29,7 @@ export function PlantPhotoImage(props: {
       <div className="relative inline-block" data-cy="photo-form-photo">
         <img
           src={closeImageUrl}
-          className="absolute top-2 right-2 w-6 h-6 cursor-pointer hover:opacity-60"
+          className="absolute top-2 right-2 w-8 h-8 p-2 rounded-full bg-red-600 fill cursor-pointer hover:opacity-60"
           onClick={onRemoveClick}
           data-cy="remove-photo-button"
         />

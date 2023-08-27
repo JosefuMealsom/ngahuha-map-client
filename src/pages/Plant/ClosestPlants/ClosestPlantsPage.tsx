@@ -11,7 +11,8 @@ import { SearchFilterMatch } from '../../../types/filter.type';
 import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
 import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { Plant } from '../../../types/api/plant.type';
-import { ActiveFilterLinkComponent } from '../ActiveFilterLinkComponent';
+import { ActiveFilterLinkComponent } from '../../../components/ActiveFilterLinkComponent';
+import { NavigationBar } from '../../Navigation';
 
 export function ClosestPlantsPage() {
   const [plants, setPlants] = useState<Plant[]>([]);
@@ -65,23 +66,7 @@ export function ClosestPlantsPage() {
               onMatchesChange={onSearchPlantSites}
             />
           </div>
-          <div className="flex mb-2">
-            <div className="mr-1">
-              <ActiveFilterLinkComponent
-                text="All"
-                link="/plants"
-                active={false}
-                replace={true}
-              />
-            </div>
-            <div className="mr-1">
-              <ActiveFilterLinkComponent
-                text="Closest"
-                link="/plants/closest"
-                active={true}
-                replace={true}
-              />
-            </div>
+          <NavigationBar activePage="Closest Plants">
             <div className="mb-1 absolute right-4">
               <GeolocationLockOnComponent
                 onGeolocationLocked={(position) => setPosition(position)}
@@ -89,7 +74,7 @@ export function ClosestPlantsPage() {
                 triggerOnView={true}
               />
             </div>
-          </div>
+          </NavigationBar>
         </div>
         <div className="sm:grid sm:grid-cols-4">
           {visiblePlantSites?.map((plantSite) => (
