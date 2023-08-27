@@ -41,7 +41,7 @@ export function PhotoInput(props: {
       <div>
         <label
           htmlFor="photo"
-          className="py-2 px-4 text-xs font-bold text-white
+          className="py-2 px-4 text-sm font-semibold text-white
           bg-[#002D04] border-[#002D04] cursor-pointer  mb-7 inline-block rounded-full"
           data-cy="add-photo"
         >

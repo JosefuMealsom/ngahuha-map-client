@@ -81,7 +81,7 @@ export function GeolocationLockOnComponent(props: {
 
     return (
       <button
-        className="bg-red-400 border-red-400 border py-2 px-4 text-xs font-bold text-white cursor-pointer rounded-full"
+        className="bg-red-400 border-red-400 border py-2 px-4 text-xs font-semibold text-white cursor-pointer rounded-full"
         onClick={lockOnLocation}
         data-cy="lock-on-location-button"
       >
@@ -96,7 +96,7 @@ export function GeolocationLockOnComponent(props: {
     return (
       <div>
         <button
-          className="bg-sky-500 border-sky-500 border py-2 px-4 text-xs font-bold text-white cursor-pointer rounded-full"
+          className="bg-sky-500 border-sky-500 border py-2 px-4 text-xs font-semibold text-white cursor-pointer rounded-full"
           onClick={() => onGeolocationLockingOnComplete(lockedOnPosition)}
           data-cy="finish-lock-on-button"
         >
