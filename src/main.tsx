@@ -20,6 +20,7 @@ import { LoginPage } from './pages/Login/LoginPage';
 import {} from './pages/Login/LoginPage';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import { readUserStateFromCookie } from './services/user.service';
+import { loadPlants } from './pages/Plant/All/plants-loader';
 
 readUserStateFromCookie();
 
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'plants',
+        loader: loadPlants,
         element: <AllPlantsPage />,
       },
       {

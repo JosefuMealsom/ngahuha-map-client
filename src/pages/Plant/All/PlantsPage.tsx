@@ -1,37 +1,19 @@
-import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { PlantItemComponent } from './PlantItemComponent';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Plant } from '../../../types/api/plant.type';
 import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
 import SearchComponent from '../../../components/SearchComponent';
 import { SearchFilterMatch } from '../../../types/filter.type';
-import { partition } from 'underscore';
-import { ActiveFilterLinkComponent } from '../ActiveFilterLinkComponent';
+import { ActiveFilterLinkComponent } from '../../../components/ActiveFilterLinkComponent';
+import { useLoaderData } from 'react-router-dom';
+import { NavigationBar } from '../../Navigation';
 
 export function AllPlantsPage() {
-  const [filteredPlants, setFilteredPlants] = useState<Plant[]>([]);
+  const plants = useLoaderData() as Plant[];
+
+  const [filteredPlants, setFilteredPlants] = useState<Plant[]>(plants);
   const [searchPlantsFilter, setSearchPlantsFilter] =
-    useState<SearchPlantsFilter>(new SearchPlantsFilter([]));
-
-  useEffect(() => {
-    updateVisiblePlants();
-  }, []);
-
-  async function updateVisiblePlants() {
-    const plantSites = await plantSiteTable.toArray();
-    const plants = await plantTable.toArray();
-
-    const plantIdsWithPhotos = Array.from(
-      new Set(plantSites.map((plantSite) => plantSite.plantId)),
-    );
-
-    const [plantsWithPhotos, _] = partition(plants, (plant) =>
-      plantIdsWithPhotos.includes(plant.id),
-    );
-
-    setSearchPlantsFilter(new SearchPlantsFilter(plantsWithPhotos));
-    setFilteredPlants(plantsWithPhotos);
-  }
+    useState<SearchPlantsFilter>(new SearchPlantsFilter(plants));
 
   function onSearchPlants(matches: SearchFilterMatch<Plant>[]) {
     setFilteredPlants(matches.map((match) => match.data));
