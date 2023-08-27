@@ -5,6 +5,7 @@ import { CarouselComponent } from '../../../components/CarouselComponent';
 import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import { Plant } from '../../../types/api/plant.type';
 import { PlantSite } from '../../../types/api/plant-site.type';
+import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
 
@@ -32,7 +33,7 @@ export function PlantSiteInformation() {
         <div className="relative sm:w-1/2 pt-safe">
           {renderCarousel()}
           <p className="text-xl absolute top-safe left-0 p-3 font-semibold text-white bg-black bg-opacity-50 w-full sm:max-w-fit">
-            {getFullPlantName(plant)}
+            <PlantTitleComponent {...plant} />
           </p>
         </div>
         <div className="sm:w-1/2">
