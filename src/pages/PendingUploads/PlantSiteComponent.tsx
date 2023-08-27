@@ -5,13 +5,16 @@ import trashSvg from '../../assets/svg/trash-2.svg';
 import editSvg from '../../assets/svg/edit.svg';
 import { usePlant } from '../../hooks/use-plant.hook';
 import { Link } from 'react-router-dom';
+import React from 'react';
 
 export function PlantSiteComponent(
   props: PlantSiteUpload & { isUploading: boolean },
 ) {
   const plant = usePlant(props.plantId);
 
-  function deleteUpload() {
+  function deleteUpload(evt: React.MouseEvent) {
+    evt.preventDefault();
+
     if (props.id) deletePlantSite(props.id);
   }
 
@@ -21,44 +24,32 @@ export function PlantSiteComponent(
     return (
       <img
         src={trashSvg}
-        className="h-6 inline-block ml-6 cursor-pointer"
+        className="w-9 h-9 p-2 rounded-full bg-red-600 fill hover:opacity-60 ml-6 cursor-pointer"
         onClick={deleteUpload}
         data-cy={`delete-plant-${props.id}`}
       />
     );
   }
 
-  function renderEdit() {
-    return (
-      <Link to={`/plant-site/${props.id}/edit`}>
-        <img
-          src={editSvg}
-          className="h-6 inline-block ml-6 cursor-pointer"
-          data-cy={`edit-plant-${props.id}`}
-        />
-      </Link>
-    );
-  }
-
   function renderPlantInfo() {
     if (!plant) {
       return (
-        <div className="flex">
-          <p>Missing information</p>
-          {renderEdit()}
-          {renderDelete()}
-        </div>
+        <Link to={`/plant-site/${props.id}/edit`}>
+          <div className="flex justify-between items-center">
+            <p>Missing information</p>
+            {renderDelete()}
+          </div>
+        </Link>
       );
     }
     return (
-      <div className="flex">
-        <div className="w-3/4 inline-block align-top">
-          <h1 className="font-bold text-sm">Plant Species</h1>
-          <p className="inline-block">{getFullPlantName(plant)}</p>
-          {renderEdit()}
+      <Link to={`/plant-site/${props.id}/edit`}>
+        <h1 className="font-bold text-sm">Plant Species</h1>
+        <div className="flex justify-between items-center">
+          <p>{getFullPlantName(plant)}</p>
           {renderDelete()}
         </div>
-      </div>
+      </Link>
     );
   }
 
