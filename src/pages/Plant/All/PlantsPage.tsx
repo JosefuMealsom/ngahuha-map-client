@@ -48,24 +48,7 @@ export function AllPlantsPage() {
               onMatchesChange={onSearchPlants}
             />
           </div>
-          <div className="flex mb-2">
-            <div className="mr-1">
-              <ActiveFilterLinkComponent
-                text="All"
-                link="/plants"
-                active={true}
-                replace={true}
-              />
-            </div>
-            <div>
-              <ActiveFilterLinkComponent
-                text="Closest"
-                link="/plants/closest"
-                active={false}
-                replace={true}
-              />
-            </div>
-          </div>
+          <NavigationBar activePage="All Plants" />
         </div>
       </div>
 

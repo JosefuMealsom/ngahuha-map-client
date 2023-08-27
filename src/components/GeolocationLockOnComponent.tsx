@@ -100,7 +100,7 @@ export function GeolocationLockOnComponent(props: {
           onClick={() => onGeolocationLockingOnComplete(lockedOnPosition)}
           data-cy="finish-lock-on-button"
         >
-          Locking on: accuracy {lockedOnPosition?.accuracy.toFixed(0)}m
+          Locking on: acc. {lockedOnPosition?.accuracy.toFixed(0)}m
         </button>
       </div>
     );

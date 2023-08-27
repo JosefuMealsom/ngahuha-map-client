@@ -32,12 +32,6 @@ export function MapPage() {
     <div>
       <MapContainer />
       <nav className="fixed bottom-3 pb-safe left-0 w-full flex justify-evenly sm:hidden">
-        <div>
-          <LinkComponent link="/plants" text="All plants" />
-        </div>
-        <div>
-          <LinkComponent link="/login" text="Login" />
-        </div>
         <ProtectedLayout>
           {renderPendingUploadLink()}
           <div>
@@ -48,17 +42,7 @@ export function MapPage() {
           </div>
         </ProtectedLayout>
       </nav>
-      <nav className="fixed hidden bg-white pt-10 pb-10 pl-3 pr-8 drop-shadow-lg sm:inline-block">
-        <Link to="/plants" data-cy="open-plant-list">
-          <div className="text-sm h-8 w-40 hover:bg-slate-100 align-middle flex items-center pl-3">
-            All plants
-          </div>
-        </Link>
-        <Link to="/login" data-cy="login-page">
-          <div className="text-sm h-8 w-40 hover:bg-slate-100 align-middle flex items-center pl-3">
-            Login
-          </div>
-        </Link>
+      <nav className="fixed hidden bg-white right-0 pt-10 pb-10 pl-3 pr-8 drop-shadow-lg sm:inline-block">
         <ProtectedLayout>
           {renderDesktopUploadLink()}
           <Link to="/plants/new" data-cy="new-plant-form">
@@ -73,6 +57,12 @@ export function MapPage() {
           </Link>
         </ProtectedLayout>
       </nav>
+
+      <Link to="/login">
+        <div className="absolute bottom-5 right-5 flex items-center flex-col rounded-full drop-shadow-sm bg-forest p-3">
+          <img src={userImageUrl} className="inline-block w-6 text-center" />
+        </div>
+      </Link>
     </div>
   );
 }
