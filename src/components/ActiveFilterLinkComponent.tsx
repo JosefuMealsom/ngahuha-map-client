@@ -12,7 +12,7 @@ export function ActiveFilterLinkComponent(props: {
       to={props.link}
       className={`border block py-2 text-xs px-4 font-bold cursor-pointer rounded-full ${
         props.active
-          ? 'bg-[#002D04] text-white border-[#002D04]'
+          ? 'bg-forest text-white border-forest'
           : 'text-white border-slate-300 bg-slate-300 border-solid'
       }`}
       replace={props.replace || false}
