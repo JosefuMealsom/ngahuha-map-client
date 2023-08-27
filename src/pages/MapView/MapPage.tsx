@@ -60,8 +60,10 @@ export function MapPage() {
       </nav>
 
       <Link to="/login">
-        <div className="absolute bottom-5 right-5 flex items-center flex-col rounded-full drop-shadow-sm bg-forest p-3">
-          <img src={userImageUrl} className="inline-block w-6 text-center" />
+        <div className="fixed bottom-3 pb-safe right-5">
+          <div className="rounded-full flex items-center drop-shadow-sm bg-forest p-3">
+            <img src={userImageUrl} className="inline-block w-6 text-center" />
+          </div>
         </div>
       </Link>
     </div>
