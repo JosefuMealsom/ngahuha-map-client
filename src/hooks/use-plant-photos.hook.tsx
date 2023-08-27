@@ -23,10 +23,12 @@ export function usePlantPhotos(plantId: string) {
         })
         .toArray();
 
+      const downloadedPhotos = photos.filter((photo) => photo.data);
+
       const convertedPhotos = await Promise.all(
-        photos.map(async (photo: PlantSitePhoto) => {
+        downloadedPhotos.map(async (photo: PlantSitePhoto) => {
           const dataUrl = await blobToDataUrlService.convert(
-            new Blob([photo.data]),
+            new Blob([photo.data as ArrayBuffer]),
           );
           return {
             id: photo.id,

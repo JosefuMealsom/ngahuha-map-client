@@ -34,12 +34,25 @@ export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
   });
 };
 
+export const syncPhotoFilesOffline = async () => {
+  const plantSitePhotos = await plantSitePhotoTable.toArray();
+  const notDownloadedPhotos = plantSitePhotos.filter((photo) => !photo.data);
+
+  return Promise.all(
+    notDownloadedPhotos.map(async (data) => {
+      const blobData = await loadBlob(data.url);
+      const photoBuffer = await blobData.arrayBuffer();
+
+      plantSitePhotoTable.update(data.id, { data: photoBuffer });
+    }),
+  );
+};
+
 export const syncPlantSitePhotosOffline = (): Promise<PlantSitePhoto[]> => {
   return new Promise(async (success) => {
     const plantSitePhotos = await fetchPlantSitePhotos();
-    const transformedModels = await transformToOfflinePhotoModels(
-      plantSitePhotos,
-    );
+    const transformedModels =
+      await transformToOfflinePhotoModels(plantSitePhotos);
     await plantSitePhotoTable.bulkPut(transformedModels);
 
     success(transformedModels);
@@ -51,13 +64,10 @@ const transformToOfflinePhotoModels = async (
 ): Promise<PlantSitePhoto[]> => {
   return Promise.all(
     photoData.map(async (data) => {
-      const blobData = await loadBlob(data.url);
-      const photoBuffer = await blobData.arrayBuffer();
-
       return {
         id: data.id,
         plantSiteId: data.plantSiteId,
-        data: photoBuffer,
+        url: data.url,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
       };

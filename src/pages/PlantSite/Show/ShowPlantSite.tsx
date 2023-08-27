@@ -32,9 +32,9 @@ export function PlantSiteInformation() {
       <div className="sm:flex h-full">
         <div className="relative sm:w-1/2 pt-safe">
           {renderCarousel()}
-          <p className="text-xl absolute top-safe left-0 p-3 font-semibold text-white bg-black bg-opacity-50 w-full sm:max-w-fit">
+          <div className="text-xl absolute top-safe left-0 p-3 font-semibold text-white bg-black bg-opacity-50 w-full sm:max-w-fit">
             <PlantTitleComponent {...plant} />
-          </p>
+          </div>
         </div>
         <div className="sm:w-1/2">
           <PlantDescription plantId={plantSite.plantId} />

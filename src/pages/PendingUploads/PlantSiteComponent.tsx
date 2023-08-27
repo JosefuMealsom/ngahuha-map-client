@@ -2,7 +2,6 @@ import type { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.t
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { deletePlantSite } from '../../services/api/plant-site-upload.service';
 import trashSvg from '../../assets/svg/trash-2.svg';
-import editSvg from '../../assets/svg/edit.svg';
 import { usePlant } from '../../hooks/use-plant.hook';
 import { Link } from 'react-router-dom';
 import React from 'react';

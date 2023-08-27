@@ -1,7 +1,8 @@
 export type PlantSitePhoto = {
   id: string;
   plantSiteId: string;
-  data: ArrayBuffer;
+  data?: ArrayBuffer;
   createdAt: string;
   updatedAt: string;
+  url: string;
 };
