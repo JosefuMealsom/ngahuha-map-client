@@ -5,6 +5,7 @@ import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import { usePlant } from '../../../hooks/use-plant.hook';
 import { Link } from 'react-router-dom';
+import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 
 export function ClosestPlantInfoComponent(
   props: PlantSite & { distance: number },
@@ -40,9 +41,7 @@ export function ClosestPlantInfoComponent(
           <img src={photoDataUrl} className="w-full h-full object-cover" />
 
           <div className="absolute top-0 p-3 bg-black bg-opacity-40 w-full">
-            <p className="text-white font-bold text-2xl">
-              {getFullPlantName(plant)}
-            </p>
+            <PlantTitleComponent {...plant} />
           </div>
         </div>
       </div>
