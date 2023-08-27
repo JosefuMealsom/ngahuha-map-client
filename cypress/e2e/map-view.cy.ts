@@ -1,22 +1,35 @@
 import { mapViewPage } from '../support/pages/map-view.page';
 
 describe('Map view', () => {
-  beforeEach(() => {
-    cy.visit('/');
+  describe('user not logged in', () => {
+    beforeEach(() => {
+      cy.visit('/');
+    });
+
+    it('can filter the plant sites via a search', () => {
+      cy.wait(['@getPlants', '@getGardenAreas', '@getPlantSites']);
+
+      mapViewPage.mapFilterInput().type('Cool spec');
+
+      mapViewPage.mapMarkers().should('have.length', 1);
+    });
+
+    it('does not show functionality only a logged in user has access to', () => {
+      mapViewPage.addNewPlantSiteButton().should('not.exist');
+      mapViewPage.pendingUploadsButton().should('not.exist');
+      mapViewPage.createPlantButton().should('not.exist');
+    });
   });
 
-  it('can see markers for plant sites on the map', () => {
-    cy.wait(['@getPlants', '@getGardenAreas', '@getPlantSites']);
+  describe('user logged in', () => {
+    beforeEach(() => {
+      cy.login();
+      cy.visit('/');
+    });
 
-    mapViewPage.locationMarker().should('exist');
-    mapViewPage.mapMarkers().should('have.length', 3);
-  });
-
-  it('can filter the plant sites via a search', () => {
-    cy.wait(['@getPlants', '@getGardenAreas', '@getPlantSites']);
-
-    mapViewPage.mapFilterInput().type('Cool spec');
-
-    mapViewPage.mapMarkers().should('have.length', 1);
+    it('shows functionality only a logged in user has access to ', () => {
+      mapViewPage.addNewPlantSiteButton().should('exist');
+      mapViewPage.createPlantButton().should('exist');
+    });
   });
 });

@@ -21,6 +21,7 @@ function seedOfflineDatabase() {
 
 describe('Plant sites waiting to be uploaded', () => {
   beforeEach(() => {
+    cy.login();
     seedOfflineDatabase();
     stubPresignedUrlsAndReturn({
       blobKey: 'mr blobby',

@@ -15,6 +15,7 @@ function seedOfflineDatabase() {
     ],
     plantSites: [
       { plantId: 'abcdef', latitude: -35.375563, longitude: 173.965043 },
+      { plantId: '12345', latitude: -35.375563, longitude: 173.965043 },
     ],
   });
 }

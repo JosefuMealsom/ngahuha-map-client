@@ -17,6 +17,7 @@ function seedOfflineDatabase() {
 
 describe('Editing a plant site before upload', () => {
   beforeEach(() => {
+    cy.login();
     seedOfflineDatabase();
 
     cy.visit('/', {

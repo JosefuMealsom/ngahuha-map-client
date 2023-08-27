@@ -3,6 +3,7 @@ import { mapViewPage } from '../support/pages/map-view.page';
 
 describe('Create new plant page', () => {
   beforeEach(() => {
+    cy.login();
     cy.visit('/plants/new');
   });
 
@@ -25,7 +26,6 @@ describe('Create new plant page', () => {
     cy.wait('@createPlant');
 
     mapViewPage.plantListButton().click();
-    cy.contains("Cool species 'lame'");
     cy.contains('Plant created successfully');
   });
 

@@ -1,5 +1,5 @@
 const mapFilterContainer = () => {
-  return cy.get('[data-cy="map-view-filter-container"]');
+  return cy.dataCy('map-view-filter-container');
 };
 const mapFilterInput = () => {
   return mapFilterContainer().find('input');
@@ -12,19 +12,27 @@ const mapFilterEntry = (entryText: string) => {
 };
 
 const mapMarkers = () => {
-  return cy.get('[data-cy="map-marker"]');
+  return cy.dataCy('map-marker');
 };
 
 const locationMarker = () => {
-  return cy.get('[data-cy="location-marker"]');
+  return cy.dataCy('location-marker');
 };
 
 const addNewPlantSiteButton = () => {
-  return cy.get('[data-cy="open-plant-form"]');
+  return cy.dataCy('open-plant-form');
 };
 
 const plantListButton = () => {
-  return cy.get('[data-cy="open-plant-list"]');
+  return cy.dataCy('open-plant-list');
+};
+
+const pendingUploadsButton = () => {
+  return cy.dataCy('open-upload-form');
+};
+
+const createPlantButton = () => {
+  return cy.dataCy('new-plant-form');
 };
 
 export const mapViewPage = {
@@ -35,4 +43,6 @@ export const mapViewPage = {
   mapMarkers,
   locationMarker,
   plantListButton,
+  pendingUploadsButton,
+  createPlantButton,
 };

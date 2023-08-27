@@ -5,6 +5,7 @@ import { stubWatchPosition } from '../support/stubs/geolocation';
 
 describe('Add new plant site for upload', () => {
   beforeEach(() => {
+    cy.login();
     cy.visit('/', {
       onBeforeLoad(window) {
         stubWatchPosition(window, 123, 456, 888);
