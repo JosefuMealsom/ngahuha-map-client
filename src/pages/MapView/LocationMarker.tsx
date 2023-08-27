@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useMapStore } from '../../store/map.store';
 import { interpolateToDomPosition } from '../../services/map-position-interpolator.service';
-import { usePosition } from '../../hooks/use-position.hook';
+import { useAppStore } from '../../store/app.store';
 
 export function LocationMarker() {
   const marker = useRef<HTMLDivElement>(null);
   const zoom = useMapStore((state) => state.zoom);
   const pan = useMapStore((state) => state.pan);
-  const position = usePosition();
+  const { position } = useAppStore();
 
   useEffect(() => {
     if (!marker.current || !position) return;

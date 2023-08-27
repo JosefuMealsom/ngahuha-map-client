@@ -13,11 +13,7 @@
 // https://on.cypress.io/configuration
 
 import offlineDatabase from '../../src/services/offline.database';
-import {
-  stubLastModifiedQueries,
-  stubLogin,
-  stubServerData,
-} from './stubs/server';
+import { stubLastModifiedQueries, stubServerData } from './stubs/server';
 import './commands.ts';
 
 // ***********************************************************
@@ -26,5 +22,4 @@ beforeEach(() => {
 
   stubServerData();
   stubLastModifiedQueries();
-  stubLogin();
 });

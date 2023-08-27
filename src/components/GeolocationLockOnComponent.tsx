@@ -1,50 +1,36 @@
 import { useEffect, useState } from 'react';
+import { useAppStore } from '../store/app.store';
+import { LatLong } from '../types/lat-long.type';
 
 export function GeolocationLockOnComponent(props: {
-  onGeolocationLocked: (coords: GeolocationCoordinates) => void;
+  onGeolocationLocked: (coords: LatLong) => void;
   onLockingOn?: () => void;
   triggerOnView?: boolean;
   targetAccuracy?: number;
 }) {
   const [geolocationHandlerId, setGeolocationHandlerId] = useState<number>();
-  const [livePosition, setLivePosition] = useState<GeolocationCoordinates>();
-  const [lockedOnPosition, setLockedOnPosition] =
-    useState<GeolocationCoordinates>();
+  const [livePosition, setLivePosition] = useState<LatLong>();
+  const [lockedOnPosition, setLockedOnPosition] = useState<LatLong>();
   const [isLockingOn, setIsLockingOn] = useState(false);
+  const { position } = useAppStore();
 
   function lockOnLocation() {
-    setLivePosition(undefined);
-    setLockedOnPosition(undefined);
-    setupGelocationWatchHandler();
+    setLivePosition(position);
+    setLockedOnPosition(position);
+    setIsLockingOn(true);
 
     if (props.onLockingOn) {
       props.onLockingOn();
     }
   }
 
-  function setupGelocationWatchHandler() {
-    const handlerId = navigator.geolocation.watchPosition(
-      (position) => {
-        setLivePosition(position.coords);
-      },
-      null,
-      {
-        enableHighAccuracy: true,
-      },
-    );
-    setGeolocationHandlerId(handlerId);
-    setIsLockingOn(true);
-
-    return handlerId;
-  }
+  useEffect(() => {
+    setLivePosition(position);
+  }, [position]);
 
   useEffect(() => {
     if (props.triggerOnView) {
-      const handlerId = setupGelocationWatchHandler();
-
-      return () => {
-        navigator.geolocation.clearWatch(handlerId);
-      };
+      lockOnLocation();
     }
   }, []);
 
@@ -54,15 +40,12 @@ export function GeolocationLockOnComponent(props: {
     checkLocationAccuracy(livePosition);
   }, [livePosition]);
 
-  function onGeolocationLockingOnComplete(coords: GeolocationCoordinates) {
-    if (geolocationHandlerId) {
-      navigator.geolocation.clearWatch(geolocationHandlerId);
-    }
+  function onGeolocationLockingOnComplete(coords: LatLong) {
     setIsLockingOn(false);
     props.onGeolocationLocked(coords);
   }
 
-  function checkLocationAccuracy(coords: GeolocationCoordinates) {
+  function checkLocationAccuracy(coords: LatLong) {
     if (!lockedOnPosition) {
       setLockedOnPosition(coords);
     }

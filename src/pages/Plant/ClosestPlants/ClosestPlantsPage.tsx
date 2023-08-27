@@ -11,13 +11,13 @@ import { SearchFilterMatch } from '../../../types/filter.type';
 import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
 import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { Plant } from '../../../types/api/plant.type';
-import { ActiveFilterLinkComponent } from '../../../components/ActiveFilterLinkComponent';
 import { NavigationBar } from '../../Navigation';
+import { LatLong } from '../../../types/lat-long.type';
 
 export function ClosestPlantsPage() {
   const [plants, setPlants] = useState<Plant[]>([]);
   const [plantSites, setPlantSites] = useState<PlantSite[]>([]);
-  const [position, setPosition] = useState<GeolocationCoordinates>();
+  const [position, setPosition] = useState<LatLong>();
   const [visiblePlantSites, setVisiblePlantSites] =
     useState<PlantSiteWithinDistance[]>();
   const [searchPlantSitesFilter, setSearchPlantSitesFilter] = useState<
