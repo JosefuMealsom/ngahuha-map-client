@@ -43,15 +43,31 @@ export function PlantItemComponent(props: Plant) {
     return <img src={previewImage} className="w-full h-full object-cover" />;
   }
 
+  function renderCommonNames() {
+    if (
+      !props.extendedInfo?.commonNames ||
+      props.extendedInfo?.commonNames.length === 0
+    ) {
+      return;
+    }
+
+    return (
+      <p className="text-white font-semibold text-xs">
+        Also known as: {props.extendedInfo.commonNames.join(', ')}
+      </p>
+    );
+  }
+
   function renderPlantInfo() {
     return (
       <div className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white">
         <div className="w-full h-full relative min-h-[15rem]">
           {renderImage()}
           <div className="absolute top-0 p-3 bg-black bg-opacity-40 w-full">
-            <p className="text-white font-bold text-2xl">
+            <p className="text-white font-semibold text-xl">
               {getFullPlantName(props)}
             </p>
+            {renderCommonNames()}
           </div>
         </div>
       </div>

@@ -26,9 +26,9 @@ export function ShowPlantPage() {
   return (
     <div className="h-full w-full bg-white">
       <div className="sm:flex h-full">
-        <div className="relative sm:w-1/2">
+        <div className="relative sm:w-1/2 pt-safe">
           {renderCarousel()}
-          <p className="text-3xl absolute top-0 left-0 p-2 font-bold text-white bg-black bg-opacity-50 pt-safe w-full sm:max-w-fit">
+          <p className="text-xl absolute top-0 left-0 p-3 font-semibold text-white bg-black bg-opacity-50 w-full sm:max-w-fit">
             {getFullPlantName(plant)}
           </p>
         </div>
