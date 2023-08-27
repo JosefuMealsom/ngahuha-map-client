@@ -98,6 +98,7 @@ describe('PlantSitePhotoService', () => {
         await plantSitePhotoTable.add({
           id: '123',
           plantSiteId: '456',
+          url: 'my cool url',
           data: new ArrayBuffer(8),
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
@@ -127,6 +128,7 @@ describe('PlantSitePhotoService', () => {
           expect.objectContaining({
             id: '123',
             plantSiteId: '456',
+            url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
           }),

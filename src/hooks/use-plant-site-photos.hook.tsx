@@ -11,9 +11,11 @@ export function usePlantSitePhotos(plantSiteId: string) {
       .where({ plantSiteId: plantSiteId })
       .toArray();
 
+    const downloadedPhotos = photos.filter((photo) => photo.data);
+
     const photoUrls = await Promise.all(
-      photos.map(async (photo) => {
-        const blobData = new Blob([photo.data]);
+      downloadedPhotos.map(async (photo) => {
+        const blobData = new Blob([photo.data as ArrayBuffer]);
         const dataUrl = await blobToDataUrlService.convert(blobData);
         return { id: photo.id, dataUrl: dataUrl || '' };
       }),
