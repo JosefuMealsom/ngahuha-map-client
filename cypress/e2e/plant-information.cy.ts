@@ -40,7 +40,7 @@ describe('Plant information page', () => {
       },
     }).as('updateDescription');
 
-    plantPage.toggleDescriptionButton().click();
+    plantPage.toggleEditButton().click();
     plantPage.markdownInput().clear();
     plantPage.markdownInput().type('### Wow! This is so cool!');
     plantPage.saveDescriptionButton().click();
@@ -67,6 +67,7 @@ describe('Plant information page', () => {
       },
     }).as('updateExtendedInfo');
 
+    plantPage.toggleEditButton().click();
     plantPage.typesInput().type('  sausage plant  ');
     plantPage.tagsInput().type(' yummy, german ');
     plantPage.commonNamesInput().type('  totally sie wurst');
