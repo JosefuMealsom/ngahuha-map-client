@@ -49,7 +49,7 @@ export function MarkDownEditorComponent(props: {
     return (
       <button
         className="border-sky-500  border px-4 py-1.5 bg-sky-500
-        font-semibold text-xs text-white cursor-pointer inline-block ml-2 rounded-full"
+        font-semibold text-sm text-white cursor-pointer inline-block ml-2 rounded-full"
         onClick={onSave}
         data-cy="markdown-save-button"
       >
@@ -80,7 +80,7 @@ export function MarkDownEditorComponent(props: {
         </div>
       </div>
       <button
-        className="border inline-block py-1.5 text-xs px-4 font-bold cursor-pointer
+        className="border inline-block py-1.5 text-sm px-4 font-bold cursor-pointer
         rounded-full mb-2 bg-[#002D04] text-white border-[#002D04]"
         onClick={togglePreview}
         data-cy="markdown-toggle-edit"
