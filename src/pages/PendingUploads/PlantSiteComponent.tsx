@@ -33,7 +33,10 @@ export function PlantSiteComponent(
   function renderPlantInfo() {
     if (!plant) {
       return (
-        <Link to={`/plant-site/${props.id}/edit`}>
+        <Link
+          to={`/plant-site/${props.id}/edit`}
+          data-cy={`edit-plant-${props.id}`}
+        >
           <div className="flex justify-between items-center">
             <p>Missing information</p>
             {renderDelete()}
@@ -42,7 +45,10 @@ export function PlantSiteComponent(
       );
     }
     return (
-      <Link to={`/plant-site/${props.id}/edit`}>
+      <Link
+        to={`/plant-site/${props.id}/edit`}
+        data-cy={`edit-plant-${props.id}`}
+      >
         <h1 className="font-bold text-sm">Plant Species</h1>
         <div className="flex justify-between items-center">
           <p>{getFullPlantName(plant)}</p>

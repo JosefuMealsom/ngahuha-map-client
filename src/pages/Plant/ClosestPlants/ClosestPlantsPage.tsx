@@ -13,6 +13,7 @@ import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { Plant } from '../../../types/api/plant.type';
 import { NavigationBar } from '../../Navigation';
 import { LatLong } from '../../../types/lat-long.type';
+import { useAppStore } from '../../../store/app.store';
 
 export function ClosestPlantsPage() {
   const [plants, setPlants] = useState<Plant[]>([]);
@@ -23,6 +24,7 @@ export function ClosestPlantsPage() {
   const [searchPlantSitesFilter, setSearchPlantSitesFilter] = useState<
     SearchPlantSitesFilter<PlantSiteWithinDistance>
   >(new SearchPlantSitesFilter<PlantSiteWithinDistance>([], []));
+  const { searchQuery, setSearchQuery } = useAppStore();
 
   function onSearchPlantSites(
     matches: SearchFilterMatch<PlantSiteWithinDistance>[],
@@ -64,6 +66,8 @@ export function ClosestPlantsPage() {
               searchFilter={searchPlantSitesFilter}
               placeholder="Search plants"
               onMatchesChange={onSearchPlantSites}
+              value={searchQuery}
+              onChange={(value) => setSearchQuery(value)}
             />
           </div>
           <NavigationBar activePage="Closest Plants">
