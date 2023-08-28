@@ -1,8 +1,8 @@
 import { fetchBlobUploadUrl, uploadBlob } from './blob-uploader.service';
 import { plantSiteUploadTable } from '../../offline.database';
-import { getFullApiPath } from '../../../utils/api-url.util';
 import { serializeCreatePlantSite } from './plant-site-create.serializer';
 import { PlantSiteUpload } from '../../../types/api/upload/plant-site-upload.type';
+import axiosClient from '../../axios/axios-client';
 
 export const bulkUploadPlantSitesToServer = async (
   plantSiteUploads: PlantSiteUpload[],
@@ -24,15 +24,9 @@ export const uploadPlantSiteToServer = async (
   const updatedUpload = { ...plantSiteUpload, photos: photos };
   await plantSiteUploadTable.put({ ...updatedUpload });
 
-  await uploadPlantSite(updatedUpload).then(async (response) => {
-    if (!response.ok) {
-      throw Error(
-        `Upload failed: ${response.status}, ${(await response.json()).message}`,
-      );
-    }
-
-    await clearPlantUpload(plantSiteUpload);
-  });
+  await uploadPlantSite(updatedUpload).then(
+    async () => await clearPlantUpload(plantSiteUpload),
+  );
 };
 
 const uploadPhotoBlobs = async (plantSiteUpload: PlantSiteUpload) => {
@@ -54,14 +48,7 @@ const uploadPhotoBlobs = async (plantSiteUpload: PlantSiteUpload) => {
 const uploadPlantSite = async (plantSite: PlantSiteUpload) => {
   const createJSON = await serializeCreatePlantSite(plantSite);
 
-  return fetch(getFullApiPath('plant-site'), {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(createJSON),
-  });
+  return axiosClient.post('plant-site', createJSON);
 };
 
 const clearPlantUpload = async (plantSiteUpload: PlantSiteUpload) => {
