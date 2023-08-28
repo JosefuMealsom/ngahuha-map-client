@@ -9,9 +9,5 @@ export const fetchBlobUploadUrl = async (): Promise<BlobUrl> => {
 };
 
 export const uploadBlob = (blobUploadUrl: string, data: ArrayBuffer) => {
-  return axiosClient.put(
-    blobUploadUrl,
-    { method: 'PUT', body: data },
-    { withCredentials: false },
-  );
+  return axiosClient.put(blobUploadUrl, data, { withCredentials: false });
 };
