@@ -7,6 +7,7 @@ import { SearchFilterMatch } from '../../../types/filter.type';
 import { ActiveFilterLinkComponent } from '../../../components/ActiveFilterLinkComponent';
 import { useLoaderData } from 'react-router-dom';
 import { NavigationBar } from '../../Navigation';
+import { useAppStore } from '../../../store/app.store';
 
 export function AllPlantsPage() {
   const plants = useLoaderData() as Plant[];
@@ -14,6 +15,7 @@ export function AllPlantsPage() {
   const [filteredPlants, setFilteredPlants] = useState<Plant[]>(plants);
   const [searchPlantsFilter, setSearchPlantsFilter] =
     useState<SearchPlantsFilter>(new SearchPlantsFilter(plants));
+  const { searchQuery, setSearchQuery } = useAppStore();
 
   function onSearchPlants(matches: SearchFilterMatch<Plant>[]) {
     setFilteredPlants(matches.map((match) => match.data));
@@ -28,6 +30,8 @@ export function AllPlantsPage() {
               searchFilter={searchPlantsFilter}
               placeholder="Search plants"
               onMatchesChange={onSearchPlants}
+              value={searchQuery}
+              onChange={(value) => setSearchQuery(value)}
             />
           </div>
           <NavigationBar activePage="All Plants" />

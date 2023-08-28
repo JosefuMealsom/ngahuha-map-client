@@ -8,6 +8,7 @@ import { SearchFilterMatch } from '../../types/filter.type';
 import SearchComponent from '../../components/SearchComponent';
 import { ActiveFilterLinkComponent } from '../../components/ActiveFilterLinkComponent';
 import { NavigationBar } from '../Navigation';
+import { useAppStore } from '../../store/app.store';
 
 export function MapFilter() {
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
@@ -15,6 +16,7 @@ export function MapFilter() {
   const [filteredPlantSites, setFilteredPlantSites] = useState<PlantSite[]>();
   const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
     useState<SearchPlantSitesFilter>(new SearchPlantSitesFilter([], []));
+  const { searchQuery, setSearchQuery } = useAppStore();
 
   useEffect(() => {
     if (!plants || !plantSites) return;
@@ -26,12 +28,6 @@ export function MapFilter() {
     if (!plants || !plantSites) return;
 
     setFilteredPlantSites(matches.map((match) => match.data));
-  }
-
-  function onChange(text: string) {
-    if (text === '') {
-      resetFilter();
-    }
   }
 
   function resetFilter() {
@@ -56,6 +52,8 @@ export function MapFilter() {
             suggestionText="Available"
             onMatchesChange={filterPlantSites}
             onClearHandler={resetFilter}
+            value={searchQuery}
+            onChange={(value) => setSearchQuery(value)}
           />
         </div>
         <NavigationBar activePage="Map" />

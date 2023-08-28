@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactHTML, useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 import { debounce } from 'underscore';
 import { SearchFilter, SearchFilterMatch } from '../types/filter.type';
@@ -6,12 +6,14 @@ import { SearchFilter, SearchFilterMatch } from '../types/filter.type';
 export default function SearchComponent<T>(props: {
   searchFilter: SearchFilter<T>;
   placeholder: string;
+  onChange?: (value: string) => any;
   onClearHandler?: () => any;
   onMatchesChange?: (matches: SearchFilterMatch<T>[]) => any;
   suggestionText?: string;
+  value?: string;
 }) {
   const [searchMatches, setSearchMatches] = useState<SearchFilterMatch<T>[]>();
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(props.value || '');
 
   useEffect(() => {
     if (props.onMatchesChange && searchMatches) {
@@ -19,15 +21,35 @@ export default function SearchComponent<T>(props: {
     }
   }, [searchMatches]);
 
+  useEffect(() => {
+    if (!props.value) return;
+
+    const matches = props.searchFilter.search(inputValue);
+    setSearchMatches(matches);
+    if (props.onChange) {
+      props.onChange(inputValue);
+    }
+    if (props.onMatchesChange && matches) {
+      props.onMatchesChange(matches);
+    }
+  }, [props.searchFilter]);
+
   const debouncedUpdateTextMatches = debounce(updateTextMatches, 500);
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     updateInputValue(event.target.value);
+
+    if (props.onChange) {
+      props.onChange(event.target.value);
+    }
   }
 
   function onClearClick() {
     updateInputValue('');
 
+    if (props.onChange) {
+      props.onChange('');
+    }
     if (props.onClearHandler) {
       props.onClearHandler();
     }
