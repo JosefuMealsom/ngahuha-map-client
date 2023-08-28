@@ -22,7 +22,7 @@ describe('Add new plant site for upload', () => {
     cy.fixture('images/ngahuha.png', null).as('plantSitePhoto1');
     cy.fixture('images/lemons.jpeg', null).as('plantSitePhoto2');
 
-    mapViewPage.addNewPlantSiteButton().click();
+    mapViewPage.addNewModelButton().click();
     cy.contains('Add a new location');
     newPlantSitePage.plantSearchInput().type('Cool spec');
 
@@ -55,7 +55,7 @@ describe('Add new plant site for upload', () => {
     cy.fixture('images/ngahuha.png', null).as('plantSitePhoto1');
     cy.fixture('images/lemons.jpeg', null).as('plantSitePhoto2');
 
-    mapViewPage.addNewPlantSiteButton().click();
+    mapViewPage.addNewModelButton().click();
     cy.contains('Add a new location');
     newPlantSitePage.plantSearchInput().type('Cool spec');
 
@@ -78,7 +78,7 @@ describe('Add new plant site for upload', () => {
 
     cy.fixture('images/ngahuha.png', null).as('plantSitePhoto1');
 
-    mapViewPage.addNewPlantSiteButton().click();
+    mapViewPage.addNewModelButton().click();
     newPlantSitePage.takePhotoButton().selectFile('@plantSitePhoto1');
 
     newPlantSitePage.lockOnLocationButton().click();

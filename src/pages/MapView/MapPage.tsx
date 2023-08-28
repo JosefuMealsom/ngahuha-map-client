@@ -28,27 +28,11 @@ export function MapPage() {
   return (
     <div>
       <MapContainer />
-      <nav className="fixed bottom-3 pb-safe left-0 w-full flex justify-evenly sm:hidden">
-        <ProtectedLayout>
-          <div>
-            <LinkComponent link="/plants/new" text="New plant" />
-          </div>
-        </ProtectedLayout>
-      </nav>
-      <nav className="fixed hidden bg-white right-0 top-0 pt-3 pb-3 pl-3 pr-8 drop-shadow-lg sm:inline-block">
-        <ProtectedLayout>
-          <Link to="/plants/new" data-cy="new-plant-form">
-            <div className="text-sm h-8 w-40 hover:bg-slate-100 align-middle flex items-center pl-3">
-              Create new plant
-            </div>
-          </Link>
-        </ProtectedLayout>
-      </nav>
 
       <div className="bottom-3 right-5 pb-safe fixed">
         {renderPendingUploadLink()}
         <ProtectedLayout>
-          <Link to="/plant-site/new" data-cy="open-plant-form">
+          <Link to="/plant-site/new" data-cy="open-add-page">
             <div className="rounded-full flex items-center drop-shadow-sm bg-sky-500 p-3 mb-3">
               <img
                 src={plusImageUrl}

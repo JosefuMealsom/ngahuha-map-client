@@ -19,8 +19,8 @@ const locationMarker = () => {
   return cy.dataCy('location-marker');
 };
 
-const addNewPlantSiteButton = () => {
-  return cy.dataCy('open-plant-form');
+const addNewModelButton = () => {
+  return cy.dataCy('open-add-page');
 };
 
 const plantListButton = () => {
@@ -36,7 +36,7 @@ const createPlantButton = () => {
 };
 
 export const mapViewPage = {
-  addNewPlantSiteButton,
+  addNewModelButton,
   mapFilterInput,
   mapFilterContainer,
   mapFilterEntry,

@@ -11,7 +11,7 @@ import { SearchFilterMatch } from '../../../types/filter.type';
 import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
 import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { Plant } from '../../../types/api/plant.type';
-import { NavigationBar } from '../../Navigation';
+import { NavigationBar } from '../../Navigation/NavigationBar';
 import { LatLong } from '../../../types/lat-long.type';
 import { useAppStore } from '../../../store/app.store';
 

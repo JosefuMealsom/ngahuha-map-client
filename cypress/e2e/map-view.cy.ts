@@ -15,7 +15,7 @@ describe('Map view', () => {
     });
 
     it('does not show functionality only a logged in user has access to', () => {
-      mapViewPage.addNewPlantSiteButton().should('not.exist');
+      mapViewPage.addNewModelButton().should('not.exist');
       mapViewPage.pendingUploadsButton().should('not.exist');
       mapViewPage.createPlantButton().should('not.exist');
     });
@@ -28,8 +28,7 @@ describe('Map view', () => {
     });
 
     it('shows functionality only a logged in user has access to ', () => {
-      mapViewPage.addNewPlantSiteButton().should('exist');
-      mapViewPage.createPlantButton().should('exist');
+      mapViewPage.addNewModelButton().should('exist');
     });
   });
 });

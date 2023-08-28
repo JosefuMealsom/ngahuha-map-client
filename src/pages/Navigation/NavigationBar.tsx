@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ActiveFilterLinkComponent } from '../components/ActiveFilterLinkComponent';
+import { ActiveFilterLinkComponent } from '../../components/ActiveFilterLinkComponent';
 
 export function NavigationBar(props: {
   activePage: 'Map' | 'All Plants' | 'Closest Plants';

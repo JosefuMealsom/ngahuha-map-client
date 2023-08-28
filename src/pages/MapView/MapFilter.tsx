@@ -7,7 +7,7 @@ import { SearchPlantSitesFilter } from '../../services/filter/search-plant-sites
 import { SearchFilterMatch } from '../../types/filter.type';
 import SearchComponent from '../../components/SearchComponent';
 import { ActiveFilterLinkComponent } from '../../components/ActiveFilterLinkComponent';
-import { NavigationBar } from '../Navigation';
+import { NavigationBar } from '../Navigation/NavigationBar';
 import { useAppStore } from '../../store/app.store';
 
 export function MapFilter() {
