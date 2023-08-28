@@ -6,7 +6,7 @@ import SearchComponent from '../../../components/SearchComponent';
 import { SearchFilterMatch } from '../../../types/filter.type';
 import { ActiveFilterLinkComponent } from '../../../components/ActiveFilterLinkComponent';
 import { useLoaderData } from 'react-router-dom';
-import { NavigationBar } from '../../Navigation';
+import { NavigationBar } from '../../Navigation/NavigationBar';
 import { useAppStore } from '../../../store/app.store';
 
 export function AllPlantsPage() {
