@@ -1,19 +1,14 @@
-import { toast } from 'react-toastify';
-import { Plant } from '../../../types/api/plant.type';
-import React, { useState } from 'react';
-import { updateExtendedInfo } from '../../../services/api/plant.service';
+import { useState } from 'react';
 
-export function ExtendedInfoEditor(props: { plant: Plant }) {
-  const { plant } = props;
-  const [typesValue, setTypesValue] = useState<string>(
-    plant.extendedInfo?.types?.join(','),
-  );
-  const [tagsValue, setTagsValue] = useState<string>(
-    plant.extendedInfo?.tags?.join(','),
-  );
-  const [commonNamesValue, setCommonNamesValue] = useState<string>(
-    plant.extendedInfo?.commonNames?.join(','),
-  );
+export function PlantForm(props: {
+  onSubmitHandler: (data: CreatePlantData) => {};
+}) {
+  const [species, setSpecies] = useState('');
+  const [subSpecies, setSubspecies] = useState('');
+  const [description, setDescription] = useState('');
+  const [typesValue, setTypesValue] = useState('');
+  const [tagsValue, setTagsValue] = useState('');
+  const [commonNamesValue, setCommonNamesValue] = useState('');
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -22,22 +17,60 @@ export function ExtendedInfoEditor(props: { plant: Plant }) {
     const types = typesValue ? typesValue.split(',') : [];
     const commonNames = commonNamesValue ? commonNamesValue.split(',') : [];
 
-    try {
-      await updateExtendedInfo(plant.id, {
-        tags: tags,
-        types: types,
-        commonNames: commonNames,
-      });
-      toast('Extended info successfully updated');
-    } catch (error) {
-      toast(
-        `There was an error updating the plant: ${(error as Error).message}`,
-      );
-    }
+    props.onSubmitHandler({
+      species: species,
+      cultivar: subSpecies,
+      description: description,
+      extendedInfo: { tags: tags, types: types, commonNames: commonNames },
+    });
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="bg-background w-full sm:w-96">
+      <label className="mb-2 text-inverted-background text-sm font-bold block">
+        Species
+      </label>
+      <input
+        type="text"
+        className="w-full py-2 px-4 border font-light border-gray-400 rounded-full mb-5"
+        placeholder="Species"
+        value={species}
+        onChange={(event) => {
+          setSpecies(event.target.value);
+        }}
+        data-cy="species-input"
+      />
+
+      <label className="mb-2 text-inverted-background text-sm font-bold block">
+        Subspecies
+      </label>
+      <input
+        type="text"
+        className="w-full py-2 px-4 border font-light border-gray-400 rounded-full mb-5"
+        placeholder="Optional"
+        value={subSpecies}
+        onChange={(event) => {
+          setSubspecies(event.target.value);
+        }}
+        data-cy="subspecies-input"
+      />
+
+      <label className="mb-2 text-inverted-background text-sm font-bold block">
+        Description
+      </label>
+      <input
+        type="text"
+        className="w-full py-2 px-4 border font-light border-gray-400 rounded-full mb-5"
+        placeholder="Optional"
+        value={description}
+        onChange={(event) => {
+          setDescription(event.target.value);
+        }}
+        data-cy="description-input"
+      />
+      <h1 className="mb-5 text-sm font-bold">
+        Extended information (optional)
+      </h1>
       <label className="mb-2 text-inverted-background text-sm font-bold block">
         Types
       </label>
@@ -87,7 +120,7 @@ export function ExtendedInfoEditor(props: { plant: Plant }) {
         font-semibold text-white hover:bg-gray-300 cursor-pointer"
           type="submit"
           data-cy="save-extended-info"
-          value="Update info"
+          value="Save"
         />
       </div>
     </form>
