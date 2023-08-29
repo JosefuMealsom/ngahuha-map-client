@@ -15,7 +15,7 @@ export function ExtendedInfoEditor(props: { plant: Plant }) {
     plant.extendedInfo?.commonNames?.join(','),
   );
 
-  function onSubmit(event: React.FormEvent) {
+  async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     const tags = tagsValue ? tagsValue.split(',') : [];
@@ -23,7 +23,7 @@ export function ExtendedInfoEditor(props: { plant: Plant }) {
     const commonNames = commonNamesValue ? commonNamesValue.split(',') : [];
 
     try {
-      updateExtendedInfo(plant.id, {
+      await updateExtendedInfo(plant.id, {
         tags: tags,
         types: types,
         commonNames: commonNames,

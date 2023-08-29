@@ -3,7 +3,6 @@ import { useLoaderData } from 'react-router-dom';
 import { usePlantPhotos } from '../../../hooks/use-plant-photos.hook';
 import { PlantDescription } from './PlantDescription';
 import { CarouselComponent } from '../../../components/CarouselComponent';
-import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 
 export function ShowPlantPage() {

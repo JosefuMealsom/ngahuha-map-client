@@ -15,17 +15,24 @@ describe('Create new plant page', () => {
         species: 'Cool species',
         cultivar: 'lame',
         description: '### Wow! This is so cool!',
+        extendedInfo: {
+          types: ['cool', 'type'],
+          tags: ['lovely', 'tag'],
+          commonNames: ['Bobbys busherino'],
+        },
       },
     }).as('createPlant');
 
     createNewPlant.speciesInput().type('Cool species');
     createNewPlant.subSpeciesInput().type('lame');
     createNewPlant.descriptionInput().type('### Wow! This is so cool!');
+    createNewPlant.typesInput().type('cool,  type');
+    createNewPlant.tagsInput().type('lovely,  tag');
+    createNewPlant.commonNamesInput().type('Bobbys busherino');
     createNewPlant.createPlantButton().click();
 
     cy.wait('@createPlant');
 
-    mapViewPage.plantListButton().click();
     cy.contains('Plant created successfully');
   });
 

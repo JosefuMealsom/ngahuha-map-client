@@ -164,11 +164,12 @@ describe('PlantService', () => {
     it('creates a new plant on the server and saves it locally', async () => {
       stubFetchResponse(plant1);
 
-      await createPlant(
-        'joeus maximus',
-        'pretty lady',
-        'Wow very descriptive!',
-      );
+      await createPlant({
+        species: 'joeus maximus',
+        cultivar: 'pretty lady',
+        description: 'Wow very descriptive!',
+        extendedInfo: { types: [], tags: [], commonNames: [] },
+      });
       assertEndPointCalled('https://www.dummy-api.com/plant');
 
       const savedDbData = await plantTable.toArray();
