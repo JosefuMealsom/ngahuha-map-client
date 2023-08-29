@@ -8,6 +8,7 @@ export function PlantPhotoImage(props: {
   onRemoveHandler: (id: string) => void;
 }) {
   const [previewImage, setPreviewImage] = useState('');
+  const [viewFullScreen, setViewFullScreen] = useState(false);
 
   useEffect(() => {
     const convertFileToPreviewImage = async () => {
@@ -24,6 +25,21 @@ export function PlantPhotoImage(props: {
     props.onRemoveHandler(props.id);
   };
 
+  function renderFullScreenPreview() {
+    if (!viewFullScreen) return;
+
+    return (
+      <div className="fixed top-0 left-0 w-screen h-screen object-contain z-20">
+        <div className="bg-black absolute top-0 left-0 w-full h-full -z-10"></div>
+        <img
+          src={previewImage}
+          className="w-full h-full object-contain"
+          onClick={() => setViewFullScreen(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       <div className="relative inline-block" data-cy="photo-form-photo">
@@ -33,7 +49,12 @@ export function PlantPhotoImage(props: {
           onClick={onRemoveClick}
           data-cy="remove-photo-button"
         />
-        <img src={previewImage} className="mb-3 sm:w-52 inline-block" />
+        <img
+          src={previewImage}
+          onClick={() => setViewFullScreen(true)}
+          className="mb-3 inline-block cursor-zoom-in"
+        />
+        {renderFullScreenPreview()}
       </div>
     </div>
   );
