@@ -79,11 +79,13 @@ export function FeatureForm() {
         />
       </div>
 
-      <div className="mb-3">
-        <GeolocationLockOnComponent
-          onGeolocationLocked={(coordinates) => setPosition(coordinates)}
-          onLockingOn={() => setPosition(undefined)}
-        />
+      <div className="pb-3">
+        <div className="pb-3">
+          <GeolocationLockOnComponent
+            onGeolocationLocked={(coordinates) => setPosition(coordinates)}
+            onLockingOn={() => setPosition(undefined)}
+          />
+        </div>
         {renderAccuracyIndicator()}
       </div>
 
