@@ -4,6 +4,7 @@ import { PhotoInput } from '../PlantSite/CommonFormElements/PhotoInput';
 import { PhotoFile } from '../../types/api/upload/plant-site-upload.type';
 import { GeolocationLockOnComponent } from '../../components/GeolocationLockOnComponent';
 import { LatLong } from '../../types/lat-long.type';
+import { AccuracyIndicator } from '../PlantSite/CommonFormElements/AccuracyIndicator';
 
 export function FeatureForm() {
   const [name, setName] = useState('');
@@ -36,6 +37,12 @@ export function FeatureForm() {
       (photoFile) => photoFile.id !== photoIdToRemove,
     );
     setPhotos(photosCopy);
+  }
+
+  function renderAccuracyIndicator() {
+    if (!position) return;
+
+    return <AccuracyIndicator position={position} />;
   }
 
   return (
@@ -77,6 +84,7 @@ export function FeatureForm() {
           onGeolocationLocked={(coordinates) => setPosition(coordinates)}
           onLockingOn={() => setPosition(undefined)}
         />
+        {renderAccuracyIndicator()}
       </div>
 
       <div className="pb-10">
