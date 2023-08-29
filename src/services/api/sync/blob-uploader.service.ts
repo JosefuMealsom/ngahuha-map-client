@@ -3,13 +3,9 @@ import axiosClient from '../../axios/axios-client';
 type BlobUrl = { blobKey: string; url: string };
 
 export const fetchBlobUploadUrl = async (): Promise<BlobUrl> => {
-  const response = await axiosClient.get('blob/presigned-upload-url', {
-    headers: {
-      'Cache-Control': 'no-cache',
-      Pragma: 'no-cache',
-      Expires: '0',
-    },
-  });
+  const response = await axiosClient.get(
+    `blob/presigned-upload-url?timestamp={${new Date().getTime()}}`,
+  );
 
   return response.data;
 };
