@@ -13,3 +13,12 @@
 .top-safe {
   top: env(safe-area-inset-top);
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar{
+  background: transparent;
+  scrollbar-width: none;
+}
