@@ -4,7 +4,7 @@ import { parseMarkdown } from '../utils/markdown-parser.util';
 export function MarkDownEditorComponent(props: {
   value?: string;
   className?: string;
-  onSaveHandler: (text: string) => void;
+  onChangeHandler: (text: string) => void;
 }) {
   const textAreaInputRef = useRef<HTMLTextAreaElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -13,6 +13,7 @@ export function MarkDownEditorComponent(props: {
 
   function onInputChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(event.target.value);
+    props.onChangeHandler(inputValue);
   }
 
   function resizeTextArea() {
@@ -38,26 +39,6 @@ export function MarkDownEditorComponent(props: {
     setIsEditing(!isEditing);
   }
 
-  function onSave() {
-    props.onSaveHandler(inputValue);
-    setIsEditing(false);
-  }
-
-  function renderSaveButton() {
-    if (!isEditing) return;
-
-    return (
-      <button
-        className="border-sky-500  border px-4 py-1.5 bg-sky-500
-        font-semibold text-sm text-white cursor-pointer inline-block ml-2 rounded-full"
-        onClick={onSave}
-        data-cy="markdown-save-button"
-      >
-        Save
-      </button>
-    );
-  }
-
   return (
     <div className={props.className} ref={containerRef}>
       <div className="mb-3">
@@ -79,15 +60,14 @@ export function MarkDownEditorComponent(props: {
           />
         </div>
       </div>
-      <button
+      <div
         className="border inline-block py-1.5 text-sm px-4 font-bold cursor-pointer
         rounded-full mb-2 bg-[#002D04] text-white border-[#002D04]"
         onClick={togglePreview}
         data-cy="markdown-toggle-edit"
       >
         {isEditing ? 'Preview' : 'Edit'}
-      </button>
-      {renderSaveButton()}
+      </div>
     </div>
   );
 }

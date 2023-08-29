@@ -66,6 +66,24 @@ export const updateExtendedInfo = async (
   return result.data;
 };
 
+export const updatePlant = async (plantId: string, data: CreatePlantData) => {
+  const updateData = {
+    species: data.species,
+    cultivar: data.cultivar,
+    description: data.description,
+    extendedInfo: {
+      tags: data.extendedInfo.tags.map((tag) => tag.trim()),
+      types: data.extendedInfo.types.map((type) => type.trim()),
+      commonNames: data.extendedInfo.commonNames.map((name) => name.trim()),
+    },
+  };
+
+  const result = await axiosClient.patch(`plant/${plantId}`, updateData);
+
+  await plantTable.put(result.data);
+  return result.data;
+};
+
 export const createPlant = async (data: CreatePlantData) => {
   const createData = {
     species: data.species,

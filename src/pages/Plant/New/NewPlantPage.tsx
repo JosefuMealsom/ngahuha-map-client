@@ -24,7 +24,9 @@ export function NewPlantPage() {
         <h1 className="font-bold mb-7 text-xl text-inverted-background">
           Create a new plant
         </h1>
-        <PlantForm onSubmitHandler={createPlantSite} />
+        <div className="sm:max-w-md">
+          <PlantForm onSubmitHandler={createPlantSite} />
+        </div>
       </div>
     </div>
   );

@@ -1,14 +1,24 @@
 import { useState } from 'react';
+import { Plant } from '../../types/api/plant.type';
+import { MarkDownEditorComponent } from '../../components/MarkdownEditorComponent';
 
 export function PlantForm(props: {
-  onSubmitHandler: (data: CreatePlantData) => {};
+  plant?: Plant;
+  onSubmitHandler: (data: CreatePlantData) => void;
 }) {
-  const [species, setSpecies] = useState('');
-  const [subSpecies, setSubspecies] = useState('');
-  const [description, setDescription] = useState('');
-  const [typesValue, setTypesValue] = useState('');
-  const [tagsValue, setTagsValue] = useState('');
-  const [commonNamesValue, setCommonNamesValue] = useState('');
+  const { plant } = props;
+  const [species, setSpecies] = useState(plant?.species || '');
+  const [subSpecies, setSubspecies] = useState(plant?.cultivar || '');
+  const [description, setDescription] = useState(plant?.description || '');
+  const [typesValue, setTypesValue] = useState(
+    plant?.extendedInfo?.types.join(',') || '',
+  );
+  const [tagsValue, setTagsValue] = useState(
+    plant?.extendedInfo?.tags.join(',') || '',
+  );
+  const [commonNamesValue, setCommonNamesValue] = useState(
+    plant?.extendedInfo?.commonNames.join(',') || '',
+  );
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -26,7 +36,7 @@ export function PlantForm(props: {
   }
 
   return (
-    <form onSubmit={onSubmit} className="bg-background w-full sm:w-96">
+    <form onSubmit={onSubmit} className="bg-background w-full">
       <label className="mb-2 text-inverted-background text-sm font-bold block">
         Species
       </label>
@@ -58,14 +68,10 @@ export function PlantForm(props: {
       <label className="mb-2 text-inverted-background text-sm font-bold block">
         Description
       </label>
-      <input
-        type="text"
-        className="w-full py-2 px-4 border font-light border-gray-400 rounded-full mb-5"
-        placeholder="Optional"
-        value={description}
-        onChange={(event) => {
-          setDescription(event.target.value);
-        }}
+      <MarkDownEditorComponent
+        onChangeHandler={(value) => setDescription(value)}
+        className="sm:overflow-scroll py-6"
+        value={plant?.description}
         data-cy="description-input"
       />
       <h1 className="mb-5 text-sm font-bold">
@@ -119,7 +125,7 @@ export function PlantForm(props: {
           className="block border-solid border px-4 py-2 text-sm rounded-full bg-sky-600
         font-semibold text-white hover:bg-gray-300 cursor-pointer"
           type="submit"
-          data-cy="save-extended-info"
+          data-cy="create-plant"
           value="Save"
         />
       </div>

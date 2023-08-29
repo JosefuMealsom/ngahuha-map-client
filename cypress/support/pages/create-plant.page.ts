@@ -7,8 +7,20 @@ export const createNewPlant = {
     return cy.get(`[data-cy="subspecies-input"]`);
   },
 
-  descriptionInput() {
-    return cy.get(`[data-cy="description-input"]`);
+  descriptionInput: () => {
+    return cy.dataCy('markdown-content-input');
+  },
+
+  typesInput: () => {
+    return cy.dataCy('types-input');
+  },
+
+  tagsInput: () => {
+    return cy.dataCy('tags-input');
+  },
+
+  commonNamesInput: () => {
+    return cy.dataCy('common-names-input');
   },
 
   createPlantButton: () => {
