@@ -18,7 +18,7 @@ function App() {
     <div>
       <Outlet />
       <ToastContainer className="pt-safe" />
-      <div className="fixed left-1/2 -translate-x-1/2 bottom-5 pb-safe">
+      <div className="fixed left-1/2 -translate-x-1/2 bottom-5 pb-safe pointer-events-none">
         <SyncComponent />
       </div>
     </div>
