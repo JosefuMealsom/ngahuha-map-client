@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { CreateNavigationBar } from '../Navigation/CreateNavigationBar';
 import { FeatureForm } from './FeatureForm';
+import { toast } from 'react-toastify';
 
 export function NewFeaturePage() {
   const navigate = useNavigate();
 
-  async function createFeature(createPlantData: CreatePlantData) {}
+  async function onFeatureCreate() {
+    toast('Feature added successfully');
+    navigate('/');
+  }
 
   return (
     <div className="absolute top-0 pt-safe left-0 bg-background w-full h-full">
@@ -15,7 +19,7 @@ export function NewFeaturePage() {
           Create a new feature
         </h1>
         <div className="sm:max-w-md">
-          <FeatureForm />
+          <FeatureForm onSaveHandlerSuccess={onFeatureCreate} />
         </div>
       </div>
     </div>

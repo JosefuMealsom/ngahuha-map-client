@@ -5,17 +5,34 @@ import { PhotoFile } from '../../types/api/upload/plant-site-upload.type';
 import { GeolocationLockOnComponent } from '../../components/GeolocationLockOnComponent';
 import { LatLong } from '../../types/lat-long.type';
 import { AccuracyIndicator } from '../PlantSite/CommonFormElements/AccuracyIndicator';
+import { putFeatureWithPhotos } from '../../services/api/feature-upload.service';
+import { toast } from 'react-toastify';
 
-export function FeatureForm() {
+export function FeatureForm(props: { onSaveHandlerSuccess: () => any }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<PhotoFile[]>([]);
   const [position, setPosition] = useState<LatLong>();
 
-  async function onSubmit(event: React.FormEvent) {
+  async function saveFeatureOffline(event: React.FormEvent) {
     event.preventDefault();
 
-    // props.onSubmitHandler();
+    if (photos.length === 0 || !position) {
+      return;
+    }
+    try {
+      await putFeatureWithPhotos(
+        name,
+        description,
+        position,
+        photos.map((photo) => photo.file),
+      );
+      props.onSaveHandlerSuccess();
+    } catch (error) {
+      toast(
+        `There was an error adding the feature: ${(error as Error).message}`,
+      );
+    }
   }
 
   async function onPhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -46,7 +63,7 @@ export function FeatureForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="bg-background w-full">
+    <form onSubmit={saveFeatureOffline} className="bg-background w-full">
       <label className="mb-2 text-inverted-background text-sm font-bold block">
         Feature name
       </label>
