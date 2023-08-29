@@ -21,6 +21,7 @@ import {} from './pages/Login/LoginPage';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import { readUserStateFromCookie } from './services/user.service';
 import { loadPlants } from './pages/Plant/All/plants-loader';
+import { NewFeaturePage } from './pages/Feature/NewFeaturePage';
 
 readUserStateFromCookie();
 
@@ -86,6 +87,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PlantPhotosToUpload />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'feature/new',
+        element: (
+          <ProtectedRoute>
+            <NewFeaturePage />
           </ProtectedRoute>
         ),
       },
