@@ -1,20 +1,17 @@
-import { MarkDownEditorComponent } from '../../../components/MarkdownEditorComponent';
-import {
-  updateDescription,
-  updatePlant,
-} from '../../../services/api/plant.service';
+import { updatePlant } from '../../../services/api/plant.service';
 import { toast } from 'react-toastify';
-import { usePlant } from '../../../hooks/use-plant.hook';
-import { ExtendedInfoEditor } from './ExtendedInfoEditor';
+
 import { ProtectedLayout } from '../../ProtectedLayout';
 import { parseMarkdown } from '../../../utils/markdown-parser.util';
 import { useState } from 'react';
 import { PlantForm } from '../PlantForm';
+import { plantTable } from '../../../services/offline.database';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export function PlantDescription(props: { plantId: string }) {
   const { plantId } = props;
   const [isEditing, setIsEditing] = useState(false);
-  const plant = usePlant(plantId);
+  const plant = useLiveQuery(() => plantTable.get(plantId));
 
   function renderDescription() {
     if (isEditing) return;
