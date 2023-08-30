@@ -52,6 +52,8 @@ export const plantTable = offlineDatabase.plant;
 export const plantTypeTable = offlineDatabase.plantType;
 export const plantSiteTable = offlineDatabase.plantSite;
 export const plantSitePhotoTable = offlineDatabase.plantSitePhoto;
+export const featureTable = offlineDatabase.feature;
+export const featurePhotoTable = offlineDatabase.featurePhoto;
 
 export const plantSiteUploadTable = offlineDatabase.plantSiteUpload;
 export const featureUploadTable = offlineDatabase.featureUpload;

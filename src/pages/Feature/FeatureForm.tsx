@@ -8,11 +8,18 @@ import { AccuracyIndicator } from '../PlantSite/CommonFormElements/AccuracyIndic
 import { putFeatureWithPhotos } from '../../services/api/feature-upload.service';
 import { toast } from 'react-toastify';
 
-export function FeatureForm(props: { onSaveHandlerSuccess: () => any }) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [photos, setPhotos] = useState<PhotoFile[]>([]);
-  const [position, setPosition] = useState<LatLong>();
+export function FeatureForm(props: {
+  onSaveHandlerSuccess: () => any;
+  featureId?: number;
+  name?: string;
+  description?: string;
+  coordinates?: LatLong;
+  photos?: PhotoFile[];
+}) {
+  const [name, setName] = useState(props.name || '');
+  const [description, setDescription] = useState(props.description || '');
+  const [photos, setPhotos] = useState<PhotoFile[]>(props.photos || []);
+  const [position, setPosition] = useState(props.coordinates);
 
   async function saveFeatureOffline(event: React.FormEvent) {
     event.preventDefault();
@@ -26,6 +33,7 @@ export function FeatureForm(props: { onSaveHandlerSuccess: () => any }) {
         description,
         position,
         photos.map((photo) => photo.file),
+        props.featureId,
       );
       props.onSaveHandlerSuccess();
     } catch (error) {

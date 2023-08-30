@@ -1,7 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { MapContainer } from './MapContainer';
 import { LinkComponent } from '../../components/LinkComponent';
-import { plantSiteUploadTable } from '../../services/offline.database';
+import {
+  featureUploadTable,
+  plantSiteUploadTable,
+} from '../../services/offline.database';
 import { Link } from 'react-router-dom';
 import { ProtectedLayout } from '../ProtectedLayout';
 import userImageUrl from '../../assets/svg/user.svg';
@@ -10,9 +13,10 @@ import uploadUrl from '../../assets/svg/upload-cloud-white.svg';
 
 export function MapPage() {
   const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
+  const featureUploadCount = useLiveQuery(() => featureUploadTable.count());
 
   function renderPendingUploadLink() {
-    if (plantUploadCount === 0) return;
+    if (plantUploadCount === 0 && featureUploadCount === 0) return;
 
     return (
       <ProtectedLayout>

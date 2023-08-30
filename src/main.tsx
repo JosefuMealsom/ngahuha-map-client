@@ -22,6 +22,8 @@ import { ProtectedRoute } from './pages/ProtectedRoute';
 import { readUserStateFromCookie } from './services/user.service';
 import { loadPlants } from './pages/Plant/All/plants-loader';
 import { NewFeaturePage } from './pages/Feature/NewFeaturePage';
+import { EditFeaturePage } from './pages/Feature/Edit/EditFeaturePage';
+import { editFeatureLoader } from './pages/Feature/Edit/edit-feature.loader';
 
 readUserStateFromCookie();
 
@@ -95,6 +97,15 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <NewFeaturePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'feature/:id/edit',
+        loader: editFeatureLoader,
+        element: (
+          <ProtectedRoute>
+            <EditFeaturePage />
           </ProtectedRoute>
         ),
       },

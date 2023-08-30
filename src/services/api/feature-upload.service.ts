@@ -40,6 +40,10 @@ const addFeatureUpload = (
         accuracy: location.accuracy,
       });
 
+      if (id) {
+        await deleteExistingPhotos(id);
+      }
+
       for (const photoData of photos) {
         await featurePhotoUploadTable.add({
           data: photoData,
@@ -48,4 +52,16 @@ const addFeatureUpload = (
       }
     },
   );
+};
+
+const deleteExistingPhotos = async (featureUploadId: number) => {
+  const existingPhotos = await featurePhotoUploadTable
+    .where({ featureUploadId: featureUploadId })
+    .toArray();
+
+  for (const photo of existingPhotos) {
+    if (photo.id) {
+      await featurePhotoUploadTable.delete(photo.id);
+    }
+  }
 };
