@@ -24,7 +24,7 @@ export function FeatureForm(props: {
   async function saveFeatureOffline(event: React.FormEvent) {
     event.preventDefault();
 
-    if (photos.length === 0 || !position) {
+    if (photos.length === 0 || !position || !description) {
       return;
     }
     try {
@@ -83,7 +83,7 @@ export function FeatureForm(props: {
         onChange={(event) => {
           setName(event.target.value);
         }}
-        data-cy="species-input"
+        data-cy="feature-name-input"
       />
 
       <label className="mb-2 text-inverted-background text-sm font-bold block">
@@ -93,7 +93,7 @@ export function FeatureForm(props: {
         onChangeHandler={(value) => setDescription(value)}
         className="sm:overflow-scroll py-6"
         value={description}
-        data-cy="description-input"
+        data-cy="feature-description-input"
       />
 
       <div className="relative mb-5">
