@@ -41,7 +41,7 @@ export function MarkDownEditorComponent(props: {
 
   return (
     <div className={props.className} ref={containerRef}>
-      <div className="mb-3">
+      <div className="mb-3 relative">
         <div className={isEditing ? 'hidden' : ''}>
           <article
             className="prose max-width-character"
@@ -59,14 +59,14 @@ export function MarkDownEditorComponent(props: {
             data-cy="markdown-content-input"
           />
         </div>
-      </div>
-      <div
-        className="border inline-block py-1.5 text-sm px-4 font-bold cursor-pointer
-        rounded-full mb-2 bg-[#002D04] text-white border-[#002D04]"
-        onClick={togglePreview}
-        data-cy="markdown-toggle-edit"
-      >
-        {isEditing ? 'Preview' : 'Edit'}
+        <div
+          className="border inline-block py-1 text-xs px-2 cursor-pointer
+        rounded-md mb-2 absolute top-1 right-1 hover:opacity-60"
+          onClick={togglePreview}
+          data-cy="markdown-toggle-edit"
+        >
+          {isEditing ? 'Preview' : 'Edit'}
+        </div>
       </div>
     </div>
   );

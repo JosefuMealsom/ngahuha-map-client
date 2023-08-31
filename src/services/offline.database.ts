@@ -5,6 +5,12 @@ import type { Plant } from '../types/api/plant.type';
 import type { PlantType } from '../types/api/plant-type.type';
 import { PlantSite } from '../types/api/plant-site.type';
 import { PlantSitePhoto } from '../types/api/plant-site-photo.type';
+import {
+  FeaturePhotoUpload,
+  FeatureUpload,
+} from '../types/api/upload/feature-upload.type';
+import { Feature } from '../types/api/feature.type';
+import { FeaturePhoto } from '../types/api/feature-photo.type';
 
 class OfflineDatabase extends Dexie {
   public readonly plantSite!: Table<PlantSite>;
@@ -12,12 +18,17 @@ class OfflineDatabase extends Dexie {
   public readonly gardenArea!: Table<GardenArea>;
   public readonly plant!: Table<Plant>;
   public readonly plantType!: Table<PlantType>;
+  public readonly feature!: Table<Feature>;
+  public readonly featurePhoto!: Table<FeaturePhoto>;
 
+  // Models saved offline and uploaded later as they involve sending large files
   public readonly plantSiteUpload!: Table<PlantSiteUpload, number>;
+  public readonly featureUpload!: Table<FeatureUpload, number>;
+  public readonly featurePhotoUpload!: Table<FeaturePhotoUpload, number>;
 
   constructor() {
     super('OfflineDatabase');
-    this.version(1).stores({
+    this.version(2).stores({
       gardenArea: 'id, name, updatedAt',
       species: 'id, name, updatedAt',
       plant: 'id, species, cultivar, updatedAt',
@@ -25,6 +36,10 @@ class OfflineDatabase extends Dexie {
       plantSite: 'id, updatedAt, plantId',
       plantSitePhoto: 'id, updatedAt, plantSiteId',
       plantSiteUpload: '++id, plantId',
+      featureUpload: '++id',
+      featurePhotoUpload: '++id, featureUploadId',
+      feature: 'id, updatedAt',
+      featurePhoto: 'id, updatedAt, featureUploadId',
     });
   }
 }
@@ -37,5 +52,9 @@ export const plantTable = offlineDatabase.plant;
 export const plantTypeTable = offlineDatabase.plantType;
 export const plantSiteTable = offlineDatabase.plantSite;
 export const plantSitePhotoTable = offlineDatabase.plantSitePhoto;
+export const featureTable = offlineDatabase.feature;
+export const featurePhotoTable = offlineDatabase.featurePhoto;
 
 export const plantSiteUploadTable = offlineDatabase.plantSiteUpload;
+export const featureUploadTable = offlineDatabase.featureUpload;
+export const featurePhotoUploadTable = offlineDatabase.featurePhotoUpload;

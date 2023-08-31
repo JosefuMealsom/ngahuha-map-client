@@ -35,37 +35,6 @@ export const syncPlantsOffline = (): Promise<Plant[]> => {
   });
 };
 
-export const updateDescription = async (
-  plantId: string,
-  description: string,
-) => {
-  const result = await axiosClient.patch(`plant/${plantId}`, {
-    description: description,
-  });
-
-  const dataToJSON = await result.data;
-  plantTable.put(dataToJSON);
-
-  return dataToJSON;
-};
-
-export const updateExtendedInfo = async (
-  plantId: string,
-  data: { tags: string[]; types: string[]; commonNames: string[] },
-) => {
-  const result = await axiosClient.patch(`plant/${plantId}`, {
-    extendedInfo: {
-      tags: data.tags.map((tag) => tag.trim()),
-      types: data.types.map((type) => type.trim()),
-      commonNames: data.commonNames.map((name) => name.trim()),
-    },
-  });
-
-  await plantTable.put(result.data);
-
-  return result.data;
-};
-
 export const updatePlant = async (plantId: string, data: CreatePlantData) => {
   const updateData = {
     species: data.species,

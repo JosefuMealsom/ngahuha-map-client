@@ -42,7 +42,7 @@ describe('Editing a plant site before upload', () => {
     editPlantSitePage.saveButton().click();
 
     cy.contains('Upload changes');
-    cy.contains('Ready for upload');
+    cy.contains('Plant sites ready for upload');
     cy.contains("The best species 'radical'");
   });
 });

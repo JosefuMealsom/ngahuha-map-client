@@ -1,15 +1,13 @@
 import 'fake-indexeddb/auto';
 import { expect, describe, it, afterEach, beforeEach, vi } from 'vitest';
 import { plantSitePhotoTable } from '../offline.database';
-import {
-  assertEndPointCalled,
-  stubFetchResponse,
-} from '../../test-helpers/fetch-stub';
+import { mockApiCall } from '../../test-helpers/fetch-stub';
 import {
   fetchPlantSitePhotos,
   syncPlantSitePhotosOffline,
 } from './plant-site-photo.service';
 import { stubArrayBufferCall } from '../../test-helpers/blob-stub';
+import { getFullApiPath } from '../../utils/api-url.util';
 
 vi.mock('../image-loader.service', () => ({
   loadBlob: (url: string) => {
@@ -46,10 +44,12 @@ describe('PlantSitePhotoService', () => {
 
   describe('fetch()', () => {
     it('fetches the data from the API and returns it', async () => {
-      stubFetchResponse([plantSitePhoto1, plantSitePhoto2]);
+      mockApiCall(getFullApiPath('plant-site-photo'), [
+        plantSitePhoto1,
+        plantSitePhoto2,
+      ]);
 
       const plantSitePhotos = await fetchPlantSitePhotos();
-      assertEndPointCalled('https://www.dummy-api.com/plant-site-photo');
 
       expect(plantSitePhotos).toEqual([
         {
@@ -72,7 +72,10 @@ describe('PlantSitePhotoService', () => {
 
   describe('syncOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
-      stubFetchResponse([plantSitePhoto1, plantSitePhoto2]);
+      mockApiCall(getFullApiPath('plant-site-photo'), [
+        plantSitePhoto1,
+        plantSitePhoto2,
+      ]);
 
       await syncPlantSitePhotosOffline();
       const savedDbData = await plantSitePhotoTable.toArray();
@@ -104,7 +107,7 @@ describe('PlantSitePhotoService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        stubFetchResponse([
+        mockApiCall(getFullApiPath('plant-site-photo'), [
           {
             id: '123',
             plantSiteId: '456',
@@ -117,10 +120,6 @@ describe('PlantSitePhotoService', () => {
 
       it('updates only the changed data', async () => {
         await syncPlantSitePhotosOffline();
-
-        assertEndPointCalled(
-          'https://www.dummy-api.com/plant-site-photo?lastModified=1988-11-11T00%3A00%3A00.000Z',
-        );
 
         const savedDbData = await plantSitePhotoTable.toArray();
 

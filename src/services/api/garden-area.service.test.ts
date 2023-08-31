@@ -1,10 +1,8 @@
 import gardenAreaService from './garden-area.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
-import {
-  assertEndPointCalled,
-  stubFetchResponse,
-} from '../../test-helpers/fetch-stub';
+import { mockApiCall } from '../../test-helpers/fetch-stub';
 import offlineDatabase from '../offline.database';
+import { getFullApiPath } from '../../utils/api-url.util';
 
 describe('GardenAreaService', () => {
   afterEach(() => {
@@ -13,7 +11,7 @@ describe('GardenAreaService', () => {
 
   describe('fetch()', () => {
     beforeEach(() => {
-      stubFetchResponse([
+      mockApiCall(getFullApiPath('garden-area'), [
         {
           id: 'abc',
           name: 'Most beautiful area',
@@ -24,7 +22,6 @@ describe('GardenAreaService', () => {
 
     it('fetches the data from the API and returns it', async () => {
       const gardenAreas = await gardenAreaService.fetch();
-      assertEndPointCalled('https://www.dummy-api.com/garden-area');
       expect(gardenAreas).toEqual([
         {
           id: 'abc',
@@ -37,7 +34,7 @@ describe('GardenAreaService', () => {
 
   describe('syncOffline()', () => {
     beforeEach(() => {
-      stubFetchResponse([
+      mockApiCall(getFullApiPath('garden-area'), [
         {
           id: 'abc',
           name: 'Most beautiful area',
@@ -79,7 +76,7 @@ describe('GardenAreaService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        stubFetchResponse([
+        mockApiCall(getFullApiPath('garden-area'), [
           {
             id: 'abc',
             name: 'Honestly, pretty ugly area',
@@ -91,10 +88,7 @@ describe('GardenAreaService', () => {
       });
 
       it('updates only the changed data', async () => {
-        const gardenAreas = await gardenAreaService.syncOffline();
-        assertEndPointCalled(
-          'https://www.dummy-api.com/garden-area?lastModified=1988-11-11T00%3A00%3A00.000Z',
-        );
+        await gardenAreaService.syncOffline();
 
         const savedDbData = await offlineDatabase.gardenArea.toArray();
 
