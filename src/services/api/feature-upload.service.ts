@@ -21,7 +21,7 @@ export const putFeatureWithPhotos = async (
 
 export const deleteFeatureUpload = async (id: number) => {
   const featurePhotos = await featurePhotoUploadTable
-    .where({ id: id })
+    .where({ featureUploadId: id })
     .toArray();
 
   await featurePhotoUploadTable.bulkDelete(

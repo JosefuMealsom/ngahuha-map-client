@@ -1,9 +1,5 @@
 import { LatLong } from '../../types/lat-long.type';
-import {
-  featurePhotoUploadTable,
-  plantSiteUploadTable,
-  plantTable,
-} from '../offline.database';
+import { plantSiteUploadTable, plantTable } from '../offline.database';
 
 class PlantIdMissingError extends Error {
   constructor(plantId: string) {
@@ -31,11 +27,6 @@ export const addPlantSiteWithPhoto = async (
 };
 
 export const deletePlantSite = async (id: number) => {
-  const featurePhotos = featurePhotoUploadTable.where({ id: id }).toArray();
-
-  await featurePhotoUploadTable.bulkDelete(
-    featurePhotoUploadTable.map(({ id }) => id as number),
-  );
   return plantSiteUploadTable.delete(id);
 };
 

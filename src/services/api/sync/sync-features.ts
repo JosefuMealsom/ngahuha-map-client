@@ -20,7 +20,7 @@ export const bulkUploadFeaturesToServer = async (
 
 export const uploadFeatureToServer = async (featureUpload: FeatureUpload) => {
   const featurePhotos = await featurePhotoUploadTable
-    .where({ id: featureUpload.id })
+    .where({ featureUploadId: featureUpload.id })
     .toArray();
 
   await uploadPhotoBlobs(featurePhotos);

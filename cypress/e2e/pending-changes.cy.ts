@@ -24,7 +24,7 @@ function seedOfflineFeatures() {
     featureUploads: [
       { id: 1, name: 'Wonderful feature', description: 'Cool description' },
     ],
-    featurePhotoUploads: [{ id: 1, featureUploadId: 1 }],
+    featurePhotoUploads: [{ id: 555, featureUploadId: 1 }],
   });
 }
 
