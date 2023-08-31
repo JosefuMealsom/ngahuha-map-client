@@ -19,6 +19,18 @@ export const putFeatureWithPhotos = async (
   return addFeatureUpload(name, description, location, photos, featureId);
 };
 
+export const deleteFeatureUpload = async (id: number) => {
+  const featurePhotos = await featurePhotoUploadTable
+    .where({ id: id })
+    .toArray();
+
+  await featurePhotoUploadTable.bulkDelete(
+    featurePhotos.map(({ id }) => id as number),
+  );
+
+  return featureUploadTable.delete(id);
+};
+
 const addFeatureUpload = (
   name: string,
   description: string,

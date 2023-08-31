@@ -1,6 +1,6 @@
 export const stubPresignedUrlsAndReturn = (body) => {
   cy.intercept(
-    'https://app.ngahuha-map-dev.com:8080/blob/presigned-upload-url',
+    'https://app.ngahuha-map-dev.com:8080/blob/presigned-upload-url?timestamp=*',
     { statusCode: 200, body: body },
   );
 };

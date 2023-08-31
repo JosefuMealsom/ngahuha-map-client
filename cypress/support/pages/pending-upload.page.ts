@@ -11,6 +11,14 @@ export const pendingUploadPage = {
     return cy.get(`[data-cy="edit-plant-${plantSiteId}"]`);
   },
 
+  deleteButtonForFeatureId(featureId: string) {
+    return cy.get(`[data-cy="delete-feature-${featureId}"]`);
+  },
+
+  editButtonForFeatureId(featureId: string) {
+    return cy.get(`[data-cy="edit-feature-${featureId}"]`);
+  },
+
   uploadToServerButton: () => {
     return cy.get('[data-cy="upload-plants"]');
   },

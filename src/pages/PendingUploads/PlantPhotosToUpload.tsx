@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site-uploads';
 import { FeatureComponent } from './FeatureComponent';
+import { bulkUploadFeaturesToServer } from '../../services/api/sync/sync-features';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);
@@ -26,11 +27,12 @@ export function PlantPhotosToUpload() {
     }
   }, [plantUploadCount, featureUploadCount]);
 
-  async function uploadPlants() {
+  async function uploadChanges() {
     setUploadingState(true);
 
     try {
       await bulkUploadPlantSitesToServer(readyForUpload);
+      await bulkUploadFeaturesToServer(featureUploads || []);
       toast('Changes uploaded successfully');
     } catch (error) {
       toast(
@@ -44,13 +46,14 @@ export function PlantPhotosToUpload() {
   }
 
   function renderUploadButton() {
-    if (uploading || plantUploadCount === 0) return;
+    if (uploading || (plantUploadCount === 0 && featureUploadCount === 0))
+      return;
 
     return (
       <img
         src={uploadSvg}
         className="h-7 inline-block ml-4 cursor-pointer"
-        onClick={uploadPlants}
+        onClick={uploadChanges}
         data-cy="upload-plants"
       />
     );

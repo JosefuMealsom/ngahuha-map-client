@@ -6,6 +6,7 @@ import { usePlant } from '../../hooks/use-plant.hook';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { FeatureUpload } from '../../types/api/upload/feature-upload.type';
+import { deleteFeatureUpload } from '../../services/api/feature-upload.service';
 
 export function FeatureComponent(
   props: FeatureUpload & { isUploading: boolean },
@@ -13,7 +14,7 @@ export function FeatureComponent(
   function deleteUpload(evt: React.MouseEvent) {
     evt.preventDefault();
 
-    // if (props.id) deletePlantSite(props.id);
+    if (props.id) deleteFeatureUpload(props.id);
   }
 
   function renderDelete() {
