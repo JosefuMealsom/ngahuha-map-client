@@ -1,18 +1,15 @@
 import 'fake-indexeddb/auto';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import { plantTable } from '../offline.database';
-import {
-  assertEndPointCalled,
-  stubFetchResponse,
-} from '../../test-helpers/fetch-stub';
+import { mockApiCall } from '../../test-helpers/fetch-stub';
 import {
   createPlant,
   fetchPlants,
   syncPlantsOffline,
-  updateDescription,
-  updateExtendedInfo,
+  updatePlant,
 } from './plant.service';
 import plantFactory from '../../test-helpers/factories/plant';
+import { getFullApiPath } from '../../utils/api-url.util';
 
 describe('PlantService', () => {
   afterEach(() => {
@@ -43,12 +40,10 @@ describe('PlantService', () => {
 
   describe('fetch()', () => {
     it('fetches the data from the API and returns it', async () => {
-      stubFetchResponse([plant1, plant2]);
+      mockApiCall(getFullApiPath('plant'), [plant1, plant2]);
+      const plants = await fetchPlants();
 
-      const plantSites = await fetchPlants();
-      assertEndPointCalled('https://www.dummy-api.com/plant');
-
-      expect(plantSites).toEqual([
+      expect(plants).toEqual([
         {
           id: '123',
           species: 'joeus maximus',
@@ -75,7 +70,7 @@ describe('PlantService', () => {
 
   describe('syncOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
-      stubFetchResponse([plant1, plant2]);
+      mockApiCall(getFullApiPath('plant'), [plant1, plant2]);
 
       await syncPlantsOffline();
       const savedDbData = await plantTable.toArray();
@@ -117,7 +112,7 @@ describe('PlantService', () => {
           description: 'Hmmm not enough information',
         });
 
-        stubFetchResponse([
+        mockApiCall(getFullApiPath('plant'), [
           {
             id: '123',
             species: 'joeus minimus',
@@ -135,10 +130,6 @@ describe('PlantService', () => {
 
       it('updates only the changed data', async () => {
         await syncPlantsOffline();
-
-        assertEndPointCalled(
-          'https://www.dummy-api.com/plant?lastModified=1988-11-11T00%3A00%3A00.000Z',
-        );
 
         const savedDbData = await plantTable.toArray();
 
@@ -162,7 +153,7 @@ describe('PlantService', () => {
 
   describe('createPlant()', () => {
     it('creates a new plant on the server and saves it locally', async () => {
-      stubFetchResponse(plant1);
+      mockApiCall(getFullApiPath('plant'), plant1, 'post');
 
       await createPlant({
         species: 'joeus maximus',
@@ -170,7 +161,6 @@ describe('PlantService', () => {
         description: 'Wow very descriptive!',
         extendedInfo: { types: [], tags: [], commonNames: [] },
       });
-      assertEndPointCalled('https://www.dummy-api.com/plant');
 
       const savedDbData = await plantTable.toArray();
 
@@ -188,7 +178,7 @@ describe('PlantService', () => {
     });
   });
 
-  describe('updateExtendedInfo()', () => {
+  describe('updatePlant()', () => {
     beforeEach(async () => {
       await plantTable.add(
         plantFactory.create({
@@ -197,29 +187,36 @@ describe('PlantService', () => {
         }),
       );
 
-      stubFetchResponse({
-        id: '123',
-        species: 'joeus minimus',
-        cultivar: 'ugly boy',
-        createdAt: '2030-11-11T00:00:00.000Z',
-        updatedAt: '2030-11-11T00:00:00.000Z',
-        extendedInfo: {
-          types: ['tree', 'bush'],
-          tags: ['wow'],
-          commonNames: ['joes bush'],
+      mockApiCall(
+        getFullApiPath('plant/123'),
+        {
+          id: '123',
+          species: 'joeus minimus',
+          cultivar: 'ugly boy',
+          createdAt: '2030-11-11T00:00:00.000Z',
+          updatedAt: '2030-11-11T00:00:00.000Z',
+          extendedInfo: {
+            types: ['tree', 'bush'],
+            tags: ['wow'],
+            commonNames: ['joes bush'],
+          },
+          description: 'awesome!',
         },
-        description: '',
-      });
+        'patch',
+      );
     });
 
-    it('updates the extendedInfo and saves the changes locally', async () => {
-      await updateExtendedInfo('123', {
-        tags: ['wow'],
-        types: ['tree', 'bush'],
-        commonNames: ['joes bush'],
+    it('updates the plant and saves the changes locally', async () => {
+      await updatePlant('123', {
+        species: 'joeus minimus',
+        cultivar: 'ugly boy',
+        description: 'awesome!',
+        extendedInfo: {
+          tags: ['wow'],
+          types: ['tree', 'bush'],
+          commonNames: ['joes bush'],
+        },
       });
-
-      assertEndPointCalled('https://www.dummy-api.com/plant');
 
       const savedDbData = await plantTable.toArray();
 
@@ -235,7 +232,7 @@ describe('PlantService', () => {
             tags: ['wow'],
             commonNames: ['joes bush'],
           },
-          description: '',
+          description: 'awesome!',
         },
       ]);
     });

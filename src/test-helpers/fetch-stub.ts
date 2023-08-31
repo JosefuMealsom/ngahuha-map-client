@@ -6,14 +6,14 @@ export const mockServer = setupServer();
 type httpMethods = 'get' | 'post' | 'patch' | 'delete';
 
 export const mockApiCall = (
-  httpVerb: httpMethods,
   path: string,
-  status: number,
   body: any,
+  httpVerb?: httpMethods,
+  status?: number,
 ) => {
   mockServer.use(
-    rest[httpVerb](path, (request, response, context) =>
-      response(context.status(status), context.json(body)),
+    rest[httpVerb || 'get'](path, (request, response, context) =>
+      response(context.status(status || 200), context.json(body)),
     ),
   );
 };

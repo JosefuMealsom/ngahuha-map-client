@@ -2,10 +2,8 @@ import 'fake-indexeddb/auto';
 import { fetchPlantSites, syncPlantSitesOffline } from './plant-site.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase, { plantSiteTable } from '../offline.database';
-import {
-  assertEndPointCalled,
-  stubFetchResponse,
-} from '../../test-helpers/fetch-stub';
+import { mockApiCall } from '../../test-helpers/fetch-stub';
+import { getFullApiPath } from '../../utils/api-url.util';
 
 describe('PlantSiteService', () => {
   afterEach(() => {
@@ -33,11 +31,9 @@ describe('PlantSiteService', () => {
 
   describe('fetch()', () => {
     it('fetches the data from the API and returns it', async () => {
-      stubFetchResponse([plantSite1, plantSite2]);
+      mockApiCall(getFullApiPath('plant-site'), [plantSite1, plantSite2]);
 
       const plantSites = await fetchPlantSites();
-
-      assertEndPointCalled('https://www.dummy-api.com/plant-site');
 
       expect(plantSites).toEqual([
         {
@@ -64,7 +60,7 @@ describe('PlantSiteService', () => {
 
   describe('syncPlantSitesOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
-      stubFetchResponse([plantSite1, plantSite2]);
+      mockApiCall(getFullApiPath('plant-site'), [plantSite1, plantSite2]);
 
       await syncPlantSitesOffline();
       const savedPlantSiteData = await offlineDatabase.plantSite.toArray();
@@ -103,7 +99,7 @@ describe('PlantSiteService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        stubFetchResponse([
+        mockApiCall(getFullApiPath('plant-site'), [
           {
             id: '123',
             plantId: '666',
@@ -118,9 +114,6 @@ describe('PlantSiteService', () => {
 
       it('updates only the changed data', async () => {
         await syncPlantSitesOffline();
-        assertEndPointCalled(
-          'https://www.dummy-api.com/plant-site?lastModified=1988-11-11T00%3A00%3A00.000Z',
-        );
 
         const savedDbData = await offlineDatabase.plantSite.toArray();
 

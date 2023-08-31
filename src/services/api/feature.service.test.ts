@@ -33,7 +33,7 @@ describe('FeatureService', () => {
 
   describe('fetch()', () => {
     it('fetches the data from the API and returns it', async () => {
-      mockApiCall('get', getFullApiPath('feature'), 200, [feature1, feature2]);
+      mockApiCall(getFullApiPath('feature'), [feature1, feature2]);
 
       const features = await fetchFeatures();
 
@@ -64,7 +64,7 @@ describe('FeatureService', () => {
 
   describe('syncfeaturesOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
-      mockApiCall('get', getFullApiPath('feature'), 200, [feature1, feature2]);
+      mockApiCall(getFullApiPath('feature'), [feature1, feature2]);
 
       await syncFeaturesOffline();
       const savedFeatureData = await offlineDatabase.feature.toArray();
@@ -106,7 +106,7 @@ describe('FeatureService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        mockApiCall('get', getFullApiPath('feature'), 200, [
+        mockApiCall(getFullApiPath('feature'), [
           {
             id: '123',
             name: 'Awesome feature',
