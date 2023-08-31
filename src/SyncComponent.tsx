@@ -2,10 +2,15 @@ import gardenAreaService from './services/api/garden-area.service';
 import { syncPlantsOffline } from './services/api/plant.service';
 import { syncPlantSitesOffline } from './services/api/plant-site/plant-site.service';
 import {
-  syncPhotoFilesOffline,
+  syncPhotoFilesOffline as downloadPlantPhotoFiles,
   syncPlantSitePhotosOffline,
 } from './services/api/plant-site/plant-site-photo.service';
 import { useEffect, useState } from 'react';
+import { syncFeaturesOffline } from './services/api/feature/feature.service';
+import {
+  syncPhotoFilesOffline as downloadFeaturePhotoFiles,
+  syncfeaturePhotosOffline,
+} from './services/api/feature/feature-photo.service';
 
 export function SyncComponent() {
   const [isSyncing, setIsSyncing] = useState(false);
@@ -24,8 +29,11 @@ export function SyncComponent() {
     await syncPlantsOffline();
     await syncPlantSitesOffline();
     await syncPlantSitePhotosOffline();
+    await syncFeaturesOffline();
+    await syncfeaturePhotosOffline();
     setSyncText('Syncing photos...');
-    await syncPhotoFilesOffline();
+    await downloadPlantPhotoFiles();
+    await downloadFeaturePhotoFiles();
     setIsSyncing(false);
   }
 
