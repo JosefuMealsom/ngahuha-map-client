@@ -5,7 +5,7 @@ import {
   gardenAreaTable,
 } from '../../offline.database';
 import plantSiteUploadFactory from '../../../test-helpers/factories/plant-site-upload';
-import { serializeCreatePlantSite } from './plant-site-create.serializer';
+import { serializeCreatePlantSite } from '../plant-site/plant-site-create.serializer';
 import plantFactory from '../../../test-helpers/factories/plant';
 import gardenAreaFactory from '../../../test-helpers/factories/garden-area';
 

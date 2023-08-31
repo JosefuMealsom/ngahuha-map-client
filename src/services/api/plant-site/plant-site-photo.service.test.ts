@@ -1,13 +1,13 @@
 import 'fake-indexeddb/auto';
 import { expect, describe, it, afterEach, beforeEach, vi } from 'vitest';
-import { plantSitePhotoTable } from '../offline.database';
-import { mockApiCall } from '../../test-helpers/fetch-stub';
+import { plantSitePhotoTable } from '../../offline.database';
+import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import {
   fetchPlantSitePhotos,
   syncPlantSitePhotosOffline,
 } from './plant-site-photo.service';
-import { stubArrayBufferCall } from '../../test-helpers/blob-stub';
-import { getFullApiPath } from '../../utils/api-url.util';
+import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
+import { getFullApiPath } from '../../../utils/api-url.util';
 
 vi.mock('../image-loader.service', () => ({
   loadBlob: (url: string) => {

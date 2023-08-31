@@ -5,13 +5,13 @@ import {
   featureUploadTable,
   plantSiteUploadTable,
 } from '../../services/offline.database';
-import { bulkUploadPlantSitesToServer } from '../../services/api/sync/sync-plant-sites';
+import { bulkUploadPlantSitesToServer } from '../../services/api/plant-site/sync-plant-sites';
 import uploadSvg from '../../assets/svg/upload-cloud.svg';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site-uploads';
 import { FeatureComponent } from './FeatureComponent';
-import { bulkUploadFeaturesToServer } from '../../services/api/sync/sync-features';
+import { bulkUploadFeaturesToServer } from '../../services/api/feature/sync-features';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);

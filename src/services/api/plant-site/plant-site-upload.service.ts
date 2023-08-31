@@ -1,5 +1,5 @@
-import { LatLong } from '../../types/lat-long.type';
-import { plantSiteUploadTable, plantTable } from '../offline.database';
+import { LatLong } from '../../../types/lat-long.type';
+import { plantSiteUploadTable, plantTable } from '../../offline.database';
 
 class PlantIdMissingError extends Error {
   constructor(plantId: string) {

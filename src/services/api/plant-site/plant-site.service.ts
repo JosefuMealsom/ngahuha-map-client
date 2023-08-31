@@ -1,6 +1,6 @@
-import { PlantSite } from '../../types/api/plant-site.type';
-import { plantSiteTable } from '../offline.database';
-import apiFetchUtil from '../../utils/api-fetch.util';
+import { PlantSite } from '../../../types/api/plant-site.type';
+import { plantSiteTable } from '../../offline.database';
+import apiFetchUtil from '../../../utils/api-fetch.util';
 
 export const fetchPlantSites = (): Promise<PlantSite[]> => {
   return new Promise(async (success) => {

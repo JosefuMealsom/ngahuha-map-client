@@ -5,7 +5,7 @@ import {
 } from '../../offline.database';
 import featureUploadFactory from '../../../test-helpers/factories/feature-upload';
 import featurePhotoUploadFactory from '../../../test-helpers/factories/feature-photo-upload';
-import { serializeCreateFeature } from './feature-create.serializer';
+import { serializeCreateFeature } from '../feature/feature-create.serializer';
 
 describe('serializeCreateFeature()', () => {
   const featureUpload = featureUploadFactory.create({

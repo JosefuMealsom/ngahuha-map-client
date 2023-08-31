@@ -1,27 +1,29 @@
 import 'fake-indexeddb/auto';
-import { fetchPlantSites, syncPlantSitesOffline } from './plant-site.service';
-import { expect, describe, it, afterEach, beforeEach } from 'vitest';
-import offlineDatabase, { plantSiteTable } from '../offline.database';
-import { mockApiCall } from '../../test-helpers/fetch-stub';
-import { getFullApiPath } from '../../utils/api-url.util';
+import { expect, describe, it, afterEach, beforeEach, beforeAll } from 'vitest';
+import offlineDatabase, { featureTable } from '../../offline.database';
+import { fetchFeatures, syncFeaturesOffline } from './feature.service';
+import { mockApiCall } from '../../../test-helpers/fetch-stub';
+import { getFullApiPath } from '../../../utils/api-url.util';
 
-describe('PlantSiteService', () => {
+describe('FeatureService', () => {
   afterEach(() => {
-    plantSiteTable.clear();
+    featureTable.clear();
   });
 
-  const plantSite1 = {
+  const feature1 = {
     id: '123',
-    plantId: '666',
+    name: 'Cool feature',
+    description: 'Pretty rad',
     latitude: 10,
     longitude: 20,
     accuracy: 30,
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
   };
-  const plantSite2 = {
+  const feature2 = {
     id: '456',
-    plantId: '888',
+    name: 'Interesting feature',
+    description: 'Quite interesting',
     latitude: 40,
     longitude: 50,
     accuracy: 60,
@@ -31,14 +33,15 @@ describe('PlantSiteService', () => {
 
   describe('fetch()', () => {
     it('fetches the data from the API and returns it', async () => {
-      mockApiCall(getFullApiPath('plant-site'), [plantSite1, plantSite2]);
+      mockApiCall(getFullApiPath('feature'), [feature1, feature2]);
 
-      const plantSites = await fetchPlantSites();
+      const features = await fetchFeatures();
 
-      expect(plantSites).toEqual([
+      expect(features).toEqual([
         {
           id: '123',
-          plantId: '666',
+          name: 'Cool feature',
+          description: 'Pretty rad',
           latitude: 10,
           longitude: 20,
           accuracy: 30,
@@ -47,7 +50,8 @@ describe('PlantSiteService', () => {
         },
         {
           id: '456',
-          plantId: '888',
+          name: 'Interesting feature',
+          description: 'Quite interesting',
           latitude: 40,
           longitude: 50,
           accuracy: 60,
@@ -58,17 +62,18 @@ describe('PlantSiteService', () => {
     });
   });
 
-  describe('syncPlantSitesOffline()', () => {
+  describe('syncfeaturesOffline()', () => {
     it('fetches the data from the API and saves it to indexedDB', async () => {
-      mockApiCall(getFullApiPath('plant-site'), [plantSite1, plantSite2]);
+      mockApiCall(getFullApiPath('feature'), [feature1, feature2]);
 
-      await syncPlantSitesOffline();
-      const savedPlantSiteData = await offlineDatabase.plantSite.toArray();
+      await syncFeaturesOffline();
+      const savedFeatureData = await offlineDatabase.feature.toArray();
 
-      expect(savedPlantSiteData).toEqual([
+      expect(savedFeatureData).toEqual([
         {
           id: '123',
-          plantId: '666',
+          name: 'Cool feature',
+          description: 'Pretty rad',
           latitude: 10,
           longitude: 20,
           accuracy: 30,
@@ -77,7 +82,8 @@ describe('PlantSiteService', () => {
         },
         {
           id: '456',
-          plantId: '888',
+          name: 'Interesting feature',
+          description: 'Quite interesting',
           latitude: 40,
           longitude: 50,
           accuracy: 60,
@@ -89,9 +95,10 @@ describe('PlantSiteService', () => {
 
     describe('Plant site already synced offline', () => {
       beforeEach(async () => {
-        await plantSiteTable.add({
+        await featureTable.add({
           id: '123',
-          plantId: '666',
+          name: 'Cool feature',
+          description: 'Pretty rad',
           latitude: 10,
           longitude: 20,
           accuracy: 30,
@@ -99,10 +106,11 @@ describe('PlantSiteService', () => {
           updatedAt: '1988-11-11T00:00:00.000Z',
         });
 
-        mockApiCall(getFullApiPath('plant-site'), [
+        mockApiCall(getFullApiPath('feature'), [
           {
             id: '123',
-            plantId: '666',
+            name: 'Awesome feature',
+            description: 'Kicking rad',
             latitude: 1234,
             longitude: 56789,
             accuracy: 777,
@@ -113,14 +121,15 @@ describe('PlantSiteService', () => {
       });
 
       it('updates only the changed data', async () => {
-        await syncPlantSitesOffline();
+        await syncFeaturesOffline();
 
-        const savedDbData = await offlineDatabase.plantSite.toArray();
+        const savedDbData = await offlineDatabase.feature.toArray();
 
         expect(savedDbData).toEqual([
           {
             id: '123',
-            plantId: '666',
+            name: 'Awesome feature',
+            description: 'Kicking rad',
             latitude: 1234,
             longitude: 56789,
             accuracy: 777,

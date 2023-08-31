@@ -1,10 +1,10 @@
 import gardenAreaService from './services/api/garden-area.service';
 import { syncPlantsOffline } from './services/api/plant.service';
-import { syncPlantSitesOffline } from './services/api/plant-site.service';
+import { syncPlantSitesOffline } from './services/api/plant-site/plant-site.service';
 import {
   syncPhotoFilesOffline,
   syncPlantSitePhotosOffline,
-} from './services/api/plant-site-photo.service';
+} from './services/api/plant-site/plant-site-photo.service';
 import { useEffect, useState } from 'react';
 
 export function SyncComponent() {

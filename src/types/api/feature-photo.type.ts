@@ -1,6 +1,6 @@
 export type FeaturePhoto = {
   id: string;
-  featureId: number;
+  featureId: string;
   url: string;
   data?: ArrayBuffer;
   createdAt: string;

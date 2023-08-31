@@ -1,8 +1,8 @@
-import { LatLong } from '../../types/lat-long.type';
+import { LatLong } from '../../../types/lat-long.type';
 import offlineDatabase, {
   featurePhotoUploadTable,
   featureUploadTable,
-} from '../offline.database';
+} from '../../offline.database';
 
 export const putFeatureWithPhotos = async (
   name: string,

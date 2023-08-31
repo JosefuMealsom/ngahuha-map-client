@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import AutocompleteComponent from '../../../components/AutocompleteComponent';
 import { plantTable } from '../../../services/offline.database';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { addPlantSiteWithPhoto } from '../../../services/api/plant-site-upload.service';
+import { addPlantSiteWithPhoto } from '../../../services/api/plant-site/plant-site-upload.service';
 import { AccuracyIndicator } from '../CommonFormElements/AccuracyIndicator';
 import { PhotoInput } from '../CommonFormElements/PhotoInput';
 import { PhotoFile } from '../../../types/api/upload/plant-site-upload.type';
