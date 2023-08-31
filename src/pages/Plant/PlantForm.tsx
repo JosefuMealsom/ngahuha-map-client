@@ -125,7 +125,7 @@ export function PlantForm(props: {
           className="block border-solid border px-4 py-2 text-sm rounded-full bg-sky-600
         font-semibold text-white hover:bg-gray-300 cursor-pointer"
           type="submit"
-          data-cy="create-plant"
+          data-cy="save-plant"
           value="Save"
         />
       </div>

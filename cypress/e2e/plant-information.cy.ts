@@ -29,55 +29,47 @@ describe('Plant information page', () => {
     cy.contains('Very interesting!');
   });
 
-  it('can edit the plants description in markdown', () => {
+  it('can edit the plant information', () => {
     cy.intercept('PATCH', 'https://app.ngahuha-map-dev.com:8080/plant/abcdef', {
       statusCode: 200,
       body: {
         id: 'abcdef',
-        species: 'The worst species',
-        cultivar: 'lame',
+        species: 'The new and improved worst species',
+        cultivar: 'A bit less lame',
         description: '### Wow! This is so cool!',
-      },
-    }).as('updateDescription');
-
-    plantPage.toggleEditButton().click();
-    plantPage.markdownInput().clear();
-    plantPage.markdownInput().type('### Wow! This is so cool!');
-    plantPage.saveDescriptionButton().click();
-
-    cy.wait('@updateDescription');
-
-    cy.contains('### Wow! This is so cool!');
-    cy.contains('Description successfully updated');
-  });
-
-  it('can edit the plants extended info', () => {
-    cy.intercept('PATCH', 'https://app.ngahuha-map-dev.com:8080/plant/abcdef', {
-      statusCode: 200,
-      body: {
-        id: 'abcdef',
-        species: 'The worst species',
-        cultivar: 'lame',
-        description: '',
         extendedInfo: {
           tags: ['yummy', 'german'],
           types: ['sausage plant'],
           commonNames: ['totally sie wurst'],
         },
       },
-    }).as('updateExtendedInfo');
+    }).as('updatePlant');
 
     plantPage.toggleEditButton().click();
+
+    plantPage.speciesInput().type('The new and improved worst species');
+    plantPage.subSpeciesInput().type('A bit less lame');
+    plantPage.markdownInput().clear();
+    plantPage.markdownInput().type('### Wow! This is so cool!');
     plantPage.typesInput().type('  sausage plant  ');
     plantPage.tagsInput().type(' yummy, german ');
     plantPage.commonNamesInput().type('  totally sie wurst');
-    plantPage.updateExtendedInfoInput().click();
+    plantPage.updatePlant().click();
 
-    cy.wait('@updateExtendedInfo');
+    cy.wait('@updatePlant');
 
-    cy.contains('Extended info successfully updated');
+    cy.contains('Plant successfully updated');
 
     cy.reload().then(() => {
+      plantPage.toggleEditButton().click();
+
+      plantPage
+        .speciesInput()
+        .should('have.value', 'The new and improved worst species');
+      plantPage.subSpeciesInput().should('have.value', 'A bit less lame');
+      plantPage
+        .markdownInput()
+        .should('have.value', '### Wow! This is so cool!');
       plantPage.typesInput().should('have.value', 'sausage plant');
       plantPage.tagsInput().should('have.value', 'yummy,german');
       plantPage.commonNamesInput().should('have.value', 'totally sie wurst');

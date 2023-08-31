@@ -24,6 +24,6 @@ export const createNewPlant = {
   },
 
   createPlantButton: () => {
-    return cy.get('[data-cy="create-plant"]');
+    return cy.dataCy('save-plant');
   },
 };

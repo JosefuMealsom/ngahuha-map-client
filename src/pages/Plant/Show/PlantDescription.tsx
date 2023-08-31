@@ -83,7 +83,7 @@ export function PlantDescription(props: { plantId: string }) {
 
   return (
     <div className="relative h-full w-full overflow-scroll">
-      <div className="pt-4 sm:absolute top-0 left-0 bg-white w-full h-full">
+      <div className="pt-4 sm:h-screen bg-white w-full">
         <div className="w-full mb-5 px-10">
           {renderPlantInfo()}
           {renderEditButton()}
