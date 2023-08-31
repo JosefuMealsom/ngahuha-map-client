@@ -7,10 +7,10 @@ import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase, {
   plantSiteUploadTable,
   plantTable,
-} from '../offline.database';
-import plantFactory from '../../test-helpers/factories/plant';
-import plantSiteFactory from '../../test-helpers/factories/plant-site-upload';
-import { stubArrayBufferCall } from '../../test-helpers/blob-stub';
+} from '../../offline.database';
+import plantFactory from '../../../test-helpers/factories/plant';
+import plantSiteFactory from '../../../test-helpers/factories/plant-site-upload';
+import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
 
 describe('PlantSiteUploadService', () => {
   beforeEach(() => {

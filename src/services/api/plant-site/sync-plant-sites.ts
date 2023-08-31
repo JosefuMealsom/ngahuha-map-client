@@ -1,4 +1,4 @@
-import { fetchBlobUploadUrl, uploadBlob } from './blob-uploader.service';
+import { fetchBlobUploadUrl, uploadBlob } from '../sync/blob-uploader.service';
 import { plantSiteUploadTable } from '../../offline.database';
 import { serializeCreatePlantSite } from './plant-site-create.serializer';
 import { PlantSiteUpload } from '../../../types/api/upload/plant-site-upload.type';

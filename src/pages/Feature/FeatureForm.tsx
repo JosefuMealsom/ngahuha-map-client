@@ -5,7 +5,7 @@ import { PhotoFile } from '../../types/api/upload/plant-site-upload.type';
 import { GeolocationLockOnComponent } from '../../components/GeolocationLockOnComponent';
 import { LatLong } from '../../types/lat-long.type';
 import { AccuracyIndicator } from '../PlantSite/CommonFormElements/AccuracyIndicator';
-import { putFeatureWithPhotos } from '../../services/api/feature-upload.service';
+import { putFeatureWithPhotos } from '../../services/api/feature/feature-upload.service';
 import { toast } from 'react-toastify';
 
 export function FeatureForm(props: {

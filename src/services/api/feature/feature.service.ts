@@ -1,6 +1,6 @@
-import { Feature } from '../../types/api/feature.type';
-import { featureTable } from '../offline.database';
-import apiFetchUtil from '../../utils/api-fetch.util';
+import { Feature } from '../../../types/api/feature.type';
+import { featureTable } from '../../offline.database';
+import apiFetchUtil from '../../../utils/api-fetch.util';
 
 export const fetchFeatures = (): Promise<Feature[]> => {
   return new Promise(async (success) => {

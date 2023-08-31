@@ -1,4 +1,4 @@
-import { fetchBlobUploadUrl, uploadBlob } from './blob-uploader.service';
+import { fetchBlobUploadUrl, uploadBlob } from '../sync/blob-uploader.service';
 import {
   featurePhotoUploadTable,
   featureUploadTable,

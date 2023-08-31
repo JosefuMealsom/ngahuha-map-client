@@ -1,12 +1,12 @@
 import type { PlantSiteUpload } from '../../types/api/upload/plant-site-upload.type';
 import { getFullPlantName } from '../../utils/plant-name-decorator.util';
-import { deletePlantSite } from '../../services/api/plant-site-upload.service';
+import { deletePlantSite } from '../../services/api/plant-site/plant-site-upload.service';
 import trashSvg from '../../assets/svg/trash-2.svg';
 import { usePlant } from '../../hooks/use-plant.hook';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { FeatureUpload } from '../../types/api/upload/feature-upload.type';
-import { deleteFeatureUpload } from '../../services/api/feature-upload.service';
+import { deleteFeatureUpload } from '../../services/api/feature/feature-upload.service';
 
 export function FeatureComponent(
   props: FeatureUpload & { isUploading: boolean },
