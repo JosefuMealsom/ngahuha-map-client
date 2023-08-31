@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { syncFeaturesOffline } from './services/api/feature/feature.service';
 import {
   syncPhotoFilesOffline as downloadFeaturePhotoFiles,
-  syncfeaturePhotosOffline,
+  syncFeaturePhotosOffline,
 } from './services/api/feature/feature-photo.service';
 
 export function SyncComponent() {
@@ -30,7 +30,7 @@ export function SyncComponent() {
     await syncPlantSitesOffline();
     await syncPlantSitePhotosOffline();
     await syncFeaturesOffline();
-    await syncfeaturePhotosOffline();
+    await syncFeaturePhotosOffline();
     setSyncText('Syncing photos...');
     await downloadPlantPhotoFiles();
     await downloadFeaturePhotoFiles();
