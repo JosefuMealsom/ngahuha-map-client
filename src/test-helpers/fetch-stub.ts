@@ -1,15 +1,19 @@
-import { vi, expect } from 'vitest';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
-const stubbedFetch = vi.fn();
-global.fetch = stubbedFetch;
+export const mockServer = setupServer();
 
-export const stubFetchResponse = (data: {}) => {
-  stubbedFetch.mockResolvedValue({
-    ok: true,
-    json: () => new Promise((resolve) => resolve(data)),
-  });
-};
+type httpMethods = 'get' | 'post' | 'patch' | 'delete';
 
-export const assertEndPointCalled = (url: string) => {
-  expect(stubbedFetch).toHaveBeenCalledWith(url);
+export const mockApiCall = (
+  httpVerb: httpMethods,
+  path: string,
+  status: number,
+  body: any,
+) => {
+  mockServer.use(
+    rest[httpVerb](path, (request, response, context) =>
+      response(context.status(status), context.json(body)),
+    ),
+  );
 };
