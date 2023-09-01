@@ -8,28 +8,10 @@ export function GeolocationLockOnComponent(props: {
   triggerOnView?: boolean;
   targetAccuracy?: number;
 }) {
-  const [livePosition, setLivePosition] = useState<LatLong>();
-  const [lockedOnPosition, setLockedOnPosition] = useState<LatLong>();
   const [isLockingOn, setIsLockingOn] = useState(false);
   const { position } = useAppStore();
-
-  function lockOnLocation() {
-    setLivePosition(position);
-    setLockedOnPosition(position);
-    setIsLockingOn(true);
-
-    if (position) {
-      checkLocationAccuracy(position);
-    }
-
-    if (props.onLockingOn) {
-      props.onLockingOn();
-    }
-  }
-
-  useEffect(() => {
-    setLivePosition(position);
-  }, [position]);
+  const [livePosition, setLivePosition] = useState(position);
+  const [lockedOnPosition, setLockedOnPosition] = useState(position);
 
   useEffect(() => {
     if (props.triggerOnView) {
@@ -38,8 +20,25 @@ export function GeolocationLockOnComponent(props: {
   }, []);
 
   useEffect(() => {
-    if (!livePosition || !isLockingOn) return;
+    setLivePosition(position);
+  }, [position]);
 
+  function lockOnLocation() {
+    setLivePosition(position);
+    setLockedOnPosition(position);
+    setIsLockingOn(true);
+
+    if (props.onLockingOn) {
+      props.onLockingOn();
+    }
+
+    if (position) {
+      checkLocationAccuracy(position);
+    }
+  }
+
+  useEffect(() => {
+    if (!livePosition || !isLockingOn) return;
     checkLocationAccuracy(livePosition);
   }, [livePosition]);
 
