@@ -24,6 +24,7 @@ import { loadPlants } from './pages/Plant/All/plants-loader';
 import { NewFeaturePage } from './pages/Feature/NewFeaturePage';
 import { EditFeaturePage } from './pages/Feature/Edit/EditFeaturePage';
 import { editFeatureLoader } from './pages/Feature/Edit/edit-feature.loader';
+import { closestPlantsLoader } from './pages/Plant/ClosestPlants/closest-plants.loader';
 
 readUserStateFromCookie();
 
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
       {
         path: 'plants/closest',
         element: <ClosestPlantsPage />,
+        loader: closestPlantsLoader,
       },
       {
         path: 'plants/:id',

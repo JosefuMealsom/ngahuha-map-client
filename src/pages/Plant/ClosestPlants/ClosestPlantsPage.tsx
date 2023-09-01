@@ -9,15 +9,16 @@ import SearchComponent from '../../../components/SearchComponent';
 import { SearchPlantSitesFilter } from '../../../services/filter/search-plant-sites.filter';
 import { SearchFilterMatch } from '../../../types/filter.type';
 import { GeolocationLockOnComponent } from '../../../components/GeolocationLockOnComponent';
-import { plantSiteTable, plantTable } from '../../../services/offline.database';
 import { Plant } from '../../../types/api/plant.type';
 import { NavigationBar } from '../../Navigation/NavigationBar';
 import { LatLong } from '../../../types/lat-long.type';
 import { useAppStore } from '../../../store/app.store';
+import { useLoaderData } from 'react-router-dom';
+
+type LoaderData = { plants: Plant[]; plantSites: PlantSite[] };
 
 export function ClosestPlantsPage() {
-  const [plants, setPlants] = useState<Plant[]>([]);
-  const [plantSites, setPlantSites] = useState<PlantSite[]>([]);
+  const { plants, plantSites } = useLoaderData() as LoaderData;
   const [position, setPosition] = useState<LatLong>();
   const [visiblePlantSites, setVisiblePlantSites] =
     useState<PlantSiteWithinDistance[]>();
@@ -32,17 +33,12 @@ export function ClosestPlantsPage() {
     setVisiblePlantSites(matches.map((match) => match.data));
   }
 
-  async function initSearchablePlantSites() {
-    setPlants(await plantTable.toArray());
-    setPlantSites(await plantSiteTable.toArray());
+  function onLocationLocked(position: LatLong) {
+    setPosition(position);
   }
 
   useEffect(() => {
-    initSearchablePlantSites();
-  }, []);
-
-  useEffect(() => {
-    if (!plantSites || !position) return;
+    if (!position) return;
 
     const closestPlantSites = getPlantSitesWithinDistance(
       20,
@@ -73,7 +69,7 @@ export function ClosestPlantsPage() {
           <NavigationBar activePage="Closest Plants">
             <div className="mb-1 absolute right-4">
               <GeolocationLockOnComponent
-                onGeolocationLocked={(position) => setPosition(position)}
+                onGeolocationLocked={onLocationLocked}
                 targetAccuracy={10}
                 triggerOnView={true}
               />
