@@ -25,7 +25,8 @@ import { NewFeaturePage } from './pages/Feature/NewFeaturePage';
 import { EditFeaturePage } from './pages/Feature/Edit/EditFeaturePage';
 import { editFeatureLoader } from './pages/Feature/Edit/edit-feature.loader';
 import { closestPlantsLoader } from './pages/Plant/ClosestPlants/closest-plants.loader';
-
+import { loadAllPlantSites } from './pages/PlantSite/All/plant-sites-loader';
+import { AllPlantSitesPage } from './pages/PlantSite/All/AllPlantSitesPage';
 readUserStateFromCookie();
 
 const router = createBrowserRouter([
@@ -68,6 +69,15 @@ const router = createBrowserRouter([
         path: 'plant-site/:id',
         element: <PlantSiteInformation />,
         loader: loadPlantSite,
+      },
+      {
+        path: 'plant-sites',
+        element: (
+          <ProtectedRoute>
+            <AllPlantSitesPage />
+          </ProtectedRoute>
+        ),
+        loader: loadAllPlantSites,
       },
       {
         path: 'plant-site/:id/edit',

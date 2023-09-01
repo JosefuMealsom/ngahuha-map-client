@@ -1,6 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { MapContainer } from './MapContainer';
-import { LinkComponent } from '../../components/LinkComponent';
 import {
   featureUploadTable,
   plantSiteUploadTable,
@@ -9,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { ProtectedLayout } from '../ProtectedLayout';
 import userImageUrl from '../../assets/svg/user.svg';
 import plusImageUrl from '../../assets/svg/plus.svg';
+import listImageUrl from '../../assets/svg/list.svg';
 import uploadUrl from '../../assets/svg/upload-cloud-white.svg';
 
 export function MapPage() {
@@ -34,6 +34,16 @@ export function MapPage() {
       <MapContainer />
 
       <div className="bottom-3 right-5 pb-safe fixed">
+        <ProtectedLayout>
+          <Link to="/plant-sites" data-cy="open-plant-sites-list">
+            <div className="rounded-full flex items-center drop-shadow-sm bg-emerald-800 p-3 mb-3">
+              <img
+                src={listImageUrl}
+                className="inline-block w-6 text-center"
+              />
+            </div>
+          </Link>
+        </ProtectedLayout>
         {renderPendingUploadLink()}
         <ProtectedLayout>
           <Link to="/plant-site/new" data-cy="open-add-page">

@@ -1,12 +1,12 @@
+import { PlantSite } from '../../types/api/plant-site.type';
 import { useEffect, useState } from 'react';
-import { plantSitePhotoTable } from '../../../services/offline.database';
-import { PlantSite } from '../../../types/api/plant-site.type';
-import blobToDataUrlService from '../../../services/blob-to-data-url.service';
-import { usePlant } from '../../../hooks/use-plant.hook';
+import { plantSitePhotoTable } from '../../services/offline.database';
+import blobToDataUrlService from '../../services/blob-to-data-url.service';
+import { usePlant } from '../../hooks/use-plant.hook';
 import { Link } from 'react-router-dom';
-import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
+import { PlantTitleComponent } from '../../components/PlantTitleComponent';
 
-export function ClosestPlantInfoComponent(props: PlantSite) {
+export function PlantSiteListItemComponent(props: PlantSite) {
   const plant = usePlant(props.plantId);
   const [photoDataUrl, setPhotoDataUrl] = useState<string>();
 
