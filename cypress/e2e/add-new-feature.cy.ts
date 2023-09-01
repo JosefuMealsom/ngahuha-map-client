@@ -1,5 +1,4 @@
 import { createFeaturePage } from '../support/pages/create-feature.page';
-import { mapViewPage } from '../support/pages/map-view.page';
 import { pendingUploadPage } from '../support/pages/pending-upload.page';
 import { stubWatchPosition } from '../support/stubs/geolocation';
 

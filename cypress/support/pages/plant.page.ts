@@ -3,12 +3,16 @@ export const plantPage = {
     return cy.dataCy('plant-toggle-edit');
   },
 
-  saveDescriptionButton: () => {
-    return cy.dataCy('markdown-save-button');
-  },
-
   markdownInput: () => {
     return cy.dataCy('markdown-content-input');
+  },
+
+  speciesInput: () => {
+    return cy.dataCy('species-input');
+  },
+
+  subSpeciesInput: () => {
+    return cy.dataCy('subspecies-input');
   },
 
   typesInput: () => {
@@ -23,7 +27,7 @@ export const plantPage = {
     return cy.dataCy('common-names-input');
   },
 
-  updateExtendedInfoInput: () => {
-    return cy.dataCy('save-extended-info');
+  updatePlant: () => {
+    return cy.dataCy('save-plant');
   },
 };

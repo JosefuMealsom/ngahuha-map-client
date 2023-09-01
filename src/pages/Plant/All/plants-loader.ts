@@ -1,10 +1,15 @@
 import { LoaderFunctionArgs } from 'react-router-dom';
-import { plantSiteTable, plantTable } from '../../../services/offline.database';
+import {
+  featureTable,
+  plantSiteTable,
+  plantTable,
+} from '../../../services/offline.database';
 import { partition } from 'underscore';
 
 export const loadPlants = async (loaderArgs: LoaderFunctionArgs) => {
   const plantSites = await plantSiteTable.toArray();
   const plants = await plantTable.toArray();
+  const features = await featureTable.toArray();
 
   const plantIdsWithPhotos = Array.from(
     new Set(plantSites.map((plantSite) => plantSite.plantId)),
@@ -14,5 +19,5 @@ export const loadPlants = async (loaderArgs: LoaderFunctionArgs) => {
     plantIdsWithPhotos.includes(plant.id),
   );
 
-  return plantsWithPhotos;
+  return { plants: plantsWithPhotos, features: features };
 };

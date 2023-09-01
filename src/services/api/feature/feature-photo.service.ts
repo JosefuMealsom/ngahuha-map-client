@@ -1,7 +1,7 @@
-import { featurePhotoTable, featureTable } from '../offline.database';
-import apiFetchUtil from '../../utils/api-fetch.util';
-import { loadBlob } from '../image-loader.service';
-import { FeaturePhoto } from '../../types/api/feature-photo.type';
+import { featurePhotoTable } from '../../offline.database';
+import apiFetchUtil from '../../../utils/api-fetch.util';
+import { loadBlob } from '../../image-loader.service';
+import { FeaturePhoto } from '../../../types/api/feature-photo.type';
 
 type FeaturePhotoResponse = {
   id: string;
@@ -48,7 +48,7 @@ export const syncPhotoFilesOffline = async () => {
   );
 };
 
-export const syncfeaturePhotosOffline = (): Promise<FeaturePhoto[]> => {
+export const syncFeaturePhotosOffline = (): Promise<FeaturePhoto[]> => {
   return new Promise(async (success) => {
     const featurePhotos = await fetchFeaturePhotos();
     const transformedModels =

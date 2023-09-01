@@ -28,7 +28,7 @@ class OfflineDatabase extends Dexie {
 
   constructor() {
     super('OfflineDatabase');
-    this.version(2).stores({
+    this.version(3).stores({
       gardenArea: 'id, name, updatedAt',
       species: 'id, name, updatedAt',
       plant: 'id, species, cultivar, updatedAt',
@@ -39,7 +39,7 @@ class OfflineDatabase extends Dexie {
       featureUpload: '++id',
       featurePhotoUpload: '++id, featureUploadId',
       feature: 'id, updatedAt',
-      featurePhoto: 'id, updatedAt, featureUploadId',
+      featurePhoto: 'id, updatedAt, featureId',
     });
   }
 }
