@@ -18,7 +18,7 @@ export function AllPlantsPage() {
 
   const items = [...plants, ...features];
 
-  const [filteredItems, setFilteredPlants] = useState<(Plant | Feature)[]>([
+  const [filteredItems, setFilteredItems] = useState<(Plant | Feature)[]>([
     ...plants,
     ...features,
   ]);
@@ -30,7 +30,7 @@ export function AllPlantsPage() {
   function onSearchPlantAndFeatures(
     matches: SearchFilterMatch<Plant | Feature>[],
   ) {
-    setFilteredPlants(matches.map((match) => match.data));
+    setFilteredItems(matches.map((match) => match.data));
   }
 
   function renderPlantOrFeatureItem(item: Plant | Feature) {
