@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import { plantSitePhotoTable } from '../../../services/offline.database';
 import { PlantSite } from '../../../types/api/plant-site.type';
-import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import { usePlant } from '../../../hooks/use-plant.hook';
 import { Link } from 'react-router-dom';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 
-export function ClosestPlantInfoComponent(
-  props: PlantSite & { distance: number },
-) {
+export function ClosestPlantInfoComponent(props: PlantSite) {
   const plant = usePlant(props.plantId);
   const [photoDataUrl, setPhotoDataUrl] = useState<string>();
 
