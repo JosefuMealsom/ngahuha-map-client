@@ -17,13 +17,18 @@ export function usePlantPhotos(plantId: string) {
     const getPhotos = async () => {
       if (!plantSites || plantSites?.length === 0) return;
 
-      const photos = await plantSitePhotoTable
-        .where({
-          plantSiteId: plantSites[0].id,
-        })
-        .toArray();
+      const plantSiteIds = plantSites.map((p) => p.id);
 
-      const downloadedPhotos = photos.filter((photo) => photo.data);
+      let plantSitePhotos: PlantSitePhoto[] = [];
+
+      for (const plantSiteId of plantSiteIds) {
+        const photos = await plantSitePhotoTable
+          .where({ plantSiteId: plantSiteId })
+          .toArray();
+        plantSitePhotos = plantSitePhotos.concat(photos);
+      }
+
+      const downloadedPhotos = plantSitePhotos.filter((photo) => photo.data);
 
       const convertedPhotos = await Promise.all(
         downloadedPhotos.map(async (photo: PlantSitePhoto) => {
