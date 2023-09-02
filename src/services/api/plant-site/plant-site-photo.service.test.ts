@@ -10,14 +10,6 @@ import {
 import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
 import { getFullApiPath } from '../../../utils/api-url.util';
 
-vi.mock('../image-loader.service', () => ({
-  loadBlob: (url: string) => {
-    return new Promise((success) => {
-      success(new Blob());
-    });
-  },
-}));
-
 describe('PlantSitePhotoService', () => {
   beforeEach(() => {
     stubArrayBufferCall();
