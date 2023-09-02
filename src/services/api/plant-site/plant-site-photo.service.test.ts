@@ -5,6 +5,7 @@ import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import {
   fetchPlantSitePhotos,
   syncPlantSitePhotosOffline,
+  updatePlantPhotoViewPriority,
 } from './plant-site-photo.service';
 import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
 import { getFullApiPath } from '../../../utils/api-url.util';
@@ -140,6 +141,50 @@ describe('PlantSitePhotoService', () => {
             updatedAt: '2030-11-11T00:00:00.000Z',
             metadata: { goodbye: 'moe' },
           }),
+        ]);
+      });
+    });
+
+    describe('updateFeaturePhotoViewPriority()', () => {
+      beforeEach(async () => {
+        await plantSitePhotoTable.add({
+          id: '123',
+          plantSiteId: '456',
+          url: 'my mean url',
+          createdAt: '2030-11-11T00:00:00.000Z',
+          updatedAt: '2030-11-11T00:00:00.000Z',
+          metadata: undefined,
+        });
+
+        mockApiCall(
+          getFullApiPath('plant-site-photo/123'),
+          {
+            id: '123',
+            plantSiteId: '456',
+            url: 'my mean url',
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { viewPriority: 5 },
+          },
+          'patch',
+          200,
+        );
+      });
+
+      it('updates the priority of the photo on the server', async () => {
+        await updatePlantPhotoViewPriority('123', 5);
+
+        const savedDbData = await plantSitePhotoTable.toArray();
+
+        expect(savedDbData).toEqual([
+          {
+            id: '123',
+            plantSiteId: '456',
+            url: 'my mean url',
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { viewPriority: 5 },
+          },
         ]);
       });
     });

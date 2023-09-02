@@ -2,6 +2,7 @@ import { plantSitePhotoTable, plantSiteTable } from '../../offline.database';
 import apiFetchUtil from '../../../utils/api-fetch.util';
 import { PlantSitePhoto } from '../../../types/api/plant-site-photo.type';
 import { loadBlob } from '../../image-loader.service';
+import axiosClient from '../../axios/axios-client';
 
 type PlantSitePhotoResponse = {
   id: string;
@@ -58,6 +59,21 @@ export const syncPlantSitePhotosOffline = (): Promise<PlantSitePhoto[]> => {
     await plantSitePhotoTable.bulkPut(transformedModels);
 
     success(transformedModels);
+  });
+};
+
+export const updatePlantPhotoViewPriority = async (
+  photoId: string,
+  newPriority: number,
+) => {
+  const metadata = { viewPriority: newPriority };
+  const response = await axiosClient.patch(
+    `/plant-site-photo/${photoId}`,
+    metadata,
+  );
+
+  return plantSitePhotoTable.update(photoId, {
+    metadata: response.data.metadata,
   });
 };
 

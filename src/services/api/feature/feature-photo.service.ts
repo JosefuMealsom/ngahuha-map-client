@@ -2,6 +2,7 @@ import { featurePhotoTable } from '../../offline.database';
 import apiFetchUtil from '../../../utils/api-fetch.util';
 import { loadBlob } from '../../image-loader.service';
 import { FeaturePhoto } from '../../../types/api/feature-photo.type';
+import axiosClient from '../../axios/axios-client';
 
 type FeaturePhotoResponse = {
   id: string;
@@ -33,6 +34,21 @@ export const fetchFeaturePhotos = (): Promise<FeaturePhotoResponse[]> => {
     );
 
     success(featurePhotos);
+  });
+};
+
+export const updateFeaturePhotoViewPriority = async (
+  photoId: string,
+  newPriority: number,
+) => {
+  const metadata = { viewPriority: newPriority };
+  const response = await axiosClient.patch(
+    `/feature-photo/${photoId}`,
+    metadata,
+  );
+
+  return featurePhotoTable.update(photoId, {
+    metadata: response.data.metadata,
   });
 };
 

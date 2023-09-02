@@ -5,6 +5,7 @@ import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import {
   fetchFeaturePhotos,
   syncFeaturePhotosOffline,
+  updateFeaturePhotoViewPriority,
 } from './feature-photo.service';
 import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
 import { getFullApiPath } from '../../../utils/api-url.util';
@@ -132,6 +133,50 @@ describe('FeaturePhotoService', () => {
             updatedAt: '2030-11-11T00:00:00.000Z',
             metadata: { hello: 'moe' },
           }),
+        ]);
+      });
+    });
+
+    describe('updateFeaturePhotoViewPriority()', () => {
+      beforeEach(async () => {
+        await featurePhotoTable.add({
+          id: '123',
+          featureId: '456',
+          url: 'my mean url',
+          createdAt: '2030-11-11T00:00:00.000Z',
+          updatedAt: '2030-11-11T00:00:00.000Z',
+          metadata: undefined,
+        });
+
+        mockApiCall(
+          getFullApiPath('feature-photo/123'),
+          {
+            id: '123',
+            featureId: '456',
+            url: 'my mean url',
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { viewPriority: 5 },
+          },
+          'patch',
+          200,
+        );
+      });
+
+      it('updates the priority of the photo on the server', async () => {
+        await updateFeaturePhotoViewPriority('123', 5);
+
+        const savedDbData = await featurePhotoTable.toArray();
+
+        expect(savedDbData).toEqual([
+          {
+            id: '123',
+            featureId: '456',
+            url: 'my mean url',
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { viewPriority: 5 },
+          },
         ]);
       });
     });
