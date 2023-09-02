@@ -9,6 +9,7 @@ type PlantSitePhotoResponse = {
   createdAt: string;
   updatedAt: string;
   url: string;
+  metadata?: { [key: string]: any };
 };
 
 export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
@@ -26,6 +27,7 @@ export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
           url: photo.url,
           createdAt: photo.createdAt,
           updatedAt: photo.updatedAt,
+          metadata: photo.metadata,
         };
       },
     );
@@ -70,6 +72,7 @@ const transformToOfflinePhotoModels = async (
         url: data.url,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
+        metadata: data.metadata,
       };
     }),
   );

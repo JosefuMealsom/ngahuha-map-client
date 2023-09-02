@@ -5,4 +5,5 @@ export type PlantSitePhoto = {
   createdAt: string;
   updatedAt: string;
   url: string;
+  metadata?: { [key: string]: any };
 };

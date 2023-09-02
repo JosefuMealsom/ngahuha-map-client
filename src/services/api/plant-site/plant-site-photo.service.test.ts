@@ -32,6 +32,7 @@ describe('PlantSitePhotoService', () => {
     url: 'my cool url',
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
+    metadata: { hello: 'joe' },
   };
 
   const plantSitePhoto2 = {
@@ -40,6 +41,7 @@ describe('PlantSitePhotoService', () => {
     url: 'my sweet site',
     createdAt: '2020-11-11T00:00:00.000Z',
     updatedAt: '2020-11-11T00:00:00.000Z',
+    metadata: { goodbye: 'moe' },
   };
 
   describe('fetch()', () => {
@@ -58,6 +60,7 @@ describe('PlantSitePhotoService', () => {
           url: 'my cool url',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
         },
         {
           id: 'abc',
@@ -65,6 +68,7 @@ describe('PlantSitePhotoService', () => {
           url: 'my sweet site',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          metadata: { goodbye: 'moe' },
         },
       ]);
     });
@@ -86,12 +90,14 @@ describe('PlantSitePhotoService', () => {
           plantSiteId: '456',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
         }),
         expect.objectContaining({
           id: 'abc',
           plantSiteId: '456',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          metadata: { goodbye: 'moe' },
         }),
       ]);
     });
@@ -105,6 +111,7 @@ describe('PlantSitePhotoService', () => {
           data: new ArrayBuffer(8),
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
         });
 
         mockApiCall(getFullApiPath('plant-site-photo'), [
@@ -114,6 +121,7 @@ describe('PlantSitePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { goodbye: 'moe' },
           },
         ]);
       });
@@ -130,6 +138,7 @@ describe('PlantSitePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { goodbye: 'moe' },
           }),
         ]);
       });

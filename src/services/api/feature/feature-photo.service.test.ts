@@ -24,6 +24,7 @@ describe('FeaturePhotoService', () => {
     url: 'my cool url',
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
+    metadata: { hello: 'joe' },
   };
 
   const featurePhoto2 = {
@@ -32,6 +33,7 @@ describe('FeaturePhotoService', () => {
     url: 'my sweet site',
     createdAt: '2020-11-11T00:00:00.000Z',
     updatedAt: '2020-11-11T00:00:00.000Z',
+    metadata: { goodbye: 'moe' },
   };
 
   describe('fetch()', () => {
@@ -50,6 +52,7 @@ describe('FeaturePhotoService', () => {
           url: 'my cool url',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
         },
         {
           id: 'abc',
@@ -57,6 +60,7 @@ describe('FeaturePhotoService', () => {
           url: 'my sweet site',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          metadata: { goodbye: 'moe' },
         },
       ]);
     });
@@ -78,12 +82,14 @@ describe('FeaturePhotoService', () => {
           featureId: '456',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
         }),
         expect.objectContaining({
           id: 'abc',
           featureId: '456',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          metadata: { goodbye: 'moe' },
         }),
       ]);
     });
@@ -97,6 +103,7 @@ describe('FeaturePhotoService', () => {
           data: new ArrayBuffer(8),
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
         });
 
         mockApiCall(getFullApiPath('feature-photo'), [
@@ -106,6 +113,7 @@ describe('FeaturePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { hello: 'moe' },
           },
         ]);
       });
@@ -122,6 +130,7 @@ describe('FeaturePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { hello: 'moe' },
           }),
         ]);
       });

@@ -5,4 +5,5 @@ export type FeaturePhoto = {
   data?: ArrayBuffer;
   createdAt: string;
   updatedAt: string;
+  metadata?: { [key: string]: any };
 };
