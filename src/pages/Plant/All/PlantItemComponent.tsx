@@ -47,7 +47,11 @@ export function PlantItemComponent(props: Plant) {
   function renderPlantInfo() {
     return (
       <div className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white">
-        <div className="w-full h-full relative min-h-[15rem]">
+        <div
+          className={`w-full h-full relative min-h-[15rem] ${
+            previewImage ? 'opacity-100' : 'opacity-0'
+          } transition-opacity duration-300`}
+        >
           {renderImage()}
           <div className="absolute top-0 p-3 bg-black bg-opacity-40 w-full">
             <PlantTitleComponent {...props} />
