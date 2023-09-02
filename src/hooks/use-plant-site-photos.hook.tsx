@@ -17,7 +17,11 @@ export function usePlantSitePhotos(plantSiteId: string) {
       downloadedPhotos.map(async (photo) => {
         const blobData = new Blob([photo.data as ArrayBuffer]);
         const dataUrl = await blobToDataUrlService.convert(blobData);
-        return { id: photo.id, dataUrl: dataUrl || '' };
+        return {
+          id: photo.id,
+          dataUrl: dataUrl || '',
+          metadata: photo.metadata,
+        };
       }),
     );
 
