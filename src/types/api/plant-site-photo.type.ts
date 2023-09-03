@@ -6,4 +6,5 @@ export type PlantSitePhoto = {
   updatedAt: string;
   url: string;
   metadata?: { [key: string]: any };
+  primaryPhoto: boolean;
 };

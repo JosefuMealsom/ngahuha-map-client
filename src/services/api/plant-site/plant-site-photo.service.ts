@@ -1,4 +1,4 @@
-import { plantSitePhotoTable, plantSiteTable } from '../../offline.database';
+import { plantSitePhotoTable } from '../../offline.database';
 import apiFetchUtil from '../../../utils/api-fetch.util';
 import { PlantSitePhoto } from '../../../types/api/plant-site-photo.type';
 import { loadBlob } from '../../image-loader.service';
@@ -11,6 +11,7 @@ type PlantSitePhotoResponse = {
   updatedAt: string;
   url: string;
   metadata?: { [key: string]: any };
+  primaryPhoto: boolean;
 };
 
 export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
@@ -29,6 +30,7 @@ export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
           createdAt: photo.createdAt,
           updatedAt: photo.updatedAt,
           metadata: photo.metadata,
+          primaryPhoto: photo.primaryPhoto,
         };
       },
     );
@@ -62,18 +64,13 @@ export const syncPlantSitePhotosOffline = (): Promise<PlantSitePhoto[]> => {
   });
 };
 
-export const updatePlantPhotoViewPriority = async (
-  photoId: string,
-  newPriority: number,
-) => {
-  const metadata = { viewPriority: newPriority };
-  const response = await axiosClient.patch(
-    `/plant-site-photo/${photoId}`,
-    metadata,
-  );
+export const updatePlantPrimaryPhoto = async (photoId: string) => {
+  const response = await axiosClient.patch(`/plant-site-photo/${photoId}`, {
+    primaryPhoto: true,
+  });
 
   return plantSitePhotoTable.update(photoId, {
-    metadata: response.data.metadata,
+    primaryPhoto: response.data.primaryPhoto,
   });
 };
 
@@ -89,6 +86,7 @@ const transformToOfflinePhotoModels = async (
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
         metadata: data.metadata,
+        primaryPhoto: data.primaryPhoto,
       };
     }),
   );

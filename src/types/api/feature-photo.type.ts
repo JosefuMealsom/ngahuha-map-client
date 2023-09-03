@@ -6,4 +6,5 @@ export type FeaturePhoto = {
   createdAt: string;
   updatedAt: string;
   metadata?: { [key: string]: any };
+  primaryPhoto: boolean;
 };

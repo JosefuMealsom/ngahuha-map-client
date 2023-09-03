@@ -11,6 +11,7 @@ type FeaturePhotoResponse = {
   updatedAt: string;
   url: string;
   metadata?: { [key: string]: any };
+  primaryPhoto: boolean;
 };
 
 export const fetchFeaturePhotos = (): Promise<FeaturePhotoResponse[]> => {
@@ -29,6 +30,7 @@ export const fetchFeaturePhotos = (): Promise<FeaturePhotoResponse[]> => {
           createdAt: photo.createdAt,
           updatedAt: photo.updatedAt,
           metadata: photo.metadata,
+          primaryPhoto: photo.primaryPhoto,
         };
       },
     );
@@ -37,18 +39,13 @@ export const fetchFeaturePhotos = (): Promise<FeaturePhotoResponse[]> => {
   });
 };
 
-export const updateFeaturePhotoViewPriority = async (
-  photoId: string,
-  newPriority: number,
-) => {
-  const metadata = { viewPriority: newPriority };
-  const response = await axiosClient.patch(
-    `/feature-photo/${photoId}`,
-    metadata,
-  );
+export const updateFeaturePrimaryPhoto = async (photoId: string) => {
+  const response = await axiosClient.patch(`/feature-photo/${photoId}`, {
+    primaryPhoto: true,
+  });
 
   return featurePhotoTable.update(photoId, {
-    metadata: response.data.metadata,
+    primaryPhoto: response.data.primaryPhoto,
   });
 };
 
@@ -89,6 +86,7 @@ const transformToOfflinePhotoModels = async (
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
         metadata: data.metadata,
+        primaryPhoto: data.primaryPhoto,
       };
     }),
   );

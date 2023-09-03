@@ -5,7 +5,7 @@ import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import {
   fetchPlantSitePhotos,
   syncPlantSitePhotosOffline,
-  updatePlantPhotoViewPriority,
+  updatePlantPrimaryPhoto,
 } from './plant-site-photo.service';
 import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
 import { getFullApiPath } from '../../../utils/api-url.util';
@@ -26,6 +26,7 @@ describe('PlantSitePhotoService', () => {
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
     metadata: { hello: 'joe' },
+    primaryPhoto: true,
   };
 
   const plantSitePhoto2 = {
@@ -35,6 +36,7 @@ describe('PlantSitePhotoService', () => {
     createdAt: '2020-11-11T00:00:00.000Z',
     updatedAt: '2020-11-11T00:00:00.000Z',
     metadata: { goodbye: 'moe' },
+    primaryPhoto: false,
   };
 
   describe('fetch()', () => {
@@ -54,6 +56,7 @@ describe('PlantSitePhotoService', () => {
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
           metadata: { hello: 'joe' },
+          primaryPhoto: true,
         },
         {
           id: 'abc',
@@ -62,6 +65,7 @@ describe('PlantSitePhotoService', () => {
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
           metadata: { goodbye: 'moe' },
+          primaryPhoto: false,
         },
       ]);
     });
@@ -84,6 +88,7 @@ describe('PlantSitePhotoService', () => {
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
           metadata: { hello: 'joe' },
+          primaryPhoto: true,
         }),
         expect.objectContaining({
           id: 'abc',
@@ -91,6 +96,7 @@ describe('PlantSitePhotoService', () => {
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
           metadata: { goodbye: 'moe' },
+          primaryPhoto: false,
         }),
       ]);
     });
@@ -105,6 +111,7 @@ describe('PlantSitePhotoService', () => {
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
           metadata: { hello: 'joe' },
+          primaryPhoto: true,
         });
 
         mockApiCall(getFullApiPath('plant-site-photo'), [
@@ -115,6 +122,7 @@ describe('PlantSitePhotoService', () => {
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
             metadata: { goodbye: 'moe' },
+            primaryPhoto: false,
           },
         ]);
       });
@@ -132,12 +140,13 @@ describe('PlantSitePhotoService', () => {
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
             metadata: { goodbye: 'moe' },
+            primaryPhoto: false,
           }),
         ]);
       });
     });
 
-    describe('updateFeaturePhotoViewPriority()', () => {
+    describe('updatePlantPrimaryPhoto()', () => {
       beforeEach(async () => {
         await plantSitePhotoTable.add({
           id: '123',
@@ -146,6 +155,7 @@ describe('PlantSitePhotoService', () => {
           createdAt: '2030-11-11T00:00:00.000Z',
           updatedAt: '2030-11-11T00:00:00.000Z',
           metadata: undefined,
+          primaryPhoto: false,
         });
 
         mockApiCall(
@@ -156,7 +166,7 @@ describe('PlantSitePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
-            metadata: { viewPriority: 5 },
+            primaryPhoto: true,
           },
           'patch',
           200,
@@ -164,7 +174,7 @@ describe('PlantSitePhotoService', () => {
       });
 
       it('updates the priority of the photo on the server', async () => {
-        await updatePlantPhotoViewPriority('123', 5);
+        await updatePlantPrimaryPhoto('123');
 
         const savedDbData = await plantSitePhotoTable.toArray();
 
@@ -175,7 +185,8 @@ describe('PlantSitePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
-            metadata: { viewPriority: 5 },
+            metadata: undefined,
+            primaryPhoto: true,
           },
         ]);
       });
