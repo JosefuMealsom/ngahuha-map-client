@@ -20,14 +20,22 @@ export function PlantItemComponent(props: Plant) {
     if (!firstPlantSite) return;
 
     const getPlantImage = async () => {
-      const previewImage = await plantSitePhotoTable
+      const firstPlantSitePhotos = await plantSitePhotoTable
         .where({ plantSiteId: firstPlantSite.id })
-        .first();
+        .toArray();
 
-      if (!previewImage || !previewImage?.data) return;
+      let primaryPhoto = firstPlantSitePhotos.find(
+        (photo) => photo.primaryPhoto === true,
+      );
+
+      if (!primaryPhoto) {
+        primaryPhoto = firstPlantSitePhotos[0];
+      }
+
+      if (!primaryPhoto || !primaryPhoto?.data) return;
 
       const photoData = await blobToDataUrlService.convert(
-        new Blob([previewImage.data]),
+        new Blob([primaryPhoto.data]),
       );
 
       if (photoData) {
@@ -47,7 +55,11 @@ export function PlantItemComponent(props: Plant) {
   function renderPlantInfo() {
     return (
       <div className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white">
-        <div className="w-full h-full relative min-h-[15rem]">
+        <div
+          className={`w-full h-full relative min-h-[15rem] ${
+            previewImage ? 'opacity-100' : 'opacity-0'
+          } transition-opacity duration-300`}
+        >
           {renderImage()}
           <div className="absolute top-0 p-3 bg-black bg-opacity-40 w-full">
             <PlantTitleComponent {...props} />

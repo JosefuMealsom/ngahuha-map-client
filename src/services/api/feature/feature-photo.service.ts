@@ -2,6 +2,7 @@ import { featurePhotoTable } from '../../offline.database';
 import apiFetchUtil from '../../../utils/api-fetch.util';
 import { loadBlob } from '../../image-loader.service';
 import { FeaturePhoto } from '../../../types/api/feature-photo.type';
+import axiosClient from '../../axios/axios-client';
 
 type FeaturePhotoResponse = {
   id: string;
@@ -9,6 +10,8 @@ type FeaturePhotoResponse = {
   createdAt: string;
   updatedAt: string;
   url: string;
+  metadata?: { [key: string]: any };
+  primaryPhoto: boolean;
 };
 
 export const fetchFeaturePhotos = (): Promise<FeaturePhotoResponse[]> => {
@@ -26,11 +29,23 @@ export const fetchFeaturePhotos = (): Promise<FeaturePhotoResponse[]> => {
           url: photo.url,
           createdAt: photo.createdAt,
           updatedAt: photo.updatedAt,
+          metadata: photo.metadata,
+          primaryPhoto: photo.primaryPhoto,
         };
       },
     );
 
     success(featurePhotos);
+  });
+};
+
+export const updateFeaturePrimaryPhoto = async (photoId: string) => {
+  const response = await axiosClient.patch(`/feature-photo/${photoId}`, {
+    primaryPhoto: 'true',
+  });
+
+  return featurePhotoTable.update(photoId, {
+    primaryPhoto: response.data.primaryPhoto,
   });
 };
 
@@ -70,6 +85,8 @@ const transformToOfflinePhotoModels = async (
         url: data.url,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
+        metadata: data.metadata,
+        primaryPhoto: data.primaryPhoto,
       };
     }),
   );

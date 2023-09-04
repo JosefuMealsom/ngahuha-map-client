@@ -1,7 +1,11 @@
-import { plantSitePhotoTable, plantSiteTable } from '../../offline.database';
+import offlineDatabase, {
+  plantSitePhotoTable,
+  plantSiteTable,
+} from '../../offline.database';
 import apiFetchUtil from '../../../utils/api-fetch.util';
 import { PlantSitePhoto } from '../../../types/api/plant-site-photo.type';
 import { loadBlob } from '../../image-loader.service';
+import axiosClient from '../../axios/axios-client';
 
 type PlantSitePhotoResponse = {
   id: string;
@@ -9,6 +13,8 @@ type PlantSitePhotoResponse = {
   createdAt: string;
   updatedAt: string;
   url: string;
+  metadata?: { [key: string]: any };
+  primaryPhoto: boolean;
 };
 
 export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
@@ -26,6 +32,8 @@ export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
           url: photo.url,
           createdAt: photo.createdAt,
           updatedAt: photo.updatedAt,
+          metadata: photo.metadata,
+          primaryPhoto: photo.primaryPhoto,
         };
       },
     );
@@ -53,10 +61,50 @@ export const syncPlantSitePhotosOffline = (): Promise<PlantSitePhoto[]> => {
     const plantSitePhotos = await fetchPlantSitePhotos();
     const transformedModels =
       await transformToOfflinePhotoModels(plantSitePhotos);
-    await plantSitePhotoTable.bulkPut(transformedModels);
+
+    // need to do this as a put will overwrite the photo file data, which will
+    // make it so the image is downloaded again. Need to think of another way.
+    // Possibly could have a separate data table.
+    await offlineDatabase.transaction('rw', [plantSitePhotoTable], async () => {
+      for (const photo of transformedModels) {
+        const plantSitePhoto = await plantSitePhotoTable.get(photo.id);
+
+        if (!plantSitePhoto) {
+          await plantSitePhotoTable.put(photo);
+        } else {
+          await plantSitePhotoTable.update(photo.id, { ...photo });
+        }
+      }
+    });
 
     success(transformedModels);
   });
+};
+
+export const updatePlantPrimaryPhoto = async (updatedPhotoId: string) => {
+  const response = await axiosClient.patch(
+    `/plant-site-photo/${updatedPhotoId}`,
+    {
+      primaryPhoto: 'true',
+    },
+  );
+
+  const plantSiteId = (await plantSitePhotoTable.get(updatedPhotoId))
+    ?.plantSiteId;
+
+  const allPhotosForSite = await plantSitePhotoTable
+    .where({ plantSiteId: plantSiteId })
+    .toArray();
+
+  for (const photo of allPhotosForSite) {
+    await plantSitePhotoTable.update(photo.id, { primaryPhoto: false });
+  }
+
+  const updatedPrimaryPhoto = await plantSitePhotoTable.update(updatedPhotoId, {
+    primaryPhoto: response.data.primaryPhoto,
+  });
+
+  return updatedPrimaryPhoto;
 };
 
 const transformToOfflinePhotoModels = async (
@@ -70,6 +118,8 @@ const transformToOfflinePhotoModels = async (
         url: data.url,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
+        metadata: data.metadata,
+        primaryPhoto: data.primaryPhoto,
       };
     }),
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import closeImageUrl from '../../../assets/svg/x-white.svg';
+import { FullScreenImagePreviewComponent } from '../../../components/FullScreenImagePreviewComponent';
 
 export function PlantPhotoImage(props: {
   file: Blob;
@@ -29,14 +30,10 @@ export function PlantPhotoImage(props: {
     if (!viewFullScreen) return;
 
     return (
-      <div className="fixed top-0 left-0 w-screen h-screen object-contain z-20">
-        <div className="bg-black absolute top-0 left-0 w-full h-full -z-10"></div>
-        <img
-          src={previewImage}
-          className="w-full h-full object-contain"
-          onClick={() => setViewFullScreen(false)}
-        />
-      </div>
+      <FullScreenImagePreviewComponent
+        src={previewImage}
+        onClose={() => setViewFullScreen(false)}
+      />
     );
   }
 

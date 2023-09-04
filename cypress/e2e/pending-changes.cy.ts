@@ -15,7 +15,6 @@ function seedOfflinePlantSites() {
       { id: 1, plantId: 'abcdef', photos: [{ data: new ArrayBuffer(8) }] },
       { id: 2, plantId: undefined, photos: [{ data: new ArrayBuffer(8) }] },
     ],
-    gardenAreas: [{ name: 'Other' }],
   });
 }
 
@@ -49,7 +48,6 @@ describe('Plant sites waiting to be uploaded', () => {
         longitude: 20,
         plantId: 'abcdef',
         plantSitePhotos: [{ blobKey: 'mr blobby' }],
-        gardenAreaId: 'my garden area id',
       };
       cy.intercept(
         {

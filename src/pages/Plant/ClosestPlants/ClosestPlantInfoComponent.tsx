@@ -11,15 +11,25 @@ export function ClosestPlantInfoComponent(props: PlantSite) {
   const [photoDataUrl, setPhotoDataUrl] = useState<string>();
 
   const getPlantInfo = async () => {
-    const photo = await plantSitePhotoTable
-      .where({
-        plantSiteId: props.id,
-      })
-      .first();
+    const plantSitePhotos = await plantSitePhotoTable
+      .where({ plantSiteId: props.id })
+      .toArray();
 
-    if (!photo || !photo?.data) return;
-    const blobData = new Blob([photo.data]);
-    setPhotoDataUrl((await blobToDataUrlService.convert(blobData)) || '');
+    let primaryPhoto = plantSitePhotos.find(
+      (photo) => photo.primaryPhoto === true,
+    );
+
+    if (!primaryPhoto) {
+      primaryPhoto = plantSitePhotos[0];
+    }
+
+    if (!primaryPhoto || !primaryPhoto?.data) return;
+
+    const photoData = await blobToDataUrlService.convert(
+      new Blob([primaryPhoto.data]),
+    );
+
+    setPhotoDataUrl(photoData || '');
   };
 
   useEffect(() => {

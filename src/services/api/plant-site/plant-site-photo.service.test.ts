@@ -5,17 +5,10 @@ import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import {
   fetchPlantSitePhotos,
   syncPlantSitePhotosOffline,
+  updatePlantPrimaryPhoto,
 } from './plant-site-photo.service';
 import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
 import { getFullApiPath } from '../../../utils/api-url.util';
-
-vi.mock('../image-loader.service', () => ({
-  loadBlob: (url: string) => {
-    return new Promise((success) => {
-      success(new Blob());
-    });
-  },
-}));
 
 describe('PlantSitePhotoService', () => {
   beforeEach(() => {
@@ -32,6 +25,8 @@ describe('PlantSitePhotoService', () => {
     url: 'my cool url',
     createdAt: '1988-11-11T00:00:00.000Z',
     updatedAt: '1988-11-11T00:00:00.000Z',
+    metadata: { hello: 'joe' },
+    primaryPhoto: true,
   };
 
   const plantSitePhoto2 = {
@@ -40,6 +35,8 @@ describe('PlantSitePhotoService', () => {
     url: 'my sweet site',
     createdAt: '2020-11-11T00:00:00.000Z',
     updatedAt: '2020-11-11T00:00:00.000Z',
+    metadata: { goodbye: 'moe' },
+    primaryPhoto: false,
   };
 
   describe('fetch()', () => {
@@ -58,6 +55,8 @@ describe('PlantSitePhotoService', () => {
           url: 'my cool url',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
+          primaryPhoto: true,
         },
         {
           id: 'abc',
@@ -65,6 +64,8 @@ describe('PlantSitePhotoService', () => {
           url: 'my sweet site',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          metadata: { goodbye: 'moe' },
+          primaryPhoto: false,
         },
       ]);
     });
@@ -86,12 +87,16 @@ describe('PlantSitePhotoService', () => {
           plantSiteId: '456',
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
+          primaryPhoto: true,
         }),
         expect.objectContaining({
           id: 'abc',
           plantSiteId: '456',
           createdAt: '2020-11-11T00:00:00.000Z',
           updatedAt: '2020-11-11T00:00:00.000Z',
+          metadata: { goodbye: 'moe' },
+          primaryPhoto: false,
         }),
       ]);
     });
@@ -105,6 +110,8 @@ describe('PlantSitePhotoService', () => {
           data: new ArrayBuffer(8),
           createdAt: '1988-11-11T00:00:00.000Z',
           updatedAt: '1988-11-11T00:00:00.000Z',
+          metadata: { hello: 'joe' },
+          primaryPhoto: true,
         });
 
         mockApiCall(getFullApiPath('plant-site-photo'), [
@@ -114,6 +121,8 @@ describe('PlantSitePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { goodbye: 'moe' },
+            primaryPhoto: false,
           },
         ]);
       });
@@ -130,7 +139,55 @@ describe('PlantSitePhotoService', () => {
             url: 'my mean url',
             createdAt: '2030-11-11T00:00:00.000Z',
             updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: { goodbye: 'moe' },
+            primaryPhoto: false,
           }),
+        ]);
+      });
+    });
+
+    describe('updatePlantPrimaryPhoto()', () => {
+      beforeEach(async () => {
+        await plantSitePhotoTable.add({
+          id: '123',
+          plantSiteId: '456',
+          url: 'my mean url',
+          createdAt: '2030-11-11T00:00:00.000Z',
+          updatedAt: '2030-11-11T00:00:00.000Z',
+          metadata: undefined,
+          primaryPhoto: false,
+        });
+
+        mockApiCall(
+          getFullApiPath('plant-site-photo/123'),
+          {
+            id: '123',
+            plantSiteId: '456',
+            url: 'my mean url',
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+            primaryPhoto: true,
+          },
+          'patch',
+          200,
+        );
+      });
+
+      it('updates the priority of the photo on the server', async () => {
+        await updatePlantPrimaryPhoto('123');
+
+        const savedDbData = await plantSitePhotoTable.toArray();
+
+        expect(savedDbData).toEqual([
+          {
+            id: '123',
+            plantSiteId: '456',
+            url: 'my mean url',
+            createdAt: '2030-11-11T00:00:00.000Z',
+            updatedAt: '2030-11-11T00:00:00.000Z',
+            metadata: undefined,
+            primaryPhoto: true,
+          },
         ]);
       });
     });

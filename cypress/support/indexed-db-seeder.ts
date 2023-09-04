@@ -1,7 +1,6 @@
 import {
   featurePhotoUploadTable,
   featureUploadTable,
-  gardenAreaTable,
   plantSiteTable,
   plantSiteUploadTable,
   plantTable,
@@ -11,7 +10,6 @@ import { PlantSiteUpload } from '../../src/types/api/upload/plant-site-upload.ty
 import plantFactory from '../../src/test-helpers/factories/plant';
 import plantSiteFactory from '../../src/test-helpers/factories/plant-site';
 import plantSiteUploadFactory from '../../src/test-helpers/factories/plant-site-upload';
-import gardenAreaFactory from '../../src/test-helpers/factories/garden-area';
 import { GardenArea } from '../../src/types/api/garden-area.type';
 import { PlantSite } from '../../src/types/api/plant-site.type';
 import {
@@ -24,7 +22,6 @@ import featurePhotoUploadFactory from '../../src/test-helpers/factories/feature-
 type DbSeedData = {
   plants?: Partial<Plant>[];
   plantSiteUploads?: Partial<PlantSiteUpload>[];
-  gardenAreas?: Partial<GardenArea>[];
   plantSites?: Partial<PlantSite>[];
   featureUploads?: Partial<FeatureUpload>[];
   featurePhotoUploads?: Partial<FeaturePhotoUpload>[];
@@ -34,7 +31,6 @@ export const seed = (seedData: DbSeedData) => {
   const {
     plants,
     plantSiteUploads,
-    gardenAreas,
     plantSites,
     featureUploads,
     featurePhotoUploads,
@@ -47,12 +43,6 @@ export const seed = (seedData: DbSeedData) => {
   if (plantSiteUploads) {
     plantSiteUploads.forEach((p) =>
       plantSiteUploadTable.add(plantSiteUploadFactory.create(p)),
-    );
-  }
-
-  if (gardenAreas) {
-    gardenAreas.forEach((g) =>
-      gardenAreaTable.add(gardenAreaFactory.create(g)),
     );
   }
 

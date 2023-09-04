@@ -11,15 +11,25 @@ export function PlantSiteListItemComponent(props: PlantSite) {
   const [photoDataUrl, setPhotoDataUrl] = useState<string>();
 
   const getPlantInfo = async () => {
-    const photo = await plantSitePhotoTable
-      .where({
-        plantSiteId: props.id,
-      })
-      .first();
+    const firstPlantSitePhotos = await plantSitePhotoTable
+      .where({ plantSiteId: props.id })
+      .toArray();
 
-    if (!photo || !photo?.data) return;
-    const blobData = new Blob([photo.data]);
-    setPhotoDataUrl((await blobToDataUrlService.convert(blobData)) || '');
+    let primaryPhoto = firstPlantSitePhotos.find(
+      (photo) => photo.primaryPhoto === true,
+    );
+
+    if (!primaryPhoto) {
+      primaryPhoto = firstPlantSitePhotos[0];
+    }
+
+    if (!primaryPhoto || !primaryPhoto?.data) return;
+
+    const photoData = await blobToDataUrlService.convert(
+      new Blob([primaryPhoto.data]),
+    );
+
+    setPhotoDataUrl(photoData || '');
   };
 
   useEffect(() => {

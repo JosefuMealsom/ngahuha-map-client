@@ -15,7 +15,6 @@ import { FeaturePhoto } from '../types/api/feature-photo.type';
 class OfflineDatabase extends Dexie {
   public readonly plantSite!: Table<PlantSite>;
   public readonly plantSitePhoto!: Table<PlantSitePhoto>;
-  public readonly gardenArea!: Table<GardenArea>;
   public readonly plant!: Table<Plant>;
   public readonly plantType!: Table<PlantType>;
   public readonly feature!: Table<Feature>;
@@ -28,8 +27,7 @@ class OfflineDatabase extends Dexie {
 
   constructor() {
     super('OfflineDatabase');
-    this.version(3).stores({
-      gardenArea: 'id, name, updatedAt',
+    this.version(4).stores({
       species: 'id, name, updatedAt',
       plant: 'id, species, cultivar, updatedAt',
       plantType: 'id, name',
@@ -47,7 +45,6 @@ class OfflineDatabase extends Dexie {
 const offlineDatabase = new OfflineDatabase();
 
 export default offlineDatabase;
-export const gardenAreaTable = offlineDatabase.gardenArea;
 export const plantTable = offlineDatabase.plant;
 export const plantTypeTable = offlineDatabase.plantType;
 export const plantSiteTable = offlineDatabase.plantSite;
