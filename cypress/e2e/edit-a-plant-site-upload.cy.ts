@@ -11,7 +11,6 @@ function seedOfflineDatabase() {
     plantSiteUploads: [
       { id: 1, plantId: undefined, photos: [{ data: new ArrayBuffer(8) }] },
     ],
-    gardenAreas: [{ name: 'Other' }],
   });
 }
 

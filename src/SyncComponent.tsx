@@ -1,4 +1,3 @@
-import gardenAreaService from './services/api/garden-area.service';
 import { syncPlantsOffline } from './services/api/plant.service';
 import { syncPlantSitesOffline } from './services/api/plant-site/plant-site.service';
 import {
@@ -25,7 +24,6 @@ export function SyncComponent() {
   async function syncData() {
     setIsSyncing(true);
     setSyncText('Syncing plants...');
-    await gardenAreaService.syncOffline();
     await syncPlantsOffline();
     await syncPlantSitesOffline();
     await syncPlantSitePhotosOffline();
