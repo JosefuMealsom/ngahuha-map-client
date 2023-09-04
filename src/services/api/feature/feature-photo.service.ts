@@ -41,7 +41,7 @@ export const fetchFeaturePhotos = (): Promise<FeaturePhotoResponse[]> => {
 
 export const updateFeaturePrimaryPhoto = async (photoId: string) => {
   const response = await axiosClient.patch(`/feature-photo/${photoId}`, {
-    primaryPhoto: true,
+    primaryPhoto: 'true',
   });
 
   return featurePhotoTable.update(photoId, {

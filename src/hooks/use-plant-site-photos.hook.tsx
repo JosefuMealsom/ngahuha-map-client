@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { plantSitePhotoTable } from '../services/offline.database';
 import blobToDataUrlService from '../services/blob-to-data-url.service';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export function usePlantSitePhotos(plantSiteId: string) {
+  const photos = useLiveQuery(() =>
+    plantSitePhotoTable.where({ plantSiteId: plantSiteId }).toArray(),
+  );
+
   const [plantSitePhotoUrls, setPlantSitePhotoUrls] =
-    useState<{ id: string; dataUrl: string }[]>();
+    useState<{ id: string; dataUrl: string; primaryPhoto: boolean }[]>();
 
   const getPlantDataPhotoUrls = async () => {
-    const photos = await plantSitePhotoTable
-      .where({ plantSiteId: plantSiteId })
-      .toArray();
+    if (!photos) return;
 
     const downloadedPhotos = photos.filter((photo) => photo.data);
 
@@ -20,7 +23,7 @@ export function usePlantSitePhotos(plantSiteId: string) {
         return {
           id: photo.id,
           dataUrl: dataUrl || '',
-          metadata: photo.metadata,
+          primaryPhoto: photo.primaryPhoto,
         };
       }),
     );
@@ -30,7 +33,7 @@ export function usePlantSitePhotos(plantSiteId: string) {
 
   useEffect(() => {
     getPlantDataPhotoUrls();
-  }, []);
+  }, [photos]);
 
   return plantSitePhotoUrls;
 }

@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Photo } from '../types/api/photo.type';
 import { FullScreenImagePreviewComponent } from './FullScreenImagePreviewComponent';
 import closeImgUrl from '../assets/svg/x-white.svg';
+import starImgUrl from '../assets/svg/star.svg';
 
 export function ImageEditorComponent(props: {
   photos: Photo[];
   onClose: () => any;
+  onSetPrimaryPhoto: (id: string) => any;
 }) {
   const [viewFullScreen, setViewFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
 
-  function onImageClick(imageSrc: string) {
+  function onPreviewClick(imageSrc: string) {
     setSelectedImage(imageSrc);
     setViewFullScreen(true);
   }
@@ -26,20 +28,46 @@ export function ImageEditorComponent(props: {
     );
   }
 
+  function renderPrimaryPhotoIndicator(photo: Photo) {
+    if (!photo.primaryPhoto) return;
+
+    return <img src={starImgUrl} className="absolute top-3 right-3 h-7 w-7" />;
+  }
+
+  function renderPrimaryPhotoButton(photo: Photo) {
+    if (photo.primaryPhoto) return;
+
+    return (
+      <div className="absolute bottom-2 right-2 flex">
+        <button
+          className="rounded-md text-xs bg-emerald-600 py-1 px-2 mr-2
+      text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500"
+          onClick={() => props.onSetPrimaryPhoto(photo.id)}
+        >
+          Set as primary photo
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="mb-4 w-full h-full overflow-scroll p-5">
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4 overflow-visible">
           {props.photos.map((photo) => (
             <div
               className="overflow-hidden rounded-md hover:outline-blue-500
-              hover:outline hover:outline-2 cursor-pointer sm:h-80"
+              hover:outline hover:outline-2 cursor-pointer sm:h-80 relative"
+              key={photo.id}
             >
               <img
                 className="object-cover h-full w-full"
                 src={photo.dataUrl}
-                onClick={() => onImageClick(photo.dataUrl)}
+                draggable={false}
+                onClick={() => onPreviewClick(photo.dataUrl)}
               />
+              {renderPrimaryPhotoIndicator(photo)}
+              {renderPrimaryPhotoButton(photo)}
             </div>
           ))}
         </div>

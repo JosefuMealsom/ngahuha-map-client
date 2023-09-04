@@ -20,14 +20,22 @@ export function PlantItemComponent(props: Plant) {
     if (!firstPlantSite) return;
 
     const getPlantImage = async () => {
-      const previewImage = await plantSitePhotoTable
+      const firstPlantSitePhotos = await plantSitePhotoTable
         .where({ plantSiteId: firstPlantSite.id })
-        .first();
+        .toArray();
 
-      if (!previewImage || !previewImage?.data) return;
+      let primaryPhoto = firstPlantSitePhotos.find(
+        (photo) => photo.primaryPhoto === true,
+      );
+
+      if (!primaryPhoto) {
+        primaryPhoto = firstPlantSitePhotos[0];
+      }
+
+      if (!primaryPhoto || !primaryPhoto?.data) return;
 
       const photoData = await blobToDataUrlService.convert(
-        new Blob([previewImage.data]),
+        new Blob([primaryPhoto.data]),
       );
 
       if (photoData) {

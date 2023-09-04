@@ -2,13 +2,14 @@ import { usePlantSitePhotos } from '../../../hooks/use-plant-site-photos.hook';
 import { useLoaderData } from 'react-router-dom';
 import { PlantDescription } from '../../Plant/Show/PlantDescription';
 import { CarouselComponent } from '../../../components/CarouselComponent';
-import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import { Plant } from '../../../types/api/plant.type';
 import { PlantSite } from '../../../types/api/plant-site.type';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 import { ProtectedLayout } from '../../ProtectedLayout';
 import { ImageEditorComponent } from '../../../components/ImageEditorComponent';
 import { useState } from 'react';
+import { updatePlantPrimaryPhoto } from '../../../services/api/plant-site/plant-site-photo.service';
+import { toast } from 'react-toastify';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
 
@@ -31,6 +32,17 @@ export function PlantSiteInformation() {
     return <CarouselComponent elements={elements} />;
   }
 
+  async function onUpdatePrimaryPhotoClick(id: string) {
+    try {
+      await updatePlantPrimaryPhoto(id);
+      toast('Primary photo updated');
+    } catch (error) {
+      toast(
+        `There was an updating the primary photo: ${(error as Error).message}`,
+      );
+    }
+  }
+
   function renderPhotoMetadataEditor() {
     if (!imageMetadataEditorOpen || !photos) return;
 
@@ -40,6 +52,7 @@ export function PlantSiteInformation() {
           <ImageEditorComponent
             photos={photos}
             onClose={() => setImageMetadataEditorOpen(false)}
+            onSetPrimaryPhoto={onUpdatePrimaryPhotoClick}
           />
         </div>
       </ProtectedLayout>
