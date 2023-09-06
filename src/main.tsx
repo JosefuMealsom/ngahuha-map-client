@@ -27,6 +27,7 @@ import { editFeatureLoader } from './pages/Feature/Edit/edit-feature.loader';
 import { closestPlantsLoader } from './pages/Plant/ClosestPlants/closest-plants.loader';
 import { loadAllPlantSites } from './pages/PlantSite/All/plant-sites-loader';
 import { AllPlantSitesPage } from './pages/PlantSite/All/AllPlantSitesPage';
+import PathEditorPage from './pages/PathEditor/PathEditorPage';
 readUserStateFromCookie();
 
 const router = createBrowserRouter([
@@ -118,6 +119,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <EditFeaturePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'path-tracer',
+        element: (
+          <ProtectedRoute>
+            <PathEditorPage />
           </ProtectedRoute>
         ),
       },

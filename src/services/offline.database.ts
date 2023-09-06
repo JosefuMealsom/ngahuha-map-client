@@ -1,6 +1,5 @@
 import Dexie, { Table } from 'dexie';
 import type { PlantSiteUpload } from '../types/api/upload/plant-site-upload.type';
-import type { GardenArea } from '../types/api/garden-area.type';
 import type { Plant } from '../types/api/plant.type';
 import type { PlantType } from '../types/api/plant-type.type';
 import { PlantSite } from '../types/api/plant-site.type';
@@ -11,6 +10,7 @@ import {
 } from '../types/api/upload/feature-upload.type';
 import { Feature } from '../types/api/feature.type';
 import { FeaturePhoto } from '../types/api/feature-photo.type';
+import { Path, PathNode } from '../types/api/path.type';
 
 class OfflineDatabase extends Dexie {
   public readonly plantSite!: Table<PlantSite>;
@@ -25,9 +25,12 @@ class OfflineDatabase extends Dexie {
   public readonly featureUpload!: Table<FeatureUpload, number>;
   public readonly featurePhotoUpload!: Table<FeaturePhotoUpload, number>;
 
+  public readonly path!: Table<Path, number>;
+  public readonly pathNode!: Table<PathNode, number>;
+
   constructor() {
     super('OfflineDatabase');
-    this.version(4).stores({
+    this.version(7).stores({
       species: 'id, name, updatedAt',
       plant: 'id, species, cultivar, updatedAt',
       plantType: 'id, name',
@@ -38,6 +41,8 @@ class OfflineDatabase extends Dexie {
       featurePhotoUpload: '++id, featureUploadId',
       feature: 'id, updatedAt',
       featurePhoto: 'id, updatedAt, featureId',
+      path: '++id, name',
+      pathNode: '++id, pathId',
     });
   }
 }
@@ -55,3 +60,6 @@ export const featurePhotoTable = offlineDatabase.featurePhoto;
 export const plantSiteUploadTable = offlineDatabase.plantSiteUpload;
 export const featureUploadTable = offlineDatabase.featureUpload;
 export const featurePhotoUploadTable = offlineDatabase.featurePhotoUpload;
+
+export const pathTable = offlineDatabase.path;
+export const pathNodeTable = offlineDatabase.pathNode;
