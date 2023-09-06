@@ -50,7 +50,7 @@ export function MapContainer() {
       <div className="h-screen">
         <div className="relative touch-none inline-block select-none overflow-hidden w-full">
           <MapCanvas />
-          <FeatureMarker
+          {/* <FeatureMarker
             text="The steppes"
             position={{
               latitude: -35.377761,
@@ -65,7 +65,7 @@ export function MapContainer() {
               longitude: 173.965264,
               accuracy: 0,
             }}
-          />
+          /> */}
           <LocationMarker />
           <MapFilter />
         </div>

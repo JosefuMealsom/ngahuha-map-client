@@ -2,6 +2,7 @@ import { LatLong } from '../../types/lat-long.type';
 import { useMapStore } from '../../store/map.store';
 import { interpolateToCanvasPosition } from '../map-position-interpolator.service';
 import pinSvg from '../../assets/svg/map-pin.svg';
+import { PathNode } from '../../types/api/path.type';
 
 const pinImage = new Image();
 pinImage.src = pinSvg;
@@ -60,4 +61,34 @@ export const renderMarkerOnMap = (
   context.rect(x - 5, y - 5, 10, 10);
   context.fillStyle = colour || '#f00';
   context.fill();
+};
+
+export const renderPath = (
+  context: CanvasRenderingContext2D,
+  pathNodes: LatLong[],
+  colour?: string,
+) => {
+  if (pathNodes.length < 2) return;
+
+  const startPosition = interpolateToCanvasPosition(
+    pathNodes[0],
+    useMapStore.getState(),
+  );
+
+  context.beginPath();
+  context.lineWidth = 2;
+  context.strokeStyle = colour || '#f00';
+  context.fillStyle = colour || '#f00';
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
+  context.moveTo(startPosition!.x, startPosition!.y);
+
+  for (let i = 1; i < pathNodes.length; i++) {
+    const position = interpolateToCanvasPosition(
+      pathNodes[i],
+      useMapStore.getState(),
+    );
+    context.lineTo(position!.x, position!.y);
+  }
+  context.stroke();
 };
