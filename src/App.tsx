@@ -5,6 +5,7 @@ import { SyncComponent } from './SyncComponent';
 import { usePosition } from './hooks/use-position.hook';
 import { useEffect } from 'react';
 import { useAppStore } from './store/app.store';
+import { AdminNavigation } from './pages/Navigation/AdminNavigation';
 
 function App() {
   const position = usePosition();
@@ -22,6 +23,7 @@ function App() {
         <SyncComponent />
       </div>
       <ScrollRestoration />
+      <AdminNavigation />
     </div>
   );
 }
