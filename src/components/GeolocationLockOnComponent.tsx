@@ -82,7 +82,7 @@ export function GeolocationLockOnComponent(props: {
     if (!isLockingOn || !lockedOnPosition) return;
 
     return (
-      <div className="relative">
+      <div className="relative inline-block">
         <button
           className="bg-sky-500 border-sky-500 border py-2 px-4 text-xs font-semibold text-white cursor-pointer rounded-full"
           onClick={() => onGeolocationLockingOnComplete(lockedOnPosition)}

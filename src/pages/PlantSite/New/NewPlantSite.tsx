@@ -1,4 +1,3 @@
-import { ActiveFilterLinkComponent } from '../../../components/ActiveFilterLinkComponent';
 import { CreateNavigationBar } from '../../Navigation/CreateNavigationBar';
 import { PlantSiteForm } from '../CommonFormElements/PlantSiteForm';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +6,7 @@ export function NewPlantSite() {
   const navigate = useNavigate();
 
   function onSaveSuccess() {
-    navigate('/', { replace: true });
+    navigate(-1);
   }
 
   return (

@@ -24,7 +24,7 @@ export function PlantPhotosToUpload() {
 
   useEffect(() => {
     if (plantUploadCount === 0 && featureUploadCount === 0) {
-      navigate('/', { replace: true });
+      navigate(-1);
     }
   }, [plantUploadCount, featureUploadCount]);
 

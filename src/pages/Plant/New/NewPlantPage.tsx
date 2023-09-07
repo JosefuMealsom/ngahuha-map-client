@@ -11,7 +11,7 @@ export function NewPlantPage() {
     try {
       await createPlant(createPlantData);
       toast('Plant created successfully');
-      navigate('/', { replace: true });
+      navigate(-1);
     } catch (error) {
       toast(`An error occured when creating the plant: ${error}`);
     }
