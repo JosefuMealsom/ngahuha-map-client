@@ -38,7 +38,7 @@ export function AllPlantSitesPage() {
         </div>
       </div>
 
-      <div className="mb-4 w-full h-full bg-white overflow-scroll ">
+      <div className="mb-4 w-full h-full bg-white">
         <div className="sm:grid sm:grid-cols-4">
           {filteredPlantSites?.map((plantSite) => (
             <div key={plantSite.id} data-cy={`plant-item-${plantSite.id}`}>
