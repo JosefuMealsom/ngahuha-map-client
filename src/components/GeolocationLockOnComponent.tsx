@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useAppStore } from '../store/app.store';
 import { LatLong } from '../types/lat-long.type';
+import { LoaderSpinnerComponent } from './LoaderSpinnerComponent';
 
 export function GeolocationLockOnComponent(props: {
   onGeolocationLocked: (coords: LatLong) => void;
   onLockingOn?: () => void;
   triggerOnView?: boolean;
   targetAccuracy?: number;
+  text?: string;
+  lockingOnText?: string;
 }) {
   const [isLockingOn, setIsLockingOn] = useState(false);
   const { position } = useAppStore();
@@ -70,7 +73,7 @@ export function GeolocationLockOnComponent(props: {
         onClick={lockOnLocation}
         data-cy="lock-on-location-button"
       >
-        Lock on location
+        {props.text || 'Lock on location'}
       </button>
     );
   }
@@ -79,14 +82,20 @@ export function GeolocationLockOnComponent(props: {
     if (!isLockingOn || !lockedOnPosition) return;
 
     return (
-      <div>
+      <div className="relative">
         <button
           className="bg-sky-500 border-sky-500 border py-2 px-4 text-xs font-semibold text-white cursor-pointer rounded-full"
           onClick={() => onGeolocationLockingOnComplete(lockedOnPosition)}
           data-cy="finish-lock-on-button"
         >
-          Locking on: acc. {lockedOnPosition?.accuracy.toFixed(0)}m
+          <div className="relative pr-5">
+            {props.lockingOnText || 'Locking on'}: acc{' '}
+            {lockedOnPosition?.accuracy.toFixed(0)}m
+          </div>
         </button>
+        <span className="absolute right-3 top-1/2 -translate-y-1/2">
+          <LoaderSpinnerComponent />
+        </span>
       </div>
     );
   }
