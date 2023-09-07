@@ -69,7 +69,7 @@ export function AllPlantsPage() {
         </div>
       </div>
 
-      <div className="mb-4 w-full h-full bg-white overflow-scroll ">
+      <div className="mb-4 w-full h-full bg-white overflow-scroll">
         <div className="sm:grid sm:grid-cols-4">
           {filteredItems?.map((item) => renderPlantOrFeatureItem(item))}
         </div>
