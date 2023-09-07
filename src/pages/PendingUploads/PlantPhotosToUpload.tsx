@@ -125,7 +125,10 @@ export function PlantPhotosToUpload() {
     if (!uploading) return;
 
     return (
-      <div className="fixed top-0 left-0 h-full w-full bg-black bg-opacity-80 flex items-center justify-center">
+      <div
+        className="fixed top-0 left-0 h-screen w-full bg-black
+      bg-opacity-80 flex items-center justify-center z-20 touch-none"
+      >
         <p className="text-white font-semibold mr-1.5">Uploading changes</p>
         <LoaderSpinnerComponent />
       </div>
@@ -133,7 +136,7 @@ export function PlantPhotosToUpload() {
   }
 
   return (
-    <div className="h-full bg-white w-full absolute top-0 left-0 pb-safe">
+    <div className="h-full bg-white w-full absolute top-0 left-0 pb-safe min-h-screen">
       <div className="mb-4 pt-14 w-full h-full bg-white p-6">
         <h1 className="font-bold mt-5 relative mb-3">
           {uploading ? 'Uploading' : 'Upload changes'}
