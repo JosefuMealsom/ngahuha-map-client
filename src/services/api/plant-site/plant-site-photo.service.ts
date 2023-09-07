@@ -42,7 +42,7 @@ export const fetchPlantSitePhotos = (): Promise<PlantSitePhotoResponse[]> => {
   });
 };
 
-export const syncPhotoFilesOffline = async () => {
+export const syncPlantSitePhotoFilesOffline = async () => {
   const plantSitePhotos = await plantSitePhotoTable.toArray();
   const notDownloadedPhotos = plantSitePhotos.filter((photo) => !photo.data);
 

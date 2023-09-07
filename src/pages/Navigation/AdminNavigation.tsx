@@ -3,6 +3,7 @@ import { ProtectedLayout } from '../ProtectedLayout';
 import userImageUrl from '../../assets/svg/user.svg';
 import plusImageUrl from '../../assets/svg/plus.svg';
 import listImageUrl from '../../assets/svg/list.svg';
+import refreshDataUrl from '../../assets/svg/refresh-cw.svg';
 import uploadUrl from '../../assets/svg/upload-cloud-white.svg';
 import { useLiveQuery } from 'dexie-react-hooks';
 
@@ -10,6 +11,7 @@ import {
   featureUploadTable,
   plantSiteUploadTable,
 } from '../../services/offline.database';
+import { syncDataFromServer } from '../../services/api/sync-data.service';
 
 export function AdminNavigation() {
   const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
@@ -31,6 +33,14 @@ export function AdminNavigation() {
 
   return (
     <div className="bottom-3 right-5 pb-safe fixed">
+      <ProtectedLayout>
+        <div
+          className="rounded-full flex items-center drop-shadow-sm bg-emerald-800 p-3 cursor-pointer mb-3"
+          onClick={syncDataFromServer}
+        >
+          <img src={refreshDataUrl} className="inline-block w-6 text-center" />
+        </div>
+      </ProtectedLayout>
       <ProtectedLayout>
         <Link to="/plant-sites" data-cy="open-plant-sites-list">
           <div className="rounded-full flex items-center drop-shadow-sm bg-emerald-800 p-3 mb-3">

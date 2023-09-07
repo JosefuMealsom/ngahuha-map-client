@@ -1,39 +1,26 @@
-import { syncPlantsOffline } from './services/api/plant.service';
-import { syncPlantSitesOffline } from './services/api/plant-site/plant-site.service';
-import {
-  syncPhotoFilesOffline as downloadPlantPhotoFiles,
-  syncPlantSitePhotosOffline,
-} from './services/api/plant-site/plant-site-photo.service';
 import { useEffect, useState } from 'react';
-import { syncFeaturesOffline } from './services/api/feature/feature.service';
-import {
-  syncPhotoFilesOffline as downloadFeaturePhotoFiles,
-  syncFeaturePhotosOffline,
-} from './services/api/feature/feature-photo.service';
+import { useAppStore } from './store/app.store';
 
 export function SyncComponent() {
+  const { syncStatus } = useAppStore();
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncText, setSyncText] = useState('');
 
   useEffect(() => {
-    if (navigator.onLine) {
-      syncData();
+    switch (syncStatus) {
+      case 'Not syncing':
+        setIsSyncing(false);
+        break;
+      case 'Syncing data':
+        setIsSyncing(true);
+        setSyncText('Syncing data');
+        break;
+      case 'Syncing photos':
+        setIsSyncing(true);
+        setSyncText('Syncing photos');
+        break;
     }
-  }, []);
-
-  async function syncData() {
-    setIsSyncing(true);
-    setSyncText('Syncing plants...');
-    await syncPlantsOffline();
-    await syncPlantSitesOffline();
-    await syncPlantSitePhotosOffline();
-    await syncFeaturesOffline();
-    await syncFeaturePhotosOffline();
-    setSyncText('Syncing photos...');
-    await downloadPlantPhotoFiles();
-    await downloadFeaturePhotoFiles();
-    setIsSyncing(false);
-  }
+  }, [syncStatus]);
 
   return (
     <div
