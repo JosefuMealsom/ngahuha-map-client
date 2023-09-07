@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site-uploads';
 import { FeatureComponent } from './FeatureComponent';
 import { bulkUploadFeaturesToServer } from '../../services/api/feature/sync-features';
+import { LoaderSpinnerComponent } from '../../components/LoaderSpinnerComponent';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);
@@ -46,7 +47,7 @@ export function PlantPhotosToUpload() {
   }
 
   function renderUploadButton() {
-    if (uploading || (plantUploadCount === 0 && featureUploadCount === 0))
+    if (uploading || (readyForUpload.length === 0 && featureUploadCount === 0))
       return;
 
     return (
@@ -120,6 +121,17 @@ export function PlantPhotosToUpload() {
     );
   }
 
+  function renderUploadingModal() {
+    if (!uploading) return;
+
+    return (
+      <div className="fixed top-0 left-0 h-full w-full bg-black bg-opacity-80 flex items-center justify-center">
+        <p className="text-white font-semibold mr-1.5">Uploading changes</p>
+        <LoaderSpinnerComponent />
+      </div>
+    );
+  }
+
   return (
     <div className="h-full bg-white w-full absolute top-0 left-0 pb-safe">
       <div className="mb-4 pt-14 w-full h-full bg-white p-6">
@@ -130,6 +142,7 @@ export function PlantPhotosToUpload() {
         {renderFeaturesToUpload()}
         {renderReadyForUpload()}
         {renderRequiresIdentification()}
+        {renderUploadingModal()}
       </div>
     </div>
   );
