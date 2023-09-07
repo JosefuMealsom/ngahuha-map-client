@@ -36,19 +36,26 @@ export function PlantSiteListItemComponent(props: PlantSite) {
     getPlantInfo();
   }, []);
 
-  function renderPlantInfo() {
+  function renderPlantTitle() {
     if (!plant) return;
 
+    return <PlantTitleComponent {...plant} />;
+  }
+
+  function renderPlantInfo() {
     return (
       <div
-        className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white min-h-[15rem]"
+        className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white"
         data-cy={`closest-plant-site-${props.id}`}
       >
         <div className="w-full h-full align-top relative">
-          <img src={photoDataUrl} className="w-full h-full object-cover" />
+          <img
+            src={photoDataUrl}
+            className="w-full h-full object-cover min-h-[15rem]"
+          />
 
           <div className="absolute top-0 p-3 bg-black bg-opacity-40 w-full">
-            <PlantTitleComponent {...plant} />
+            {renderPlantTitle()}
           </div>
         </div>
       </div>
