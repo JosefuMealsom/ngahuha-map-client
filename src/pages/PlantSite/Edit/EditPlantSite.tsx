@@ -20,7 +20,7 @@ export function EditPlantSite() {
   }));
 
   function onSaveSuccess() {
-    navigate('/plant-site/pending-upload', { replace: true });
+    navigate(-1);
   }
 
   return (

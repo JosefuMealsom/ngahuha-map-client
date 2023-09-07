@@ -27,7 +27,7 @@ export function EditFeaturePage() {
 
   async function onFeatureUpdate() {
     toast('Feature updated successfully');
-    navigate('/plant-site/pending-upload', { replace: true });
+    navigate(-1);
   }
 
   return (

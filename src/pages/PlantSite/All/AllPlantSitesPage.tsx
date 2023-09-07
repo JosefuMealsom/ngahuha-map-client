@@ -6,6 +6,7 @@ import { useLoaderData } from 'react-router-dom';
 import { SearchPlantSitesFilter } from '../../../services/filter/search-plant-sites.filter';
 import { PlantSite } from '../../../types/api/plant-site.type';
 import { PlantSiteListItemComponent } from '../PlantSiteListItemComponent';
+import { NavigationBar } from '../../Navigation/NavigationBar';
 
 export function AllPlantSitesPage() {
   const { plants, plantSites } = useLoaderData() as {
@@ -35,6 +36,7 @@ export function AllPlantSitesPage() {
               onMatchesChange={onSearchAllPlantSites}
             />
           </div>
+          <NavigationBar activePage="All plant sites" />
         </div>
       </div>
 

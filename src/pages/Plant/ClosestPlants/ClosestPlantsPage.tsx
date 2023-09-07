@@ -67,13 +67,13 @@ export function ClosestPlantsPage() {
             />
           </div>
           <NavigationBar activePage="Closest Plants">
-            <div className="mb-1 absolute right-4">
-              <GeolocationLockOnComponent
-                onGeolocationLocked={onLocationLocked}
-                targetAccuracy={10}
-                triggerOnView={true}
-              />
-            </div>
+            <GeolocationLockOnComponent
+              onGeolocationLocked={onLocationLocked}
+              targetAccuracy={10}
+              triggerOnView={true}
+              text="Fetch closest plants"
+              lockingOnText="Fetching"
+            />
           </NavigationBar>
         </div>
         <div className="sm:grid sm:grid-cols-4">

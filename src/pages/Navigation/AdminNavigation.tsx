@@ -45,16 +45,6 @@ export function AdminNavigation() {
             />
           </div>
         </ProtectedLayout>
-        <ProtectedLayout>
-          <Link to="/plant-sites" data-cy="open-plant-sites-list">
-            <div className="rounded-full flex items-center drop-shadow-sm bg-emerald-800 p-3 mb-3 mr-2">
-              <img
-                src={listImageUrl}
-                className="inline-block w-6 text-center"
-              />
-            </div>
-          </Link>
-        </ProtectedLayout>
         {renderPendingUploadLink()}
         <ProtectedLayout>
           <Link to="/plant-site/new" data-cy="open-add-page">

@@ -7,7 +7,7 @@ export function BackButton() {
     <div
       onClick={() => navigate(-1)}
       className="mr-1 px-4 border border-sky-500 bg-sky-500
-    rounded-full text-white font-semibold text-xs py-2"
+    rounded-full text-white font-semibold text-xs py-2 cursor-pointer"
     >
       Back
     </div>

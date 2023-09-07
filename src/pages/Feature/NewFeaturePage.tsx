@@ -8,7 +8,7 @@ export function NewFeaturePage() {
 
   async function onFeatureCreate() {
     toast('Feature added successfully');
-    navigate('/');
+    navigate(-1);
   }
 
   return (

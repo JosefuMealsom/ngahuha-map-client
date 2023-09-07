@@ -20,7 +20,7 @@ export function LoginPage() {
       await login(emailValue, passwordValue);
       toast('Sucessfully logged in');
 
-      navigate('/', { replace: true });
+      navigate(-1);
     } catch (error) {
       toast(`There was an error logging in: ${(error as Error).message}`);
     }
