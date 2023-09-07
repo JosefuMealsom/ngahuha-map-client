@@ -102,7 +102,7 @@ export function PlantPhotosToUpload() {
   }
 
   function renderFeaturesToUpload() {
-    if (!featureUploads) return;
+    if (!featureUploads || featureUploads?.length === 0) return;
 
     return (
       <div className="mb-16">
