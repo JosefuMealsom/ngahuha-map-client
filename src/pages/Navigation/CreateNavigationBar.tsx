@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ActiveFilterLinkComponent } from '../../components/ActiveFilterLinkComponent';
+import { BackButton } from './BackButton';
 
 export function CreateNavigationBar(props: {
   activePage:
@@ -8,17 +9,11 @@ export function CreateNavigationBar(props: {
     | 'Create feature'
     | 'Path tracer';
 }) {
-  const navigate = useNavigate();
-
   return (
     <div className="overflow-x-scroll hide-scrollbar">
       <div className="flex pt-4 pl-6 w-max pr-6 items-center">
-        <div
-          onClick={() => navigate(-1)}
-          className="mr-1 px-4 border border-sky-500 bg-sky-500
-            rounded-full text-white font-semibold text-xs py-2"
-        >
-          Back
+        <div className="mr-1">
+          <BackButton />
         </div>
         <div className="mr-1" data-cy="open-plant-form">
           <ActiveFilterLinkComponent

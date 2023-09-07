@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { login } from '../../services/api/login.service';
 import { useNavigate } from 'react-router-dom';
+import { BackButton } from '../Navigation/BackButton';
 
 export function LoginPage() {
   const [emailValue, setEmailValue] = useState<string>('');
@@ -26,7 +27,10 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex justify-center items-center w-full pt-40">
+    <div className="flex justify-center items-center w-full pt-40 relative">
+      <div className="absolute top-4 left-6">
+        <BackButton />
+      </div>
       <div>
         <h1 className="font-bold mb-5 text-inverted-background text-xl">
           Login

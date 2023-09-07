@@ -49,7 +49,7 @@ export const updateFeaturePrimaryPhoto = async (photoId: string) => {
   });
 };
 
-export const syncPhotoFilesOffline = async () => {
+export const syncFeaturePhotoFilesOffline = async () => {
   const featurePhotos = await featurePhotoTable.toArray();
   const notDownloadedPhotos = featurePhotos.filter((photo) => !photo.data);
 

@@ -5,6 +5,8 @@ import { SyncComponent } from './SyncComponent';
 import { usePosition } from './hooks/use-position.hook';
 import { useEffect } from 'react';
 import { useAppStore } from './store/app.store';
+import { AdminNavigation } from './pages/Navigation/AdminNavigation';
+import { syncDataFromServer } from './services/api/sync-data.service';
 
 function App() {
   const position = usePosition();
@@ -14,6 +16,10 @@ function App() {
     setPosition(position);
   }, [position]);
 
+  useEffect(() => {
+    syncDataFromServer();
+  }, []);
+
   return (
     <div>
       <Outlet />
@@ -22,6 +28,7 @@ function App() {
         <SyncComponent />
       </div>
       <ScrollRestoration />
+      <AdminNavigation />
     </div>
   );
 }
