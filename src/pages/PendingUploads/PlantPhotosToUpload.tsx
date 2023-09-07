@@ -121,7 +121,7 @@ export function PlantPhotosToUpload() {
   }
 
   return (
-    <div className="h-full bg-white w-full absolute top-0 left-0">
+    <div className="h-full bg-white w-full absolute top-0 left-0 pb-safe">
       <div className="mb-4 pt-14 w-full h-full bg-white p-6">
         <h1 className="font-bold mt-5 relative mb-3">
           {uploading ? 'Uploading' : 'Upload changes'}
