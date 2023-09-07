@@ -127,7 +127,7 @@ export function PlantSiteForm(props: {
           onPhotoRemoveHandler={removePlantPhoto}
         />
       </div>
-      <div className="mb-2">
+      <div className="pb-3">
         <GeolocationLockOnComponent
           onGeolocationLocked={(coordinates) => setPosition(coordinates)}
           onLockingOn={() => setPosition(undefined)}
