@@ -51,13 +51,13 @@ export function ImageEditorComponent(props: {
   }
 
   return (
-    <div>
+    <div className="relative pt-safe">
       <div className="mb-4 w-full h-full overflow-scroll p-5">
-        <div className="grid grid-cols-4 gap-4 overflow-visible">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 overflow-visible">
           {props.photos.map((photo) => (
             <div
               className="overflow-hidden rounded-md hover:outline-blue-500
-              hover:outline hover:outline-2 cursor-pointer sm:h-80 relative"
+              hover:outline hover:outline-2 cursor-pointer h-48 sm:h-80 relative"
               key={photo.id}
             >
               <img
