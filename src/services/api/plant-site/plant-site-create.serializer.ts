@@ -5,6 +5,7 @@ export const serializeCreatePlantSite = async (
 ) => {
   const plantPhotosJSON = plantSiteUpload.photos.map((photo) => ({
     blobKey: photo.blobKey,
+    primaryPhoto: photo.primaryPhoto,
   }));
 
   return {
