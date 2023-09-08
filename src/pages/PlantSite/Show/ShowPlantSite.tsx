@@ -8,7 +8,10 @@ import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 import { ProtectedLayout } from '../../ProtectedLayout';
 import { ImageEditorComponent } from '../../../components/ImageEditorComponent';
 import { useState } from 'react';
-import { updatePlantPrimaryPhoto } from '../../../services/api/plant-site/plant-site-photo.service';
+import {
+  deletePlantPhoto,
+  updatePlantPrimaryPhoto,
+} from '../../../services/api/plant-site/plant-site-photo.service';
 import { toast } from 'react-toastify';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
@@ -43,6 +46,20 @@ export function PlantSiteInformation() {
     }
   }
 
+  async function onDeletePhotoClick(id: string) {
+    try {
+      const result = confirm('Are you sure you want to delete this photo?');
+      if (result) {
+        await deletePlantPhoto(id);
+        toast('Photo deleted');
+      }
+    } catch (error) {
+      toast(
+        `There was an issue deleting the photo: ${(error as Error).message}`,
+      );
+    }
+  }
+
   function renderPhotoMetadataEditor() {
     if (!imageMetadataEditorOpen || !photos) return;
 
@@ -53,6 +70,7 @@ export function PlantSiteInformation() {
             photos={photos}
             onClose={() => setImageMetadataEditorOpen(false)}
             onSetPrimaryPhoto={onUpdatePrimaryPhotoClick}
+            onDeletePhoto={onDeletePhotoClick}
           />
         </div>
       </ProtectedLayout>

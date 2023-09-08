@@ -8,6 +8,7 @@ export function ImageEditorComponent(props: {
   photos: Photo[];
   onClose: () => any;
   onSetPrimaryPhoto: (id: string) => any;
+  onDeletePhoto: (id: string) => any;
 }) {
   const [viewFullScreen, setViewFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
@@ -38,15 +39,27 @@ export function ImageEditorComponent(props: {
     if (photo.primaryPhoto) return;
 
     return (
-      <div className="absolute bottom-2 right-2 flex">
-        <button
-          className="rounded-md text-xs bg-emerald-600 py-1 px-2 mr-2
+      <button
+        className="rounded-md text-xs bg-emerald-600 py-1 px-2 mr-2
       text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500"
-          onClick={() => props.onSetPrimaryPhoto(photo.id)}
-        >
-          Set as primary photo
-        </button>
-      </div>
+        onClick={() => props.onSetPrimaryPhoto(photo.id)}
+      >
+        Set as primary photo
+      </button>
+    );
+  }
+
+  function renderDeleteButton(photo: Photo) {
+    if (props.photos.length <= 1 || photo.primaryPhoto) return;
+
+    return (
+      <button
+        className="rounded-md text-xs bg-red-600 py-1 px-2 mr-2
+      text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500"
+        onClick={() => props.onDeletePhoto(photo.id)}
+      >
+        Delete
+      </button>
     );
   }
 
@@ -67,7 +80,10 @@ export function ImageEditorComponent(props: {
                 onClick={() => onPreviewClick(photo.dataUrl)}
               />
               {renderPrimaryPhotoIndicator(photo)}
-              {renderPrimaryPhotoButton(photo)}
+              <div className="absolute bottom-2 right-2 flex">
+                {renderPrimaryPhotoButton(photo)}
+                {renderDeleteButton(photo)}
+              </div>
             </div>
           ))}
         </div>
