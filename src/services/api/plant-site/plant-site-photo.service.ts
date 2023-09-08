@@ -56,6 +56,12 @@ export const syncPlantSitePhotoFilesOffline = async () => {
   );
 };
 
+export const deletePlantPhoto = async (id: string) => {
+  await axiosClient.delete(`plant-site-photo/${id}`);
+
+  plantSitePhotoTable.delete(id);
+};
+
 export const syncPlantSitePhotosOffline = (): Promise<PlantSitePhoto[]> => {
   return new Promise(async (success) => {
     const plantSitePhotos = await fetchPlantSitePhotos();
