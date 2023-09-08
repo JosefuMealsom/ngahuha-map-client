@@ -1,6 +1,7 @@
 import { PlantSite } from '../../../types/api/plant-site.type';
 import { plantSiteTable } from '../../offline.database';
 import apiFetchUtil from '../../../utils/api-fetch.util';
+import axiosClient from '../../axios/axios-client';
 
 export const fetchPlantSites = (): Promise<PlantSite[]> => {
   return new Promise(async (success) => {
@@ -23,6 +24,12 @@ export const fetchPlantSites = (): Promise<PlantSite[]> => {
 
     success(plantSite);
   });
+};
+
+export const deletePlantSite = async (id: string) => {
+  await axiosClient.delete(`plant-site/${id}`);
+
+  plantSiteTable.delete(id);
 };
 
 export const syncPlantSitesOffline = (): Promise<PlantSite[]> => {
