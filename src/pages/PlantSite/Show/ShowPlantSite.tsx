@@ -48,7 +48,7 @@ export function PlantSiteInformation() {
 
     return (
       <ProtectedLayout>
-        <div className="absolute top-0 left-0 bg-black bg-opacity-80 w-full h-full">
+        <div className="absolute top-0 left-0 touch-none bg-black bg-opacity-80 w-full pt-safe h-screen overflow-scroll">
           <ImageEditorComponent
             photos={photos}
             onClose={() => setImageMetadataEditorOpen(false)}
