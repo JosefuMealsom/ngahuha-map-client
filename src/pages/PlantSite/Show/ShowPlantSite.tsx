@@ -1,5 +1,5 @@
 import { usePlantSitePhotos } from '../../../hooks/use-plant-site-photos.hook';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { PlantDescription } from '../../Plant/Show/PlantDescription';
 import { CarouselComponent } from '../../../components/CarouselComponent';
 import { Plant } from '../../../types/api/plant.type';
@@ -13,6 +13,7 @@ import {
   updatePlantPrimaryPhoto,
 } from '../../../services/api/plant-site/plant-site-photo.service';
 import { toast } from 'react-toastify';
+import { deletePlantSite } from '../../../services/api/plant-site/plant-site.service';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
 
@@ -20,6 +21,7 @@ export function PlantSiteInformation() {
   const { plantSite, plant } = useLoaderData() as LoaderData;
   const photos = usePlantSitePhotos(plantSite.id);
   const [imageMetadataEditorOpen, setImageMetadataEditorOpen] = useState(false);
+  const navigate = useNavigate();
 
   function renderCarousel() {
     if (!photos || photos.length === 0) return;
@@ -60,6 +62,23 @@ export function PlantSiteInformation() {
     }
   }
 
+  async function onDeletePlantSiteClick(id: string) {
+    try {
+      const result = confirm('Are you sure you want delete the plant site?');
+      if (result) {
+        await deletePlantSite(id);
+        navigate(-1);
+        toast('Plant site deleted');
+      }
+    } catch (error) {
+      toast(
+        `There was an issue deleting the plant site: ${
+          (error as Error).message
+        }`,
+      );
+    }
+  }
+
   function renderPhotoMetadataEditor() {
     if (!imageMetadataEditorOpen || !photos) return;
 
@@ -86,13 +105,22 @@ export function PlantSiteInformation() {
             <PlantTitleComponent {...plant} />
           </div>
           <ProtectedLayout>
-            <button
-              className="absolute bottom-4 right-4 text-white rounded-full
-          font-semibold bg-emerald-900 px-4 py-2 text-sm cursor-pointer hover:opacity-90"
-              onClick={() => setImageMetadataEditorOpen(true)}
-            >
-              Edit photo metadata
-            </button>
+            <div className="flex absolute bottom-4 right-4">
+              <button
+                className=" text-white rounded-full
+          font-semibold bg-emerald-900 px-4 py-2 text-sm cursor-pointer hover:opacity-90 mr-2"
+                onClick={() => setImageMetadataEditorOpen(true)}
+              >
+                Edit photo metadata
+              </button>
+              <button
+                className="text-white rounded-full
+          font-semibold bg-red-500 px-4 py-2 text-sm cursor-pointer hover:opacity-90"
+                onClick={() => onDeletePlantSiteClick(plantSite.id)}
+              >
+                Delete
+              </button>
+            </div>
           </ProtectedLayout>
         </div>
         <div className="sm:w-1/2">
