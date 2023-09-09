@@ -51,6 +51,7 @@ export function FeatureForm(props: {
       photosCopy.push({
         file: newPhoto,
         id: crypto.randomUUID(),
+        primaryPhoto: false,
       });
 
       setPhotos(photosCopy);

@@ -23,6 +23,7 @@ export function EditFeaturePage() {
   const photoFiles = featurePhotoUploads.map((photo) => ({
     id: crypto.randomUUID(),
     file: new Blob([photo.data]),
+    primaryPhoto: false,
   }));
 
   async function onFeatureUpdate() {
