@@ -6,6 +6,7 @@ const plantSitePhotoUploadFactory = {
   create(photoData: Partial<PlantSitePhotoUpload>) {
     const dummyData: PlantSitePhotoUpload = {
       data: new ArrayBuffer(8),
+      primaryPhoto: false,
     };
 
     return Object.assign(dummyData, photoData);

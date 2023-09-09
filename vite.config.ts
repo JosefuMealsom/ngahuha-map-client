@@ -13,6 +13,9 @@ export default defineConfig(({ command, mode }) => {
         workbox: {
           globPatterns: ['**/*.{js,css,html,jpg,png,svg}'],
         },
+        devOptions: {
+          enabled: true,
+        },
         manifest: {
           name: 'Ngahuha Map',
           short_name: 'NgahuhaMap',
