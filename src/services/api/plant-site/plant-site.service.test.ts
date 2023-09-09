@@ -1,9 +1,14 @@
 import 'fake-indexeddb/auto';
-import { fetchPlantSites, syncPlantSitesOffline } from './plant-site.service';
+import {
+  deletePlantSite,
+  fetchPlantSites,
+  syncPlantSitesOffline,
+} from './plant-site.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase, { plantSiteTable } from '../../offline.database';
 import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import { getFullApiPath } from '../../../utils/api-url.util';
+import plantSiteFactory from '../../../test-helpers/factories/plant-site';
 
 describe('PlantSiteService', () => {
   afterEach(() => {
@@ -129,6 +134,20 @@ describe('PlantSiteService', () => {
           },
         ]);
       });
+    });
+  });
+
+  describe('deletePlantSite)', () => {
+    beforeEach(async () => {
+      await plantSiteTable.add(plantSiteFactory.create({ id: '123' }));
+
+      mockApiCall(getFullApiPath('plant-site/123'), {}, 'delete', 200);
+    });
+
+    it('calls the endpoint and on success deletes the photo', async () => {
+      await deletePlantSite('123');
+      const photos = await plantSiteTable.toArray();
+      expect(photos.length).toEqual(0);
     });
   });
 });

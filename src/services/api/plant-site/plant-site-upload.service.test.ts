@@ -40,7 +40,11 @@ describe('PlantSiteUploadService', () => {
 
       it('adds a new plant site and saves it offline', async () => {
         const blob = new Blob();
-        await addPlantSiteWithPhoto(blob, location, 'abc');
+        await addPlantSiteWithPhoto(
+          { file: new Blob(), primaryPhoto: true },
+          location,
+          'abc',
+        );
         const savedPlantSiteData = await plantSiteUploadTable.toArray();
 
         expect(savedPlantSiteData.length).toEqual(1);
@@ -49,10 +53,14 @@ describe('PlantSiteUploadService', () => {
         expect(plantSite.latitude).toEqual(20);
         expect(plantSite.longitude).toEqual(30);
         expect(plantSite.photos.length).toEqual(1);
+        expect(plantSite.photos[0].primaryPhoto).toEqual(true);
       });
 
       it('can add an array of photos', async () => {
-        const blobs = [new Blob(), new Blob()];
+        const blobs = [
+          { file: new Blob(), primaryPhoto: false },
+          { file: new Blob(), primaryPhoto: true },
+        ];
         await addPlantSiteWithPhoto(blobs, location, 'abc');
         const savedPlantSiteData = await plantSiteUploadTable.toArray();
 
@@ -61,7 +69,10 @@ describe('PlantSiteUploadService', () => {
 
       it('can add a plant site without a plantId', async () => {
         const blob = new Blob();
-        await addPlantSiteWithPhoto(blob, location);
+        await addPlantSiteWithPhoto(
+          { file: blob, primaryPhoto: false },
+          location,
+        );
         const savedPlantSiteData =
           await offlineDatabase.plantSiteUpload.toArray();
 
@@ -75,7 +86,11 @@ describe('PlantSiteUploadService', () => {
       it('raises an exception', async () => {
         const blob = new Blob();
         await expect(() =>
-          addPlantSiteWithPhoto(blob, location, 'missing id'),
+          addPlantSiteWithPhoto(
+            { file: blob, primaryPhoto: false },
+            location,
+            'missing id',
+          ),
         ).rejects.toThrowError("Plant with id: 'missing id' not found");
       });
     });

@@ -12,8 +12,8 @@ describe('serializeCreatePlantSite()', () => {
     longitude: 20,
     plantId: 'My cool plant id',
     photos: [
-      { data: new Uint8Array(), blobKey: 'mr blobby' },
-      { data: new Uint8Array(), blobKey: 'mrs blobette' },
+      { data: new Uint8Array(), blobKey: 'mr blobby', primaryPhoto: false },
+      { data: new Uint8Array(), blobKey: 'mrs blobette', primaryPhoto: true },
     ],
   });
 
@@ -31,7 +31,10 @@ describe('serializeCreatePlantSite()', () => {
       latitude: 20,
       longitude: 20,
       plantId: 'My cool plant id',
-      plantSitePhotos: [{ blobKey: 'mr blobby' }, { blobKey: 'mrs blobette' }],
+      plantSitePhotos: [
+        { blobKey: 'mr blobby', primaryPhoto: false },
+        { blobKey: 'mrs blobette', primaryPhoto: true },
+      ],
     });
   });
 });

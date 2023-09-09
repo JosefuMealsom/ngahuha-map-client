@@ -1,5 +1,6 @@
 export type PlantSitePhotoUpload = {
   data: ArrayBuffer;
+  primaryPhoto: boolean;
   blobKey?: string;
 };
 
@@ -15,4 +16,5 @@ export type PlantSiteUpload = {
 export type PhotoFile = {
   id: string;
   file: Blob;
+  primaryPhoto: boolean;
 };

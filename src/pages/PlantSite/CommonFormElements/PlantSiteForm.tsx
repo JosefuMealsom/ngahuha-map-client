@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, createContext, useState } from 'react';
 import AutocompleteComponent from '../../../components/AutocompleteComponent';
 import { plantTable } from '../../../services/offline.database';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -11,6 +11,8 @@ import { GeolocationLockOnComponent } from '../../../components/GeolocationLockO
 import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
 import { SearchFilterMatch } from '../../../types/filter.type';
 import { Plant } from '../../../types/api/plant.type';
+import { PlantFormContext } from './PlantFormContext';
+import { findWhere } from 'underscore';
 
 export function PlantSiteForm(props: {
   onSaveHandlerSuccess: () => void;
@@ -31,6 +33,20 @@ export function PlantSiteForm(props: {
     setSearchPlantsFilter(new SearchPlantsFilter(allPlants));
   });
 
+  function setPrimaryPhoto(photoFileId: string) {
+    if (photos.length === 0) return;
+
+    const photosCopy = [...photos];
+
+    const newPrimaryPhoto = findWhere(photosCopy, { id: photoFileId });
+    if (newPrimaryPhoto) {
+      photosCopy.forEach((p) => (p.primaryPhoto = false));
+      newPrimaryPhoto.primaryPhoto = true;
+
+      setPhotos(photosCopy);
+    }
+  }
+
   async function savePhotoLocally(event: FormEvent) {
     event.preventDefault();
 
@@ -38,8 +54,13 @@ export function PlantSiteForm(props: {
       return;
     }
 
+    const mappedPhotos = photos.map((photo) => ({
+      file: photo.file,
+      primaryPhoto: photo.primaryPhoto,
+    }));
+
     await addPlantSiteWithPhoto(
-      photos.map((photo) => photo.file),
+      mappedPhotos,
       position,
       selectedPlant?.id,
       props.plantSiteUploadId,
@@ -53,9 +74,12 @@ export function PlantSiteForm(props: {
     if (newPhoto) {
       const photosCopy = [...photos];
 
+      let isPrimaryPhoto = photosCopy.length === 0 ? true : false;
+
       photosCopy.push({
         file: newPhoto,
         id: crypto.randomUUID(),
+        primaryPhoto: isPrimaryPhoto,
       });
 
       setPhotos(photosCopy);
@@ -66,6 +90,15 @@ export function PlantSiteForm(props: {
     const photosCopy = photos.filter(
       (photoFile) => photoFile.id !== photoIdToRemove,
     );
+
+    const primaryPhotoSet = findWhere(photosCopy, {
+      primaryPhoto: true,
+    });
+
+    if (!primaryPhotoSet && photosCopy.length > 0) {
+      photosCopy[0].primaryPhoto = true;
+    }
+
     setPhotos(photosCopy);
   }
 
@@ -103,39 +136,41 @@ export function PlantSiteForm(props: {
   }
 
   return (
-    <form onSubmit={savePhotoLocally} className="w-full">
-      <div
-        className="mb-7 relative sm:max-w-md"
-        data-cy="plant-form-autocomplete-container"
-      >
-        <div className="relative z-10">
-          <AutocompleteComponent
-            searchFilter={searchPlantsFilter}
-            placeholder="Type species name to search"
-            onItemSelectHandler={(match: SearchFilterMatch<Plant>) =>
-              setSelectedPlant(match.data)
-            }
-            suggestionText="Available species"
-            // value={plantNameValue}
+    <PlantFormContext.Provider value={{ setPrimaryPhoto: setPrimaryPhoto }}>
+      <form onSubmit={savePhotoLocally} className="w-full">
+        <div
+          className="mb-7 relative sm:max-w-md"
+          data-cy="plant-form-autocomplete-container"
+        >
+          <div className="relative z-10">
+            <AutocompleteComponent
+              searchFilter={searchPlantsFilter}
+              placeholder="Type species name to search"
+              onItemSelectHandler={(match: SearchFilterMatch<Plant>) =>
+                setSelectedPlant(match.data)
+              }
+              suggestionText="Available species"
+              // value={plantNameValue}
+            />
+          </div>
+        </div>
+        <div className="relative mb-5">
+          <PhotoInput
+            photos={photos}
+            onPhotoChangeHandler={onPhotoChange}
+            onPhotoRemoveHandler={removePlantPhoto}
           />
         </div>
-      </div>
-      <div className="relative mb-5">
-        <PhotoInput
-          photos={photos}
-          onPhotoChangeHandler={onPhotoChange}
-          onPhotoRemoveHandler={removePlantPhoto}
-        />
-      </div>
-      <div className="pb-3">
-        <GeolocationLockOnComponent
-          onGeolocationLocked={(coordinates) => setPosition(coordinates)}
-          onLockingOn={() => setPosition(undefined)}
-        />
-      </div>
-      <div>{renderPosition()}</div>
-      {renderTipAboutMissingPlant()}
-      {renderSave()}
-    </form>
+        <div className="pb-3">
+          <GeolocationLockOnComponent
+            onGeolocationLocked={(coordinates) => setPosition(coordinates)}
+            onLockingOn={() => setPosition(undefined)}
+          />
+        </div>
+        <div>{renderPosition()}</div>
+        {renderTipAboutMissingPlant()}
+        {renderSave()}
+      </form>
+    </PlantFormContext.Provider>
   );
 }

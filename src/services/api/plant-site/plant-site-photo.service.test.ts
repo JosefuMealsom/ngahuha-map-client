@@ -3,6 +3,7 @@ import { expect, describe, it, afterEach, beforeEach, vi } from 'vitest';
 import { plantSitePhotoTable } from '../../offline.database';
 import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import {
+  deletePlantPhoto,
   fetchPlantSitePhotos,
   syncPlantSitePhotosOffline,
   updatePlantPrimaryPhoto,
@@ -143,6 +144,28 @@ describe('PlantSitePhotoService', () => {
             primaryPhoto: false,
           }),
         ]);
+      });
+    });
+
+    describe('deletePlantPhoto()', () => {
+      beforeEach(async () => {
+        await plantSitePhotoTable.add({
+          id: '123',
+          plantSiteId: '456',
+          url: 'my mean url',
+          createdAt: '2030-11-11T00:00:00.000Z',
+          updatedAt: '2030-11-11T00:00:00.000Z',
+          metadata: undefined,
+          primaryPhoto: false,
+        });
+
+        mockApiCall(getFullApiPath('plant-site-photo/123'), {}, 'delete', 200);
+      });
+
+      it('calls the endpoint and on success deletes the photo', async () => {
+        await deletePlantPhoto('123');
+        const photos = await plantSitePhotoTable.toArray();
+        expect(photos.length).toEqual(0);
       });
     });
 

@@ -8,15 +8,20 @@ class PlantIdMissingError extends Error {
   }
 }
 
+type PhotoFileData = { file: Blob; primaryPhoto: boolean };
+type ConvertedPhotoFileData = { data: ArrayBuffer; primaryPhoto: boolean };
+
 export const addPlantSiteWithPhoto = async (
-  photoBlobs: Blob | Blob[],
+  photoFiles: PhotoFileData | PhotoFileData[],
   location: LatLong,
   plantId?: string,
   plantSiteUploadId?: number,
 ) => {
-  //convert to array if only 1 photo passed as a parameter
   const photos = await Promise.all(
-    [photoBlobs].flat().map(async (blob) => blob.arrayBuffer()),
+    [photoFiles].flat().map(async (photoFile) => {
+      const convertedData = await photoFile.file.arrayBuffer();
+      return { data: convertedData, primaryPhoto: photoFile.primaryPhoto };
+    }),
   );
 
   if (plantId) {
@@ -40,14 +45,10 @@ const validatePlantExists = async (plantId: string) => {
 
 const addPlantSiteUpload = (
   location: LatLong,
-  photos: ArrayBuffer[],
+  photoData: ConvertedPhotoFileData[],
   plantId?: string,
   id?: number,
 ) => {
-  const photoData = photos.map((photoData) => ({
-    data: photoData,
-  }));
-
   return plantSiteUploadTable.put({
     id: id,
     plantId: plantId,

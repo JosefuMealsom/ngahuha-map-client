@@ -4,6 +4,7 @@ import { PlantPhotoImage } from './PlantPhotoImage';
 type PhotoFile = {
   id: string;
   file: Blob;
+  primaryPhoto: boolean;
 };
 
 export function PhotoInput(props: {
@@ -25,13 +26,16 @@ export function PhotoInput(props: {
         <label className="block mb-3 font-semibold text-inverted-background">
           Photos
         </label>
-        {photos?.map((photoImage) => (
-          <PlantPhotoImage
-            key={photoImage.id}
-            {...photoImage}
-            onRemoveHandler={onPhotoRemoveHandler}
-          />
-        ))}
+        <div className="sm:grid sm:grid-cols-4 sm:gap-2">
+          {photos?.map((photoImage) => (
+            <PlantPhotoImage
+              key={photoImage.id}
+              {...photoImage}
+              onRemoveHandler={onPhotoRemoveHandler}
+              primaryPhoto={photoImage.primaryPhoto}
+            />
+          ))}
+        </div>
       </div>
     );
   }

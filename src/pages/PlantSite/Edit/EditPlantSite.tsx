@@ -17,6 +17,7 @@ export function EditPlantSite() {
   const photoFiles = plantSiteUpload.photos.map((photo) => ({
     id: crypto.randomUUID(),
     file: new Blob([photo.data]),
+    primaryPhoto: photo.primaryPhoto,
   }));
 
   function onSaveSuccess() {
