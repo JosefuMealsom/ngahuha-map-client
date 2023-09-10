@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 
 export const mockServer = setupServer();
 
-type httpMethods = 'get' | 'post' | 'patch' | 'delete';
+type httpMethods = 'get' | 'post' | 'patch' | 'delete' | 'put';
 
 export const mockApiCall = (
   path: string,

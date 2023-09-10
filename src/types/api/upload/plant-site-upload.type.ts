@@ -1,7 +1,7 @@
 export type PlantSitePhotoUpload = {
-  data: ArrayBuffer;
-  primaryPhoto: boolean;
-  blobKey?: string;
+  id?: number;
+  plantSiteId: string;
+  blobDataId: number;
 };
 
 export type PlantSiteUpload = {
@@ -10,7 +10,7 @@ export type PlantSiteUpload = {
   latitude: number;
   longitude: number;
   accuracy: number;
-  photos: PlantSitePhotoUpload[];
+  photos: { data: ArrayBuffer; primaryPhoto: boolean; blobKey?: string }[];
 };
 
 export type PhotoFile = {
