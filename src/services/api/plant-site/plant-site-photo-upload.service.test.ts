@@ -15,6 +15,7 @@ import { mockApiCall } from '../../../test-helpers/fetch-stub';
 import blobDataFactory from '../../../test-helpers/factories/blob-data';
 import plantSitePhotoUploadFactory from '../../../test-helpers/factories/plant-site-photo-upload';
 import { getFullApiPath } from '../../../utils/api-url.util';
+import { PlantSitePhotoUpload } from '../../../types/api/upload/plant-site-upload.type';
 
 describe('PlantSiteUploadService', () => {
   beforeEach(() => {
@@ -52,16 +53,21 @@ describe('PlantSiteUploadService', () => {
 
   describe('syncPlantSitePhotoUploadToServer()', () => {
     describe('adding a new photo to a plant site', () => {
-      let photoUploadId: number;
+      let photoUpload: PlantSitePhotoUpload;
       beforeEach(async () => {
         await plantSiteTable.add(plantSiteFactory.create({ id: 'abc' }));
         const blobDataId = await blobDataTable.add(blobDataFactory.create({}));
-        photoUploadId = await plantSitePhotoUploadTable.add(
+        photoUpload = plantSitePhotoUploadFactory.create({
+          plantSiteId: 'abc',
+          blobDataId: blobDataId,
+        });
+        const uploadId = await plantSitePhotoUploadTable.add(
           plantSitePhotoUploadFactory.create({
             plantSiteId: 'abc',
             blobDataId: blobDataId,
           }),
         );
+        photoUpload.id = uploadId;
 
         mockApiCall(getFullApiPath('/blob/presigned-upload-url'), {
           blobKey: 'upload here!',
@@ -73,7 +79,7 @@ describe('PlantSiteUploadService', () => {
       });
 
       it('uploads the plant site photos to the server and clears the data', async () => {
-        await syncPlantSitePhotoUploadToServer(photoUploadId);
+        await syncPlantSitePhotoUploadToServer(photoUpload);
         const savedPlantSitePhotoData =
           await plantSitePhotoUploadTable.toArray();
         const savedBlobData = await blobDataTable.toArray();
