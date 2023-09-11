@@ -7,21 +7,59 @@ import { PlantSite } from '../../../types/api/plant-site.type';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 import { ProtectedLayout } from '../../ProtectedLayout';
 import { ImageEditorComponent } from '../../../components/ImageEditorComponent';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   deletePlantPhoto,
   updatePlantPrimaryPhoto,
 } from '../../../services/api/plant-site/plant-site-photo.service';
 import { toast } from 'react-toastify';
 import { deletePlantSite } from '../../../services/api/plant-site/plant-site.service';
+import { useLiveQuery } from 'dexie-react-hooks';
+import {
+  blobDataTable,
+  plantSitePhotoUploadTable,
+} from '../../../services/offline.database';
+import { addPlantSitePhotoUpload } from '../../../services/api/plant-site/plant-site-photo-upload.service';
+import { Photo } from '../../../types/api/photo.type';
+import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
 
 export function PlantSiteInformation() {
   const { plantSite, plant } = useLoaderData() as LoaderData;
   const photos = usePlantSitePhotos(plantSite.id);
+  const photosToUpload = useLiveQuery(() =>
+    plantSitePhotoUploadTable.where({ plantSiteId: plantSite.id }).toArray(),
+  );
+  const [convertedPhotosToUpload, setConvertedPhotosToUpload] = useState<
+    Photo[]
+  >([]);
   const [imageMetadataEditorOpen, setImageMetadataEditorOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const convertUploadsToPhotos = async () => {
+      if (!photosToUpload) return;
+
+      const photos = await Promise.all(
+        photosToUpload.map(async (photo) => {
+          const blobData = await blobDataTable.get(photo.blobDataId);
+          const dataUrl = await blobToDataUrlService.convert(
+            new Blob([blobData!.data]),
+          );
+          return {
+            id: photo.id!.toString(),
+            dataUrl: dataUrl || '',
+            primaryPhoto: false,
+          };
+        }),
+      );
+
+      setConvertedPhotosToUpload(photos);
+    };
+
+    convertUploadsToPhotos();
+  }, [photosToUpload]);
 
   function renderCarousel() {
     if (!photos || photos.length === 0) return;
@@ -35,6 +73,15 @@ export function PlantSiteInformation() {
     ));
 
     return <CarouselComponent elements={elements} />;
+  }
+
+  async function onImageAdded(event: React.ChangeEvent<HTMLInputElement>) {
+    const newPhoto = event.target.files?.item(0);
+    if (newPhoto) {
+      const photosCopy = [...photosToUpload!];
+
+      await addPlantSitePhotoUpload(plantSite.id, newPhoto);
+    }
   }
 
   async function onUpdatePrimaryPhotoClick(id: string) {
@@ -79,6 +126,17 @@ export function PlantSiteInformation() {
     }
   }
 
+  function deletePhotoUpload(id: string) {
+    try {
+      const result = confirm('Are you sure you want delete this photo upload?');
+      if (result) {
+        plantSitePhotoUploadTable.delete(Number(id));
+      }
+    } catch (error) {
+      toast(`There was an issue deleting photo: ${(error as Error).message}`);
+    }
+  }
+
   function renderPhotoMetadataEditor() {
     if (!imageMetadataEditorOpen || !photos) return;
 
@@ -87,9 +145,12 @@ export function PlantSiteInformation() {
         <div className="absolute top-0 left-0 touch-none bg-black bg-opacity-80 w-full pt-safe h-screen overflow-scroll">
           <ImageEditorComponent
             photos={photos}
+            photosToUpload={convertedPhotosToUpload || []}
+            onImageAdded={onImageAdded}
             onClose={() => setImageMetadataEditorOpen(false)}
             onSetPrimaryPhoto={onUpdatePrimaryPhotoClick}
             onDeletePhoto={onDeletePhotoClick}
+            onDeletePhotoUpload={deletePhotoUpload}
           />
         </div>
       </ProtectedLayout>

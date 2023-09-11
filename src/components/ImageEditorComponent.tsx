@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Photo } from '../types/api/photo.type';
 import { FullScreenImagePreviewComponent } from './FullScreenImagePreviewComponent';
 import closeImgUrl from '../assets/svg/x-white.svg';
 import starImgUrl from '../assets/svg/star.svg';
+import plusImageUrl from '../assets/svg/plus.svg';
 
 export function ImageEditorComponent(props: {
   photos: Photo[];
+  photosToUpload: Photo[];
   onClose: () => any;
+  onImageAdded: (evt: React.ChangeEvent<HTMLInputElement>) => any;
   onSetPrimaryPhoto: (id: string) => any;
   onDeletePhoto: (id: string) => any;
+  onDeletePhotoUpload: (id: string) => any;
 }) {
   const [viewFullScreen, setViewFullScreen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
@@ -40,7 +44,7 @@ export function ImageEditorComponent(props: {
 
     return (
       <button
-        className="rounded-md text-xs bg-emerald-600 py-1 px-2 mr-2
+        className="rounded-full text-xs bg-emerald-600 py-2 px-4 mr-2
       text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500"
         onClick={() => props.onSetPrimaryPhoto(photo.id)}
       >
@@ -54,7 +58,7 @@ export function ImageEditorComponent(props: {
 
     return (
       <button
-        className="rounded-md text-xs bg-red-600 py-1 px-2 mr-2
+        className="rounded-full text-xs bg-red-600 py-2 px-4 mr-2
       text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500"
         onClick={() => props.onDeletePhoto(photo.id)}
       >
@@ -86,6 +90,53 @@ export function ImageEditorComponent(props: {
               </div>
             </div>
           ))}
+          {props.photosToUpload.map((photo) => (
+            <div className="relative">
+              <img
+                className="w-full mb-3 h-48 sm:h-80 object-cover rounded-md"
+                key={photo.id}
+                src={photo.dataUrl || ''}
+                draggable={false}
+              />
+              <p
+                className="absolute top-0 right-0 text-white font-semibold
+               bg-black bg-opacity-50 py-1 px-2 text-sm"
+              >
+                Pending upload
+              </p>
+              <div className="absolute bottom-5 right-0 flex">
+                <button
+                  className="rounded-full text-xs bg-red-600 py-2 px-4 mr-2
+      text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500"
+                  onClick={() => props.onDeletePhotoUpload(photo.id)}
+                >
+                  Remove upload
+                </button>
+              </div>
+            </div>
+          ))}
+          <label>
+            <div
+              className="bg-gray-700 bg-opacity-60 flex items-center
+          justify-center flex-col h-48 sm:h-80 rounded-md hover:outline-blue-500
+          hover:outline hover:outline-2 cursor-pointer"
+            >
+              <img
+                className="w-14 h-14 mb-3"
+                src={plusImageUrl}
+                draggable={false}
+              />
+              <p className="text-white font-semibold text-sm">Add image</p>
+            </div>
+            <input
+              type="file"
+              className="hidden"
+              capture="environment"
+              id="photo"
+              accept="image/*"
+              onChange={props.onImageAdded}
+            />
+          </label>
         </div>
       </div>
       <img

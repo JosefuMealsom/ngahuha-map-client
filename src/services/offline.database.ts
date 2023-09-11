@@ -49,7 +49,7 @@ class OfflineDatabase extends Dexie {
       featurePhoto: 'id, updatedAt, featureId',
       path: '++id, name',
       pathNode: '++id, pathId',
-      plantSitePhotoUpload: '++id, plantSite',
+      plantSitePhotoUpload: '++id, plantSiteId',
       blobData: '++id',
     });
   }
