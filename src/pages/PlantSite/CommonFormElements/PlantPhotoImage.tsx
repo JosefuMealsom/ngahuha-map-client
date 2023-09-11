@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
-import closeImageUrl from '../../../assets/svg/x-white.svg';
 import { FullScreenImagePreviewComponent } from '../../../components/FullScreenImagePreviewComponent';
-import { PhotoFile } from '../../../types/api/upload/plant-site-upload.type';
 import starImageUrl from '../../../assets/svg/star.svg';
 import { PlantFormContext } from './PlantFormContext';
 
