@@ -10,14 +10,14 @@ export const addPlantSitePhotoUpload = async (
   plantSiteId: string,
   file: Blob | File,
 ) => {
+  const data = await file.arrayBuffer();
+
   return offlineDatabase.transaction(
     'rw',
     blobDataTable,
     plantSitePhotoUploadTable,
     async () => {
-      const blobId = await blobDataTable.add({
-        data: await file.arrayBuffer(),
-      });
+      const blobId = await blobDataTable.add({ data: data });
 
       return plantSitePhotoUploadTable.add({
         plantSiteId: plantSiteId,
@@ -27,42 +27,35 @@ export const addPlantSitePhotoUpload = async (
   );
 };
 
-export const syncPlantSitePhotoUploadToServer = (id: number) => {
-  return offlineDatabase.transaction(
-    'rw',
-    blobDataTable,
-    plantSitePhotoUploadTable,
-    async () => {
-      const photoUpload = await plantSitePhotoUploadTable.get(id);
-      if (!photoUpload) throw Error('No photo upload found');
+export const uploadAllPlantPhotosToServer = async (
+  photoUploads: PlantSitePhotoUpload[],
+) => {
+  for (const upload of photoUploads) {
+    await syncPlantSitePhotoUploadToServer(upload);
+  }
+};
 
-      const blobData = await blobDataTable.get(photoUpload.blobDataId);
-      if (!blobData) throw Error('No blob data found');
+export const syncPlantSitePhotoUploadToServer = async (
+  photoUpload: PlantSitePhotoUpload,
+) => {
+  const blobData = await blobDataTable.get(photoUpload.blobDataId);
+  if (!blobData) throw Error('No blob data found');
 
-      const blobKey = await uploadBlobData(blobData);
-      await axiosClient.post('plant-site-photo', {
-        blobKey: blobKey,
-        plantSiteId: photoUpload.plantSiteId,
-      });
+  const blobKey = await uploadBlobData(blobData);
 
-      return clearPlantSitePhotoUpload(photoUpload.id!);
-    },
-  );
+  await axiosClient.post('plant-site-photo', {
+    blobKey: blobKey,
+    plantSiteId: photoUpload.plantSiteId,
+  });
+  return clearPlantSitePhotoUpload(photoUpload.id!);
 };
 
 const clearPlantSitePhotoUpload = async (id: number) => {
-  return offlineDatabase.transaction(
-    'rw',
-    blobDataTable,
-    plantSitePhotoUploadTable,
-    async () => {
-      const photoUpload = await plantSitePhotoUploadTable.get(id);
-      if (photoUpload) {
-        blobDataTable.delete(photoUpload.blobDataId);
-        plantSitePhotoUploadTable.delete(id);
-      } else {
-        throw Error('No photo upload found');
-      }
-    },
-  );
+  const photoUpload = await plantSitePhotoUploadTable.get(id);
+  if (photoUpload) {
+    await blobDataTable.delete(photoUpload.blobDataId);
+    await plantSitePhotoUploadTable.delete(id);
+  } else {
+    throw Error('No photo upload found');
+  }
 };

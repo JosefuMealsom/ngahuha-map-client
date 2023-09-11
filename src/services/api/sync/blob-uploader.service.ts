@@ -24,7 +24,7 @@ export const uploadBlobData = async (blob: BlobData) => {
 
   await uploadBlob(url, blob.data);
 
-  await blobDataTable.update(blob.id!, { blobKey: blobKey });
+  await blobDataTable.update(blob, { blobKey: blobKey });
 
   return blobKey;
 };

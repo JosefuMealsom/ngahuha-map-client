@@ -3,6 +3,7 @@ import { PlantSiteComponent } from './PlantSiteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
 import {
   featureUploadTable,
+  plantSitePhotoUploadTable,
   plantSiteUploadTable,
 } from '../../services/offline.database';
 import { bulkUploadPlantSitesToServer } from '../../services/api/plant-site/sync-plant-sites';
@@ -13,20 +14,31 @@ import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site
 import { FeatureComponent } from './FeatureComponent';
 import { bulkUploadFeaturesToServer } from '../../services/api/feature/sync-features';
 import { LoaderSpinnerComponent } from '../../components/LoaderSpinnerComponent';
+import { uploadAllPlantPhotosToServer } from '../../services/api/plant-site/plant-site-photo-upload.service';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);
   const navigate = useNavigate();
   const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
   const featureUploads = useLiveQuery(() => featureUploadTable.toArray());
+  const plantPhotosToUpload = useLiveQuery(() =>
+    plantSitePhotoUploadTable.toArray(),
+  );
   const featureUploadCount = useLiveQuery(() => featureUploadTable.count());
+  const plantPhotoUploadCount = useLiveQuery(() =>
+    plantSitePhotoUploadTable.count(),
+  );
   const [readyForUpload, requiresId] = useFilteredPlantSiteUploads();
 
   useEffect(() => {
-    if (plantUploadCount === 0 && featureUploadCount === 0) {
+    if (
+      plantUploadCount === 0 &&
+      featureUploadCount === 0 &&
+      plantPhotoUploadCount === 0
+    ) {
       navigate(-1);
     }
-  }, [plantUploadCount, featureUploadCount]);
+  }, [plantUploadCount, featureUploadCount, plantPhotoUploadCount]);
 
   async function uploadChanges() {
     setUploadingState(true);
@@ -34,6 +46,7 @@ export function PlantPhotosToUpload() {
     try {
       await bulkUploadPlantSitesToServer(readyForUpload);
       await bulkUploadFeaturesToServer(featureUploads || []);
+      await uploadAllPlantPhotosToServer(plantPhotosToUpload || []);
       toast('Changes uploaded successfully');
     } catch (error) {
       toast(
@@ -47,7 +60,12 @@ export function PlantPhotosToUpload() {
   }
 
   function renderUploadButton() {
-    if (uploading || (readyForUpload.length === 0 && featureUploadCount === 0))
+    if (
+      uploading ||
+      (readyForUpload.length === 0 &&
+        featureUploadCount === 0 &&
+        plantPhotoUploadCount === 0)
+    )
       return;
 
     return (
@@ -121,6 +139,26 @@ export function PlantPhotosToUpload() {
     );
   }
 
+  function renderPhotosToUpload() {
+    if (!plantPhotosToUpload || plantPhotosToUpload?.length === 0) return;
+
+    return (
+      <div className="mb-16">
+        <h2 className="font-bold mt-5 relative text-sm mb-5">
+          Plant site photos to upload
+        </h2>
+        {plantPhotosToUpload.map((photo) => (
+          <div className="py-2" key={photo.id!}>
+            <h3 className="font-bold mt-5 text-sm relative mb-1">
+              Plant site photo: {photo.id}
+            </h3>
+            <p className="text-sm">Photo for plant site {photo.plantSiteId}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   function renderUploadingModal() {
     if (!uploading) return;
 
@@ -146,6 +184,7 @@ export function PlantPhotosToUpload() {
         {renderReadyForUpload()}
         {renderRequiresIdentification()}
         {renderUploadingModal()}
+        {renderPhotosToUpload()}
       </div>
     </div>
   );

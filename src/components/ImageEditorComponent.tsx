@@ -4,6 +4,7 @@ import { FullScreenImagePreviewComponent } from './FullScreenImagePreviewCompone
 import closeImgUrl from '../assets/svg/x-white.svg';
 import starImgUrl from '../assets/svg/star.svg';
 import plusImageUrl from '../assets/svg/plus.svg';
+import cloudImageUrl from '../assets/svg/upload-cloud.svg';
 
 export function ImageEditorComponent(props: {
   photos: Photo[];
@@ -44,7 +45,7 @@ export function ImageEditorComponent(props: {
 
     return (
       <button
-        className="rounded-full text-xs bg-emerald-600 py-2 px-4 mr-2
+        className="rounded-full text-xs bg-emerald-600 py-2 px-4 mr-2 mb-1
       text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500"
         onClick={() => props.onSetPrimaryPhoto(photo.id)}
       >
@@ -84,25 +85,23 @@ export function ImageEditorComponent(props: {
                 onClick={() => onPreviewClick(photo.dataUrl)}
               />
               {renderPrimaryPhotoIndicator(photo)}
-              <div className="absolute bottom-2 right-2 flex">
+              <div className="absolute bottom-2 right-2 flex flex-col sm:flex-row">
                 {renderPrimaryPhotoButton(photo)}
                 {renderDeleteButton(photo)}
               </div>
             </div>
           ))}
           {props.photosToUpload.map((photo) => (
-            <div className="relative">
+            <div className="relative" key={photo.id}>
               <img
-                className="w-full mb-3 h-48 sm:h-80 object-cover rounded-md"
-                key={photo.id}
+                className="w-full mb-3 h-48 sm:h-80 object-cover rounded-md cursor-pointer
+                hover:outline-blue-500 hover:outline hover:outline-2"
                 src={photo.dataUrl || ''}
+                onClick={() => onPreviewClick(photo.dataUrl)}
                 draggable={false}
               />
-              <p
-                className="absolute top-0 right-0 text-white font-semibold
-               bg-black bg-opacity-50 py-1 px-2 text-sm"
-              >
-                Pending upload
+              <p className="absolute top-2 right-2 text-sky-500 py-1 px-2 text-sm flex items-center">
+                <img className="w-8 h-8" src={cloudImageUrl} />
               </p>
               <div className="absolute bottom-5 right-0 flex">
                 <button

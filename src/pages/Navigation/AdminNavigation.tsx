@@ -9,6 +9,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 import {
   featureUploadTable,
+  plantSitePhotoUploadTable,
   plantSiteUploadTable,
 } from '../../services/offline.database';
 import { syncDataFromServer } from '../../services/api/sync-data.service';
@@ -16,9 +17,17 @@ import { syncDataFromServer } from '../../services/api/sync-data.service';
 export function AdminNavigation() {
   const plantUploadCount = useLiveQuery(() => plantSiteUploadTable.count());
   const featureUploadCount = useLiveQuery(() => featureUploadTable.count());
+  const plantPhotoUploadCount = useLiveQuery(() =>
+    plantSitePhotoUploadTable.count(),
+  );
 
   function renderPendingUploadLink() {
-    if (plantUploadCount === 0 && featureUploadCount === 0) return;
+    if (
+      plantUploadCount === 0 &&
+      featureUploadCount === 0 &&
+      plantPhotoUploadCount === 0
+    )
+      return;
 
     return (
       <ProtectedLayout>
