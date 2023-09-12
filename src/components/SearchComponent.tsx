@@ -36,7 +36,7 @@ export default function SearchComponent<T>(props: {
 
   const debouncedUpdateTextMatches = useCallback(
     debounce(updateTextMatches, 500),
-    [],
+    [props.searchFilter],
   );
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
