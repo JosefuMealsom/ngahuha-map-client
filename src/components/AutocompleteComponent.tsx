@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 import { SearchFilter, SearchFilterMatch } from '../types/filter.type';
 import { debounce } from 'underscore';
@@ -18,7 +18,9 @@ export default function AutocompleteComponent<T>(props: {
   const [inputValue, setInputValue] = useState(props.value || '');
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [autocompleteIndex, setAutocompleteIndex] = useState(-1);
-  const debouncedUpdateInput = debounce(updateInputValue, 500);
+  const debouncedUpdateInput = useCallback(debounce(updateInputValue, 500), [
+    props.searchFilter,
+  ]);
 
   useEffect(() => {
     setAutocompleteIndex(-1);
@@ -27,7 +29,6 @@ export default function AutocompleteComponent<T>(props: {
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setAutocompleteOpen(true);
     setInputValue(event.target.value);
-    debouncedUpdateInput.cancel();
     debouncedUpdateInput(event.target.value);
   }
 
@@ -53,10 +54,10 @@ export default function AutocompleteComponent<T>(props: {
 
   function updateInputValue(text: string) {
     if (text === '') {
+      setSearchMatches([]);
       setAutocompleteOpen(false);
       return;
     }
-
     setSearchMatches(props.searchFilter.search(text));
 
     if (props.onChangeHandler) {
