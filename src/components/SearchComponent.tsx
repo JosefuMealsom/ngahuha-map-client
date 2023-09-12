@@ -1,4 +1,4 @@
-import React, { ReactHTML, useEffect, useState } from 'react';
+import React, { ReactHTML, useCallback, useEffect, useState } from 'react';
 import closeIconUrl from '../assets/svg/x.svg';
 import { debounce } from 'underscore';
 import { SearchFilter, SearchFilterMatch } from '../types/filter.type';
@@ -34,7 +34,10 @@ export default function SearchComponent<T>(props: {
     }
   }, [props.searchFilter]);
 
-  const debouncedUpdateTextMatches = debounce(updateTextMatches, 500);
+  const debouncedUpdateTextMatches = useCallback(
+    debounce(updateTextMatches, 500),
+    [],
+  );
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     updateInputValue(event.target.value);
