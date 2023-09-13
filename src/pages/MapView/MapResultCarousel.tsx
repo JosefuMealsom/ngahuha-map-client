@@ -9,9 +9,8 @@ export function MapResultCarousel(props: {
     if (props.plantSites.length === 0) return [];
 
     return props.plantSites.map((plantSite) => (
-      <div className="ml-4 snap-x snap-center">
+      <div key={plantSite.id} className="ml-4 snap-x snap-center">
         <MapResultItem
-          key={plantSite.id}
           {...plantSite}
           onVisibleCallback={props.onActiveResultChange}
         />
@@ -20,7 +19,10 @@ export function MapResultCarousel(props: {
   }
 
   return (
-    <div className="overflow-x-scroll w-screen hide-scrollbar cursor-pointer pb-safe snap-x snap-mandatory">
+    <div
+      className="overflow-x-scroll w-screen hide-scrollbar
+        cursor-pointer pb-safe snap-x snap-mandatory"
+    >
       <div className="flex">{renderCarousel()}</div>
     </div>
   );

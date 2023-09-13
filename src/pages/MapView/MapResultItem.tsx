@@ -12,6 +12,7 @@ export function MapResultItem(
   const plant = usePlant(props.plantId);
   const [previewUrl, setPreviewUrl] = useState('');
   const mapResultRef = useRef<HTMLDivElement>(null);
+  const [cleanupListenerController] = useState(new AbortController());
 
   useEffect(() => {
     if (!photos || photos.length === 0) return;
@@ -30,27 +31,40 @@ export function MapResultItem(
   }
   const observerOptions = { root: null, threshold: 1 };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (window.innerWidth > 640) return;
-      const [element] = entries;
+  function intersectionCallback(entries: IntersectionObserverEntry[]) {
+    if (window.innerWidth > 640) return;
 
-      if (element.isIntersecting) {
-        props.onVisibleCallback(props.id);
-      }
-    }, observerOptions);
+    const [element] = entries;
+
+    if (element.isIntersecting) props.onVisibleCallback(props.id);
+  }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      intersectionCallback,
+      observerOptions,
+    );
 
     if (mapResultRef.current) observer.observe(mapResultRef.current);
 
+    if (mapResultRef.current)
+      mapResultRef.current.addEventListener(
+        'mouseover',
+        () => props.onVisibleCallback(props.id),
+        { signal: cleanupListenerController.signal },
+      );
+
     return () => {
       if (mapResultRef.current) observer.unobserve(mapResultRef.current);
+      cleanupListenerController.abort();
     };
   }, [mapResultRef]);
 
   return (
     <div
       ref={mapResultRef}
-      className="w-[90vw] sm:w-72 bg-white rounded-lg h-60 overflow-hidden relative"
+      className="w-[90vw] sm:w-72 bg-white rounded-lg h-60 overflow-hidden
+      relative hover:outline hover:outline-4 -outline-offset-4 hover:outline-blue-500"
     >
       <Link to={`/plant-site/${props.id}`}>
         {renderPlantTitle()}
