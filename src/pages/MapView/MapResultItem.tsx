@@ -27,7 +27,7 @@ export function MapResultItem(props: PlantSite) {
   }
 
   return (
-    <div className="w-80 sm:w-70 bg-white rounded-lg h-60 overflow-hidden relative">
+    <div className="w-[90vw] sm:w-72 bg-white rounded-lg h-60 overflow-hidden relative">
       <Link to={`/plant-site/${props.id}`}>
         {renderPlantTitle()}
         <img
