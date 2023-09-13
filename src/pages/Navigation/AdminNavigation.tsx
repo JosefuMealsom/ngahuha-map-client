@@ -41,7 +41,7 @@ export function AdminNavigation() {
   }
 
   return (
-    <div className="bottom-1 right-1 pb-safe fixed">
+    <div className="bottom-1 right-1 pb-safe fixed z-30">
       <div className="flex">
         <ProtectedLayout>
           <div
