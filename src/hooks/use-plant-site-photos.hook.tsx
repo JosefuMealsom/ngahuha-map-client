@@ -28,6 +28,13 @@ export function usePlantSitePhotos(plantSiteId: string) {
       }),
     );
 
+    photoUrls.sort((a, b) => {
+      if (a.primaryPhoto) {
+        return -1;
+      }
+      return 0;
+    });
+
     setPlantSitePhotoUrls(photoUrls);
   };
 
