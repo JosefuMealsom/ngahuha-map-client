@@ -46,7 +46,7 @@ export function MapContainer() {
     >
       <div className="h-screen">
         <div className="relative touch-none inline-block select-none overflow-hidden w-full">
-          <div className="fixed left-0 top-2 pt-safe w-full max-w-md px-4">
+          <div className="fixed left-0 top-2 pt-safe w-full max-w-md px-4 z-20">
             <div className="pb-2">
               <SearchComponent
                 placeholder="Filter plant sites"
