@@ -21,5 +21,6 @@ const updateUserStateFromCookie = (loggedIn: boolean) => {
   Cookies.set('loggedIn', loggedIn.toString(), {
     sameSite: 'Strict',
     secure: true,
+    expires: 365,
   });
 };
