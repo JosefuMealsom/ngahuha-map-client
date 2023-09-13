@@ -12,7 +12,6 @@ export function MapResultItem(
   const plant = usePlant(props.plantId);
   const [previewUrl, setPreviewUrl] = useState('');
   const mapResultRef = useRef<HTMLDivElement>(null);
-  const [cleanupListenerController] = useState(new AbortController());
 
   useEffect(() => {
     if (!photos || photos.length === 0) return;
@@ -47,16 +46,14 @@ export function MapResultItem(
 
     if (mapResultRef.current) observer.observe(mapResultRef.current);
 
-    if (mapResultRef.current)
-      mapResultRef.current.addEventListener(
-        'mouseover',
-        () => props.onVisibleCallback(props.id),
-        { signal: cleanupListenerController.signal },
+    if (mapResultRef.current) {
+      mapResultRef.current.addEventListener('mouseenter', () =>
+        props.onVisibleCallback(props.id),
       );
+    }
 
     return () => {
       if (mapResultRef.current) observer.unobserve(mapResultRef.current);
-      cleanupListenerController.abort();
     };
   }, [mapResultRef]);
 
