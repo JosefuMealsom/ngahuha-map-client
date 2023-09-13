@@ -21,6 +21,7 @@ export function MapContainer() {
   const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
     useState<MapSearchFilter>(new MapSearchFilter([], []));
   const { searchQuery, setSearchQuery } = useAppStore();
+  const [selectedResultId, setSelectedResultId] = useState<string>();
 
   useEffect(() => {
     if (!plants || !plantSites) return;
@@ -63,12 +64,19 @@ export function MapContainer() {
 
           <MapCanvas />
           {filteredPlantSites?.map((plantSite) => (
-            <MapMarker key={plantSite.id} {...plantSite} />
+            <MapMarker
+              key={plantSite.id}
+              {...plantSite}
+              active={plantSite.id === selectedResultId}
+            />
           ))}
           <LocationMarker />
         </div>
         <div className="fixed bottom-3 left-0 w-full z-20">
-          <MapResultCarousel plantSites={filteredPlantSites} />
+          <MapResultCarousel
+            plantSites={filteredPlantSites}
+            onActiveResultChange={setSelectedResultId}
+          />
         </div>
       </div>
     </div>
