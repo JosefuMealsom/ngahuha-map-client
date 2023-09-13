@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PlantSite } from '../../types/api/plant-site.type';
 import { usePlantSitePhotos } from '../../hooks/use-plant-site-photos.hook';
 import { usePlant } from '../../hooks/use-plant.hook';
-import { getFullPlantName } from '../../utils/plant-name-decorator.util';
 import { Link } from 'react-router-dom';
+import { PlantTitleComponent } from '../../components/PlantTitleComponent';
 
-export function MapResultItem(props: PlantSite) {
+export function MapResultItem(
+  props: PlantSite & { onVisibleCallback: (itemId: string) => any },
+) {
   const photos = usePlantSitePhotos(props.id);
   const plant = usePlant(props.plantId);
   const [previewUrl, setPreviewUrl] = useState('');
+  const mapResultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!photos || photos.length === 0) return;
@@ -20,14 +23,46 @@ export function MapResultItem(props: PlantSite) {
     if (!plant) return;
 
     return (
-      <h2 className="text-white font-semibold absolute p-2 bg-black bg-opacity-50 w-full">
-        {getFullPlantName(plant)}
+      <h2 className="absolute p-2 bg-black bg-opacity-50 w-full">
+        <PlantTitleComponent {...plant} />
       </h2>
     );
   }
+  const observerOptions = { root: null, threshold: 1 };
+
+  function intersectionCallback(entries: IntersectionObserverEntry[]) {
+    if (window.innerWidth > 640) return;
+
+    const [element] = entries;
+
+    if (element.isIntersecting) props.onVisibleCallback(props.id);
+  }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      intersectionCallback,
+      observerOptions,
+    );
+
+    if (mapResultRef.current) observer.observe(mapResultRef.current);
+
+    if (mapResultRef.current) {
+      mapResultRef.current.addEventListener('mouseenter', () =>
+        props.onVisibleCallback(props.id),
+      );
+    }
+
+    return () => {
+      if (mapResultRef.current) observer.unobserve(mapResultRef.current);
+    };
+  }, [mapResultRef]);
 
   return (
-    <div className="w-[90vw] sm:w-72 bg-white rounded-lg h-60 overflow-hidden relative">
+    <div
+      ref={mapResultRef}
+      className="w-[90vw] sm:w-72 bg-white rounded-lg h-60 overflow-hidden
+      relative hover:outline hover:outline-4 -outline-offset-4 hover:outline-blue-500"
+    >
       <Link to={`/plant-site/${props.id}`}>
         {renderPlantTitle()}
         <img
