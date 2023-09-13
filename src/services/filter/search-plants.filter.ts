@@ -36,7 +36,7 @@ export class SearchPlantsFilter implements SearchFilter<Plant> {
   }
 
   search(searchText: string): SearchFilterMatch<Plant>[] {
-    if (searchText === '') {
+    if (searchText.length < 2) {
       return this.plantList.map((plant) => ({
         description: getFullPlantName(plant),
         data: plant,

@@ -9,7 +9,10 @@ export function MapResultCarousel(props: {
     if (props.plantSites.length === 0) return [];
 
     return props.plantSites.map((plantSite) => (
-      <div key={plantSite.id} className="ml-4 snap-x snap-center">
+      <div
+        key={plantSite.id}
+        className="px-2 snap-x snap-center last:pr-4 first:pl-4"
+      >
         <MapResultItem
           {...plantSite}
           onVisibleCallback={props.onActiveResultChange}

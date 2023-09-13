@@ -4,7 +4,7 @@ import { SearchPlantSitesFilter } from './search-plant-sites.filter';
 
 export class MapSearchFilter extends SearchPlantSitesFilter {
   search(searchText: string): SearchFilterMatch<PlantSite>[] {
-    if (searchText === '') {
+    if (searchText.length < 2) {
       return [];
     }
 

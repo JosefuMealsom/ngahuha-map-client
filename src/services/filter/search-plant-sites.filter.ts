@@ -40,7 +40,7 @@ export class SearchPlantSitesFilter<
   }
 
   search(searchText: string): SearchFilterMatch<PlantSiteSubclass>[] {
-    if (searchText === '') {
+    if (searchText.length < 2) {
       return this.plantSiteList.map((plantSite) => ({
         description: plantSite.id,
         data: plantSite,
