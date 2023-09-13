@@ -61,7 +61,7 @@ export function MapResultItem(
     <div
       ref={mapResultRef}
       className="w-[90vw] sm:w-72 bg-white rounded-lg h-60 overflow-hidden
-      relative hover:outline hover:outline-4 -outline-offset-4 hover:outline-blue-500"
+      relative sm:hover:outline sm:hover:outline-4 -outline-offset-4 sm:hover:outline-blue-500"
     >
       <Link to={`/plant-site/${props.id}`}>
         {renderPlantTitle()}
