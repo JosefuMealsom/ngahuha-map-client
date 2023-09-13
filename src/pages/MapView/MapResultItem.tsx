@@ -32,27 +32,25 @@ export function MapResultItem(
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
+      if (window.innerWidth > 640) return;
       const [element] = entries;
+
       if (element.isIntersecting) {
         props.onVisibleCallback(props.id);
       }
     }, observerOptions);
 
-    if (mapResultRef.current) {
-      observer.observe(mapResultRef.current);
-    }
+    if (mapResultRef.current) observer.observe(mapResultRef.current);
 
     return () => {
-      if (mapResultRef.current) {
-        observer.unobserve(mapResultRef.current);
-      }
+      if (mapResultRef.current) observer.unobserve(mapResultRef.current);
     };
   }, [mapResultRef]);
 
   return (
     <div
       ref={mapResultRef}
-      className="w-[90vw] bg-white rounded-lg h-60 overflow-hidden relative"
+      className="w-[90vw] sm:w-72 bg-white rounded-lg h-60 overflow-hidden relative"
     >
       <Link to={`/plant-site/${props.id}`}>
         {renderPlantTitle()}
