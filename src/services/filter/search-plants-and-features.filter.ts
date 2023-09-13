@@ -39,7 +39,7 @@ export class SearchPlantsAndFeaturesFilter
   }
 
   search(searchText: string): SearchFilterMatch<Plant | Feature>[] {
-    if (searchText === '') {
+    if (searchText.length < 2) {
       return this.plantsAndFeaturesList.map(getMatch);
     }
     const fuseSearchResults = this.fuseInstance.search(searchText);
