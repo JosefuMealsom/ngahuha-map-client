@@ -16,6 +16,8 @@ import {
   renderMarkerImageOnMap,
   renderMarkerOnMap,
 } from '../../services/view/map-renderer';
+import { PanGestureHandler } from '../../services/view/pan-gesture-handler.service';
+import { ZoomGestureHandler } from '../../services/view/zoom-gesture-handler.service';
 
 export function MapCanvas() {
   const canvasDimensions = useMapStore((state) => state.canvasDimensions);
@@ -25,6 +27,37 @@ export function MapCanvas() {
   let mapImage: HTMLImageElement | null;
   let plantSites: PlantSite[] = [];
   let plantSiteUploads: PlantSiteUpload[] = [];
+
+  let panGestureHandler: PanGestureHandler;
+  let zoomGestureHandler: ZoomGestureHandler;
+
+  const mapStore = useMapStore();
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    panGestureHandler = new PanGestureHandler(
+      canvasRef.current,
+      mapStore.pan.x,
+      mapStore.pan.y,
+    );
+    zoomGestureHandler = new ZoomGestureHandler(
+      canvasRef.current,
+      mapStore.zoom,
+    );
+
+    return () => {
+      panGestureHandler.removeEventListeners();
+      zoomGestureHandler.removeEventListeners();
+    };
+  }, []);
+
+  useAnimationFrame(() => {
+    const pan = panGestureHandler.update();
+    const zoom = zoomGestureHandler.update();
+    useMapStore.getState().setZoom(zoom);
+    useMapStore.getState().setPan(pan.x, pan.y);
+  });
 
   useLiveQuery(async () => {
     plantSites = await plantSiteTable.toArray();

@@ -30,12 +30,15 @@ export function CarouselComponent(props: { elements: ReactNode[] }) {
     if (elementsWithUniqueKey.length === 1) return;
 
     return (
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
+      <div
+        className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-slate-700
+      bg-opacity-80 py-3 px-4 rounded-full flex items-center"
+      >
         {elementsWithUniqueKey.map((_element, index) => (
           <div
             className={`${
               carouselIndex !== index ? 'opacity-50' : ''
-            } h-2 w-2 rounded-full bottom-5 left-1/2 bg-white inline-block mx-1`}
+            } h-2 w-2 rounded-full bottom-5 bg-white inline-block mx-1`}
             key={index}
           ></div>
         ))}

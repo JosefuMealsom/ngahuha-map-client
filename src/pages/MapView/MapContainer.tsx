@@ -1,47 +1,44 @@
 import { MapCanvas } from './MapCanvas';
-import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
-import { PanGestureHandler } from '../../services/view/pan-gesture-handler.service';
-import { ZoomGestureHandler } from '../../services/view/zoom-gesture-handler.service';
-import { useMapStore } from '../../store/map.store';
 import { LocationMarker } from './LocationMarker';
-import { FeatureMarker } from './FeatureMarker';
-import { createRef, useEffect } from 'react';
-import { MapFilter } from './MapFilter';
+import { createRef, useEffect, useState } from 'react';
+import { PlantSite } from '../../types/api/plant-site.type';
+import { MapMarker } from './MapMarker';
+
+import { SearchFilterMatch } from '../../types/filter.type';
+import { useAppStore } from '../../store/app.store';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { plantSiteTable, plantTable } from '../../services/offline.database';
+import SearchComponent from '../../components/SearchComponent';
+import { NavigationBar } from '../Navigation/NavigationBar';
+import { MapResultCarousel } from './MapResultCarousel';
+import { MapSearchFilter } from '../../services/filter/map-search-filter';
 
 export function MapContainer() {
   const mapContainerRef = createRef<HTMLDivElement>();
-
-  let panGestureHandler: PanGestureHandler;
-  let zoomGestureHandler: ZoomGestureHandler;
-
-  const mapStore = useMapStore();
+  const plantSites = useLiveQuery(() => plantSiteTable.toArray());
+  const plants = useLiveQuery(() => plantTable.toArray());
+  const [filteredPlantSites, setFilteredPlantSites] = useState<PlantSite[]>([]);
+  const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
+    useState<MapSearchFilter>(new MapSearchFilter([], []));
+  const { searchQuery, setSearchQuery } = useAppStore();
 
   useEffect(() => {
-    if (!mapContainerRef.current) return;
+    if (!plants || !plantSites) return;
 
-    panGestureHandler = new PanGestureHandler(
-      mapContainerRef.current,
-      mapStore.pan.x,
-      mapStore.pan.y,
-    );
-    zoomGestureHandler = new ZoomGestureHandler(
-      mapContainerRef.current,
-      mapStore.zoom,
-    );
+    setSearchPlantSitesFilter(new MapSearchFilter(plantSites, plants));
+  }, [plants, plantSites]);
 
-    return () => {
-      panGestureHandler.removeEventListeners();
-      zoomGestureHandler.removeEventListeners();
-    };
-  }, []);
+  function filterPlantSites(matches: SearchFilterMatch<PlantSite>[]) {
+    if (!plants || !plantSites) return;
 
-  useAnimationFrame(() => {
-    const pan = panGestureHandler.update();
-    const zoom = zoomGestureHandler.update();
-    useMapStore.getState().setZoom(zoom);
-    useMapStore.getState().setPan(pan.x, pan.y);
-  });
+    setFilteredPlantSites(matches.map((match) => match.data));
+  }
 
+  function resetFilter() {
+    if (!plantSites) return;
+
+    setFilteredPlantSites([]);
+  }
   return (
     <div
       ref={mapContainerRef}
@@ -49,25 +46,29 @@ export function MapContainer() {
     >
       <div className="h-screen">
         <div className="relative touch-none inline-block select-none overflow-hidden w-full">
+          <div className="fixed left-0 top-2 pt-safe w-full max-w-md px-4">
+            <div className="pb-2">
+              <SearchComponent
+                placeholder="Filter plant sites"
+                searchFilter={searchPlantSitesFilter}
+                suggestionText="Available"
+                onMatchesChange={filterPlantSites}
+                onClearHandler={resetFilter}
+                value={searchQuery}
+                onChange={(value) => setSearchQuery(value)}
+              />
+            </div>
+            <NavigationBar activePage="Map" />
+          </div>
+
           <MapCanvas />
-          {/* <FeatureMarker
-            text="The steppes"
-            position={{
-              latitude: -35.377761,
-              longitude: 173.966039,
-              accuracy: 0,
-            }}
-          />
-          <FeatureMarker
-            text="The avocado orchard"
-            position={{
-              latitude: -35.377025,
-              longitude: 173.965264,
-              accuracy: 0,
-            }}
-          /> */}
+          {filteredPlantSites?.map((plantSite) => (
+            <MapMarker key={plantSite.id} {...plantSite} />
+          ))}
           <LocationMarker />
-          <MapFilter />
+        </div>
+        <div className="fixed bottom-3 left-0 w-full z-20">
+          <MapResultCarousel plantSites={filteredPlantSites} />
         </div>
       </div>
     </div>

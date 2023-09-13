@@ -7,10 +7,10 @@ export class SearchPlantSitesFilter<
   PlantSiteSubclass extends PlantSite = PlantSite,
 > implements SearchFilter<PlantSiteSubclass>
 {
-  private plantSiteList: PlantSiteSubclass[];
-  private plantList: Plant[];
-  private fuseInstance: Fuse<Plant>;
-  private fuseOptions: Fuse.IFuseOptions<Plant> = {
+  plantSiteList: PlantSiteSubclass[];
+  plantList: Plant[];
+  fuseInstance: Fuse<Plant>;
+  fuseOptions: Fuse.IFuseOptions<Plant> = {
     includeScore: true,
     distance: 100,
     threshold: 0.2,
