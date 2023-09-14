@@ -12,6 +12,7 @@ import SearchComponent from '../../components/SearchComponent';
 import { NavigationBar } from '../Navigation/NavigationBar';
 import { MapResultCarousel } from './MapResultCarousel';
 import { MapSearchFilter } from '../../services/filter/map-search-filter';
+import { MapSvg } from './MapSvg';
 
 export function MapContainer() {
   const mapContainerRef = createRef<HTMLDivElement>();
@@ -62,7 +63,7 @@ export function MapContainer() {
             <NavigationBar activePage="Map" />
           </div>
 
-          <MapCanvas />
+          <MapSvg />
           {filteredPlantSites?.map((plantSite) => (
             <MapMarker
               key={plantSite.id}
