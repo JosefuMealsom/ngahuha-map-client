@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import mapUrl from '../../assets/ngahuha-2.svg';
+import mapUrl from '../../assets/svg/ngahuha-2.svg';
 import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
 import { useMapStore } from '../../store/map.store';
 
