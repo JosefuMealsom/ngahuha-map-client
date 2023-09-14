@@ -22,7 +22,7 @@ export class ZoomGestureHandler {
     if (this.eventCache.length === 0) {
       this._zoom += this.zoomAccelerationHandler.acceleration;
     }
-    this._zoom = Math.min(10, Math.max(this._zoom, 0.5));
+    this._zoom = Math.min(10, Math.max(this._zoom, 1));
     return this._zoom;
   }
 
