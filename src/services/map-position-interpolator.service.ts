@@ -7,9 +7,7 @@ import {
   transform,
   translate,
 } from 'transformation-matrix';
-import { useMapStore } from '../store/map.store';
 import { MapState } from '../types/map-state.type';
-transform;
 
 export const interpolateToDomPosition = (
   domContainerHeight: number,

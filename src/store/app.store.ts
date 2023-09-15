@@ -8,10 +8,12 @@ type AppStore = {
   setPosition: (position: LatLong | undefined) => void;
   setSearchQuery: (value: string) => void;
   setSyncStatus: (value: SyncStatus) => void;
+  setMapCarouselPosition: (value: number) => void;
   loggedIn: boolean;
   position?: LatLong;
   searchQuery: string;
   syncStatus: SyncStatus;
+  mapCarouselPosition: number;
 };
 
 export const useAppStore = create<AppStore>((set) => {
@@ -28,8 +30,10 @@ export const useAppStore = create<AppStore>((set) => {
   };
 
   const setSearchQuery = (value: string) => {
-    set(() => {
-      return { searchQuery: value };
+    set((draft) => {
+      if (draft.searchQuery === value) return {};
+
+      return { searchQuery: value, mapCarouselPosition: 0 };
     });
   };
 
@@ -39,14 +43,22 @@ export const useAppStore = create<AppStore>((set) => {
     });
   };
 
+  const setMapCarouselPosition = (value: number) => {
+    set(() => {
+      return { mapCarouselPosition: value };
+    });
+  };
+
   return {
     loggedIn: false,
     position: undefined,
     searchQuery: '',
     syncStatus: 'Not syncing',
+    mapCarouselPosition: 0,
     setLoggedIn: setLoggedIn,
     setPosition: setPosition,
     setSearchQuery: setSearchQuery,
     setSyncStatus: setSyncStatus,
+    setMapCarouselPosition: setMapCarouselPosition,
   };
 });
