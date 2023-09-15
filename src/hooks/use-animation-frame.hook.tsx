@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 
-export function useAnimationFrame(onAnimationFrame: Function) {
+export function useAnimationFrame(
+  onAnimationFrame: () => any,
+  dependencies: any[],
+) {
   useEffect(() => {
     let animId: number;
     const runAnimation = () => {
@@ -13,5 +16,5 @@ export function useAnimationFrame(onAnimationFrame: Function) {
     return () => {
       cancelAnimationFrame(animId);
     };
-  }, []);
+  }, dependencies);
 }
