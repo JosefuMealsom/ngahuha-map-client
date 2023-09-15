@@ -15,7 +15,10 @@ export function PathMapContainer() {
 
   const [animFrame, setAnimFrame] = useState(0);
 
-  useAnimationFrame(() => setAnimFrame((previousFrame) => previousFrame + 1));
+  useAnimationFrame(
+    () => setAnimFrame((previousFrame) => previousFrame + 1),
+    [],
+  );
 
   useEffect(() => {
     if (!mapContainerRef.current) return;

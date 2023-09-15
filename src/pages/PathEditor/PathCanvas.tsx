@@ -16,7 +16,7 @@ export function PathCanvas(props: { onDownloadClick: () => any }) {
 
   useAnimationFrame(() => {
     drawMap(canvasRef?.current);
-  });
+  }, []);
 
   function determineCanvasDomSize() {
     const canvasSizeClass =
