@@ -1,3 +1,4 @@
+import { useMapStore } from '../../store/map.store';
 import { AccelerationHandler } from './acceleration-handler.service';
 
 export class PanGestureHandler {
@@ -14,6 +15,12 @@ export class PanGestureHandler {
     this.panX = panX;
     this.panY = panY;
     this.init();
+  }
+
+  setPan(x: number, y: number) {
+    this.eventCache = [];
+    this.panX = x;
+    this.panY = y;
   }
 
   update() {
@@ -78,10 +85,12 @@ export class PanGestureHandler {
     const changeX = newX - oldX;
     const changeY = newY - oldY;
 
-    this.panX += changeX;
-    this.panY += changeY;
-    this.panXAccelerationHandler.setForce(changeX);
-    this.panYAccelerationHandler.setForce(changeY);
+    const zoom = useMapStore.getState().zoom;
+
+    this.panX += changeX / zoom;
+    this.panY += changeY / zoom;
+    this.panXAccelerationHandler.setForce(changeX / zoom);
+    this.panYAccelerationHandler.setForce(changeY / zoom);
 
     this.eventCache[0] = pointerEvent;
   }

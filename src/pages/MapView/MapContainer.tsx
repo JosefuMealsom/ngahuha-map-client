@@ -1,9 +1,5 @@
-import { MapCanvas } from './MapCanvas';
-import { LocationMarker } from './LocationMarker';
-import { createRef, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PlantSite } from '../../types/api/plant-site.type';
-import { MapMarker } from './MapMarker';
-
 import { SearchFilterMatch } from '../../types/filter.type';
 import { useAppStore } from '../../store/app.store';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -15,7 +11,7 @@ import { MapSearchFilter } from '../../services/filter/map-search-filter';
 import { MapSvg } from './MapSvg';
 
 export function MapContainer() {
-  const mapContainerRef = createRef<HTMLDivElement>();
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   const plantSites = useLiveQuery(() => plantSiteTable.toArray());
   const plants = useLiveQuery(() => plantTable.toArray());
   const [filteredPlantSites, setFilteredPlantSites] = useState<PlantSite[]>([]);
@@ -41,6 +37,11 @@ export function MapContainer() {
 
     setFilteredPlantSites([]);
   }
+
+  function setSelectedMarker(id: string) {
+    setSelectedResultId(id);
+  }
+
   return (
     <div
       ref={mapContainerRef}
@@ -62,21 +63,15 @@ export function MapContainer() {
             </div>
             <NavigationBar activePage="Map" />
           </div>
-
-          <MapSvg />
-          {filteredPlantSites?.map((plantSite) => (
-            <MapMarker
-              key={plantSite.id}
-              {...plantSite}
-              active={plantSite.id === selectedResultId}
-            />
-          ))}
-          <LocationMarker />
+          <MapSvg
+            plantSites={filteredPlantSites}
+            selectedPlantSiteId={selectedResultId}
+          />
         </div>
         <div className="fixed bottom-3 left-0 w-full z-20">
           <MapResultCarousel
             plantSites={filteredPlantSites}
-            onActiveResultChange={setSelectedResultId}
+            onActiveResultChange={setSelectedMarker}
           />
         </div>
       </div>

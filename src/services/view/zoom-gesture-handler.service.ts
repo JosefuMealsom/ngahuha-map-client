@@ -94,8 +94,8 @@ export class ZoomGestureHandler {
     if (this.eventCache.length !== 2) return;
 
     const diff = this.calculateDistanceChange() / this.zoomSensitivity;
-    this._zoom += diff;
-    this.zoomAccelerationHandler.setForce(diff);
+    this._zoom += diff * this._zoom;
+    this.zoomAccelerationHandler.setForce(diff * this._zoom);
   }
 
   private calculateDistanceChange() {

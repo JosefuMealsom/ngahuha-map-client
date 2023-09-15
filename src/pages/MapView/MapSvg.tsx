@@ -1,78 +1,126 @@
-import { useEffect, useRef } from 'react';
-import mapUrl from '../../assets/svg/ngahuha-2.svg';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import mapUrl from '../../assets/svg/ngahuha-3.svg';
 import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
 import { useMapStore } from '../../store/map.store';
-
 import { PanGestureHandler } from '../../services/view/pan-gesture-handler.service';
 import { ZoomGestureHandler } from '../../services/view/zoom-gesture-handler.service';
-import { compose, scale, toCSS, translate } from 'transformation-matrix';
+import {
+  applyToPoint,
+  compose,
+  scale,
+  toCSS,
+  translate,
+} from 'transformation-matrix';
+import { PlantSite } from '../../types/api/plant-site.type';
+import { MapMarker } from './MapMarker';
+import { interpolateToCanvasPosition } from '../../services/map-position-interpolator.service';
+import { LocationMarker } from './LocationMarker';
 
-export function MapSvg() {
-  const svgRef = useRef<HTMLImageElement>(null);
+export function MapSvg(props: {
+  plantSites: PlantSite[];
+  selectedPlantSiteId?: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { setPan, setZoom } = useMapStore();
 
-  let panGestureHandler: PanGestureHandler;
-  let zoomGestureHandler: ZoomGestureHandler;
+  const [panGestureHandler, setPanGestureHandler] =
+    useState<PanGestureHandler>();
+  const [zoomGestureHandler, setZoomGestureHandler] =
+    useState<ZoomGestureHandler>();
 
   const mapStore = useMapStore();
 
   useEffect(() => {
     if (!containerRef.current) return;
-
-    panGestureHandler = new PanGestureHandler(
+    const panHandler = new PanGestureHandler(
       containerRef.current,
       mapStore.pan.x,
       mapStore.pan.y,
     );
-    zoomGestureHandler = new ZoomGestureHandler(
+
+    setPanGestureHandler(panHandler);
+
+    const zoomHandler = new ZoomGestureHandler(
       containerRef.current,
       mapStore.zoom,
     );
 
+    setZoomGestureHandler(zoomHandler);
+
     return () => {
-      panGestureHandler.removeEventListeners();
-      zoomGestureHandler.removeEventListeners();
+      panHandler.removeEventListeners();
+      zoomHandler.removeEventListeners();
     };
   }, []);
 
-  useAnimationFrame(() => {
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const marker = props.plantSites.find(
+      (plantSite) => plantSite.id === props.selectedPlantSiteId,
+    );
+
+    const { x, y } = interpolateToCanvasPosition(
+      { ...marker! },
+      useMapStore.getState(),
+    )!;
+
+    const position = applyToPoint(translate(-x, -y), { x: 0, y: 0 });
+
+    if (position) {
+      panGestureHandler?.setPan(position.x, position.y);
+      setPan(position.x, position.y);
+    }
+  }, [props.selectedPlantSiteId]);
+
+  const onAnimationCallback = useCallback(() => {
+    if (!panGestureHandler || !zoomGestureHandler) return;
+
     const pan = panGestureHandler.update();
+    setPan(pan.x, pan.y);
     const zoom = zoomGestureHandler.update();
-    useMapStore.getState().setZoom(zoom);
-    useMapStore.getState().setPan(pan.x, pan.y);
-  });
-
-  useAnimationFrame(() => {
-    if (!svgRef.current || !containerRef.current) return;
-
-    const { height } = useMapStore.getState().canvasDimensions;
-    const svgToDomRatio = containerRef.current.clientHeight / height;
-    const { x, y } = useMapStore.getState().pan;
-    const zoom = useMapStore.getState().zoom;
+    setZoom(zoom);
 
     const mapTransformation = compose(
-      scale(svgToDomRatio, svgToDomRatio),
-      translate(x, y),
       scale(zoom, zoom),
+      translate(window.innerWidth / 2 / zoom, window.innerHeight / 2 / zoom),
+      translate(pan.x, pan.y),
     );
 
     const cssTransform = toCSS(mapTransformation);
 
-    svgRef.current.style.transform = cssTransform;
-  });
+    if (containerRef.current)
+      containerRef.current.style.transform = cssTransform;
+  }, [panGestureHandler, zoomGestureHandler]);
+
+  useAnimationFrame(onAnimationCallback, [
+    panGestureHandler,
+    zoomGestureHandler,
+  ]);
 
   return (
     <div
-      ref={containerRef}
       draggable={false}
-      className="touch-none bg-[#96AF98] h-screen w-max sm:w-screen"
+      className="touch-none bg-[#96AF98] h-screen w-max sm:w-screen relative"
     >
-      <img
-        draggable={false}
-        ref={svgRef}
-        src={mapUrl}
-        className="h-screen pointer-events-none"
-      />
+      <div
+        ref={containerRef}
+        className="origin-top-left h-full w-full relative"
+      >
+        <img
+          draggable={false}
+          src={mapUrl}
+          className="h-full pointer-events-none"
+        />
+        {props.plantSites.map((plantSite) => (
+          <MapMarker
+            key={plantSite.id}
+            {...plantSite}
+            active={props.selectedPlantSiteId === plantSite.id}
+          />
+        ))}
+        <LocationMarker />
+      </div>
     </div>
   );
 }
