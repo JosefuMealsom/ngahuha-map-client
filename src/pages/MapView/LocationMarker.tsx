@@ -1,9 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useMapStore } from '../../store/map.store';
-import {
-  interpolateToCanvasPosition,
-  interpolateToDomPosition,
-} from '../../services/map-position-interpolator.service';
+import { interpolateToCanvasPosition } from '../../services/map-position-interpolator.service';
 import { useAppStore } from '../../store/app.store';
 
 export function LocationMarker() {
@@ -25,7 +22,6 @@ export function LocationMarker() {
 
     containerRef.current.classList.remove('hidden');
     containerRef.current.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
-
     marker.current.style.transform = `scale(${1 / zoom}, ${1 / zoom})`;
   }, [zoom, pan, position]);
 

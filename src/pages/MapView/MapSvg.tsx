@@ -101,17 +101,13 @@ export function MapSvg(props: {
   return (
     <div
       draggable={false}
-      className="touch-none bg-[#96AF98] h-screen w-max sm:w-screen relative"
+      className="touch-none bg-[#96AF98] h-screen w-screen relative"
     >
       <div
         ref={containerRef}
-        className="origin-top-left h-full w-full relative"
+        className="origin-top-left relative min-w-[640px]"
       >
-        <img
-          draggable={false}
-          src={mapUrl}
-          className="h-full pointer-events-none"
-        />
+        <img draggable={false} src={mapUrl} className="pointer-events-none" />
         {props.plantSites.map((plantSite) => (
           <MapMarker
             key={plantSite.id}
