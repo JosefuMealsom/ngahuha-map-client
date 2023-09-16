@@ -37,7 +37,7 @@ export function MapMarker(props: PlantSite & { active: boolean }) {
     <div
       id={props.id}
       ref={marker}
-      className={`fill-white absolute top-0 left-0 h-6 w-6 hidden origin-top-left ${
+      className={`fill-white absolute -top-6 -left-3 h-6 w-6 hidden ${
         props.active ? 'z-10' : ''
       }`}
       data-cy="map-marker"
@@ -45,7 +45,7 @@ export function MapMarker(props: PlantSite & { active: boolean }) {
       <img
         ref={imageRef}
         src={props.active ? selectedPinSvg : pinSvg}
-        className="select-none h-full pointer-events-none origin-bottom"
+        className="select-none h-full pointer-events-none origin-center"
       />
     </div>
   );
