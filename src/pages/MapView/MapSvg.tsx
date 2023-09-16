@@ -82,8 +82,8 @@ export function MapSvg(props: {
     setZoom(zoom);
 
     const mapTransformation = compose(
+      translate(window.innerWidth / 2, window.innerHeight / 2),
       scale(zoom, zoom),
-      translate(window.innerWidth / 2 / zoom, window.innerHeight / 2 / zoom),
       translate(pan.x, pan.y),
     );
 
