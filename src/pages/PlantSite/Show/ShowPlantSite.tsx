@@ -22,6 +22,7 @@ import {
 import { addPlantSitePhotoUpload } from '../../../services/api/plant-site/plant-site-photo-upload.service';
 import { Photo } from '../../../types/api/photo.type';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
+import { generateImagePreview } from '../../../services/preview-image-generator';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
 
@@ -78,9 +79,8 @@ export function PlantSiteInformation() {
   async function onImageAdded(event: React.ChangeEvent<HTMLInputElement>) {
     const newPhoto = event.target.files?.item(0);
     if (newPhoto) {
-      const photosCopy = [...photosToUpload!];
-
-      await addPlantSitePhotoUpload(plantSite.id, newPhoto);
+      const previewImage = await generateImagePreview(newPhoto);
+      await addPlantSitePhotoUpload(plantSite.id, newPhoto, previewImage);
     }
   }
 
