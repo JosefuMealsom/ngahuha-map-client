@@ -36,13 +36,15 @@ describe('PlantSiteUploadService', () => {
 
       it('adds a new plant site photo upload and saves it offline', async () => {
         const blob = new Blob();
-        await addPlantSitePhotoUpload('abc', blob);
+        const previewBlob = new Blob();
+
+        await addPlantSitePhotoUpload('abc', blob, previewBlob);
         const savedPlantSitePhotoData =
           await plantSitePhotoUploadTable.toArray();
         const savedBlobData = await blobDataTable.toArray();
 
         expect(savedPlantSitePhotoData.length).toEqual(1);
-        expect(savedBlobData.length).toEqual(1);
+        expect(savedBlobData.length).toEqual(2);
 
         const [photo] = savedPlantSitePhotoData;
         expect(photo.plantSiteId).toEqual('abc');
