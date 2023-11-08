@@ -15,6 +15,7 @@ import { FeatureComponent } from './FeatureComponent';
 import { bulkUploadFeaturesToServer } from '../../services/api/feature/sync-features';
 import { LoaderSpinnerComponent } from '../../components/LoaderSpinnerComponent';
 import { uploadAllPlantPhotosToServer } from '../../services/api/plant-site/plant-site-photo-upload.service';
+import { PlantSitePhotoUploadComponent } from './PlantSitePhotoUploadComponent';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);
@@ -148,11 +149,8 @@ export function PlantPhotosToUpload() {
           Plant site photos to upload
         </h2>
         {plantPhotosToUpload.map((photo) => (
-          <div className="py-2" key={photo.id!}>
-            <h3 className="font-bold mt-5 text-sm relative mb-1">
-              Plant site photo: {photo.id}
-            </h3>
-            <p className="text-sm">Photo for plant site {photo.plantSiteId}</p>
+          <div key={photo.id!}>
+            <PlantSitePhotoUploadComponent {...photo} />
           </div>
         ))}
       </div>
