@@ -8,20 +8,24 @@ import { uploadBlobData } from '../sync/blob-uploader.service';
 
 export const addPlantSitePhotoUpload = async (
   plantSiteId: string,
-  file: Blob | File,
+  photoData: Blob | File,
+  previewPhotoData: Blob | File,
 ) => {
-  const data = await file.arrayBuffer();
+  const data = await photoData.arrayBuffer();
+  const previewData = await previewPhotoData.arrayBuffer();
 
   return offlineDatabase.transaction(
     'rw',
     blobDataTable,
     plantSitePhotoUploadTable,
     async () => {
-      const blobId = await blobDataTable.add({ data: data });
+      const photoBlobId = await blobDataTable.add({ data: data });
+      const previewBlobId = await blobDataTable.add({ data: previewData });
 
       return plantSitePhotoUploadTable.add({
         plantSiteId: plantSiteId,
-        blobDataId: blobId,
+        blobDataId: photoBlobId,
+        previewPhotoBlobDataId: previewBlobId,
       });
     },
   );
