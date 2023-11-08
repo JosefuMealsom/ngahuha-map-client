@@ -58,6 +58,9 @@ const clearPlantSitePhotoUpload = async (id: number) => {
   const photoUpload = await plantSitePhotoUploadTable.get(id);
   if (photoUpload) {
     await blobDataTable.delete(photoUpload.blobDataId);
+    if (photoUpload.previewPhotoBlobDataId) {
+      await blobDataTable.delete(photoUpload.previewPhotoBlobDataId);
+    }
     await plantSitePhotoUploadTable.delete(id);
   } else {
     throw Error('No photo upload found');

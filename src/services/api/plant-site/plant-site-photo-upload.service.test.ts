@@ -59,16 +59,16 @@ describe('PlantSiteUploadService', () => {
       beforeEach(async () => {
         await plantSiteTable.add(plantSiteFactory.create({ id: 'abc' }));
         const blobDataId = await blobDataTable.add(blobDataFactory.create({}));
+        const previewBlobDataId = await blobDataTable.add(
+          blobDataFactory.create({}),
+        );
         photoUpload = plantSitePhotoUploadFactory.create({
           plantSiteId: 'abc',
           blobDataId: blobDataId,
+          previewPhotoBlobDataId: previewBlobDataId,
         });
-        const uploadId = await plantSitePhotoUploadTable.add(
-          plantSitePhotoUploadFactory.create({
-            plantSiteId: 'abc',
-            blobDataId: blobDataId,
-          }),
-        );
+
+        const uploadId = await plantSitePhotoUploadTable.add(photoUpload);
         photoUpload.id = uploadId;
 
         mockApiCall(getFullApiPath('/blob/presigned-upload-url'), {
