@@ -5,6 +5,7 @@ const plantSitePhotoUploadFactory = {
     const dummyData: PlantSitePhotoUpload = {
       plantSiteId: photoData.plantSiteId || 'abc',
       blobDataId: photoData.blobDataId || 1,
+      previewPhotoBlobDataId: photoData.previewPhotoBlobDataId || 2,
     };
 
     return Object.assign(dummyData, photoData);
