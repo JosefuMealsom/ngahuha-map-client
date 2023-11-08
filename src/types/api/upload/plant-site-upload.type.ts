@@ -2,6 +2,7 @@ export type PlantSitePhotoUpload = {
   id?: number;
   plantSiteId: string;
   blobDataId: number;
+  previewPhotoBlobDataId: number;
 };
 
 export type PlantSiteUpload = {
