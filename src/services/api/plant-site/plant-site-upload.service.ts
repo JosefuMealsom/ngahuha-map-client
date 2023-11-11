@@ -1,5 +1,10 @@
 import { LatLong } from '../../../types/lat-long.type';
-import { plantSiteUploadTable, plantTable } from '../../offline.database';
+import offlineDatabase, {
+  blobDataTable,
+  plantSiteUploadPhotoTable,
+  plantSiteUploadTable,
+  plantTable,
+} from '../../offline.database';
 
 class PlantIdMissingError extends Error {
   constructor(plantId: string) {
@@ -8,8 +13,16 @@ class PlantIdMissingError extends Error {
   }
 }
 
-type PhotoFileData = { file: Blob; primaryPhoto: boolean };
-type ConvertedPhotoFileData = { data: ArrayBuffer; primaryPhoto: boolean };
+type PhotoFileData = {
+  file: Blob;
+  previewPhotoFile: Blob;
+  primaryPhoto: boolean;
+};
+type ConvertedPhotoFileData = {
+  data: ArrayBuffer;
+  previewFileData: ArrayBuffer;
+  primaryPhoto: boolean;
+};
 
 export const addPlantSiteWithPhoto = async (
   photoFiles: PhotoFileData | PhotoFileData[],
@@ -20,7 +33,12 @@ export const addPlantSiteWithPhoto = async (
   const photos = await Promise.all(
     [photoFiles].flat().map(async (photoFile) => {
       const convertedData = await photoFile.file.arrayBuffer();
-      return { data: convertedData, primaryPhoto: photoFile.primaryPhoto };
+      const previewFileData = await photoFile.previewPhotoFile.arrayBuffer();
+      return {
+        data: convertedData,
+        previewFileData: previewFileData,
+        primaryPhoto: photoFile.primaryPhoto,
+      };
     }),
   );
 
@@ -32,7 +50,26 @@ export const addPlantSiteWithPhoto = async (
 };
 
 export const deletePlantSite = async (id: number) => {
-  return plantSiteUploadTable.delete(id);
+  return offlineDatabase.transaction(
+    'rw',
+    blobDataTable,
+    plantSiteUploadTable,
+    plantSiteUploadPhotoTable,
+    async () => {
+      await plantSiteUploadTable.delete(id);
+      const plantSiteUploadPhotos = await plantSiteUploadPhotoTable
+        .where({
+          plantSiteUploadId: id,
+        })
+        .toArray();
+
+      for (const photo of plantSiteUploadPhotos) {
+        await blobDataTable.delete(photo.blobDataId);
+        await blobDataTable.delete(photo.previewPhotoBlobDataId);
+        await plantSiteUploadPhotoTable.delete(photo.id!);
+      }
+    },
+  );
 };
 
 const validatePlantExists = async (plantId: string) => {
@@ -43,18 +80,41 @@ const validatePlantExists = async (plantId: string) => {
   }
 };
 
-const addPlantSiteUpload = (
+const addPlantSiteUpload = async (
   location: LatLong,
   photoData: ConvertedPhotoFileData[],
   plantId?: string,
   id?: number,
 ) => {
-  return plantSiteUploadTable.put({
-    id: id,
-    plantId: plantId,
-    latitude: location.latitude,
-    longitude: location.longitude,
-    accuracy: location.accuracy,
-    photos: photoData,
-  });
+  if (id) await deletePlantSite(id);
+
+  return offlineDatabase.transaction(
+    'rw',
+    blobDataTable,
+    plantSiteUploadTable,
+    plantSiteUploadPhotoTable,
+    async () => {
+      const plantSiteUploadId = await plantSiteUploadTable.put({
+        id: id,
+        plantId: plantId,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        accuracy: location.accuracy,
+      });
+
+      for (const photo of photoData) {
+        const photoBlobId = await blobDataTable.add({ data: photo.data });
+        const previewBlobId = await blobDataTable.add({
+          data: photo.previewFileData,
+        });
+
+        await plantSiteUploadPhotoTable.add({
+          plantSiteUploadId: plantSiteUploadId,
+          blobDataId: photoBlobId,
+          previewPhotoBlobDataId: previewBlobId,
+          primaryPhoto: photo.primaryPhoto,
+        });
+      }
+    },
+  );
 };
