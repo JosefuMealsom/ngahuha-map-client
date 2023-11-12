@@ -6,6 +6,7 @@ import {
   plantTable,
 } from '../../../services/offline.database';
 import { PhotoFile } from '../../../types/api/upload/plant-site-upload.type';
+import { migrateUploadPhotosToSeparateTable } from '../../../services/migrate-plant-site-upload-photos.service';
 
 const loadPlant = async (plantId?: string) => {
   if (!plantId) return;
@@ -50,6 +51,9 @@ export const loadPlantSiteUploadWithPhotos = async (
     }
 
     const plant = await loadPlant(plantSiteUpload.plantId);
+    if (plantSiteUpload.photos) {
+      await migrateUploadPhotosToSeparateTable(plantSiteUpload);
+    }
     const photoFiles = await loadPhotos(plantSiteUpload.id!);
 
     return {
