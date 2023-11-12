@@ -10,7 +10,6 @@ const plantSiteUploadFactory = {
       latitude: 10,
       longitude: 20,
       accuracy: 30,
-      photos: [{ data: new Uint8Array([0, 0, 0, 0]), primaryPhoto: false }],
     };
 
     return Object.assign(dummyData, data);

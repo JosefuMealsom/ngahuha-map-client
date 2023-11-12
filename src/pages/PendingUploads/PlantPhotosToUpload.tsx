@@ -112,7 +112,7 @@ export function PlantPhotosToUpload() {
             </h3>
             <PlantSiteComponent
               key={crypto.randomUUID()}
-              {...{ ...plantSite, photos: [] }}
+              {...plantSite}
               isUploading={uploading}
             />
           </div>

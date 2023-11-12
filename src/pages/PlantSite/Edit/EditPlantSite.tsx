@@ -2,23 +2,22 @@ import { Plant } from '../../../types/api/plant.type';
 import { useLoaderData } from 'react-router-dom';
 import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
 import { useNavigate } from 'react-router-dom';
-import { PlantSiteUpload } from '../../../types/api/upload/plant-site-upload.type';
+import {
+  PhotoFile,
+  PlantSiteUpload,
+} from '../../../types/api/upload/plant-site-upload.type';
 import { PlantSiteForm } from '../CommonFormElements/PlantSiteForm';
 
 type EditLoaderData = {
   plantSiteUpload: PlantSiteUpload;
   plant?: Plant;
+  photos: PhotoFile[];
 };
 
 export function EditPlantSite() {
   const navigate = useNavigate();
-  const { plantSiteUpload, plant } = useLoaderData() as EditLoaderData;
+  const { plantSiteUpload, plant, photos } = useLoaderData() as EditLoaderData;
   const plantName = !!plant ? getFullPlantName(plant) : '';
-  const photoFiles = plantSiteUpload.photos.map((photo) => ({
-    id: crypto.randomUUID(),
-    file: new Blob([photo.data]),
-    primaryPhoto: photo.primaryPhoto,
-  }));
 
   function onSaveSuccess() {
     navigate(-1);
@@ -35,7 +34,7 @@ export function EditPlantSite() {
             onSaveHandlerSuccess={onSaveSuccess}
             plantNameValue={plantName}
             plantSiteUploadId={plantSiteUpload.id}
-            photoFiles={photoFiles}
+            photoFiles={photos}
             coordinates={{
               accuracy: plantSiteUpload.accuracy,
               latitude: plantSiteUpload.latitude,

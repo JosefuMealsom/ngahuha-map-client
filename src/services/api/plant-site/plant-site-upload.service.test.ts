@@ -5,12 +5,15 @@ import {
 } from './plant-site-upload.service';
 import { expect, describe, it, afterEach, beforeEach } from 'vitest';
 import offlineDatabase, {
+  blobDataTable,
+  plantSiteUploadPhotoTable,
   plantSiteUploadTable,
   plantTable,
 } from '../../offline.database';
 import plantFactory from '../../../test-helpers/factories/plant';
 import plantSiteFactory from '../../../test-helpers/factories/plant-site-upload';
 import { stubArrayBufferCall } from '../../../test-helpers/blob-stub';
+import blobDataFactory from '../../../test-helpers/factories/blob-data';
 
 describe('PlantSiteUploadService', () => {
   beforeEach(() => {
@@ -19,6 +22,8 @@ describe('PlantSiteUploadService', () => {
 
   afterEach(async () => {
     await plantSiteUploadTable.clear();
+    await plantSiteUploadPhotoTable.clear();
+    await blobDataTable.clear();
     await plantTable.clear();
   });
 
@@ -39,38 +44,56 @@ describe('PlantSiteUploadService', () => {
       });
 
       it('adds a new plant site and saves it offline', async () => {
-        const blob = new Blob();
         await addPlantSiteWithPhoto(
-          { file: new Blob(), primaryPhoto: true },
+          {
+            file: new Blob(),
+            previewPhotoFile: new Blob(),
+            primaryPhoto: true,
+          },
           location,
           'abc',
         );
         const savedPlantSiteData = await plantSiteUploadTable.toArray();
+        const savedUploadPhotoData = await plantSiteUploadPhotoTable.toArray();
+        const savedBlobData = await blobDataTable.toArray();
 
         expect(savedPlantSiteData.length).toEqual(1);
+        expect(savedUploadPhotoData.length).toEqual(1);
+        expect(savedBlobData.length).toEqual(2);
+
         const plantSite = savedPlantSiteData[0];
         expect(plantSite.accuracy).toEqual(10);
         expect(plantSite.latitude).toEqual(20);
         expect(plantSite.longitude).toEqual(30);
-        expect(plantSite.photos.length).toEqual(1);
-        expect(plantSite.photos[0].primaryPhoto).toEqual(true);
+        expect(savedUploadPhotoData[0].primaryPhoto).toEqual(true);
       });
 
       it('can add an array of photos', async () => {
         const blobs = [
-          { file: new Blob(), primaryPhoto: false },
-          { file: new Blob(), primaryPhoto: true },
+          {
+            file: new Blob(),
+            previewPhotoFile: new Blob(),
+            primaryPhoto: false,
+          },
+          {
+            file: new Blob(),
+            previewPhotoFile: new Blob(),
+            primaryPhoto: true,
+          },
         ];
         await addPlantSiteWithPhoto(blobs, location, 'abc');
-        const savedPlantSiteData = await plantSiteUploadTable.toArray();
+        const savedUploadPhotoData = await plantSiteUploadPhotoTable.toArray();
 
-        expect(savedPlantSiteData[0].photos.length).toEqual(2);
+        expect(savedUploadPhotoData.length).toEqual(2);
       });
 
       it('can add a plant site without a plantId', async () => {
-        const blob = new Blob();
         await addPlantSiteWithPhoto(
-          { file: blob, primaryPhoto: false },
+          {
+            file: new Blob(),
+            previewPhotoFile: new Blob(),
+            primaryPhoto: false,
+          },
           location,
         );
         const savedPlantSiteData =
@@ -84,10 +107,13 @@ describe('PlantSiteUploadService', () => {
 
     describe('plant missing', () => {
       it('raises an exception', async () => {
-        const blob = new Blob();
         await expect(() =>
           addPlantSiteWithPhoto(
-            { file: blob, primaryPhoto: false },
+            {
+              file: new Blob(),
+              previewPhotoFile: new Blob(),
+              primaryPhoto: false,
+            },
             location,
             'missing id',
           ),
@@ -97,14 +123,29 @@ describe('PlantSiteUploadService', () => {
   });
 
   describe('deletePlantSite()', () => {
-    it('deletes the plantSite', async () => {
-      const plantSiteId = (await plantSiteUploadTable.add(
+    let plantSiteId: number;
+    beforeEach(async () => {
+      plantSiteId = (await plantSiteUploadTable.add(
         plantSiteFactory.create({}),
       )) as number;
 
+      await blobDataTable.add(blobDataFactory.create({ id: 1 }));
+      await blobDataTable.add(blobDataFactory.create({ id: 2 }));
+
+      await plantSiteUploadPhotoTable.add({
+        blobDataId: 1,
+        previewPhotoBlobDataId: 2,
+        primaryPhoto: false,
+        plantSiteUploadId: plantSiteId,
+      });
+    });
+
+    it('deletes the plantSite', async () => {
       await deletePlantSite(plantSiteId);
 
-      expect(await plantSiteUploadTable.toArray()).toEqual([]);
+      expect((await plantSiteUploadTable.toArray()).length).toEqual(0);
+      expect((await plantSiteUploadPhotoTable.toArray()).length).toEqual(0);
+      expect((await blobDataTable.toArray()).length).toEqual(0);
     });
   });
 });
