@@ -13,6 +13,7 @@ import { SearchFilterMatch } from '../../../types/filter.type';
 import { Plant } from '../../../types/api/plant.type';
 import { PlantFormContext } from './PlantFormContext';
 import { findWhere } from 'underscore';
+import { generateImagePreview } from '../../../services/preview-image-generator';
 
 export function PlantSiteForm(props: {
   onSaveHandlerSuccess: () => void;
@@ -56,6 +57,7 @@ export function PlantSiteForm(props: {
 
     const mappedPhotos = photos.map((photo) => ({
       file: photo.file,
+      previewPhotoFile: photo.previewPhotoFile,
       primaryPhoto: photo.primaryPhoto,
     }));
 
@@ -72,12 +74,14 @@ export function PlantSiteForm(props: {
   async function onPhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newPhoto = event.target.files?.item(0);
     if (newPhoto) {
+      const previewImage = await generateImagePreview(newPhoto);
       const photosCopy = [...photos];
 
       let isPrimaryPhoto = photosCopy.length === 0 ? true : false;
 
       photosCopy.push({
         file: newPhoto,
+        previewPhotoFile: previewImage,
         id: crypto.randomUUID(),
         primaryPhoto: isPrimaryPhoto,
       });

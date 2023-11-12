@@ -27,5 +27,6 @@ export type PlantSiteUploadPhoto = {
 export type PhotoFile = {
   id: string;
   file: Blob;
+  previewPhotoFile: Blob;
   primaryPhoto: boolean;
 };
