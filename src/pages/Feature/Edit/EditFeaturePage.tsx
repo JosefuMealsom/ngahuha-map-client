@@ -43,6 +43,7 @@ export function EditFeaturePage() {
             name={featureUpload.name}
             description={featureUpload.description}
             coordinates={coordinates}
+            //@ts-ignore
             photos={photoFiles}
             onSaveHandlerSuccess={onFeatureUpdate}
           />
