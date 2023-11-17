@@ -15,6 +15,7 @@ import {
 import { Feature } from '../types/api/feature.type';
 import { FeaturePhoto } from '../types/api/feature-photo.type';
 import { Path, PathNode } from '../types/api/path.type';
+import { BlobData } from '../types/api/upload/blob-data.type';
 
 class OfflineDatabase extends Dexie {
   public readonly plantSite!: Table<PlantSite>;

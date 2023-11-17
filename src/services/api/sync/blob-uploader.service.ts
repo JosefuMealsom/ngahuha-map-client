@@ -1,3 +1,4 @@
+import { BlobData } from '../../../types/api/upload/blob-data.type';
 import axiosClient from '../../axios/axios-client';
 import { blobDataTable } from '../../offline.database';
 

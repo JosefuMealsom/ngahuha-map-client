@@ -1,3 +1,5 @@
+import { BlobData } from '../../types/api/upload/blob-data.type';
+
 let count = 0;
 
 const blobDataFactory = {
