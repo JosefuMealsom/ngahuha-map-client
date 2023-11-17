@@ -48,6 +48,7 @@ export function FeatureForm(props: {
     if (newPhoto) {
       const photosCopy = [...photos];
 
+      //@ts-ignore
       photosCopy.push({
         file: newPhoto,
         id: crypto.randomUUID(),
