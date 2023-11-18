@@ -82,7 +82,7 @@ export function FullScreenImagePreviewComponent(props: {
     <div
       ref={containerRef}
       className="fixed top-0 left-0 w-screen h-screen object-contain z-20
-       duration-[350ms] ease-in-out translate-y-full"
+       duration-[350ms] ease-in-out translate-y-full overflow-hidden"
     >
       <div className="bg-black absolute top-0 left-0 w-full h-full -z-10"></div>
       <img
