@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { PlantSiteComponent } from './PlantSiteComponent';
 import { useLiveQuery } from 'dexie-react-hooks';
 import {
+  blobDataTable,
   featureUploadTable,
   plantSitePhotoUploadTable,
+  plantSiteUploadPhotoTable,
   plantSiteUploadTable,
 } from '../../services/offline.database';
 import { bulkUploadPlantSitesToServer } from '../../services/api/plant-site/sync-plant-sites';
@@ -16,6 +18,8 @@ import { bulkUploadFeaturesToServer } from '../../services/api/feature/sync-feat
 import { LoaderSpinnerComponent } from '../../components/LoaderSpinnerComponent';
 import { uploadAllPlantPhotosToServer } from '../../services/api/plant-site/plant-site-photo-upload.service';
 import { PlantSitePhotoUploadComponent } from './PlantSitePhotoUploadComponent';
+import { FullScreenImagePreviewComponent } from '../../components/FullScreenImagePreviewComponent';
+import blobToDataUrlService from '../../services/blob-to-data-url.service';
 
 export function PlantPhotosToUpload() {
   const [uploading, setUploadingState] = useState(false);
@@ -30,6 +34,9 @@ export function PlantPhotosToUpload() {
     plantSitePhotoUploadTable.count(),
   );
   const [readyForUpload, requiresId] = useFilteredPlantSiteUploads();
+
+  const [viewFullScreen, setViewFullScreen] = useState(false);
+  const [fullScreenPreviewImage, setFullScreenPreviewImage] = useState('');
 
   useEffect(() => {
     if (
@@ -96,6 +103,7 @@ export function PlantPhotosToUpload() {
               key={plantSite.id}
               {...plantSite}
               isUploading={uploading}
+              onPreviewImageClick={viewPreviewImageFullScreen}
             />
           </div>
         ))}
@@ -116,6 +124,7 @@ export function PlantPhotosToUpload() {
               key={crypto.randomUUID()}
               {...plantSite}
               isUploading={uploading}
+              onPreviewImageClick={viewPreviewImageFullScreen}
             />
           </div>
         ))}
@@ -173,6 +182,33 @@ export function PlantPhotosToUpload() {
     );
   }
 
+  async function viewPreviewImageFullScreen(id: number) {
+    const plantSitePhoto = await plantSiteUploadPhotoTable.get(id);
+    console.log(plantSitePhoto);
+    if (plantSitePhoto) {
+      const photoBlob = await blobDataTable.get(plantSitePhoto.blobDataId);
+      if (photoBlob) {
+        const dataUrl = await blobToDataUrlService.convert(
+          new Blob([photoBlob.data]),
+        );
+
+        setFullScreenPreviewImage(dataUrl || '');
+        setViewFullScreen(true);
+      }
+    }
+  }
+
+  function renderFullScreenPreview() {
+    if (!viewFullScreen) return;
+
+    return (
+      <FullScreenImagePreviewComponent
+        src={fullScreenPreviewImage}
+        onClose={() => setViewFullScreen(false)}
+      />
+    );
+  }
+
   return (
     <div className="h-full bg-white w-full absolute top-0 left-0 pb-safe min-h-screen">
       <div className="mb-4 pt-14 w-full h-full bg-white py-6">
@@ -185,6 +221,7 @@ export function PlantPhotosToUpload() {
         {renderRequiresIdentification()}
         {renderUploadingModal()}
         {renderPhotosToUpload()}
+        {renderFullScreenPreview()}
       </div>
     </div>
   );

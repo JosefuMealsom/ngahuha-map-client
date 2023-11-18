@@ -12,12 +12,17 @@ import {
 } from '../../services/offline.database';
 import blobToDataUrlService from '../../services/blob-to-data-url.service';
 
+type PreviewPhoto = { dataUrl: string; id: number };
+
 export function PlantSiteComponent(
-  props: PlantSiteUpload & { isUploading: boolean },
+  props: PlantSiteUpload & {
+    isUploading: boolean;
+    onPreviewImageClick: (imageId: number) => any;
+  },
 ) {
   const plant = usePlant(props.plantId);
 
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [previewImages, setPreviewImages] = useState<PreviewPhoto[]>([]);
 
   useEffect(() => {
     const fetchPreviewData = async () => {
@@ -25,24 +30,20 @@ export function PlantSiteComponent(
         .where({ plantSiteUploadId: props.id })
         .toArray();
 
-      const previewIds = plantSiteUploadPhotos.map(
-        (upload) => upload.previewPhotoBlobDataId,
-      );
-      const blobDataArray = await blobDataTable.bulkGet(previewIds);
+      const imageData: PreviewPhoto[] = [];
+      for (const photo of plantSiteUploadPhotos) {
+        const blobData = await blobDataTable.get(photo.previewPhotoBlobDataId);
 
-      const imageData: string[] = [];
-
-      for (const blobData of blobDataArray) {
         if (blobData) {
           const dataUrl = await blobToDataUrlService.convert(
             new Blob([blobData.data]),
           );
 
-          if (dataUrl) imageData.push(dataUrl);
+          if (dataUrl) imageData.push({ dataUrl: dataUrl, id: photo.id! });
         }
       }
 
-      setImageUrls(imageData);
+      setPreviewImages(imageData);
     };
 
     fetchPreviewData();
@@ -133,11 +134,12 @@ export function PlantSiteComponent(
     <div className="w-full mb-5">
       {renderPlantInfo()}
       <div className="grid grid-cols-3 sm:grid-cols-8 gap-2 min-h-[11rem]">
-        {imageUrls.map((imageData, index) => (
-          <div className="h-44" key={index}>
+        {previewImages.map(({ dataUrl, id }) => (
+          <div className="h-44" key={id}>
             <img
-              src={imageData}
+              src={dataUrl}
               className="mb-3 inline-block cursor-zoom-in object-cover h-full w-full"
+              onClick={() => props.onPreviewImageClick(id)}
             />
           </div>
         ))}
