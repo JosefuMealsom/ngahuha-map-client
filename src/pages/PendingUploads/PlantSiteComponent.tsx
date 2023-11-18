@@ -12,18 +12,20 @@ import {
 } from '../../services/offline.database';
 import blobToDataUrlService from '../../services/blob-to-data-url.service';
 import { toast } from 'react-toastify';
+import { FullScreenImagePreviewComponent } from '../../components/FullScreenImagePreviewComponent';
 
 type PreviewPhoto = { dataUrl: string; id: number };
 
 export function PlantSiteComponent(
   props: PlantSiteUpload & {
     isUploading: boolean;
-    onPreviewImageClick: (imageId: number) => any;
   },
 ) {
   const plant = usePlant(props.plantId);
 
   const [previewImages, setPreviewImages] = useState<PreviewPhoto[]>([]);
+  const [viewFullScreen, setViewFullScreen] = useState(false);
+  const [fullScreenPreviewImage, setFullScreenPreviewImage] = useState('');
 
   useEffect(() => {
     const fetchPreviewData = async () => {
@@ -144,6 +146,32 @@ export function PlantSiteComponent(
     );
   }
 
+  function renderFullScreenPreview() {
+    if (!viewFullScreen) return;
+
+    return (
+      <FullScreenImagePreviewComponent
+        src={fullScreenPreviewImage}
+        onClose={() => setViewFullScreen(false)}
+      />
+    );
+  }
+
+  async function viewPreviewImageFullScreen(id: number) {
+    const plantSitePhoto = await plantSiteUploadPhotoTable.get(id);
+    if (plantSitePhoto) {
+      const photoBlob = await blobDataTable.get(plantSitePhoto.blobDataId);
+      if (photoBlob) {
+        const dataUrl = await blobToDataUrlService.convert(
+          new Blob([photoBlob.data]),
+        );
+
+        setFullScreenPreviewImage(dataUrl || '');
+        setViewFullScreen(true);
+      }
+    }
+  }
+
   return (
     <div className="w-full mb-5">
       {renderPlantInfo()}
@@ -153,11 +181,12 @@ export function PlantSiteComponent(
             <img
               src={dataUrl}
               className="mb-3 inline-block cursor-zoom-in object-cover h-full w-full"
-              onClick={() => props.onPreviewImageClick(id)}
+              onClick={() => viewPreviewImageFullScreen(id)}
             />
           </div>
         ))}
       </div>
+      {renderFullScreenPreview()}
     </div>
   );
 }
