@@ -11,6 +11,7 @@ import {
   plantSiteUploadPhotoTable,
 } from '../../services/offline.database';
 import blobToDataUrlService from '../../services/blob-to-data-url.service';
+import { toast } from 'react-toastify';
 
 type PreviewPhoto = { dataUrl: string; id: number };
 
@@ -51,8 +52,21 @@ export function PlantSiteComponent(
 
   function deleteUpload(evt: React.MouseEvent) {
     evt.preventDefault();
-
-    if (props.id) deletePlantSite(props.id);
+    try {
+      const result = confirm(
+        'Are you sure you want to delete this plant site upload?',
+      );
+      if (result) {
+        if (props.id) deletePlantSite(props.id);
+        toast('Plant site upload deleted');
+      }
+    } catch (error) {
+      toast(
+        `There was an issue deleting the plant site: ${
+          (error as Error).message
+        }`,
+      );
+    }
   }
 
   function renderDelete() {
