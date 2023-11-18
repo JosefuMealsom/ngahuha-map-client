@@ -113,14 +113,9 @@ export function PlantSiteComponent(
     if (!plant) {
       return (
         <div>
-          <Link
-            to={`/plant-site/${props.id}/edit`}
-            data-cy={`edit-plant-${props.id}`}
-          >
-            <div className="flex justify-between items-center mb-3">
-              <p>Missing information</p>
-            </div>
-          </Link>
+          <div className="flex justify-between items-center mb-3">
+            <p>Missing information</p>
+          </div>
           <div className="flex mb-3">
             {renderEdit()}
             {renderDelete()}
@@ -130,14 +125,9 @@ export function PlantSiteComponent(
     }
     return (
       <div>
-        <Link
-          to={`/plant-site/${props.id}/edit`}
-          data-cy={`edit-plant-${props.id}`}
-        >
-          <div className="flex justify-between items-center mb-3">
-            <p>{getFullPlantName(plant)}</p>
-          </div>
-        </Link>
+        <div className="flex justify-between items-center mb-3">
+          <p>{getFullPlantName(plant)}</p>
+        </div>
         <div className="flex mb-3">
           {renderEdit()}
           {renderDelete()}
