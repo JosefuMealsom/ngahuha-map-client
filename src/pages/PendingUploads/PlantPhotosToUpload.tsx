@@ -7,7 +7,7 @@ import {
   plantSiteUploadTable,
 } from '../../services/offline.database';
 import { bulkUploadPlantSitesToServer } from '../../services/api/plant-site/sync-plant-sites';
-import uploadSvg from '../../assets/svg/upload-cloud.svg';
+import uploadSvg from '../../assets/svg/upload-cloud-white.svg';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useFilteredPlantSiteUploads } from '../../hooks/use-filtered-plant-site-uploads';
@@ -70,12 +70,15 @@ export function PlantPhotosToUpload() {
       return;
 
     return (
-      <img
-        src={uploadSvg}
-        className="h-7 inline-block ml-4 cursor-pointer"
-        onClick={uploadChanges}
-        data-cy="upload-plants"
-      />
+      <div className="bg-sky-500 border-sky-500 border w-fit py-2 px-4 text-sm font-semibold text-white cursor-pointer rounded-full">
+        Upload to server
+        <img
+          src={uploadSvg}
+          className="h-5 inline-block ml-2 cursor-pointer"
+          onClick={uploadChanges}
+          data-cy="upload-plants"
+        />
+      </div>
     );
   }
 
@@ -83,16 +86,18 @@ export function PlantPhotosToUpload() {
     if (readyForUpload.length === 0) return;
 
     return (
-      <div className="mb-16">
-        <h2 className="font-bold mt-5 relative text-sm mb-5">
+      <div className="mb-8">
+        <h2 className="font-bold mt-5 relative mb-2 px-6">
           Plant sites ready for upload
         </h2>
         {readyForUpload.map((plantSite) => (
-          <PlantSiteComponent
-            key={plantSite.id}
-            {...plantSite}
-            isUploading={uploading}
-          />
+          <div className="pt-2 border-t px-6" key={plantSite.id}>
+            <PlantSiteComponent
+              key={plantSite.id}
+              {...plantSite}
+              isUploading={uploading}
+            />
+          </div>
         ))}
       </div>
     );
@@ -101,15 +106,12 @@ export function PlantPhotosToUpload() {
     if (requiresId.length === 0) return;
 
     return (
-      <div>
-        <h2 className="font-bold mt-5 text-sm relative mb-5">
-          Requires identification
+      <div className="pb-safe">
+        <h2 className="font-bold mt-5 relative mb-2 px-6">
+          Plant sites requiring identification
         </h2>
         {requiresId.map((plantSite) => (
-          <div className="mb-3">
-            <h3 className="font-bold mt-5 text-sm relative mb-1">
-              Site {plantSite.id}
-            </h3>
+          <div className="pt-2 border-t px-6" key={plantSite.id}>
             <PlantSiteComponent
               key={crypto.randomUUID()}
               {...plantSite}
@@ -173,11 +175,11 @@ export function PlantPhotosToUpload() {
 
   return (
     <div className="h-full bg-white w-full absolute top-0 left-0 pb-safe min-h-screen">
-      <div className="mb-4 pt-14 w-full h-full bg-white p-6">
-        <h1 className="font-bold mt-5 relative mb-3">
-          {uploading ? 'Uploading' : 'Upload changes'}
+      <div className="mb-4 pt-14 w-full h-full bg-white py-6">
+        <div className="mt-5 relative mb-3 px-6">
+          <h1 className="font-bold mb-3">Saved changes</h1>
           {renderUploadButton()}
-        </h1>
+        </div>
         {renderFeaturesToUpload()}
         {renderReadyForUpload()}
         {renderRequiresIdentification()}
