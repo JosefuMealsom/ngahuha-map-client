@@ -42,27 +42,41 @@ export function PhotoInput(props: {
 
   return (
     <div>
-      <div>
+      <div className="flex justify-between">
         <label
           htmlFor="photo"
           className="py-2 px-4 text-sm font-semibold text-white
-          bg-[#002D04] border-[#002D04] cursor-pointer  mb-7 inline-block rounded-full"
+          bg-forest border-forest cursor-pointer  mb-7 inline-block rounded-full"
           data-cy="add-photo"
         >
-          Add photo
+          Take photo
           <img
             src={cameraUrl}
             className="inline-block ml-2 mr-1 h-4 align-middle relative -top-0.5"
           />
+          <input
+            type="file"
+            capture="environment"
+            id="photo"
+            accept="image/*"
+            className="hidden"
+            onChange={onPhotoChange}
+          />
         </label>
-        <input
-          type="file"
-          capture="environment"
-          id="photo"
-          accept="image/*"
-          className="hidden"
-          onChange={onPhotoChange}
-        />
+        <label
+          htmlFor="photoFromDevice"
+          className="py-2 px-4 text-sm font-semibold text-white
+          bg-sky-500 border-sky-500 cursor-pointer mb-7 inline-block rounded-full sm:hidden ml-2"
+        >
+          Add image from device
+          <input
+            type="file"
+            id="photoFromDevice"
+            accept="image/*"
+            className="hidden"
+            onChange={onPhotoChange}
+          />
+        </label>
       </div>
       {renderPhotos()}
     </div>

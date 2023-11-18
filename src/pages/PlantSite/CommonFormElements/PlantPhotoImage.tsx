@@ -71,7 +71,7 @@ export function PlantPhotoImage(props: {
         className="mb-3 inline-block cursor-zoom-in sm:object-cover w-full sm:h-full"
       />
       {renderFullScreenPreview()}
-      <div className="absolute bottom-3 right-1">
+      <div className="absolute sm:bottom-3 bottom-5 right-1">
         {renderPrimaryPhotoButton()}
         <button
           className="px-4 py-2 rounded-full bg-red-600
