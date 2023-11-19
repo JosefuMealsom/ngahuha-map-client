@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FullScreenImagePreviewComponent } from './FullScreenImagePreviewComponent';
+import { chunk } from 'underscore';
 
 export function ImageGridComponent(props: { imageUrls: string[] }) {
   const [fullScreenPreviewImage, setFullScreenPreviewImage] = useState('');
@@ -67,7 +68,6 @@ export function ImageGridComponent(props: { imageUrls: string[] }) {
         }
       />
       {renderNonPrimaryImages()}
-
       {renderFullScreenPreview()}
     </div>
   );
