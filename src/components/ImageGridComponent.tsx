@@ -21,22 +21,11 @@ export function ImageGridComponent(props: { imageUrls: string[] }) {
     );
   }
 
-  function renderNonPrimaryImages() {
-    if (imagesWithUniqueKey.length <= 1) return;
-
-    let gridColClass = 'grid-cols-3';
-
-    const length = imagesWithUniqueKey.length - 1;
-    if (length % 4 === 0) {
-      gridColClass = 'grid-cols-4';
-    } else if (length % 2 === 0) {
-      gridColClass = 'grid-cols-2';
-    }
-
+  function renderRow(row: { key: string; dataUrl: string }[]) {
     return (
-      <div className={`${gridColClass} grid gap-1 flex-grow mt-1 mb-2`}>
-        {imagesWithUniqueKey.slice(1).map((image) => (
-          <div className="h-40 sm:h-48">
+      <div className="flex w-full h-40 sm:h-48 mb-1 px-1 gap-1">
+        {row.map((image) => (
+          <div className="flex-grow-1">
             <img
               className="h-full w-full object-cover rounded-lg overflow-hidden cursor-pointer"
               key={image.key}
@@ -45,6 +34,19 @@ export function ImageGridComponent(props: { imageUrls: string[] }) {
             />
           </div>
         ))}
+      </div>
+    );
+  }
+
+  function renderNonPrimaryImages() {
+    if (imagesWithUniqueKey.length <= 1) return;
+
+    const gridItems = imagesWithUniqueKey.slice(1);
+    const rows = chunk(gridItems, 3);
+
+    return (
+      <div className={`flex-grow mt-1 mb-1`}>
+        {rows.map((row) => renderRow(row))}
       </div>
     );
   }
