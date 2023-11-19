@@ -23,6 +23,7 @@ import { addPlantSitePhotoUpload } from '../../../services/api/plant-site/plant-
 import { Photo } from '../../../types/api/photo.type';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import { generateImagePreview } from '../../../services/preview-image-generator';
+import { ImageGridComponent } from '../../../components/ImageGridComponent';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
 
@@ -61,6 +62,14 @@ export function PlantSiteInformation() {
 
     convertUploadsToPhotos();
   }, [photosToUpload]);
+
+  function renderImageGrid() {
+    if (!photos || photos.length === 0) return;
+
+    return (
+      <ImageGridComponent imageUrls={photos.map((photo) => photo.dataUrl)} />
+    );
+  }
 
   function renderCarousel() {
     if (!photos || photos.length === 0) return;
@@ -161,7 +170,7 @@ export function PlantSiteInformation() {
     <div className="h-full w-full bg-white">
       <div className="sm:flex h-full">
         <div className="relative sm:w-1/2 pt-safe">
-          {renderCarousel()}
+          {renderImageGrid()}
           <div className="text-xl absolute top-safe left-0 p-3 font-semibold text-white bg-black bg-opacity-50 w-full sm:max-w-fit">
             <PlantTitleComponent {...plant} />
           </div>

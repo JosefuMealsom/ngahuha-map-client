@@ -30,6 +30,13 @@ export function usePlantPhotos(plantId: string) {
 
       const downloadedPhotos = plantSitePhotos.filter((photo) => photo.data);
 
+      downloadedPhotos.sort((a, b) => {
+        if (a.primaryPhoto) {
+          return -1;
+        }
+        return 0;
+      });
+
       const convertedPhotos = await Promise.all(
         downloadedPhotos.map(async (photo: PlantSitePhoto) => {
           const dataUrl = await blobToDataUrlService.convert(
