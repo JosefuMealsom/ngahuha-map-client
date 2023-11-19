@@ -70,12 +70,15 @@ export function PlantPhotosToUpload() {
       return;
 
     return (
-      <div className="bg-sky-500 border-sky-500 border w-fit py-2 px-4 text-sm font-semibold text-white cursor-pointer rounded-full">
+      <div
+        onClick={uploadChanges}
+        className="bg-sky-500 border-sky-500 border w-fit py-2 px-4 text-sm
+        font-semibold text-white cursor-pointer rounded-full"
+      >
         Upload to server
         <img
           src={uploadSvg}
           className="h-5 inline-block ml-2 cursor-pointer"
-          onClick={uploadChanges}
           data-cy="upload-plants"
         />
       </div>
