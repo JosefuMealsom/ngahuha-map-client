@@ -31,8 +31,13 @@ export function FullScreenImagePreviewComponent(props: {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    const panHandler = new PanGestureHandler(containerRef.current, 0, 0);
+    if (!containerRef.current || !imageRef.current) return;
+    const panHandler = new PanGestureHandler(
+      containerRef.current,
+      0,
+      0,
+      calculatePanBounds(),
+    );
 
     setPanGestureHandler(panHandler);
 
@@ -46,6 +51,24 @@ export function FullScreenImagePreviewComponent(props: {
     };
   }, []);
 
+  function calculatePanBounds() {
+    const imageWtoHRatio =
+      imageRef.current!.naturalWidth / imageRef.current!.naturalHeight;
+
+    const yBounds = imageRef.current!.width / imageWtoHRatio / 2;
+
+    return {
+      x: {
+        min: -imageRef.current!.width / 2,
+        max: imageRef.current!.width / 2,
+      },
+      y: {
+        min: -yBounds,
+        max: yBounds,
+      },
+    };
+  }
+
   const onAnimationCallback = useCallback(() => {
     if (!panGestureHandler || !zoomGestureHandler) return;
 
@@ -53,7 +76,6 @@ export function FullScreenImagePreviewComponent(props: {
     const zoom = zoomGestureHandler.update();
 
     const mapTransformation = compose(
-      // translate(window.innerWidth / 2, window.innerHeight / 2),
       scale(zoom, zoom),
       translate(pan.x, pan.y),
     );
