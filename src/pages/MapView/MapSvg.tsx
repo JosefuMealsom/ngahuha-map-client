@@ -46,7 +46,7 @@ export function MapSvg(props: {
     setPanGestureHandler(panHandler);
 
     const zoomHandler = new ZoomGestureHandler(
-      containerRef.current,
+      gestureHandlerContainerRef.current,
       mapStore.zoom,
     );
 
