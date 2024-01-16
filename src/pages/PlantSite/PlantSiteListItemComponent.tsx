@@ -45,7 +45,7 @@ export function PlantSiteListItemComponent(props: PlantSite) {
   function renderPlantInfo() {
     return (
       <div
-        className="h-full sm:h-96 cursor-pointer hover:opacity-90 bg-white"
+        className="h-96 cursor-pointer hover:opacity-90 bg-white"
         data-cy={`closest-plant-site-${props.id}`}
       >
         <div className="w-full h-full align-top relative">
