@@ -60,7 +60,7 @@ export function ImageGridComponent(props: { imageUrls: string[] }) {
   return (
     <div className="flex flex-col sm:h-screen">
       <img
-        className="w-full object-cover h-full cursor-pointer"
+        className="w-full object-cover h-full cursor-pointer rounded-lg overflow-hidden px-1 pt-1"
         key={imagesWithUniqueKey[0].key}
         src={imagesWithUniqueKey[0].dataUrl}
         onClick={() =>
