@@ -1,50 +1,24 @@
 import { Link } from 'react-router-dom';
 import { Plant } from '../../../types/api/plant.type';
-import { getFullPlantName } from '../../../utils/plant-name-decorator.util';
-import { useLiveQuery } from 'dexie-react-hooks';
-import {
-  plantSitePhotoTable,
-  plantSiteTable,
-} from '../../../services/offline.database';
 import { useEffect, useState } from 'react';
-import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
+import { usePlantPhotos } from '../../../hooks/use-plant-photos.hook';
 
 export function PlantItemComponent(props: Plant) {
-  const firstPlantSite = useLiveQuery(() =>
-    plantSiteTable.where({ plantId: props.id }).first(),
-  );
+  const plantSitePhotos = usePlantPhotos(props.id);
   const [previewImage, setPreviewImage] = useState('');
 
   useEffect(() => {
-    if (!firstPlantSite) return;
+    if (!plantSitePhotos) return;
 
     const getPlantImage = async () => {
-      const firstPlantSitePhotos = await plantSitePhotoTable
-        .where({ plantSiteId: firstPlantSite.id })
-        .toArray();
+      let displayPhoto = plantSitePhotos[0];
 
-      let primaryPhoto = firstPlantSitePhotos.find(
-        (photo) => photo.primaryPhoto === true,
-      );
-
-      if (!primaryPhoto) {
-        primaryPhoto = firstPlantSitePhotos[0];
-      }
-
-      if (!primaryPhoto || !primaryPhoto?.data) return;
-
-      const photoData = await blobToDataUrlService.convert(
-        new Blob([primaryPhoto.data]),
-      );
-
-      if (photoData) {
-        setPreviewImage(photoData);
-      }
+      setPreviewImage(displayPhoto.dataUrl);
     };
 
     getPlantImage();
-  }, [firstPlantSite]);
+  }, [plantSitePhotos]);
 
   function renderImage() {
     if (previewImage.length === 0) return;
