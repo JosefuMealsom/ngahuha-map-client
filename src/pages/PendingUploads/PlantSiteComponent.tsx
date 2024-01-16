@@ -170,7 +170,7 @@ export function PlantSiteComponent(
           <div className="h-44" key={id}>
             <img
               src={dataUrl}
-              className="mb-3 inline-block cursor-zoom-in object-cover h-full w-full"
+              className="mb-3 inline-block cursor-zoom-in object-cover h-full w-full rounded-lg"
               onClick={() => viewPreviewImageFullScreen(id)}
             />
           </div>

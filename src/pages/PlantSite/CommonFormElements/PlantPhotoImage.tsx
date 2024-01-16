@@ -68,7 +68,7 @@ export function PlantPhotoImage(props: {
       <img
         src={previewImage}
         onClick={() => setViewFullScreen(true)}
-        className="mb-3 inline-block cursor-zoom-in sm:object-cover w-full sm:h-full"
+        className="mb-3 inline-block cursor-zoom-in sm:object-cover w-full sm:h-full rounded-lg"
       />
       {renderFullScreenPreview()}
       <div className="absolute sm:bottom-3 bottom-5 right-1">
