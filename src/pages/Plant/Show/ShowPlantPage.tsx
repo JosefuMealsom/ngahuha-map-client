@@ -2,7 +2,6 @@ import { Plant } from '../../../types/api/plant.type';
 import { useLoaderData } from 'react-router-dom';
 import { usePlantPhotos } from '../../../hooks/use-plant-photos.hook';
 import { PlantDescription } from './PlantDescription';
-import { CarouselComponent } from '../../../components/CarouselComponent';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 import { ImageGridComponent } from '../../../components/ImageGridComponent';
 
@@ -24,20 +23,6 @@ export function ShowPlantPage() {
     return (
       <ImageGridComponent imageUrls={photos.map((photo) => photo.dataUrl)} />
     );
-  }
-
-  function renderCarousel() {
-    if (!photos || photos.length === 0) return;
-
-    const elements = photos.map((photo) => (
-      <img
-        className="w-full sm:h-screen object-cover"
-        key={photo.id}
-        src={photo.dataUrl}
-      />
-    ));
-
-    return <CarouselComponent elements={elements} />;
   }
 
   return (
