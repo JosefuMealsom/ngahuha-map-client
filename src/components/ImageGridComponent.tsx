@@ -59,16 +59,14 @@ export function ImageGridComponent(props: { imageUrls: string[] }) {
 
   return (
     <div className="flex flex-col sm:h-screen">
-      <div className="px-1 pt-1">
-        <img
-          className="w-full object-cover h-full cursor-pointer rounded-lg overflow-hidden"
-          key={imagesWithUniqueKey[0].key}
-          src={imagesWithUniqueKey[0].dataUrl}
-          onClick={() =>
-            viewPreviewImageFullScreen(imagesWithUniqueKey[0].dataUrl)
-          }
-        />
-      </div>
+      <img
+        className="w-full object-cover h-full cursor-pointer rounded-lg overflow-hidden px-1 pt-1"
+        key={imagesWithUniqueKey[0].key}
+        src={imagesWithUniqueKey[0].dataUrl}
+        onClick={() =>
+          viewPreviewImageFullScreen(imagesWithUniqueKey[0].dataUrl)
+        }
+      />
       {renderNonPrimaryImages()}
       {renderFullScreenPreview()}
     </div>
