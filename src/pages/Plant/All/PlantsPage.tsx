@@ -6,58 +6,30 @@ import { SearchFilterMatch } from '../../../types/filter.type';
 import { useLoaderData } from 'react-router-dom';
 import { NavigationBar } from '../../Navigation/NavigationBar';
 import { useAppStore } from '../../../store/app.store';
-import { Feature } from '../../../types/api/feature.type';
-import { FeatureItemComponent } from './FeatureItemComponent';
-import { SearchPlantsAndFeaturesFilter } from '../../../services/filter/search-plants-and-features.filter';
+import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
 
 export function AllPlantsPage() {
-  const { plants, features } = useLoaderData() as {
+  const { plants } = useLoaderData() as {
     plants: Plant[];
-    features: Feature[];
   };
 
-  const items = [...plants, ...features];
-
-  const [filteredItems, setFilteredItems] = useState<(Plant | Feature)[]>([
-    ...plants,
-    ...features,
-  ]);
-  const [searchPlantsFilter] = useState<SearchPlantsAndFeaturesFilter>(
-    new SearchPlantsAndFeaturesFilter(items),
+  const [filteredItems, setFilteredItems] = useState<Plant[]>([...plants]);
+  const [searchPlantsFilter] = useState<SearchPlantsFilter>(
+    new SearchPlantsFilter(plants),
   );
   const { searchQuery, setSearchQuery } = useAppStore();
 
-  function onSearchPlantAndFeatures(
-    matches: SearchFilterMatch<Plant | Feature>[],
-  ) {
+  function onSearchPlantAndFeatures(matches: SearchFilterMatch<Plant>[]) {
     setFilteredItems(matches.map((match) => match.data));
   }
 
-  function renderPlantOrFeatureItem(item: Plant | Feature) {
-    if (isPlant(item)) {
-      return (
-        <div key={item.id} data-cy={`plant-item-${item.id}`}>
-          <PlantItemComponent {...item} />
-        </div>
-      );
-    }
-    return (
-      <div key={item.id} data-cy={`feature-item-${item.id}`}>
-        <FeatureItemComponent {...item} />
-      </div>
-    );
-  }
-
-  function isPlant(item: Plant | Feature): item is Plant {
-    return (item as Plant).species !== undefined;
-  }
-
   return (
-    <div className="w-full h-full bg-background pt-safe">
+    <div className="w-full h-full pt-safe relative">
       <div className="sticky top-safe z-10">
+        <div className="bg-forest pt-safe absolute top-0 left-0 w-full -translate-y-full"></div>
         <div className="px-4 z-10 pt-2 w-full max-w-md sm:max-w-lg">
           <div data-cy="plant-list-search" className="pb-2">
-            <SearchComponent<Plant | Feature>
+            <SearchComponent<Plant>
               searchFilter={searchPlantsFilter}
               placeholder="Search plants"
               onMatchesChange={onSearchPlantAndFeatures}
@@ -71,7 +43,11 @@ export function AllPlantsPage() {
 
       <div className="mb-4 w-full h-full bg-white overflow-scroll">
         <div className="sm:grid sm:grid-cols-4">
-          {filteredItems?.map((item) => renderPlantOrFeatureItem(item))}
+          {filteredItems?.map((item) => (
+            <div key={item.id} data-cy={`plant-item-${item.id}`}>
+              <PlantItemComponent {...item} />
+            </div>
+          ))}
         </div>
       </div>
     </div>
