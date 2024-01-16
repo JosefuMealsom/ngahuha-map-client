@@ -31,7 +31,7 @@ export function ShowPlantPage() {
         <div className="relative sm:w-1/2 pt-safe">
           {renderImageGrid()}
 
-          <div className="text-xl absolute top-safe left-1 mt-1 rounded-br-lg rounded-tl-lg p-3 font-semibold text-white bg-black bg-opacity-50 w-full max-w-fit">
+          <div className="absolute top-safe left-1 mt-1">
             <PlantTitleComponent {...plant} />
           </div>
         </div>

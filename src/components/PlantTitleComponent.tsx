@@ -17,7 +17,7 @@ export function PlantTitleComponent(props: Plant) {
     );
   }
   return (
-    <div>
+    <div className="p-3 rounded-br-lg bg-black bg-opacity-50 max-w-fit">
       <p className="text-white font-semibold text-xl">
         {getFullPlantName(props)}
       </p>

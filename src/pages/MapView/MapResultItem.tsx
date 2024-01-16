@@ -23,7 +23,7 @@ export function MapResultItem(
     if (!plant) return;
 
     return (
-      <h2 className="absolute p-2 bg-black bg-opacity-50 w-full">
+      <h2 className="absolute">
         <PlantTitleComponent {...plant} />
       </h2>
     );

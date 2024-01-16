@@ -171,7 +171,7 @@ export function PlantSiteInformation() {
       <div className="sm:flex h-full">
         <div className="relative sm:w-1/2 pt-safe">
           {renderImageGrid()}
-          <div className="text-xl absolute top-safe left-0 p-3 font-semibold text-white bg-black bg-opacity-50 w-full sm:max-w-fit">
+          <div className="top-safe left-1 mt-1 absolute top-safe">
             <PlantTitleComponent {...plant} />
           </div>
           <ProtectedLayout>
