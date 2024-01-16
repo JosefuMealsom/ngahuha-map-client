@@ -35,7 +35,7 @@ export function PlantItemComponent(props: Plant) {
           } transition-opacity duration-300`}
         >
           {renderImage()}
-          <div className="absolute top-0 p-3 rounded-br-lg bg-black bg-opacity-50 max-w-fit">
+          <div className="absolute top-0">
             <PlantTitleComponent {...props} />
           </div>
         </div>

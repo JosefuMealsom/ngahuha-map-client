@@ -47,7 +47,7 @@ export function ClosestPlantInfoComponent(props: PlantSite) {
         <div className="w-full h-full align-top relative">
           <img src={photoDataUrl} className="w-full h-full object-cover" />
 
-          <div className="absolute top-0 p-3 bg-black bg-opacity-40 w-full">
+          <div className="absolute top-0">
             <PlantTitleComponent {...plant} />
           </div>
         </div>
