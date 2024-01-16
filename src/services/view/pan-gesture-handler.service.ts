@@ -1,19 +1,31 @@
 import { useMapStore } from '../../store/map.store';
 import { AccelerationHandler } from './acceleration-handler.service';
 
+type PanBounds = {
+  x: { min: number; max: number };
+  y: { min: number; max: number };
+};
+
 export class PanGestureHandler {
   element: HTMLElement;
   eventCache: PointerEvent[] = [];
   private panXAccelerationHandler = new AccelerationHandler();
   private panYAccelerationHandler = new AccelerationHandler();
-  private panX: number;
-  private panY: number;
+  panX: number;
+  panY: number;
+  bounds?: PanBounds;
   private cleanupListenerController = new AbortController();
 
-  constructor(element: HTMLElement, panX: number, panY: number) {
+  constructor(
+    element: HTMLElement,
+    panX: number,
+    panY: number,
+    bounds?: PanBounds,
+  ) {
     this.element = element;
     this.panX = panX;
     this.panY = panY;
+    this.bounds = bounds;
     this.init();
   }
 
@@ -32,7 +44,20 @@ export class PanGestureHandler {
       this.panX += this.panXAccelerationHandler.acceleration;
       this.panY += this.panYAccelerationHandler.acceleration;
     }
+
+    this.restrictToBounds();
+
     return { x: this.panX, y: this.panY };
+  }
+
+  private restrictToBounds() {
+    if (!this.bounds) return;
+
+    if (this.panX < this.bounds.x.min) this.panX = this.bounds.x.min;
+    if (this.panX > this.bounds.x.max) this.panX = this.bounds.x.max;
+
+    if (this.panY < this.bounds.y.min) this.panY = this.bounds.y.min;
+    if (this.panY > this.bounds.y.max) this.panY = this.bounds.y.max;
   }
 
   private init() {

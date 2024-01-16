@@ -21,6 +21,7 @@ export function MapSvg(props: {
   selectedPlantSiteId?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const gestureHandlerContainerRef = useRef<HTMLDivElement>(null);
   const { setPan, setZoom } = useMapStore();
 
   const [panGestureHandler, setPanGestureHandler] =
@@ -31,11 +32,15 @@ export function MapSvg(props: {
   const mapStore = useMapStore();
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!gestureHandlerContainerRef.current) return;
+
+    const panBounds = { x: { min: -600, max: 50 }, y: { min: -910, max: 50 } };
+
     const panHandler = new PanGestureHandler(
-      containerRef.current,
+      gestureHandlerContainerRef.current,
       mapStore.pan.x,
       mapStore.pan.y,
+      panBounds,
     );
 
     setPanGestureHandler(panHandler);
@@ -102,6 +107,7 @@ export function MapSvg(props: {
     <div
       draggable={false}
       className="touch-none bg-[#96AF98] h-screen w-screen relative"
+      ref={gestureHandlerContainerRef}
     >
       <div
         ref={containerRef}
