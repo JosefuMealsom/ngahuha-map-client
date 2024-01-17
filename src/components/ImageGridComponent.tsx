@@ -23,12 +23,16 @@ export function ImageGridComponent(props: { imageUrls: string[] }) {
   }
 
   function renderRow(row: { key: string; dataUrl: string }[]) {
+    // Image when there is only 1 item in the row looks strange, therefore
+    // added this logic here to make the row taller when there is only one item.
+    const containerHeight = row.length === 1 ? 'h-60 sm:h-80' : 'h-40 sm:h-48';
+
     return (
-      <div className="flex w-full h-40 sm:h-48 mb-1 px-1 gap-1">
+      <div className={`flex w-full ${containerHeight} mb-1 px-1 gap-1`}>
         {row.map((image) => (
           <div className="flex-grow-1">
             <img
-              className="h-full w-full object-cover rounded-lg overflow-hidden cursor-pointer"
+              className="h-full w-full object-cover rounded-lg h- overflow-hidden cursor-pointer"
               key={image.key}
               src={image.dataUrl}
               onClick={() => viewPreviewImageFullScreen(image.dataUrl)}
