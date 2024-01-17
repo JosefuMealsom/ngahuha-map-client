@@ -70,7 +70,7 @@ export function ImageEditorComponent(props: {
 
   return (
     <div className="relative pt-safe">
-      <div className="mb-4 w-full h-full overflow-scroll p-5">
+      <div className="mb-4 w-full h-full overflow-scroll p-5 pt-20">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 overflow-visible">
           {props.photos.map((photo) => (
             <div
@@ -140,7 +140,7 @@ export function ImageEditorComponent(props: {
       </div>
       <img
         src={closeImgUrl}
-        className="absolute top-3 right-3 h-7 w-7 cursor-pointer"
+        className="fixed top-3 right-3 cursor-pointer h-12 w-12 z-10 rounded-full bg-gray-400 p-3"
         onClick={props.onClose}
       />
       {renderFullScreenPreview()}
