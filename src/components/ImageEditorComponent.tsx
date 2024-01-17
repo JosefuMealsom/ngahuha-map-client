@@ -100,8 +100,11 @@ export function ImageEditorComponent(props: {
                 onClick={() => onPreviewClick(photo.dataUrl)}
                 draggable={false}
               />
-              <p className="absolute top-2 right-2 text-sky-500 py-1 px-2 text-sm flex items-center">
-                <img className="w-8 h-8" src={cloudImageUrl} />
+              <p className="absolute h-12 w-12 z-10 top-1 right-1 text-sky-500 text-sm flex items-center">
+                <img
+                  className="rounded-full bg-gray-400 p-3"
+                  src={cloudImageUrl}
+                />
               </p>
               <div className="absolute bottom-5 right-0 flex">
                 <button
