@@ -74,6 +74,8 @@ export function FullScreenImagePreviewComponent(props: {
 
     const zoom = zoomGestureHandler.update();
 
+    // When zooming in, the panning moves too rapidly, so
+    // scale it based on the zoom level.
     panGestureHandler.sensitivity = 1 / zoom + 0.2;
     const pan = panGestureHandler.update();
 
