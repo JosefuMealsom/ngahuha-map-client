@@ -181,7 +181,7 @@ export function PlantSiteInformation() {
           font-semibold bg-emerald-900 px-4 py-2 text-sm cursor-pointer hover:opacity-90 mr-2"
                 onClick={() => setImageMetadataEditorOpen(true)}
               >
-                Edit photo metadata
+                Edit photos
               </button>
               <button
                 className="text-white rounded-full
