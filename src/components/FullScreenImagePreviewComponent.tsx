@@ -72,8 +72,10 @@ export function FullScreenImagePreviewComponent(props: {
   const onAnimationCallback = useCallback(() => {
     if (!panGestureHandler || !zoomGestureHandler) return;
 
-    const pan = panGestureHandler.update();
     const zoom = zoomGestureHandler.update();
+
+    panGestureHandler.sensitivity = 1 / zoom + 0.2;
+    const pan = panGestureHandler.update();
 
     const mapTransformation = compose(
       scale(zoom, zoom),

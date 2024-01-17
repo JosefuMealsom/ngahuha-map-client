@@ -15,6 +15,7 @@ export class PanGestureHandler {
   panY: number;
   bounds?: PanBounds;
   private cleanupListenerController = new AbortController();
+  sensitivity = 1;
 
   constructor(
     element: HTMLElement,
@@ -112,10 +113,10 @@ export class PanGestureHandler {
 
     const zoom = useMapStore.getState().zoom;
 
-    this.panX += changeX / zoom;
-    this.panY += changeY / zoom;
-    this.panXAccelerationHandler.setForce(changeX / zoom);
-    this.panYAccelerationHandler.setForce(changeY / zoom);
+    this.panX += (changeX / zoom) * this.sensitivity;
+    this.panY += (changeY / zoom) * this.sensitivity;
+    this.panXAccelerationHandler.setForce((changeX / zoom) * this.sensitivity);
+    this.panYAccelerationHandler.setForce((changeY / zoom) * this.sensitivity);
 
     this.eventCache[0] = pointerEvent;
   }
