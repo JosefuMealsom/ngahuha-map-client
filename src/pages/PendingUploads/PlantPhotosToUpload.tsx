@@ -149,13 +149,13 @@ export function PlantPhotosToUpload() {
     if (!plantPhotosToUpload || plantPhotosToUpload?.length === 0) return;
 
     return (
-      <div className="mb-16">
-        <h2 className="font-bold mt-5 relative text-sm mb-5">
+      <div className="pb-16">
+        <h2 className="font-bold mt-5 relative mb-2 px-6">
           Plant site photos to upload
         </h2>
         {plantPhotosToUpload.map((photo) => (
-          <div key={photo.id!}>
-            <PlantSitePhotoUploadComponent {...photo} />
+          <div key={photo.id!} className="border-t">
+            <PlantSitePhotoUploadComponent {...photo} isUploading={uploading} />
           </div>
         ))}
       </div>
