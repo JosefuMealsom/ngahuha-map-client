@@ -1,17 +1,23 @@
 import { AccelerationHandler } from './acceleration-handler.service';
 
+type ZoomOptions = { minZoom?: number; maxZoom?: number };
+
 export class ZoomGestureHandler {
   element: HTMLElement;
   eventCache: PointerEvent[] = [];
   cachedDistance: number = 0;
   zoomAccelerationHandler = new AccelerationHandler();
   zoomSensitivity = 300;
-  private _zoom: number;
+  zoom: number;
   private cleanupListenerController = new AbortController();
+  minZoom: number;
+  maxZoom: number;
 
-  constructor(element: HTMLElement, initialZoom: number) {
+  constructor(element: HTMLElement, initialZoom: number, options: ZoomOptions) {
     this.element = element;
-    this._zoom = initialZoom;
+    this.zoom = initialZoom;
+    this.minZoom = options.minZoom || 1;
+    this.maxZoom = options.maxZoom || 10;
     this.init();
   }
 
@@ -20,10 +26,10 @@ export class ZoomGestureHandler {
 
     // Only apply acceleration when no pointers touching
     if (this.eventCache.length === 0) {
-      this._zoom += this.zoomAccelerationHandler.acceleration;
+      this.zoom += this.zoomAccelerationHandler.acceleration;
     }
-    this._zoom = Math.min(10, Math.max(this._zoom, 1));
-    return this._zoom;
+    this.zoom = Math.min(this.maxZoom, Math.max(this.zoom, this.minZoom));
+    return this.zoom;
   }
 
   init() {
@@ -94,8 +100,8 @@ export class ZoomGestureHandler {
     if (this.eventCache.length !== 2) return;
 
     const diff = this.calculateDistanceChange() / this.zoomSensitivity;
-    this._zoom += diff * this._zoom;
-    this.zoomAccelerationHandler.setForce(diff * this._zoom);
+    this.zoom += diff * this.zoom;
+    this.zoomAccelerationHandler.setForce(diff * this.zoom);
   }
 
   private calculateDistanceChange() {

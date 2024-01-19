@@ -1,12 +1,13 @@
-import { useRef } from 'react';
-import { PlantSite } from '../../types/api/plant-site.type';
+import { useContext, useRef } from 'react';
 import { interpolateToCanvasPosition } from '../../services/map-position-interpolator.service';
 import pinSvg from '../../assets/svg/map-pin.svg';
 import selectedPinSvg from '../../assets/svg/map-pin-red.svg';
 import { useMapStore } from '../../store/map.store';
 import { useAnimationFrame } from '../../hooks/use-animation-frame.hook';
+import { PanZoomContext } from '../../components/PanZoomComponent';
+import { LatLong } from '../../types/lat-long.type';
 
-export function MapMarker(props: PlantSite & { active: boolean }) {
+export function MapMarker(props: LatLong & { active: boolean }) {
   const marker = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const position = {
@@ -14,6 +15,8 @@ export function MapMarker(props: PlantSite & { active: boolean }) {
     longitude: props.longitude,
     accuracy: props.accuracy,
   };
+
+  const panZoomContext = useContext(PanZoomContext);
 
   useAnimationFrame(() => {
     if (!marker.current || !imageRef.current) return;
@@ -25,17 +28,18 @@ export function MapMarker(props: PlantSite & { active: boolean }) {
 
     if (!newPosition) return;
 
-    const zoom = useMapStore.getState().zoom;
+    const zoom = panZoomContext?.zoomGestureHandler?.zoom;
 
     marker.current.classList.remove('hidden');
     marker.current.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
 
-    imageRef.current.style.transform = `scale(${1 / zoom}, ${1 / zoom})`;
-  }, []);
+    if (zoom) {
+      imageRef.current.style.transform = `scale(${1 / zoom}, ${1 / zoom})`;
+    }
+  }, [panZoomContext]);
 
   return (
     <div
-      id={props.id}
       ref={marker}
       className={`fill-white absolute -top-6 -left-3 h-6 w-6 hidden ${
         props.active ? 'z-10' : ''
