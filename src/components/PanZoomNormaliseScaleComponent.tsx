@@ -18,9 +18,5 @@ export const PanZoomNormaliseScaleComponent = (props: {
     }
   }, [panZoomContext]);
 
-  return (
-    <div className="absolute top-0 left-0" ref={containerRef}>
-      {props.children}
-    </div>
-  );
+  return <div ref={containerRef}>{props.children}</div>;
 };
