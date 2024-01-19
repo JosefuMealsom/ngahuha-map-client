@@ -26,7 +26,7 @@ export function PhotoInput(props: {
         <label className="block mb-3 font-semibold text-inverted-background">
           Photos
         </label>
-        <div className="sm:grid sm:grid-cols-4 sm:gap-2">
+        <div className="grid sm:grid-cols-4 grid-cols-2 gap-2">
           {photos?.map((photoImage) => (
             <PlantPhotoImage
               key={photoImage.id}
