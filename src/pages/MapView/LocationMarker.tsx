@@ -25,7 +25,7 @@ export function LocationMarker() {
     containerRef.current.classList.remove('hidden');
     containerRef.current.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
 
-    const zoom = panZoomContext?.zoomGestureHandler?.zoom;
+    const zoom = panZoomContext?.zoom;
 
     if (zoom) {
       marker.current.style.transform = `scale(${1 / zoom}, ${1 / zoom})`;

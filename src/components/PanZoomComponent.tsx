@@ -17,7 +17,7 @@ type PanBounds = {
 };
 
 type PanZoomContextProperties = {
-  zoomGestureHandler?: ZoomGestureHandler;
+  zoom?: number;
 } | null;
 
 export const PanZoomContext = createContext<PanZoomContextProperties>(null);
@@ -91,6 +91,8 @@ export const PanZoomComponent = (props: {
 
     const cssTransform = toCSS(transformation);
 
+    setZoom(zoom);
+
     if (containerRef.current)
       containerRef.current.style.transform = cssTransform;
   }, [panGestureHandler, zoomGestureHandler]);
@@ -101,7 +103,7 @@ export const PanZoomComponent = (props: {
   ]);
 
   return (
-    <PanZoomContext.Provider value={{ zoomGestureHandler: zoomGestureHandler }}>
+    <PanZoomContext.Provider value={{ zoom: zoom }}>
       <div
         draggable={false}
         className={`${

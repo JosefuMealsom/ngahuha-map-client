@@ -28,7 +28,7 @@ export function MapMarker(props: LatLong & { active: boolean }) {
 
     if (!newPosition) return;
 
-    const zoom = panZoomContext?.zoomGestureHandler?.zoom;
+    const zoom = panZoomContext?.zoom;
 
     marker.current.classList.remove('hidden');
     marker.current.style.transform = `translate(${newPosition.x}px, ${newPosition.y}px)`;
