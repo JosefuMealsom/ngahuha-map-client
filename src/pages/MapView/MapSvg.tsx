@@ -1,7 +1,5 @@
 import mapUrl from '../../assets/svg/ngahuha-3.svg';
 import { PlantSite } from '../../types/api/plant-site.type';
-import { MapMarker } from './MapMarker';
-
 import { ReactNode } from 'react';
 
 export function MapSvg(props: { children?: ReactNode | ReactNode[] }) {
