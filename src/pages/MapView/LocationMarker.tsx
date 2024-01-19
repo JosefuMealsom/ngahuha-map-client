@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useMapStore } from '../../store/map.store';
 import { interpolateToCanvasPosition } from '../../services/map-position-interpolator.service';
 import { useAppStore } from '../../store/app.store';
