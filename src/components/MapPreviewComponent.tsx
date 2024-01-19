@@ -6,7 +6,7 @@ import { PanZoomComponent } from './PanZoomComponent';
 
 export const MapPreviewComponent = (props: { plantSites: PlantSite[] }) => {
   return (
-    <div className="p-1 rounded-lg overflow-hidden">
+    <div className="sm:hidden p-1 rounded-lg overflow-hidden">
       <div className="relative w-full overflow-hidden pb-10 bg-white h-96">
         <PanZoomComponent
           className="w-full bg-[#96AF98]"
