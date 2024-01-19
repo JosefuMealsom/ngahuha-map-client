@@ -66,6 +66,13 @@ export const PanZoomComponent = (props: {
   }, []);
 
   useEffect(() => {
+    if (!panGestureHandler || !props.pan) return;
+
+    panGestureHandler.panX = props.pan.x;
+    panGestureHandler.panY = props.pan.y;
+  }, [props.pan]);
+
+  useEffect(() => {
     if (!props.panBounds || !panGestureHandler) return;
 
     panGestureHandler.bounds = props.panBounds;
