@@ -184,7 +184,7 @@ export function PlantSiteInformation() {
         </div>
       </div>
       {renderPhotoMetadataEditor()}
-      <MapPreviewComponent className="mb-6" locations={[plantSite]} />
+      <MapPreviewComponent className="pb-safe" locations={[plantSite]} />
     </div>
   );
 }

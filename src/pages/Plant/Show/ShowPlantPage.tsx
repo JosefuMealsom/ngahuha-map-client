@@ -32,10 +32,12 @@ export function ShowPlantPage() {
             <PlantTitleComponent {...plant} />
           </div>
         </div>
-        <div className="sm:w-1/2 pb-safe">
+        <div className="sm:w-1/2 ">
           <PlantDescription plantId={plant.id} />
         </div>
-        <MapPreviewComponent className="mb-6" locations={plantSites} />
+        <div className="pb-safe">
+          <MapPreviewComponent locations={plantSites} />
+        </div>
       </div>
     </div>
   );
