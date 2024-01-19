@@ -13,11 +13,15 @@ export class ZoomGestureHandler {
   minZoom: number;
   maxZoom: number;
 
-  constructor(element: HTMLElement, initialZoom: number, options: ZoomOptions) {
+  constructor(
+    element: HTMLElement,
+    initialZoom: number,
+    options?: ZoomOptions,
+  ) {
     this.element = element;
     this.zoom = initialZoom;
-    this.minZoom = options.minZoom || 1;
-    this.maxZoom = options.maxZoom || 10;
+    this.minZoom = options?.minZoom || 1;
+    this.maxZoom = options?.maxZoom || 10;
     this.init();
   }
 
