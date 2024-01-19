@@ -1,7 +1,6 @@
 import { usePlantSitePhotos } from '../../../hooks/use-plant-site-photos.hook';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { PlantDescription } from '../../Plant/Show/PlantDescription';
-import { CarouselComponent } from '../../../components/CarouselComponent';
 import { Plant } from '../../../types/api/plant.type';
 import { PlantSite } from '../../../types/api/plant-site.type';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
@@ -24,6 +23,7 @@ import { Photo } from '../../../types/api/photo.type';
 import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import { generateImagePreview } from '../../../services/preview-image-generator';
 import { ImageGridComponent } from '../../../components/ImageGridComponent';
+import { MapPreviewComponent } from '../../../components/MapPreviewComponent';
 
 type LoaderData = { plant: Plant; plantSite: PlantSite };
 
@@ -69,20 +69,6 @@ export function PlantSiteInformation() {
     return (
       <ImageGridComponent imageUrls={photos.map((photo) => photo.dataUrl)} />
     );
-  }
-
-  function renderCarousel() {
-    if (!photos || photos.length === 0) return;
-
-    const elements = photos.map((photo) => (
-      <img
-        className="w-full sm:h-screen object-cover"
-        key={photo.id}
-        src={photo.dataUrl}
-      />
-    ));
-
-    return <CarouselComponent elements={elements} />;
   }
 
   async function onImageAdded(event: React.ChangeEvent<HTMLInputElement>) {
@@ -198,6 +184,7 @@ export function PlantSiteInformation() {
         </div>
       </div>
       {renderPhotoMetadataEditor()}
+      <MapPreviewComponent plantSites={[plantSite]} />
     </div>
   );
 }

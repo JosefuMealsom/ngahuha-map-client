@@ -9,6 +9,10 @@ import { NavigationBar } from '../Navigation/NavigationBar';
 import { MapResultCarousel } from './MapResultCarousel';
 import { MapSearchFilter } from '../../services/filter/map-search-filter';
 import { MapSvg } from './MapSvg';
+import { PanZoomComponent } from '../../components/PanZoomComponent';
+import { useMapStore } from '../../store/map.store';
+import { LocationMarker } from './LocationMarker';
+import { MapMarker } from './MapMarker';
 
 export function MapContainer() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -63,10 +67,23 @@ export function MapContainer() {
             </div>
             <NavigationBar activePage="Map" />
           </div>
-          <MapSvg
-            plantSites={filteredPlantSites}
-            selectedPlantSiteId={selectedResultId}
-          />
+          <PanZoomComponent
+            className="bg-[#96AF98]"
+            pan={useMapStore.getState().pan}
+            zoom={useMapStore.getState().zoom}
+            panBounds={{ x: { min: -600, max: 50 }, y: { min: -910, max: 50 } }}
+          >
+            <MapSvg>
+              <LocationMarker />
+              {filteredPlantSites.map((plantSite) => (
+                <MapMarker
+                  key={plantSite.id}
+                  {...plantSite}
+                  active={selectedResultId === plantSite.id}
+                />
+              ))}
+            </MapSvg>
+          </PanZoomComponent>
         </div>
         <div className="fixed bottom-3 left-0 w-full z-20">
           <MapResultCarousel

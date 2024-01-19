@@ -5,20 +5,17 @@ import { PlantDescription } from './PlantDescription';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
 import { ImageGridComponent } from '../../../components/ImageGridComponent';
 
+import { MapPreviewComponent } from '../../../components/MapPreviewComponent';
+import { PlantSite } from '../../../types/api/plant-site.type';
+
+type ShowPlantPageLoaderArgs = { plant: Plant; plantSites: PlantSite[] };
+
 export function ShowPlantPage() {
-  const plant: Plant = useLoaderData() as Plant;
+  const { plant, plantSites } = useLoaderData() as ShowPlantPageLoaderArgs;
   const photos = usePlantPhotos(plant.id);
 
   function renderImageGrid() {
     if (!photos || photos.length === 0) return;
-
-    const elements = photos.map((photo) => (
-      <img
-        className="w-full sm:h-screen object-cover"
-        key={photo.id}
-        src={photo.dataUrl}
-      />
-    ));
 
     return (
       <ImageGridComponent imageUrls={photos.map((photo) => photo.dataUrl)} />
@@ -38,6 +35,7 @@ export function ShowPlantPage() {
         <div className="sm:w-1/2 pb-safe">
           <PlantDescription plantId={plant.id} />
         </div>
+        <MapPreviewComponent plantSites={plantSites} />
       </div>
     </div>
   );

@@ -1,9 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { PanGestureHandler } from '../services/view/pan-gesture-handler.service';
-import { ZoomGestureHandler } from '../services/view/zoom-gesture-handler.service';
-import { compose, scale, toCSS, translate } from 'transformation-matrix';
-import { useAnimationFrame } from '../hooks/use-animation-frame.hook';
+import { useEffect, useRef, useState } from 'react';
 import closeUrl from '../assets/svg/x-white.svg';
+import { PanZoomComponent } from './PanZoomComponent';
 
 export function FullScreenImagePreviewComponent(props: {
   src: string;
@@ -11,10 +8,10 @@ export function FullScreenImagePreviewComponent(props: {
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const [panGestureHandler, setPanGestureHandler] =
-    useState<PanGestureHandler>();
-  const [zoomGestureHandler, setZoomGestureHandler] =
-    useState<ZoomGestureHandler>();
+  const [panBounds, setPanBounds] = useState<{
+    x: { min: number; max: number };
+    y: { min: number; max: number };
+  }>();
 
   useEffect(() => {
     const node = containerRef.current;
@@ -31,36 +28,21 @@ export function FullScreenImagePreviewComponent(props: {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !imageRef.current) return;
-    const panHandler = new PanGestureHandler(
-      containerRef.current,
-      0,
-      0,
-      calculatePanBounds(),
-    );
-
-    setPanGestureHandler(panHandler);
-
-    const zoomHandler = new ZoomGestureHandler(containerRef.current, 1);
-
-    setZoomGestureHandler(zoomHandler);
-
-    return () => {
-      panHandler.removeEventListeners();
-      zoomHandler.removeEventListeners();
-    };
+    setPanBounds(calculatePanBounds());
   }, []);
 
   function calculatePanBounds() {
-    const imageWtoHRatio =
-      imageRef.current!.naturalWidth / imageRef.current!.naturalHeight;
+    if (!imageRef.current) return;
 
-    const yBounds = imageRef.current!.width / imageWtoHRatio / 2;
+    const imageWtoHRatio =
+      imageRef.current.naturalWidth / imageRef.current.naturalHeight;
+
+    const yBounds = imageRef.current.width / imageWtoHRatio / 2;
 
     return {
       x: {
-        min: -imageRef.current!.width / 2,
-        max: imageRef.current!.width / 2,
+        min: -imageRef.current.width / 2,
+        max: imageRef.current.width / 2,
       },
       y: {
         min: -yBounds,
@@ -68,31 +50,6 @@ export function FullScreenImagePreviewComponent(props: {
       },
     };
   }
-
-  const onAnimationCallback = useCallback(() => {
-    if (!panGestureHandler || !zoomGestureHandler) return;
-
-    const zoom = zoomGestureHandler.update();
-
-    // When zooming in, the panning moves too rapidly, so
-    // scale it based on the zoom level.
-    panGestureHandler.sensitivity = 1 / zoom + 0.2;
-    const pan = panGestureHandler.update();
-
-    const mapTransformation = compose(
-      scale(zoom, zoom),
-      translate(pan.x, pan.y),
-    );
-
-    const cssTransform = toCSS(mapTransformation);
-
-    if (imageRef.current) imageRef.current.style.transform = cssTransform;
-  }, [panGestureHandler, zoomGestureHandler]);
-
-  useAnimationFrame(onAnimationCallback, [
-    panGestureHandler,
-    zoomGestureHandler,
-  ]);
 
   function onClose() {
     const node = containerRef.current;
@@ -107,7 +64,7 @@ export function FullScreenImagePreviewComponent(props: {
   return (
     <div
       ref={containerRef}
-      className="fixed top-0 left-0 w-screen h-screen object-contain z-20
+      className="fixed top-0 left-0 object-contain z-20
        duration-[350ms] ease-in-out translate-y-full overflow-hidden"
     >
       <div className="bg-black absolute top-0 left-0 w-full h-full -z-10"></div>
@@ -116,12 +73,14 @@ export function FullScreenImagePreviewComponent(props: {
         className="absolute top-safe mt-4 right-4 h-12 w-12 z-10 rounded-full bg-gray-400 p-3"
         onClick={() => onClose()}
       />
-      <img
-        src={props.src}
-        className="w-full h-full object-contain cursor-pointer touch-none"
-        ref={imageRef}
-        draggable={false}
-      />
+      <PanZoomComponent panBounds={panBounds}>
+        <img
+          src={props.src}
+          className="h-screen w-screen object-contain cursor-pointer touch-none -translate-x-1/2 -translate-y-1/2"
+          draggable={false}
+          ref={imageRef}
+        />
+      </PanZoomComponent>
     </div>
   );
 }
