@@ -3,6 +3,7 @@ import apiFetchUtil from '../../../utils/api-fetch.util';
 import { PlantSitePhoto } from '../../../types/api/plant-site-photo.type';
 import { loadBlob } from '../../image-loader.service';
 import axiosClient from '../../axios/axios-client';
+import { partition } from 'underscore';
 
 type PlantSitePhotoResponse = {
   id: string;
@@ -43,8 +44,18 @@ export const syncPlantSitePhotoFilesOffline = async () => {
   const plantSitePhotos = await plantSitePhotoTable.toArray();
   const notDownloadedPhotos = plantSitePhotos.filter((photo) => !photo.data);
 
+  const [primaryPhotosNotDownloaded, otherPhotosNotDownloaded] = partition(
+    notDownloadedPhotos,
+    (photo) => photo.primaryPhoto,
+  );
+
+  await downloadPhotosOffline(primaryPhotosNotDownloaded);
+  await downloadPhotosOffline(otherPhotosNotDownloaded);
+};
+
+const downloadPhotosOffline = (photos: PlantSitePhoto[]) => {
   return Promise.all(
-    notDownloadedPhotos.map(async (data) => {
+    photos.map(async (data) => {
       const blobData = await loadBlob(data.url);
       const photoBuffer = await blobData.arrayBuffer();
 
