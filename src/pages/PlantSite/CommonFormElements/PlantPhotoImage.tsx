@@ -46,8 +46,8 @@ export function PlantPhotoImage(props: {
 
     return (
       <button
-        className="rounded-full text-xs bg-emerald-600 mr-2 px-4 py-2
-      text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500 "
+        className="rounded-full text-xs bg-emerald-600 px-4 py-2
+      text-white font-semibold hover:outline hover:outline-2 hover:outline-blue-500 mb-1"
         onClick={() => context?.setPrimaryPhoto(props.id)}
       >
         Set as primary photo
@@ -64,14 +64,14 @@ export function PlantPhotoImage(props: {
   }
 
   return (
-    <div className="relative sm:h-96 w-full" data-cy="photo-form-photo">
+    <div className="relative sm:h-96" data-cy="photo-form-photo">
       <img
         src={previewImage}
         onClick={() => setViewFullScreen(true)}
         className="mb-3 inline-block cursor-zoom-in sm:object-cover w-full sm:h-full rounded-lg"
       />
       {renderFullScreenPreview()}
-      <div className="absolute sm:bottom-3 bottom-5 right-1">
+      <div className="absolute sm:bottom-3 bottom-5 right-0 flex flex-col items-end">
         {renderPrimaryPhotoButton()}
         <button
           className="px-4 py-2 rounded-full bg-red-600

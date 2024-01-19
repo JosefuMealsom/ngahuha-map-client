@@ -35,7 +35,7 @@ export function ShowPlantPage() {
         <div className="sm:w-1/2 pb-safe">
           <PlantDescription plantId={plant.id} />
         </div>
-        <MapPreviewComponent plantSites={plantSites} />
+        <MapPreviewComponent className="mb-6" locations={plantSites} />
       </div>
     </div>
   );

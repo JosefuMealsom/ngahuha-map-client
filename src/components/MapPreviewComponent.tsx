@@ -1,12 +1,17 @@
 import { LocationMarker } from '../pages/MapView/LocationMarker';
 import { MapMarker } from '../pages/MapView/MapMarker';
 import { MapSvg } from '../pages/MapView/MapSvg';
-import { PlantSite } from '../types/api/plant-site.type';
+import { LatLong } from '../types/lat-long.type';
 import { PanZoomComponent } from './PanZoomComponent';
 
-export const MapPreviewComponent = (props: { plantSites: PlantSite[] }) => {
+export const MapPreviewComponent = (props: {
+  className?: string;
+  locations?: LatLong[];
+}) => {
   return (
-    <div className="sm:hidden p-1 rounded-lg overflow-hidden">
+    <div
+      className={`${props.className} sm:hidden p-1 rounded-lg overflow-hidden select-none`}
+    >
       <div className="relative w-full overflow-hidden pb-10 bg-white h-96">
         <PanZoomComponent
           className="w-full bg-[#96AF98]"
@@ -16,8 +21,9 @@ export const MapPreviewComponent = (props: { plantSites: PlantSite[] }) => {
         >
           <MapSvg>
             <LocationMarker />
-            {props.plantSites.map((plantSite) => (
-              <MapMarker key={plantSite.id} {...plantSite} active={false} />
+            {props.locations?.map((location, index) => (
+              // Using index as key bad practice, but in this case its fine.
+              <MapMarker key={index} {...location} active={false} />
             ))}
           </MapSvg>
         </PanZoomComponent>

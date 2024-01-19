@@ -14,6 +14,7 @@ import { Plant } from '../../../types/api/plant.type';
 import { PlantFormContext } from './PlantFormContext';
 import { findWhere } from 'underscore';
 import { generateImagePreview } from '../../../services/preview-image-generator';
+import { MapPreviewComponent } from '../../../components/MapPreviewComponent';
 
 export function PlantSiteForm(props: {
   onSaveHandlerSuccess: () => void;
@@ -136,7 +137,12 @@ export function PlantSiteForm(props: {
   function renderPosition() {
     if (!position) return;
 
-    return <AccuracyIndicator position={position} />;
+    return (
+      <div>
+        <AccuracyIndicator position={position} />
+        <MapPreviewComponent className="mb-4" locations={[position]} />
+      </div>
+    );
   }
 
   return (
