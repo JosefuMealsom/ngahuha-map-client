@@ -64,11 +64,11 @@ export function PlantPhotoImage(props: {
   }
 
   return (
-    <div className="relative sm:h-96" data-cy="photo-form-photo">
+    <div className="relative sm:h-96 h-56" data-cy="photo-form-photo">
       <img
         src={previewImage}
         onClick={() => setViewFullScreen(true)}
-        className="mb-3 inline-block cursor-zoom-in sm:object-cover w-full sm:h-full rounded-lg"
+        className="mb-3 inline-block cursor-zoom-in object-cover w-full h-full rounded-lg"
       />
       {renderFullScreenPreview()}
       <div className="absolute sm:bottom-3 bottom-5 right-0 flex flex-col items-end">
