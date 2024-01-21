@@ -8,8 +8,8 @@ import { useIsInViewport } from '../../../hooks/use-is-in-viewport.hook';
 export function PlantItemComponent(props: Plant) {
   const plantSitePhotos = usePlantPhotos(props.id);
   const [previewImage, setPreviewImage] = useState('');
-  const testRef = useRef<HTMLDivElement>(null);
-  const inViewport = useIsInViewport(testRef);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inViewport = useIsInViewport(containerRef);
 
   useEffect(() => {
     if (!plantSitePhotos || !inViewport) return;
@@ -38,8 +38,8 @@ export function PlantItemComponent(props: Plant) {
   function renderPlantInfo() {
     return (
       <div
-        className="h-96 cursor-pointer sm:hover:opacity-90 bg-white"
-        ref={testRef}
+        className="h-96 cursor-pointer sm:hover:opacity-90 bg-white relative"
+        ref={containerRef}
       >
         <div
           className={`w-full h-full relative min-h-[15rem] ${
@@ -47,9 +47,9 @@ export function PlantItemComponent(props: Plant) {
           } transition-opacity duration-300`}
         >
           {renderImage()}
-          <div className="absolute top-0">
-            <PlantTitleComponent {...props} />
-          </div>
+        </div>
+        <div className="absolute top-0">
+          <PlantTitleComponent {...props} />
         </div>
       </div>
     );
