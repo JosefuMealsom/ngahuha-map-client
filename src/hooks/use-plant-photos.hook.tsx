@@ -34,7 +34,7 @@ export function usePlantPhotos(plantId: string) {
         if (a.primaryPhoto) {
           return -1;
         }
-        return 0;
+        return 1;
       });
 
       const convertedPhotos = await Promise.all(
