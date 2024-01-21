@@ -18,6 +18,7 @@ export const MapPreviewComponent = (props: {
           zoom={0.7}
           pan={{ x: -250, y: -600 }}
           minZoom={0.7}
+          panBounds={{ x: { min: -600, max: 50 }, y: { min: -910, max: -100 } }}
         >
           <MapSvg>
             <LocationMarker />
