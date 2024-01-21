@@ -30,12 +30,9 @@ export function usePlantPhotos(plantId: string) {
 
       const downloadedPhotos = plantSitePhotos.filter((photo) => photo.data);
 
-      downloadedPhotos.sort((a, b) => {
-        if (a.primaryPhoto) {
-          return -1;
-        }
-        return 1;
-      });
+      downloadedPhotos.sort(
+        (a, b) => Number(b.primaryPhoto) - Number(a.primaryPhoto),
+      );
 
       const convertedPhotos = await Promise.all(
         downloadedPhotos.map(async (photo: PlantSitePhoto) => {
