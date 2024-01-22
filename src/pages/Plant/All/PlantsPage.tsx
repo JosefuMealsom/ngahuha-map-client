@@ -7,6 +7,7 @@ import { useLoaderData } from 'react-router-dom';
 import { NavigationBar } from '../../Navigation/NavigationBar';
 import { useAppStore } from '../../../store/app.store';
 import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
+import { useMapStore } from '../../../store/map.store';
 
 export function AllPlantsPage() {
   const { plants } = useLoaderData() as {
@@ -18,6 +19,7 @@ export function AllPlantsPage() {
     new SearchPlantsFilter(plants),
   );
   const { searchQuery, setSearchQuery } = useAppStore();
+  const { setMapCarouselPosition } = useMapStore();
 
   function onSearchPlantAndFeatures(matches: SearchFilterMatch<Plant>[]) {
     setFilteredItems(matches.map((match) => match.data));
@@ -34,7 +36,10 @@ export function AllPlantsPage() {
               placeholder="Search plants"
               onMatchesChange={onSearchPlantAndFeatures}
               value={searchQuery}
-              onChange={(value) => setSearchQuery(value)}
+              onChange={(value) => {
+                setSearchQuery(value);
+                setMapCarouselPosition(0);
+              }}
             />
           </div>
           <NavigationBar activePage="All Plants" />

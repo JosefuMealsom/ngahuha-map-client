@@ -14,6 +14,7 @@ import { NavigationBar } from '../../Navigation/NavigationBar';
 import { LatLong } from '../../../types/lat-long.type';
 import { useAppStore } from '../../../store/app.store';
 import { useLoaderData } from 'react-router-dom';
+import { useMapStore } from '../../../store/map.store';
 
 type LoaderData = { plants: Plant[]; plantSites: PlantSite[] };
 
@@ -26,6 +27,7 @@ export function ClosestPlantsPage() {
     SearchPlantSitesFilter<PlantSiteWithinDistance>
   >(new SearchPlantSitesFilter<PlantSiteWithinDistance>([], []));
   const { searchQuery, setSearchQuery } = useAppStore();
+  const { setMapCarouselPosition } = useMapStore();
 
   function onSearchPlantSites(
     matches: SearchFilterMatch<PlantSiteWithinDistance>[],
@@ -63,7 +65,10 @@ export function ClosestPlantsPage() {
               placeholder="Search plants"
               onMatchesChange={onSearchPlantSites}
               value={searchQuery}
-              onChange={(value) => setSearchQuery(value)}
+              onChange={(value) => {
+                setSearchQuery(value);
+                setMapCarouselPosition(0);
+              }}
             />
           </div>
           <NavigationBar activePage="Closest Plants">

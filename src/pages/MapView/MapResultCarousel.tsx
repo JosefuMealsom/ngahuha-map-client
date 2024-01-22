@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { PlantSite } from '../../types/api/plant-site.type';
 import { MapResultItem } from './MapResultItem';
-import { useAppStore } from '../../store/app.store';
+import { useMapStore } from '../../store/map.store';
 
 export function MapResultCarousel(props: {
   plantSites: PlantSite[];
   onActiveResultChange: (itemId: string) => any;
 }) {
   const carouselRef = useRef<HTMLDivElement>(null);
-  const { mapCarouselPosition, setMapCarouselPosition } = useAppStore();
+  const { mapCarouselPosition, setMapCarouselPosition } = useMapStore();
 
   const scrollCallback = useCallback(() => {
     setMapCarouselPosition(carouselRef.current?.scrollLeft || 0);
