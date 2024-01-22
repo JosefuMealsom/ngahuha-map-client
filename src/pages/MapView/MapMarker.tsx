@@ -11,11 +11,9 @@ export function MapMarker(props: LatLong & { active: boolean }) {
   };
 
   return (
-    <MapElement position={position}>
+    <MapElement position={position} className={`${props.active ? 'z-10' : ''}`}>
       <div
-        className={`fill-white absolute -top-6 -left-3 h-6 w-6 ${
-          props.active ? 'z-10' : ''
-        }`}
+        className="fill-white absolute -top-6 -left-3 h-6 w-6"
         data-cy="map-marker"
       >
         <img

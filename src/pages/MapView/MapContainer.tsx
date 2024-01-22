@@ -13,6 +13,8 @@ import { PanZoomComponent } from '../../components/PanZoomComponent';
 import { useMapStore } from '../../store/map.store';
 import { LocationMarker } from './LocationMarker';
 import { MapMarker } from './MapMarker';
+import { interpolateToCanvasPosition } from '../../services/map-position-interpolator.service';
+import { LatLong } from '../../types/lat-long.type';
 
 export function MapContainer() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -23,6 +25,9 @@ export function MapContainer() {
     useState<MapSearchFilter>(new MapSearchFilter([], []));
   const { searchQuery, setSearchQuery } = useAppStore();
   const [selectedResultId, setSelectedResultId] = useState<string>();
+
+  const [pan, setPan] = useState(useMapStore.getState().pan);
+  const [zoom, setZoom] = useState(useMapStore.getState().zoom);
 
   useEffect(() => {
     if (!plants || !plantSites) return;
@@ -43,7 +48,25 @@ export function MapContainer() {
   }
 
   function setSelectedMarker(id: string) {
+    if (!plantSites) return;
+
+    const plantSite = plantSites.find((plantSite) => id === plantSite.id);
+
+    if (!plantSite) return;
+
+    centerMapOnPosition(plantSite);
     setSelectedResultId(id);
+  }
+
+  function centerMapOnPosition(position: LatLong) {
+    const newPosition = interpolateToCanvasPosition(
+      position,
+      useMapStore.getState(),
+    );
+
+    if (newPosition) {
+      setPan({ x: -newPosition.x, y: -newPosition.y });
+    }
   }
 
   return (
@@ -69,8 +92,8 @@ export function MapContainer() {
           </div>
           <PanZoomComponent
             className="bg-[#96AF98]"
-            pan={useMapStore.getState().pan}
-            zoom={useMapStore.getState().zoom}
+            pan={pan}
+            zoom={zoom}
             panBounds={{ x: { min: -600, max: 50 }, y: { min: -910, max: 50 } }}
           >
             <MapSvg>

@@ -20,7 +20,7 @@ export const useMapStore = create<MapStore>((set) => {
   };
 
   return {
-    pan: { x: -290, y: -441 },
+    pan: { x: -260, y: -300 },
     zoom: 2,
     mapBounds: {
       lat: [-35.373941, -35.378587],
