@@ -24,6 +24,7 @@ export function MapContainer() {
   const [searchPlantSitesFilter, setSearchPlantSitesFilter] =
     useState<MapSearchFilter>(new MapSearchFilter([], []));
   const { searchQuery, setSearchQuery } = useAppStore();
+  const { setMapCarouselPosition } = useMapStore();
   const [selectedResultId, setSelectedResultId] = useState<string>();
 
   const [pan, setPan] = useState(useMapStore.getState().pan);
@@ -85,7 +86,10 @@ export function MapContainer() {
                 onMatchesChange={filterPlantSites}
                 onClearHandler={resetFilter}
                 value={searchQuery}
-                onChange={(value) => setSearchQuery(value)}
+                onChange={(value) => {
+                  setSearchQuery(value);
+                  setMapCarouselPosition(0);
+                }}
               />
             </div>
             <NavigationBar activePage="Map" />

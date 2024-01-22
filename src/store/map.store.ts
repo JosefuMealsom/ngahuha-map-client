@@ -4,6 +4,8 @@ import { MapState } from '../types/map-state.type';
 type MapStore = MapState & {
   setPan: (x: number, y: number) => void;
   setZoom: (zoom: number) => void;
+  setMapCarouselPosition: (value: number) => void;
+  mapCarouselPosition: number;
 };
 
 export const useMapStore = create<MapStore>((set) => {
@@ -19,6 +21,12 @@ export const useMapStore = create<MapStore>((set) => {
     });
   };
 
+  const setMapCarouselPosition = (value: number) => {
+    set(() => {
+      return { mapCarouselPosition: value };
+    });
+  };
+
   return {
     pan: { x: -260, y: -300 },
     zoom: 2,
@@ -27,7 +35,9 @@ export const useMapStore = create<MapStore>((set) => {
       long: [173.96343, 173.967164],
     },
     canvasDimensions: { width: 580, height: 882 },
+    mapCarouselPosition: 0,
     setPan: setPan,
     setZoom: setZoom,
+    setMapCarouselPosition: setMapCarouselPosition,
   };
 });
