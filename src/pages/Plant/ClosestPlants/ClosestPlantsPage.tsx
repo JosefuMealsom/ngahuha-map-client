@@ -4,7 +4,6 @@ import {
   PlantSiteWithinDistance,
 } from '../../../types/api/plant-site.type';
 import { getPlantSitesWithinDistance } from '../../../services/closest-plants.service';
-import { ClosestPlantInfoComponent } from './ClosestPlantInfoComponent';
 import SearchComponent from '../../../components/SearchComponent';
 import { SearchPlantSitesFilter } from '../../../services/filter/search-plant-sites.filter';
 import { SearchFilterMatch } from '../../../types/filter.type';
@@ -15,6 +14,7 @@ import { LatLong } from '../../../types/lat-long.type';
 import { useAppStore } from '../../../store/app.store';
 import { useLoaderData } from 'react-router-dom';
 import { useMapStore } from '../../../store/map.store';
+import { PlantSiteListItemComponent } from '../../PlantSite/PlantSiteListItemComponent';
 
 type LoaderData = { plants: Plant[]; plantSites: PlantSite[] };
 
@@ -83,10 +83,7 @@ export function ClosestPlantsPage() {
         </div>
         <div className="sm:grid sm:grid-cols-4">
           {visiblePlantSites?.map((plantSite) => (
-            <ClosestPlantInfoComponent
-              key={plantSite.id}
-              {...plantSite}
-            ></ClosestPlantInfoComponent>
+            <PlantSiteListItemComponent key={plantSite.id} {...plantSite} />
           ))}
         </div>
       </div>

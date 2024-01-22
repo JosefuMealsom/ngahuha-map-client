@@ -2,11 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
-import {
-  Navigate,
-  RouterProvider,
-  createBrowserRouter,
-} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
 import { loadPlantSite } from './pages/PlantSite/Show/plant-site.loader';
 import { PlantSiteInformation } from './pages/PlantSite/Show/ShowPlantSite';
@@ -24,7 +20,6 @@ import { LoginPage } from './pages/Login/LoginPage';
 import {} from './pages/Login/LoginPage';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import { readUserStateFromCookie } from './services/user.service';
-import { loadPlants } from './pages/Plant/All/plants-loader';
 import { NewFeaturePage } from './pages/Feature/NewFeaturePage';
 import { EditFeaturePage } from './pages/Feature/Edit/EditFeaturePage';
 import { editFeatureLoader } from './pages/Feature/Edit/edit-feature.loader';
@@ -49,7 +44,6 @@ const router = createBrowserRouter([
       },
       {
         path: 'plants',
-        loader: loadPlants,
         element: <AllPlantsPage />,
       },
       {
