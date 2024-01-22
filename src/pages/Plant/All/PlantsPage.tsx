@@ -1,25 +1,28 @@
 import { PlantItemComponent } from './PlantItemComponent';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plant } from '../../../types/api/plant.type';
 import SearchComponent from '../../../components/SearchComponent';
 import { SearchFilterMatch } from '../../../types/filter.type';
-import { useLoaderData } from 'react-router-dom';
 import { NavigationBar } from '../../Navigation/NavigationBar';
 import { useAppStore } from '../../../store/app.store';
 import { SearchPlantsFilter } from '../../../services/filter/search-plants.filter';
 import { useMapStore } from '../../../store/map.store';
+import { usePlantsWithPhotos } from '../../../hooks/use-plants-with-photos.hook';
 
 export function AllPlantsPage() {
-  const { plants } = useLoaderData() as {
-    plants: Plant[];
-  };
-
-  const [filteredItems, setFilteredItems] = useState<Plant[]>([...plants]);
-  const [searchPlantsFilter] = useState<SearchPlantsFilter>(
-    new SearchPlantsFilter(plants),
-  );
+  const [filteredItems, setFilteredItems] = useState<Plant[]>([]);
+  const [searchPlantsFilter, setSearchPlantsFilter] =
+    useState<SearchPlantsFilter>(new SearchPlantsFilter([]));
   const { searchQuery, setSearchQuery } = useAppStore();
   const { setMapCarouselPosition } = useMapStore();
+  const plants = usePlantsWithPhotos();
+
+  useEffect(() => {
+    if (!plants) return;
+
+    setSearchPlantsFilter(new SearchPlantsFilter(plants));
+    setFilteredItems(plants);
+  }, [plants]);
 
   function onSearchPlantAndFeatures(matches: SearchFilterMatch<Plant>[]) {
     setFilteredItems(matches.map((match) => match.data));
