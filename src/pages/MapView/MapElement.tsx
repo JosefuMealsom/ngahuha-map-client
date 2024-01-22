@@ -4,7 +4,11 @@ import { useMapStore } from '../../store/map.store';
 import { LatLong } from '../../types/lat-long.type';
 import { PanZoomNormaliseScaleComponent } from '../../components/PanZoomNormaliseScaleComponent';
 
-export function MapElement(props: { position?: LatLong; children: ReactNode }) {
+export function MapElement(props: {
+  position?: LatLong;
+  children: ReactNode;
+  className?: string;
+}) {
   const marker = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,7 +26,10 @@ export function MapElement(props: { position?: LatLong; children: ReactNode }) {
   }, [props.position]);
 
   return (
-    <div className="absolute top-0 left-0 hidden" ref={marker}>
+    <div
+      className={`${props.className || ''} absolute top-0 left-0 hidden`}
+      ref={marker}
+    >
       <PanZoomNormaliseScaleComponent>
         {props.children}
       </PanZoomNormaliseScaleComponent>
