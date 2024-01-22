@@ -33,7 +33,7 @@ export function ClosestPlantInfoComponent(props: PlantSite) {
       <div className="w-full h-full align-top relative">
         <img
           src={previewImage}
-          className={`w-full h-full relative ${
+          className={`w-full h-full relative object-cover ${
             previewImage ? 'opacity-100' : 'opacity-0'
           } transition-opacity duration-300`}
         />
