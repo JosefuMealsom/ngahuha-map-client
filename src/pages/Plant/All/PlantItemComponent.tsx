@@ -26,7 +26,7 @@ export function PlantItemComponent(props: Plant) {
   function renderImage() {
     if (previewImage.length === 0) return;
 
-    return <img src={previewImage} className="w-full h-full object-cover" d />;
+    return <img src={previewImage} className="w-full h-full object-cover" />;
   }
 
   function renderPlantInfo() {

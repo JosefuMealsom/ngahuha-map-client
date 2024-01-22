@@ -1,6 +1,6 @@
-import React, { Ref, RefCallback, useEffect, useMemo, useState } from 'react';
+import { RefObject, useEffect, useMemo, useState } from 'react';
 
-export const useIsInViewport = (ref: React.RefObject<HTMLElement>) => {
+export const useIsInViewport = (ref: RefObject<HTMLElement>) => {
   const [inViewport, setInViewPort] = useState(false);
 
   const observer = useMemo(

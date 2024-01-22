@@ -1,63 +1,45 @@
-import { useEffect, useState } from 'react';
-import { plantSitePhotoTable } from '../../../services/offline.database';
+import { useEffect, useRef, useState } from 'react';
 import { PlantSite } from '../../../types/api/plant-site.type';
-import blobToDataUrlService from '../../../services/blob-to-data-url.service';
 import { usePlant } from '../../../hooks/use-plant.hook';
-import { Link } from 'react-router-dom';
 import { PlantTitleComponent } from '../../../components/PlantTitleComponent';
+import { useIsInViewport } from '../../../hooks/use-is-in-viewport.hook';
+import { useDisplayPhoto } from '../../../hooks/use-display-photo.hook';
 
 export function ClosestPlantInfoComponent(props: PlantSite) {
   const plant = usePlant(props.plantId);
-  const [photoDataUrl, setPhotoDataUrl] = useState<string>();
-
-  const getPlantInfo = async () => {
-    const plantSitePhotos = await plantSitePhotoTable
-      .where({ plantSiteId: props.id })
-      .toArray();
-
-    let primaryPhoto = plantSitePhotos.find(
-      (photo) => photo.primaryPhoto === true,
-    );
-
-    if (!primaryPhoto) {
-      primaryPhoto = plantSitePhotos[0];
-    }
-
-    if (!primaryPhoto || !primaryPhoto?.data) return;
-
-    const photoData = await blobToDataUrlService.convert(
-      new Blob([primaryPhoto.data]),
-    );
-
-    setPhotoDataUrl(photoData || '');
-  };
+  const [previewImage, setPreviewImage] = useState<string>();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inViewport = useIsInViewport(containerRef);
+  const displayPhoto = useDisplayPhoto(props.id);
 
   useEffect(() => {
-    getPlantInfo();
-  }, []);
+    if (!displayPhoto || !inViewport) return;
 
-  function renderPlantInfo() {
+    setPreviewImage(displayPhoto.dataUrl);
+  }, [displayPhoto, inViewport]);
+
+  function renderPlantTitle() {
     if (!plant) return;
 
-    return (
-      <div
-        className="h-96 cursor-pointer sm:hover:opacity-90 bg-white"
-        data-cy={`closest-plant-site-${props.id}`}
-      >
-        <div className="w-full h-full align-top relative">
-          <img src={photoDataUrl} className="w-full h-full object-cover" />
-
-          <div className="absolute top-0">
-            <PlantTitleComponent {...plant} />
-          </div>
-        </div>
-      </div>
-    );
+    return <PlantTitleComponent {...plant} />;
   }
 
   return (
-    <Link to={`/plant-site/${props.id}`}>
-      <div className="w-full">{renderPlantInfo()}</div>
-    </Link>
+    <div
+      className={`h-96 cursor-pointer sm:hover:opacity-90 bg-white`}
+      data-cy={`closest-plant-site-${props.id}`}
+      ref={containerRef}
+    >
+      <div className="w-full h-full align-top relative">
+        <img
+          src={previewImage}
+          className={`w-full h-full relative ${
+            previewImage ? 'opacity-100' : 'opacity-0'
+          } transition-opacity duration-300`}
+        />
+
+        <div className="absolute top-0">{renderPlantTitle()}</div>
+      </div>
+    </div>
   );
 }
