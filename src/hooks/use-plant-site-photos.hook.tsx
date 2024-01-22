@@ -28,12 +28,7 @@ export function usePlantSitePhotos(plantSiteId: string) {
       }),
     );
 
-    photoUrls.sort((a, b) => {
-      if (a.primaryPhoto) {
-        return -1;
-      }
-      return 0;
-    });
+    photoUrls.sort((a, b) => Number(b.primaryPhoto) - Number(a.primaryPhoto));
 
     setPlantSitePhotoUrls(photoUrls);
   };
