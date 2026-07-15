@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         background: '#FFFFFF',
         'inverted-background': '#000000',
-        forest: '#002D04',
+        forest: '#001E02',
       },
       typography: {
         DEFAULT: {
